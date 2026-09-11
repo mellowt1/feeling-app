@@ -25,6 +25,7 @@
     --accent-soft: rgba(59,107,117,0.12);
     --accent-40: rgba(59,107,117,0.40);
     --water: #7FA5AD;
+    --silhouette: var(--ink);
     --sky-top: #E7EFEE;
     --orb: #F1D7A4;
     --chip: #ECE8DF;
@@ -51,6 +52,7 @@
       --accent-soft: rgba(127,176,186,0.16);
       --accent-40: rgba(127,176,186,0.40);
       --water: #5D7F87;
+      --silhouette: #8FA3AD;
       --sky-top: #192226;
       --orb: #C9AE7E;
       --chip: #262E33;
@@ -65,7 +67,7 @@
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body { margin: 0; color: var(--ink); font: 17px/1.5 -apple-system, "SF Pro Text", system-ui, sans-serif; -webkit-text-size-adjust: 100%; }
   body { min-height: 100dvh; display: flex; flex-direction: column; background: linear-gradient(var(--sky-top) 0px, var(--bg) 260px); }
-  main { flex: 1; padding: calc(16px + env(safe-area-inset-top)) 24px 130px; max-width: 640px; width: 100%; margin: 0 auto; position: relative; z-index: 1; }
+  main { flex: 1; padding: calc(16px + env(safe-area-inset-top)) 24px 142px; max-width: 640px; width: 100%; margin: 0 auto; position: relative; z-index: 1; }
   .hidden { display: none !important; }
 
   h1 { font-family: var(--serif); font-size: 30px; line-height: 1.3; margin: 0; font-weight: 600; letter-spacing: -0.01em; }
@@ -86,11 +88,11 @@
   #rain-toggle svg { width: 22px; height: 22px; }
   #rain-toggle.on { opacity: 1; color: var(--accent); }
 
-  .textview { width: 100%; display: block; font: inherit; font-size: 17px; line-height: 1.5; color: var(--ink); border-radius: 24px; padding: 18px 19px; min-height: 136px; resize: none; outline: none; margin-top: 24px; transition: border-color .25s, box-shadow .25s; }
+  .textview { width: 100%; display: block; font: inherit; font-size: 17px; line-height: 1.5; color: var(--ink); border-radius: 24px; padding: 18px 19px; min-height: 136px; resize: none; outline: none; margin-top: 18px; transition: border-color .25s, box-shadow .25s; }
   .textview::placeholder { color: var(--muted); }
   .textview:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
 
-  .voice { display: flex; flex-direction: column; align-items: center; gap: 18px; margin-top: 26px; }
+  .voice { display: flex; flex-direction: column; align-items: center; gap: 18px; margin-top: 20px; }
   .mic-wrap { position: relative; width: 76px; height: 76px; }
   .mic { position: relative; z-index: 1; width: 76px; height: 76px; border-radius: 38px; border: 0; padding: 0; background: var(--accent); color: var(--accent-ink); display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 18px rgba(59,107,117,0.22); transition: transform .15s; }
   .mic:active { transform: scale(.96); }
@@ -105,7 +107,7 @@
   .voice-cap svg { width: 16px; height: 16px; flex: 0 0 auto; }
   body.listening .voice-cap .kb { display: none; }
 
-  .moods { display: flex; justify-content: space-between; gap: 6px; margin: 28px 0 0; }
+  .moods { display: flex; justify-content: space-between; gap: 6px; margin: 20px 0 0; }
   .moods button { flex: 0 0 auto; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; padding: 0; background: transparent; border: 0; border-radius: 50%; transition: transform .12s; }
   .moods button svg { width: 56px; height: 56px; }
   .moods button.on { transform: scale(1.06); box-shadow: 0 0 0 2px var(--accent); }
@@ -130,7 +132,7 @@
   .row { display: flex; gap: 10px; align-items: center; }
   .row > .btn { flex: 1; }
 
-  .reassure { text-align: center; font-size: 13px; line-height: 1.6; color: var(--muted); margin: 18px 0 0; }
+  .reassure { text-align: center; font-size: 13px; line-height: 1.6; color: var(--muted); margin: 12px 0 0; }
 
   /* ---------- entry cards ---------- */
   .daylist { margin-top: 24px; }
@@ -217,7 +219,7 @@
   .toast.show { opacity: 1; }
 
   /* ---------- waves and scene (preserved) ---------- */
-  .waves { position: fixed; left: 0; right: 0; bottom: 0; height: 34vh; pointer-events: none; z-index: 0; overflow: hidden; transition: transform 2.5s ease-out; }
+  .waves { position: fixed; left: 0; right: 0; bottom: 0; height: 28vh; pointer-events: none; z-index: 0; overflow: hidden; transition: transform 2.5s ease-out; }
   body.listening .waves { transform: translateY(-12px); }
   .waves .wave-wrap { position: absolute; inset: 0; animation: bob 3s ease-in-out infinite alternate; }
   .waves svg { position: absolute; bottom: 0; left: 0; width: 200%; height: 100%; }
@@ -232,18 +234,21 @@
   @keyframes drift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
   @keyframes bob { from { transform: translateY(0); } to { transform: translateY(-4px); } }
 
-  .waves svg.dock { position: absolute; right: 0; left: auto; bottom: 38%; width: 130px; height: 90px; pointer-events: none; overflow: visible; }
-  .dock .dock-figure { fill: var(--ink); opacity: .55; }
-  .dock .rod { transform-origin: 30px 29px; animation: rodSway 5s ease-in-out infinite alternate; }
+  .waves svg.dock { position: absolute; right: 0; left: auto; bottom: 42%; width: 150px; height: 86px; pointer-events: none; overflow: visible; }
+  .dock .dock-figure { fill: var(--silhouette); opacity: .55; }
+  .dock .dock-figure .arm { fill: none; stroke: var(--silhouette); stroke-width: 4.6; stroke-linecap: round; }
+  .dock .rod { transform-origin: 98px 44px; animation: rodSway 5s ease-in-out infinite alternate; }
+  .dock .rod .rod-pole { fill: none; stroke: var(--silhouette); stroke-width: 1.8; stroke-linecap: round; }
+  .dock .rod .rod-line { fill: none; stroke: var(--silhouette); stroke-width: 0.8; stroke-linecap: round; opacity: .58; }
   @keyframes rodSway { from { transform: rotate(-1.5deg); } to { transform: rotate(1.5deg); } }
-  .dock .line-ring { fill: none; stroke: var(--ink); stroke-width: 1; transform-box: fill-box; transform-origin: center; animation: ringPulse 9s ease-out infinite; }
+  .dock .line-ring { fill: none; stroke: var(--silhouette); stroke-width: 1; transform-box: fill-box; transform-origin: center; animation: ringPulse 9s ease-out infinite; }
   @keyframes ringPulse {
     0%   { transform: scale(1); opacity: .35; }
     33%  { transform: scale(3); opacity: 0; }
     100% { transform: scale(3); opacity: 0; }
   }
 
-  .dock .pelican { fill: var(--ink); opacity: .55; }
+  .dock .pelican { fill: var(--silhouette); opacity: .55; }
   .dock .pel-head { transform-box: fill-box; transform-origin: bottom center; animation: pelHead 25s ease-in-out infinite; }
   @keyframes pelHead {
     0%, 80%  { transform: rotate(0); }
@@ -258,10 +263,10 @@
     100%    { transform: scaleY(1); }
   }
 
-  .waves svg.mangrove { position: absolute; left: 0; bottom: 30%; width: 100px; height: 110px; pointer-events: none; overflow: visible; }
-  .mangrove .canopy { transform-box: fill-box; transform-origin: bottom left; animation: leafSway 7s ease-in-out infinite alternate; }
-  .mangrove .canopy ellipse { fill: var(--ink); opacity: .35; }
-  .mangrove .roots path { fill: none; stroke: var(--ink); stroke-opacity: .45; stroke-width: 1.5; stroke-linecap: round; }
+  .waves svg.mangrove { position: absolute; left: 0; bottom: 34%; width: 100px; height: 122px; pointer-events: none; overflow: visible; }
+  .mangrove .canopy { transform-box: fill-box; transform-origin: bottom center; animation: leafSway 7s ease-in-out infinite alternate; }
+  .mangrove .canopy path { fill: var(--silhouette); opacity: .35; }
+  .mangrove .roots path { fill: none; stroke: var(--silhouette); stroke-opacity: .45; stroke-linecap: round; }
   @keyframes leafSway { from { transform: rotate(-1deg); } to { transform: rotate(1deg); } }
 
   .waves .mullet-wrap { position: absolute; bottom: 40%; pointer-events: none; }
@@ -408,47 +413,63 @@
     <div class="waves" aria-hidden="true">
       <div class="wave-wrap">
         <svg class="w1" viewBox="0 0 1200 200" preserveAspectRatio="none"><path class="w1" d="M0,60 C150,42 150,78 300,60 C450,42 450,78 600,60 C750,42 750,78 900,60 C1050,42 1050,78 1200,60 L1200,200 L0,200 Z"/></svg>
-        <svg class="mangrove" viewBox="0 0 100 110" aria-hidden="true">
-          <g class="canopy">
-            <ellipse cx="22" cy="22" rx="20" ry="13"/>
-            <ellipse cx="10" cy="28" rx="14" ry="10"/>
-            <ellipse cx="34" cy="26" rx="13" ry="9"/>
-          </g>
+        <svg class="mangrove" viewBox="0 0 90 110" aria-hidden="true">
           <g class="roots">
-            <path d="M15,32 C10,50 5,75 8,105"/>
-            <path d="M20,34 C18,55 15,80 20,108"/>
-            <path d="M26,35 C28,58 30,82 35,108"/>
-            <path d="M32,34 C38,55 45,78 50,105"/>
-            <path d="M12,30 C0,50 -5,75 5,100"/>
-            <path d="M38,32 C50,50 65,72 80,95"/>
+            <path d="M42 24C41 32 41 38 42 48" stroke-width="5"/>
+            <path d="M41 40C30 44 20 53 14 76" stroke-width="3"/>
+            <path d="M44 40C55 44 65 53 71 80" stroke-width="2.8"/>
+            <path d="M41 46C33 50 25 60 22 86" stroke-width="2.6"/>
+            <path d="M44 46C52 51 59 62 62 90" stroke-width="2.6"/>
+            <path d="M42 50C40 64 39 76 40 98" stroke-width="3"/>
+            <path d="M14 76C18 69 25 69 30 76" stroke-width="1.8"/>
+            <path d="M71 80C67 72 59 72 54 79" stroke-width="1.8"/>
+            <path d="M22 86C26 80 32 81 35 88" stroke-width="1.5"/>
+            <path d="M62 90C58 83 52 83 48 89" stroke-width="1.5"/>
+            <path d="M30 76C31 84 31 92 30 100" stroke-width="1.6"/>
+            <path d="M54 79C54 87 55 94 54 102" stroke-width="1.6"/>
+          </g>
+          <g class="canopy">
+            <path d="M4 22C-1 18.5 0.999995 11 8 9.50003C10.5 3.50003 19 1.50003 25 5.00003C29.5 0.500027 39 0.500027 43.5 5.50003C49 1.00003 59 2.00003 62 7.50003C70 5.00003 80 9.00003 79.5 15C86.5 17 86 24 79 25.5C70 27.5 58 26 51 27.5C43 29 33 28 25 26.5C17 28 8 26.5 4 22Z"/>
+            <path d="M13 25.5C17 29.5 23 31 28 29.5C22.5 32.5 15.5 30.5 13 25.5Z"/>
+            <path d="M36 27.5C40 31.5 46 32.5 51 31C45.5 34 38.5 32.5 36 27.5Z"/>
+            <path d="M62 25C66 29 71 30 76 28.5C70.5 31.5 64.5 30 62 25Z"/>
           </g>
         </svg>
         <svg class="w2" viewBox="0 0 1200 200" preserveAspectRatio="none"><path class="w2" d="M0,60 C150,42 150,78 300,60 C450,42 450,78 600,60 C750,42 750,78 900,60 C1050,42 1050,78 1200,60 L1200,200 L0,200 Z"/></svg>
-        <svg class="dock" viewBox="0 0 130 90" aria-hidden="true">
+        <svg class="dock" viewBox="0 0 210 120" aria-hidden="true">
           <g class="dock-figure">
-            <rect x="10" y="40" width="120" height="4"/>
-            <rect x="10" y="45" width="120" height="4"/>
-            <rect x="10" y="50" width="120" height="4"/>
-            <rect x="18" y="54" width="5" height="34"/>
-            <rect x="108" y="54" width="5" height="34"/>
-            <rect x="4" y="39" width="5" height="22" rx="2.5" transform="rotate(12 6.5 39)"/>
-            <rect x="10" y="39" width="5" height="22" rx="2.5" transform="rotate(6 12.5 39)"/>
-            <rect x="18" y="26" width="13" height="15" rx="5"/>
-            <circle cx="24" cy="20" r="6"/>
+            <path d="M116.5 62H91.5C90.6716 62 90 62.6716 90 63.5V67.5C90 68.3284 90.6716 69 91.5 69H116.5C117.328 69 118 68.3284 118 67.5V63.5C118 62.6716 117.328 62 116.5 62Z"/>
+            <path d="M146.5 62H121.5C120.672 62 120 62.6716 120 63.5V67.5C120 68.3284 120.672 69 121.5 69H146.5C147.328 69 148 68.3284 148 67.5V63.5C148 62.6716 147.328 62 146.5 62Z"/>
+            <path d="M176.5 62H151.5C150.672 62 150 62.6716 150 63.5V67.5C150 68.3284 150.672 69 151.5 69H176.5C177.328 69 178 68.3284 178 67.5V63.5C178 62.6716 177.328 62 176.5 62Z"/>
+            <path d="M208.5 62H181.5C180.672 62 180 62.6716 180 63.5V67.5C180 68.3284 180.672 69 181.5 69H208.5C209.328 69 210 68.3284 210 67.5V63.5C210 62.6716 209.328 62 208.5 62Z"/>
+            <path d="M116.5 69H114C112.895 69 112 69.8954 112 71V111C112 112.105 112.895 113 114 113H116.5C117.605 113 118.5 112.105 118.5 111V71C118.5 69.8954 117.605 69 116.5 69Z"/>
+            <path d="M190.5 69H188C186.895 69 186 69.8954 186 71V115C186 116.105 186.895 117 188 117H190.5C191.605 117 192.5 116.105 192.5 115V71C192.5 69.8954 191.605 69 190.5 69Z"/>
+            <path d="M190.5 84H114.5C113.672 84 113 84.6716 113 85.5C113 86.3284 113.672 87 114.5 87H190.5C191.328 87 192 86.3284 192 85.5C192 84.6716 191.328 84 190.5 84Z"/>
+            <path d="M106 35.2C108.872 35.2 111.2 32.8719 111.2 30C111.2 27.1281 108.872 24.8 106 24.8C103.128 24.8 100.8 27.1281 100.8 30C100.8 32.8719 103.128 35.2 106 35.2Z"/>
+            <path d="M100 36.5C100 33.5 112 33.5 112 36.5L113.5 56C113.5 59 98.5 59 98.5 56L100 36.5Z"/>
+            <path d="M113.5 55H99.5C97.567 55 96 56.567 96 58.5V59C96 60.933 97.567 62.5 99.5 62.5H113.5C115.433 62.5 117 60.933 117 59V58.5C117 56.567 115.433 55 113.5 55Z"/>
+            <path d="M103.8 63.4C103.8 62.0745 102.725 61 101.4 61C100.075 61 99 62.0745 99 63.4V71.6C99 72.9255 100.075 74 101.4 74C102.725 74 103.8 72.9255 103.8 71.6V63.4Z"/>
+            <path d="M110.8 63.4C110.8 62.0745 109.725 61 108.4 61C107.075 61 106 62.0745 106 63.4V69.6C106 70.9255 107.075 72 108.4 72C109.725 72 110.8 70.9255 110.8 69.6V63.4Z"/>
+            <path class="arm" d="M99.5 40.5L96.5 52"/>
             <g class="rod">
-              <path d="M30,29 L-19.2,-5.4" fill="none" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M-19.2,-5.4 L-19.2,66" fill="none" stroke="var(--ink)" stroke-width="1"/>
+              <path class="rod-pole" d="M98 44L26 56"/>
+              <path class="rod-line" d="M25.9 56L24.1 92"/>
             </g>
           </g>
-          <circle class="line-ring" cx="-19.2" cy="66" r="4"/>
-          <g class="pelican">
+          <circle class="line-ring" cx="24" cy="92" r="3.5"/>
+          <g class="pelican" transform="translate(175 36)">
             <g class="pel-body">
-              <ellipse cx="111" cy="45" rx="7" ry="9"/>
-              <path d="M105,39 Q109,50 105,53" fill="none" stroke="var(--ink)" stroke-width="1"/>
+              <path d="M6.99997 24.8857C3.35997 21.3572 3.35997 14.4857 8.7733 11.7C14.1866 8.9143 21.84 10.5857 25.0133 15.2286C27.0666 18.2 26.6933 22.2857 24.2666 24.8857H6.99997Z"/>
+              <path d="M10.4533 14.3928C9.70665 10.5857 11.76 7.79998 14.9333 7.98569L16.9867 12.4428C14.56 12.6286 13.6267 13.9286 14 16.1571L10.4533 14.3928Z"/>
+              <path d="M24.4533 16.3429C26.5066 14.1143 27.6266 13.3714 27.9066 13.9286C28 14.8571 27.0666 17.0857 25.5733 18.9429L24.4533 16.3429Z"/>
+              <path d="M12.2267 24.3286H11.9467C11.5343 24.3286 11.2 24.6611 11.2 25.0714V25.2571C11.2 25.6674 11.5343 26 11.9467 26H12.2267C12.6391 26 12.9733 25.6674 12.9733 25.2571V25.0714C12.9733 24.6611 12.6391 24.3286 12.2267 24.3286Z"/>
+              <path d="M17.8267 24.3286H17.5467C17.1343 24.3286 16.8 24.6611 16.8 25.0714V25.2571C16.8 25.6674 17.1343 26 17.5467 26H17.8267C18.239 26 18.5733 25.6674 18.5733 25.2571V25.0714C18.5733 24.6611 18.239 24.3286 17.8267 24.3286Z"/>
             </g>
             <g class="pel-head">
-              <circle cx="105" cy="34" r="4"/>
-              <path d="M102,36 Q95,40 90,38 Q96,36 102,36 Z"/>
+              <path d="M10.5404 7.50154C10.0178 9.57093 11.4116 11.4679 13.8507 12.675L15.9413 10.2607C13.6764 9.22603 12.4569 8.01889 12.8053 6.12195L10.5404 7.50154Z"/>
+              <path d="M11.0631 8.62247C13.0356 8.62247 14.6347 7.03971 14.6347 5.08727C14.6347 3.13483 13.0356 1.55206 11.0631 1.55206C9.09062 1.55206 7.49158 3.13483 7.49158 5.08727C7.49158 7.03971 9.09062 8.62247 11.0631 8.62247Z"/>
+              <path d="M8.62401 6.46686L4.44268 11.9852C3.92001 12.675 4.26846 13.451 5.05246 13.3217L6.35912 13.0199C7.23023 12.8044 7.84001 12.1577 8.18846 11.2954L10.5405 7.50155L8.62401 6.46686Z"/>
+              <path d="M10.0178 8.01892C8.62399 9.91586 7.75288 11.6403 7.66577 12.9337C8.79822 12.8475 9.75644 11.9852 10.4533 10.6057L10.0178 8.01892Z"/>
             </g>
           </g>
         </svg>
@@ -552,7 +573,7 @@
     </div>
 
     <div class="moods" id="moods"></div>
-    <button class="btn" id="save" style="margin-top:24px" disabled>Save</button>
+    <button class="btn" id="save" style="margin-top:18px" disabled>Save</button>
     <p class="reassure">Nothing you write here is judged.<br>It only has to be true.</p>
     <div class="daylist" id="today-entries"></div>
   </section>
