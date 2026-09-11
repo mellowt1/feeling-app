@@ -79,6 +79,56 @@
   @keyframes drift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
   @keyframes bob { from { transform: translateY(0); } to { transform: translateY(4px); } }
   @media (prefers-reduced-motion: reduce) { .waves * { animation: none !important; } }
+
+  /* ---------- decorative sky layers (Today tab only) ---------- */
+  .sky-breathe { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(circle at 50% 0%, var(--sky-top), transparent 70%); opacity: 0; animation: breathe 8s ease-in-out infinite alternate; }
+  @keyframes breathe { from { opacity: 0; } to { opacity: 0.35; } }
+
+  .clouds { position: fixed; top: 0; left: 0; right: 0; height: 220px; pointer-events: none; z-index: 0; overflow: hidden; }
+  .cloud { position: absolute; top: 30px; background: rgba(255,255,255,0.35); border-radius: 50%; filter: blur(6px); animation: cloudDrift linear infinite; }
+  .cloud::before, .cloud::after { content: ""; position: absolute; background: rgba(255,255,255,0.35); border-radius: 50%; }
+  @media (prefers-color-scheme: dark) {
+    .cloud, .cloud::before, .cloud::after { background: rgba(255,255,255,0.06); }
+  }
+  .cloud.c1 { top: 20px; width: 180px; height: 50px; animation-duration: 90s; animation-delay: -10s; }
+  .cloud.c1::before { width: 90px; height: 60px; left: 20px; top: -25px; }
+  .cloud.c1::after { width: 70px; height: 46px; left: 100px; top: -14px; }
+  .cloud.c2 { top: 90px; width: 120px; height: 36px; animation-duration: 70s; animation-delay: -35s; }
+  .cloud.c2::before { width: 60px; height: 40px; left: 15px; top: -18px; }
+  .cloud.c2::after { width: 50px; height: 32px; left: 65px; top: -10px; }
+  .cloud.c3 { top: 150px; width: 220px; height: 60px; animation-duration: 110s; animation-delay: -60s; }
+  .cloud.c3::before { width: 110px; height: 70px; left: 25px; top: -30px; }
+  .cloud.c3::after { width: 80px; height: 54px; left: 130px; top: -16px; }
+  @keyframes cloudDrift { from { transform: translateX(110vw); } to { transform: translateX(-60vw); } }
+
+  .orb { position: fixed; width: 120px; height: 120px; border-radius: 50%; pointer-events: none; z-index: 0; filter: blur(14px); opacity: 0; transition: opacity 2s; animation: orbPulse 20s ease-in-out infinite alternate; }
+  html[data-sky="morning"] .orb { opacity: 1; top: 70px; right: -20px; background: radial-gradient(circle, rgba(242,217,166,0.7), transparent 70%); }
+  html[data-sky="day"] .orb { opacity: 0; }
+  html[data-sky="evening"] .orb { opacity: 1; top: 110px; left: -30px; background: radial-gradient(circle, rgba(233,194,160,0.6), transparent 70%); }
+  html[data-sky="night"] .orb { opacity: 1; top: 60px; right: 10px; width: 90px; height: 90px; background: radial-gradient(circle, rgba(221,230,234,0.45), transparent 70%); }
+  @keyframes orbPulse { from { transform: scale(1); } to { transform: scale(1.06); } }
+
+  #rain-toggle { position: absolute; top: calc(10px + env(safe-area-inset-top)); right: 16px; width: 34px; height: 34px; border-radius: 50%; border: 0; background: var(--chip); opacity: 0.5; display: flex; align-items: center; justify-content: center; padding: 0; z-index: 3; }
+  #rain-toggle svg { width: 18px; height: 18px; }
+  #rain-toggle.on { opacity: 1; }
+  html.rain #rain-toggle { color: var(--accent); }
+
+  div.rain { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  div.rain span { position: absolute; top: -10vh; width: 2px; height: 18px; border-radius: 2px; background: rgba(63,110,122,0.25); animation: fall linear infinite; }
+  @media (prefers-color-scheme: dark) { div.rain span { background: rgba(127,176,186,0.25); } }
+  @keyframes fall { from { transform: translateY(-10vh); } to { transform: translateY(105vh); } }
+  html.rain .waves .wave-wrap { animation: bobRain 4s ease-in-out infinite alternate; }
+  @keyframes bobRain { from { transform: translateY(0); } to { transform: translateY(8px); } }
+
+  .ripple { position: absolute; width: 20px; height: 20px; margin-left: -10px; margin-top: -10px; border-radius: 50%; border: 2px solid rgba(63,110,122,0.5); transform: scale(1); opacity: 0.6; animation: rippleOut 1.6s ease-out forwards; pointer-events: none; z-index: 0; }
+  @keyframes rippleOut { to { transform: scale(14); opacity: 0; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sky-breathe, .cloud, .orb, div.rain span, .ripple { animation: none !important; }
+    .sky-breathe { opacity: 0.2; }
+    .orb { transform: none; }
+  }
+
   nav button { flex: 1; background: none; border: 0; font: inherit; font-size: 13px; color: var(--muted); padding: 6px 0; }
   nav button.on { color: var(--accent); font-weight: 700; }
   nav button span { display: block; font-size: 22px; line-height: 1.1; }
@@ -101,6 +151,21 @@
 <main>
   <!-- TODAY -->
   <section id="tab-today">
+    <div class="sky-breathe" aria-hidden="true"></div>
+    <div class="clouds" aria-hidden="true">
+      <div class="cloud c1"></div>
+      <div class="cloud c2"></div>
+      <div class="cloud c3"></div>
+    </div>
+    <div class="orb" aria-hidden="true"></div>
+    <button id="rain-toggle" aria-label="Toggle rain" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M7 16a4 4 0 0 1 .5-7.97A5 5 0 0 1 17 9a3.5 3.5 0 0 1 .5 6.97"/>
+        <line x1="8" y1="19" x2="8" y2="21"/>
+        <line x1="12" y1="19" x2="12" y2="21"/>
+        <line x1="16" y1="19" x2="16" y2="21"/>
+      </svg>
+    </button>
     <div class="waves" aria-hidden="true">
       <div class="wave-wrap">
         <svg class="w1" viewBox="0 0 1200 200" preserveAspectRatio="none"><path class="w1" d="M0,60 C150,42 150,78 300,60 C450,42 450,78 600,60 C750,42 750,78 900,60 C1050,42 1050,78 1200,60 L1200,200 L0,200 Z"/></svg>
@@ -439,6 +504,59 @@
   restoreDraft(); renderAll();
   document.addEventListener('visibilitychange', () => { if (!document.hidden) { db = load(); restoreDraft(); renderAll(); } });
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+})();
+</script>
+<script>
+(() => {
+  // ---------- rain toggle (decorative only, independent of mood) ----------
+  const RAIN_KEY = 'feeling.rain';
+  const rainBtn = document.getElementById('rain-toggle');
+  const today = document.getElementById('tab-today');
+  let rainEl = null;
+
+  function buildRain() {
+    const box = document.createElement('div');
+    box.className = 'rain';
+    box.setAttribute('aria-hidden', 'true');
+    for (let i = 0; i < 14; i++) {
+      const drop = document.createElement('span');
+      drop.style.left = (Math.random() * 100) + 'vw';
+      const dur = 9 + Math.random() * 5;
+      drop.style.animationDuration = dur.toFixed(2) + 's';
+      drop.style.animationDelay = (-Math.random() * dur).toFixed(2) + 's';
+      box.appendChild(drop);
+    }
+    return box;
+  }
+  function applyRain(on) {
+    document.documentElement.classList.toggle('rain', on);
+    rainBtn.classList.toggle('on', on);
+    if (on && !rainEl) { rainEl = buildRain(); today.appendChild(rainEl); }
+    if (!on && rainEl) { rainEl.remove(); rainEl = null; }
+  }
+  applyRain(localStorage.getItem(RAIN_KEY) === '1');
+  rainBtn.addEventListener('click', () => {
+    const on = !document.documentElement.classList.contains('rain');
+    applyRain(on);
+    try { localStorage.setItem(RAIN_KEY, on ? '1' : '0'); } catch (e) {}
+  });
+
+  // ---------- save ripple ----------
+  // Registered on the capture phase so it reads the button's disabled state
+  // before the existing bubble-phase save handler clears/resets the form.
+  const saveBtn = document.getElementById('save');
+  saveBtn.addEventListener('click', () => {
+    if (saveBtn.disabled) return;
+    const waves = document.querySelector('#tab-today .waves') || document.body;
+    const btnRect = saveBtn.getBoundingClientRect();
+    const wavesRect = waves.getBoundingClientRect();
+    const ripple = document.createElement('span');
+    ripple.className = 'ripple';
+    ripple.style.left = (btnRect.left + btnRect.width / 2 - wavesRect.left) + 'px';
+    ripple.style.top = '0px';
+    waves.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 1700);
+  }, true);
 })();
 </script>
 </body>
