@@ -13,17 +13,23 @@
 <link rel="apple-touch-icon" href="icon-180.png">
 <style>
   :root {
-    --bg: #f6f3ec; --card: #fffdf8; --ink: #24303a; --muted: #6d7883; --line: #e4dfd4;
-    --accent: #2f5476; --accent-ink: #fff; --danger: #a8443c; --chip: #ece7dc;
+    --bg: #F6F3EC; --card: #FFFDF8; --ink: #24303A; --muted: #6D7883; --line: #E4DFD4;
+    --accent: #3F6E7A; --accent-ink: #FFFFFF; --danger: #a8443c; --chip: #ECE7DC;
     --m1: #c0554b; --m2: #d8905a; --m3: #b9b3a6; --m4: #7fa66a; --m5: #3f8f6c;
+    --sky-top: #EEF3F1;
   }
+  html[data-sky="morning"] { --sky-top: #EEF3F1; }
+  html[data-sky="day"] { --sky-top: #F3F2EA; }
+  html[data-sky="evening"] { --sky-top: #F2ECE4; }
+  html[data-sky="night"] { --sky-top: #E9EBEA; }
   @media (prefers-color-scheme: dark) {
-    :root { --bg: #171a1e; --card: #22262b; --ink: #e8e4dc; --muted: #9aa3ad; --line: #33393f; --accent: #7fa7cc; --accent-ink: #10161c; --chip: #2d3237; }
+    :root { --bg: #171a1e; --card: #22262b; --ink: #e8e4dc; --muted: #9aa3ad; --line: #33393f; --accent: #7FB0BA; --accent-ink: #10161c; --chip: #2d3237; --sky-top: #1a2226; }
+    html[data-sky="morning"], html[data-sky="day"], html[data-sky="evening"], html[data-sky="night"] { --sky-top: #1a2226; }
   }
   * { box-sizing: border-box; }
-  html, body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.45 -apple-system, "SF Pro Text", system-ui, sans-serif; -webkit-text-size-adjust: 100%; }
-  body { min-height: 100dvh; display: flex; flex-direction: column; }
-  main { flex: 1; padding: calc(12px + env(safe-area-inset-top)) 16px 96px; max-width: 640px; width: 100%; margin: 0 auto; }
+  html, body { margin: 0; color: var(--ink); font: 17px/1.45 -apple-system, "SF Pro Text", system-ui, sans-serif; -webkit-text-size-adjust: 100%; }
+  body { min-height: 100dvh; display: flex; flex-direction: column; background: linear-gradient(var(--sky-top) 0px, var(--bg) 220px); }
+  main { flex: 1; padding: calc(12px + env(safe-area-inset-top)) 16px 96px; max-width: 640px; width: 100%; margin: 0 auto; position: relative; z-index: 1; }
   h1 { font-size: 22px; margin: 4px 0 2px; font-weight: 700; letter-spacing: -0.01em; }
   .sub { color: var(--muted); font-size: 14px; margin: 0 0 12px; }
   .hidden { display: none !important; }
@@ -60,7 +66,19 @@
   .entry.clamped .text { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   .entry .tools { display: flex; gap: 6px; margin-top: 8px; }
   .entry textarea { margin-top: 6px; }
-  nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card); border-top: 1px solid var(--line); display: flex; padding: 6px 0 calc(6px + env(safe-area-inset-bottom)); }
+  nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card); border-top: 1px solid var(--line); display: flex; padding: 6px 0 calc(6px + env(safe-area-inset-bottom)); z-index: 2; }
+  .waves { position: fixed; left: 0; right: 0; bottom: 0; height: 34vh; pointer-events: none; z-index: 0; overflow: hidden; }
+  .waves .wave-wrap { position: absolute; inset: 0; animation: bob 6s ease-in-out infinite alternate; }
+  .waves svg { position: absolute; bottom: 0; left: 0; width: 200%; height: 100%; }
+  .waves svg.w1 { animation: drift 14s linear infinite; }
+  .waves svg.w2 { animation: drift 11s linear infinite; }
+  .waves svg.w3 { animation: drift 9s linear infinite; }
+  .waves path.w1 { fill: var(--accent); opacity: 0.10; }
+  .waves path.w2 { fill: var(--accent); opacity: 0.16; }
+  .waves path.w3 { fill: var(--accent); opacity: 0.24; }
+  @keyframes drift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes bob { from { transform: translateY(0); } to { transform: translateY(4px); } }
+  @media (prefers-reduced-motion: reduce) { .waves * { animation: none !important; } }
   nav button { flex: 1; background: none; border: 0; font: inherit; font-size: 13px; color: var(--muted); padding: 6px 0; }
   nav button.on { color: var(--accent); font-weight: 700; }
   nav button span { display: block; font-size: 22px; line-height: 1.1; }
@@ -83,12 +101,20 @@
 <main>
   <!-- TODAY -->
   <section id="tab-today">
+    <div class="waves" aria-hidden="true">
+      <div class="wave-wrap">
+        <svg class="w1" viewBox="0 0 1200 200" preserveAspectRatio="none"><path class="w1" d="M0,60 C150,42 150,78 300,60 C450,42 450,78 600,60 C750,42 750,78 900,60 C1050,42 1050,78 1200,60 L1200,200 L0,200 Z"/></svg>
+        <svg class="w2" viewBox="0 0 1200 200" preserveAspectRatio="none"><path class="w2" d="M0,60 C150,42 150,78 300,60 C450,42 450,78 600,60 C750,42 750,78 900,60 C1050,42 1050,78 1200,60 L1200,200 L0,200 Z"/></svg>
+        <svg class="w3" viewBox="0 0 1200 200" preserveAspectRatio="none"><path class="w3" d="M0,60 C150,42 150,78 300,60 C450,42 450,78 600,60 C750,42 750,78 900,60 C1050,42 1050,78 1200,60 L1200,200 L0,200 Z"/></svg>
+      </div>
+    </div>
     <h1 id="today-title">Today</h1>
     <p class="sub row" style="justify-content:space-between">
       <span id="today-date"></span>
       <button class="chip" id="backdate" style="flex:0 0 auto">Yesterday</button>
     </p>
     <textarea id="text" placeholder="How are you doing? Tap the mic on the keyboard and just talk." autocapitalize="sentences"></textarea>
+    <p class="sub" style="margin:8px 2px 0">Nothing you write here is judged. It only has to be true.</p>
     <div class="moods" id="moods">
       <button data-m="1" aria-label="very bad">😞</button>
       <button data-m="2" aria-label="bad">🙁</button>
@@ -171,6 +197,13 @@
 </nav>
 <div class="toast" id="toast"></div>
 
+<script>
+(() => {
+  const h = new Date().getHours();
+  const sky = (h >= 5 && h < 11) ? 'morning' : (h >= 11 && h < 17) ? 'day' : (h >= 17 && h < 22) ? 'evening' : 'night';
+  document.documentElement.setAttribute('data-sky', sky);
+})();
+</script>
 <script>
 (() => {
   const KEY = 'feeling.v1';
