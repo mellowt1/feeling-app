@@ -20,11 +20,13 @@
   }
   html[data-sky="morning"] { --sky-top: #EEF3F1; }
   html[data-sky="day"] { --sky-top: #F3F2EA; }
-  html[data-sky="evening"] { --sky-top: #F2ECE4; }
+  html[data-sky="evening"] { --sky-top: #F2C9A0; }
   html[data-sky="night"] { --sky-top: #E9EBEA; }
+  html[data-sky="evening"] body { background: linear-gradient(#F2C9A0 0, #E9D9C4 150px, var(--bg) 300px); }
   @media (prefers-color-scheme: dark) {
     :root { --bg: #171a1e; --card: #22262b; --ink: #e8e4dc; --muted: #9aa3ad; --line: #33393f; --accent: #7FB0BA; --accent-ink: #10161c; --chip: #2d3237; --sky-top: #1a2226; }
     html[data-sky="morning"], html[data-sky="day"], html[data-sky="evening"], html[data-sky="night"] { --sky-top: #1a2226; }
+    html[data-sky="evening"] body { background: linear-gradient(var(--sky-top) 0px, var(--bg) 220px); }
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; color: var(--ink); font: 17px/1.45 -apple-system, "SF Pro Text", system-ui, sans-serif; -webkit-text-size-adjust: 100%; }
@@ -86,6 +88,8 @@
   .waves svg.w2 { animation: drift 11s linear infinite; }
   .waves svg.w3 { animation: drift 9s linear infinite; }
   .waves path.w1 { fill: var(--accent); opacity: 0.10; }
+  html[data-sky="evening"] .waves path.w1 { fill: #C98A5E; fill: color-mix(in srgb, var(--accent) 85%, #C98A5E); }
+  @media (prefers-color-scheme: dark) { html[data-sky="evening"] .waves path.w1 { fill: var(--accent); } }
   .waves path.w2 { fill: var(--accent); opacity: 0.16; }
   .waves path.w3 { fill: var(--accent); opacity: 0.24; }
   @keyframes drift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
@@ -103,6 +107,58 @@
     100% { transform: scale(3); opacity: 0; }
   }
 
+  /* ---------- pelican (right post) ---------- */
+  .dock .pelican { fill: var(--ink); opacity: .55; }
+  .dock .pel-head { transform-box: fill-box; transform-origin: bottom center; animation: pelHead 25s ease-in-out infinite; }
+  @keyframes pelHead {
+    0%, 80%  { transform: rotate(0); }
+    85%      { transform: rotate(-18deg); }
+    95%      { transform: rotate(-18deg); }
+    100%     { transform: rotate(0); }
+  }
+  .dock .pel-body { transform-box: fill-box; transform-origin: bottom center; animation: pelStretch 70s ease-in-out infinite; }
+  @keyframes pelStretch {
+    0%, 96% { transform: scaleY(1); }
+    98%     { transform: scaleY(1.08); }
+    100%    { transform: scaleY(1); }
+  }
+
+  /* ---------- mangroves (left) ---------- */
+  .waves svg.mangrove { position: absolute; left: 0; bottom: 30%; width: 100px; height: 110px; pointer-events: none; overflow: visible; }
+  .mangrove .canopy { transform-box: fill-box; transform-origin: bottom left; animation: leafSway 7s ease-in-out infinite alternate; }
+  .mangrove .canopy ellipse { fill: var(--ink); opacity: .35; }
+  .mangrove .roots path { fill: none; stroke: var(--ink); stroke-opacity: .45; stroke-width: 1.5; stroke-linecap: round; }
+  @keyframes leafSway { from { transform: rotate(-1deg); } to { transform: rotate(1deg); } }
+
+  /* ---------- mullet jumps ---------- */
+  .waves .mullet-wrap { position: absolute; bottom: 40%; pointer-events: none; }
+  .waves .mullet-wrap.mu1 { left: 30%; }
+  .waves .mullet-wrap.mu2 { left: 44%; }
+  .waves .mullet-wrap.mu3 { left: 58%; }
+  .mullet-wrap .mullet { display: block; width: 18px; height: 18px; animation: mulletJump 40s linear infinite; }
+  .mullet-wrap.mu1 .mullet { animation-delay: 0s; }
+  .mullet-wrap.mu2 .mullet { animation-delay: -13.3s; }
+  .mullet-wrap.mu3 .mullet { animation-delay: -26.6s; }
+  .mullet path { fill: var(--accent); opacity: .5; }
+  @keyframes mulletJump {
+    0%, 44%   { transform: translateY(0) rotate(-20deg); opacity: 0; }
+    45%       { opacity: .5; }
+    46.1%     { transform: translateY(-22px) rotate(0deg); }
+    47.25%    { transform: translateY(0) rotate(20deg); opacity: .5; }
+    47.3%, 100% { opacity: 0; }
+  }
+  .mullet-wrap .splash { position: absolute; left: -5px; bottom: -2px; width: 28px; height: 28px; animation: splash 40s linear infinite; }
+  .mullet-wrap.mu1 .splash { animation-delay: 0s; }
+  .mullet-wrap.mu2 .splash { animation-delay: -13.3s; }
+  .mullet-wrap.mu3 .splash { animation-delay: -26.6s; }
+  .splash circle { fill: none; stroke: var(--accent); stroke-width: 1; }
+  @keyframes splash {
+    0%, 47%   { transform: scale(.3); opacity: 0; }
+    47.5%     { opacity: .4; }
+    53.5%     { transform: scale(1); opacity: 0; }
+    100%      { opacity: 0; }
+  }
+
   .waves .fish-wrap { position: absolute; inset: 0; pointer-events: none; }
   .waves .fish-wrap.fw1 { animation: swim 55s linear infinite; animation-delay: -27s; }
   .waves .fish-wrap.fw2 { animation: swimSnook 68s linear infinite; animation-delay: -46s; }
@@ -110,8 +166,8 @@
   @keyframes swim { from { transform: translateX(110vw); } to { transform: translateX(-60px); } }
   @keyframes swimSnook {
     0%   { transform: translateX(110vw); }
-    55%  { transform: translateX(35vw); }
-    60%  { transform: translateX(35vw); }
+    75%  { transform: translateX(40px); }
+    80%  { transform: translateX(40px); }
     100% { transform: translateX(-60px); }
   }
   @keyframes swimSnapper {
@@ -165,6 +221,10 @@
   @media (prefers-color-scheme: dark) {
     .cloud, .cloud::before, .cloud::after { background: rgba(255,255,255,0.12); }
   }
+  html[data-sky="evening"] .cloud, html[data-sky="evening"] .cloud::before, html[data-sky="evening"] .cloud::after { background: rgba(246,217,193,0.75); }
+  @media (prefers-color-scheme: dark) {
+    html[data-sky="evening"] .cloud, html[data-sky="evening"] .cloud::before, html[data-sky="evening"] .cloud::after { background: rgba(255,255,255,0.12); }
+  }
   .cloud.c1 { top: 20px; width: 180px; height: 50px; animation-duration: 90s; animation-delay: -10s; }
   .cloud.c1::before { width: 90px; height: 60px; left: 20px; top: -25px; }
   .cloud.c1::after { width: 70px; height: 46px; left: 100px; top: -14px; }
@@ -179,7 +239,10 @@
   .orb { position: fixed; width: 120px; height: 120px; border-radius: 50%; pointer-events: none; z-index: 0; filter: blur(14px); opacity: 0; transition: opacity 2s; animation: orbPulse 40s ease-in-out infinite alternate; }
   html[data-sky="morning"] .orb { opacity: 1; top: 18px; right: -20px; background: radial-gradient(circle, rgba(242,217,166,0.7), transparent 70%); }
   html[data-sky="day"] .orb { opacity: 0; }
-  html[data-sky="evening"] .orb { opacity: 1; top: 22px; left: -30px; background: radial-gradient(circle, rgba(233,194,160,0.6), transparent 70%); }
+  html[data-sky="evening"] .orb { opacity: 1; width: 150px; height: 150px; top: 120px; left: -30px; background: radial-gradient(circle, #F0B37E 65%, transparent 70%); }
+  @media (prefers-color-scheme: dark) {
+    html[data-sky="evening"] .orb { width: 120px; height: 120px; top: 22px; left: -30px; background: radial-gradient(circle, rgba(233,194,160,0.6), transparent 70%); }
+  }
   html[data-sky="night"] .orb { opacity: 1; top: 26px; right: 10px; width: 90px; height: 90px; background: radial-gradient(circle, rgba(221,230,234,0.45), transparent 70%); }
   @keyframes orbPulse { from { transform: scale(1); } to { transform: scale(1.05); } }
 
@@ -244,6 +307,21 @@
     <div class="waves" aria-hidden="true">
       <div class="wave-wrap">
         <svg class="w1" viewBox="0 0 1200 200" preserveAspectRatio="none"><path class="w1" d="M0,60 C150,42 150,78 300,60 C450,42 450,78 600,60 C750,42 750,78 900,60 C1050,42 1050,78 1200,60 L1200,200 L0,200 Z"/></svg>
+        <svg class="mangrove" viewBox="0 0 100 110" aria-hidden="true">
+          <g class="canopy">
+            <ellipse cx="22" cy="22" rx="20" ry="13"/>
+            <ellipse cx="10" cy="28" rx="14" ry="10"/>
+            <ellipse cx="34" cy="26" rx="13" ry="9"/>
+          </g>
+          <g class="roots">
+            <path d="M15,32 C10,50 5,75 8,105"/>
+            <path d="M20,34 C18,55 15,80 20,108"/>
+            <path d="M26,35 C28,58 30,82 35,108"/>
+            <path d="M32,34 C38,55 45,78 50,105"/>
+            <path d="M12,30 C0,50 -5,75 5,100"/>
+            <path d="M38,32 C50,50 65,72 80,95"/>
+          </g>
+        </svg>
         <svg class="w2" viewBox="0 0 1200 200" preserveAspectRatio="none"><path class="w2" d="M0,60 C150,42 150,78 300,60 C450,42 450,78 600,60 C750,42 750,78 900,60 C1050,42 1050,78 1200,60 L1200,200 L0,200 Z"/></svg>
         <svg class="dock" viewBox="0 0 130 90" aria-hidden="true">
           <g class="dock-figure">
@@ -262,6 +340,16 @@
             </g>
           </g>
           <circle class="line-ring" cx="-19.2" cy="66" r="4"/>
+          <g class="pelican">
+            <g class="pel-body">
+              <ellipse cx="111" cy="45" rx="7" ry="9"/>
+              <path d="M105,39 Q109,50 105,53" fill="none" stroke="var(--ink)" stroke-width="1"/>
+            </g>
+            <g class="pel-head">
+              <circle cx="105" cy="34" r="4"/>
+              <path d="M102,36 Q95,40 90,38 Q96,36 102,36 Z"/>
+            </g>
+          </g>
         </svg>
         <div class="fish-wrap fw1">
           <svg class="fish fish1" viewBox="0 0 70 22" aria-hidden="true">
@@ -304,6 +392,18 @@
               <path class="fish-accent" d="M38,6 C42,6.5 46,7.8 46,9 C46,10.2 42,11.5 38,12 C39.5,10.3 39.5,7.7 38,6 Z"/>
             </g>
           </svg>
+        </div>
+        <div class="mullet-wrap mu1" aria-hidden="true">
+          <svg class="mullet" viewBox="0 0 20 10"><path d="M1,5 C3,1 10,1 14,3 L19,0 L15,5 L19,10 L14,7 C10,9 3,9 1,5 Z"/></svg>
+          <svg class="splash" viewBox="0 0 28 28"><circle cx="14" cy="14" r="13"/></svg>
+        </div>
+        <div class="mullet-wrap mu2" aria-hidden="true">
+          <svg class="mullet" viewBox="0 0 20 10"><path d="M1,5 C3,1 10,1 14,3 L19,0 L15,5 L19,10 L14,7 C10,9 3,9 1,5 Z"/></svg>
+          <svg class="splash" viewBox="0 0 28 28"><circle cx="14" cy="14" r="13"/></svg>
+        </div>
+        <div class="mullet-wrap mu3" aria-hidden="true">
+          <svg class="mullet" viewBox="0 0 20 10"><path d="M1,5 C3,1 10,1 14,3 L19,0 L15,5 L19,10 L14,7 C10,9 3,9 1,5 Z"/></svg>
+          <svg class="splash" viewBox="0 0 28 28"><circle cx="14" cy="14" r="13"/></svg>
         </div>
         <svg class="w3" viewBox="0 0 1200 200" preserveAspectRatio="none"><path class="w3" d="M0,60 C150,42 150,78 300,60 C450,42 450,78 600,60 C750,42 750,78 900,60 C1050,42 1050,78 1200,60 L1200,200 L0,200 Z"/></svg>
       </div>
