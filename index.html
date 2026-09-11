@@ -107,12 +107,12 @@
   .waves .fish-wrap.fw1 { animation: swim 55s linear infinite; animation-delay: -27s; }
   .waves .fish-wrap.fw2 { animation: swimSnook 68s linear infinite; animation-delay: -46s; }
   .waves .fish-wrap.fw3 { animation: swimSnapper 82s linear infinite; animation-delay: -40s; }
-  @keyframes swim { from { transform: translateX(110vw); } to { transform: translateX(-90px); } }
+  @keyframes swim { from { transform: translateX(110vw); } to { transform: translateX(-60px); } }
   @keyframes swimSnook {
     0%   { transform: translateX(110vw); }
     55%  { transform: translateX(35vw); }
     60%  { transform: translateX(35vw); }
-    100% { transform: translateX(-90px); }
+    100% { transform: translateX(-60px); }
   }
   @keyframes swimSnapper {
     0%   { transform: translateX(110vw); }
@@ -122,9 +122,9 @@
   }
 
   .waves svg.fish { position: absolute; left: 0; pointer-events: none; animation: fishBob 8s ease-in-out infinite alternate; }
-  .waves svg.fish.fish1 { width: 70px; height: 22px; bottom: 26%; }
-  .waves svg.fish.fish2 { width: 64px; height: 16px; bottom: 36%; }
-  .waves svg.fish.fish3 { width: 50px; height: 18px; bottom: 24%; transform-origin: center; animation: fishBob 8s ease-in-out infinite alternate, snapperFlip 82s linear infinite; animation-delay: 0s, -40s; }
+  .waves svg.fish.fish1 { width: 42px; height: 13px; bottom: 30%; }
+  .waves svg.fish.fish2 { width: 38px; height: 10px; bottom: 38%; }
+  .waves svg.fish.fish3 { width: 30px; height: 11px; bottom: 24%; transform-origin: center; animation: fishBob 8s ease-in-out infinite alternate, snapperFlip 82s linear infinite; animation-delay: 0s, -40s; }
   @keyframes fishBob { from { transform: translateY(-6px); } to { transform: translateY(6px); } }
   @keyframes snapperFlip { 0%, 48% { transform: scaleX(1); } 52%, 100% { transform: scaleX(-1); } }
 
