@@ -8,94 +8,230 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Feeling">
-<meta name="theme-color" content="#2f5476">
+<meta name="theme-color" content="#F4F1EA">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-180.png">
 <style>
+  /* ---------- Still water palette ---------- */
   :root {
-    --bg: #F6F3EC; --card: #FFFDF8; --ink: #24303A; --muted: #6D7883; --line: #E4DFD4;
-    --accent: #3F6E7A; --accent-ink: #FFFFFF; --danger: #a8443c; --chip: #ECE7DC;
-    --m1: #c0554b; --m2: #d8905a; --m3: #b9b3a6; --m4: #7fa66a; --m5: #3f8f6c;
-    --sky-top: #EEF3F1;
+    --bg: #F4F1EA;
+    --card: #FBF9F4;
+    --card-a: rgba(251,249,244,0.92);
+    --line: #E3DED3;
+    --ink: #26313A;
+    --muted: #6F7A85;
+    --accent: #3B6B75;
+    --accent-ink: #FFFFFF;
+    --accent-soft: rgba(59,107,117,0.12);
+    --accent-40: rgba(59,107,117,0.40);
+    --water: #7FA5AD;
+    --sky-top: #E7EFEE;
+    --orb: #F1D7A4;
+    --chip: #ECE8DF;
+    --track: rgba(120,120,128,0.12);
+    --danger: #B9584F;
+    --m1: #B9584F; --m2: #D3925C; --m3: #B5B0A4; --m4: #7EA46B; --m5: #3E8C6A;
+    --serif: ui-serif, "New York", "Iowan Old Style", Georgia, "Times New Roman", serif;
   }
-  html[data-sky="morning"] { --sky-top: #EEF3F1; }
-  html[data-sky="day"] { --sky-top: #F3F2EA; }
-  html[data-sky="evening"] { --sky-top: #F2C9A0; }
-  html[data-sky="night"] { --sky-top: #E9EBEA; }
-  html[data-sky="evening"] body { background: linear-gradient(#F2C9A0 0, #E9D9C4 150px, var(--bg) 300px); }
+  html[data-sky="morning"] { --sky-top: #E7EFEE; }
+  html[data-sky="day"] { --sky-top: #EFEFE7; }
+  html[data-sky="evening"] { --sky-top: #F2CDA4; }
+  html[data-sky="night"] { --sky-top: #E4E8EA; }
+  html[data-sky="evening"] body { background: linear-gradient(#F2CDA4 0, #EBDAC5 150px, var(--bg) 300px); }
   @media (prefers-color-scheme: dark) {
-    :root { --bg: #171a1e; --card: #22262b; --ink: #e8e4dc; --muted: #9aa3ad; --line: #33393f; --accent: #7FB0BA; --accent-ink: #10161c; --chip: #2d3237; --sky-top: #1a2226; }
-    html[data-sky="morning"], html[data-sky="day"], html[data-sky="evening"], html[data-sky="night"] { --sky-top: #1a2226; }
+    :root {
+      --bg: #151A1D;
+      --card: #1F262A;
+      --card-a: rgba(31,38,42,0.92);
+      --line: #2F383D;
+      --ink: #E7E4DC;
+      --muted: #95A1A9;
+      --accent: #7FB0BA;
+      --accent-ink: #10181B;
+      --accent-soft: rgba(127,176,186,0.16);
+      --accent-40: rgba(127,176,186,0.40);
+      --water: #5D7F87;
+      --sky-top: #192226;
+      --orb: #C9AE7E;
+      --chip: #262E33;
+      --track: rgba(255,255,255,0.08);
+      --danger: #D4776D;
+      --m1: #C4675E; --m2: #DDA06B; --m3: #9E9A90; --m4: #8CB279; --m5: #4E9E7B;
+    }
+    html[data-sky="morning"], html[data-sky="day"], html[data-sky="evening"], html[data-sky="night"] { --sky-top: #192226; }
     html[data-sky="evening"] body { background: linear-gradient(var(--sky-top) 0px, var(--bg) 220px); }
   }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; color: var(--ink); font: 17px/1.45 -apple-system, "SF Pro Text", system-ui, sans-serif; -webkit-text-size-adjust: 100%; }
-  body { min-height: 100dvh; display: flex; flex-direction: column; background: linear-gradient(var(--sky-top) 0px, var(--bg) 220px); }
-  main { flex: 1; padding: calc(12px + env(safe-area-inset-top)) 16px 96px; max-width: 640px; width: 100%; margin: 0 auto; position: relative; z-index: 1; }
-  h1 { font-family: ui-serif, "New York", Georgia, serif; font-size: 28px; margin: 4px 0 2px; font-weight: 500; letter-spacing: -0.01em; }
-  .sub { color: var(--muted); font-size: 14px; margin: 0 0 12px; }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; color: var(--ink); font: 17px/1.5 -apple-system, "SF Pro Text", system-ui, sans-serif; -webkit-text-size-adjust: 100%; }
+  body { min-height: 100dvh; display: flex; flex-direction: column; background: linear-gradient(var(--sky-top) 0px, var(--bg) 260px); }
+  main { flex: 1; padding: calc(16px + env(safe-area-inset-top)) 24px 130px; max-width: 640px; width: 100%; margin: 0 auto; position: relative; z-index: 1; }
   .hidden { display: none !important; }
-  textarea, input[type=text], input[type=search], input[type=date], select {
-    width: 100%; font: inherit; font-size: 17px; color: var(--ink); background: var(--card);
-    border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; outline: none;
-  }
-  textarea { min-height: 150px; resize: vertical; line-height: 1.5; }
-  textarea:focus, input:focus { border-color: var(--accent); }
-  .moods { display: flex; gap: 6px; margin: 12px 0; }
-  .moods button { flex: 1; display: flex; align-items: center; justify-content: center; padding: 4px 0; background: transparent; border: 0; border-radius: 50%; transition: transform .1s; }
+
+  h1 { font-family: var(--serif); font-size: 30px; line-height: 1.3; margin: 0; font-weight: 600; letter-spacing: -0.01em; }
+  .sub { color: var(--muted); font-size: 13px; margin: 6px 0 0; }
+
+  section.pane { opacity: 0; transition: opacity .4s ease-in-out; }
+  section.pane.in { opacity: 1; }
+
+  /* ---------- frosted surfaces ---------- */
+  .frost { background: var(--card-a); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border: 1px solid var(--line); }
+
+  /* ---------- Today ---------- */
+  .headrow { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+  .pill { display: inline-flex; align-items: center; font: inherit; font-size: 13px; line-height: 1; padding: 7px 12px; border-radius: 999px; background: var(--chip); color: var(--muted); border: 0; margin-top: 8px; }
+  .pill.on { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+
+  #rain-toggle { flex: 0 0 auto; width: 40px; height: 40px; border-radius: 20px; padding: 0; display: flex; align-items: center; justify-content: center; background: var(--card-a); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border: 1px solid var(--line); color: var(--muted); opacity: .75; z-index: 3; position: relative; }
+  #rain-toggle svg { width: 22px; height: 22px; }
+  #rain-toggle.on { opacity: 1; color: var(--accent); }
+
+  .textview { width: 100%; display: block; font: inherit; font-size: 17px; line-height: 1.5; color: var(--ink); border-radius: 24px; padding: 18px 19px; min-height: 136px; resize: none; outline: none; margin-top: 24px; transition: border-color .25s, box-shadow .25s; }
+  .textview::placeholder { color: var(--muted); }
+  .textview:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+
+  .voice { display: flex; flex-direction: column; align-items: center; gap: 18px; margin-top: 26px; }
+  .mic-wrap { position: relative; width: 76px; height: 76px; }
+  .mic { position: relative; z-index: 1; width: 76px; height: 76px; border-radius: 38px; border: 0; padding: 0; background: var(--accent); color: var(--accent-ink); display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 18px rgba(59,107,117,0.22); transition: transform .15s; }
+  .mic:active { transform: scale(.96); }
+  .mic svg { width: 32px; height: 32px; }
+  .ring { position: absolute; left: 50%; top: 50%; width: 76px; height: 76px; margin: -38px 0 0 -38px; border-radius: 50%; border: 1.5px solid var(--accent); opacity: 0; pointer-events: none; }
+  body.listening .ring { animation: ringOut 3s ease-out infinite; }
+  body.listening .ring.r2 { animation-delay: 1s; }
+  body.listening .ring.r3 { animation-delay: 2s; }
+  @keyframes ringOut { 0% { transform: scale(1); opacity: .45; } 100% { transform: scale(1.6); opacity: 0; } }
+
+  .voice-cap { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 13px; color: var(--muted); height: 20px; }
+  .voice-cap svg { width: 16px; height: 16px; flex: 0 0 auto; }
+  body.listening .voice-cap .kb { display: none; }
+
+  .moods { display: flex; justify-content: space-between; gap: 6px; margin: 28px 0 0; }
+  .moods button { flex: 0 0 auto; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; padding: 0; background: transparent; border: 0; border-radius: 50%; transition: transform .12s; }
   .moods button svg { width: 56px; height: 56px; }
-  .moods button[data-m="1"] { color: var(--m1); }
-  .moods button[data-m="2"] { color: var(--m2); }
-  .moods button[data-m="3"] { color: var(--m3); }
-  .moods button[data-m="4"] { color: var(--m4); }
-  .moods button[data-m="5"] { color: var(--m5); }
-  .moods .mood-bg { fill: currentColor; fill-opacity: .18; stroke: currentColor; stroke-opacity: .6; stroke-width: 1.5; }
-  .moods .mood-eye { fill: currentColor; }
-  .moods .mood-mouth { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-  .moods button.on { transform: scale(1.05); box-shadow: 0 0 0 2px var(--accent); border-radius: 50%; }
+  .moods button.on { transform: scale(1.06); box-shadow: 0 0 0 2px var(--accent); }
+
+  .face.m1 { color: var(--m1); } .face.m2 { color: var(--m2); } .face.m3 { color: var(--m3); }
+  .face.m4 { color: var(--m4); } .face.m5 { color: var(--m5); }
+  .face .mood-bg { fill: currentColor; fill-opacity: .18; stroke: currentColor; stroke-opacity: .55; stroke-width: 1.2; }
+  .face .mood-eye { fill: currentColor; }
+  .face .mood-mouth { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
   .moods button.on .mood-bg { fill-opacity: 1; }
   .moods button.on .mood-eye { fill: var(--card); }
   .moods button.on .mood-mouth { stroke: var(--card); }
-  .btn { font: inherit; font-weight: 600; border: 0; border-radius: 12px; padding: 14px 18px; background: var(--accent); color: var(--accent-ink); width: 100%; }
-  .btn:disabled { opacity: 0.4; }
-  .btn.ghost { background: var(--chip); color: var(--ink); }
-  .btn.small { width: auto; padding: 8px 14px; font-size: 14px; }
+
+  .btn { font: inherit; font-size: 17px; font-weight: 600; border: 0; border-radius: 26px; padding: 14px 18px; background: var(--accent); color: var(--accent-ink); width: 100%; min-height: 52px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn:disabled { opacity: .35; }
+  .btn svg { width: 18px; height: 18px; }
+  .btn.ghost { background: var(--accent-soft); color: var(--accent); }
+  .btn.quiet { background: var(--chip); color: var(--ink); }
+  .btn.mid { min-height: 42px; padding: 10px 16px; font-size: 15px; border-radius: 21px; }
+  .btn.small { width: auto; min-height: 40px; padding: 8px 16px; font-size: 14px; border-radius: 20px; }
   .btn.danger { background: transparent; color: var(--danger); }
-  .row { display: flex; gap: 8px; align-items: center; }
-  .row > * { flex: 1; }
-  .chip { display: inline-block; font-size: 13px; padding: 4px 10px; border-radius: 999px; background: var(--chip); color: var(--ink); border: 0; font-family: inherit; }
-  .chip.on { background: var(--accent); color: var(--accent-ink); }
-  .daylist { margin-top: 20px; }
-  .day { margin-bottom: 18px; }
-  .dayhead { display: flex; justify-content: space-between; align-items: baseline; padding: 0 2px 6px; border-bottom: 1px solid var(--line); margin-bottom: 8px; }
-  .dayhead b { font-size: 15px; }
-  .dots { display: flex; gap: 4px; }
-  .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--m3); }
-  .dot.m1 { background: var(--m1); } .dot.m2 { background: var(--m2); } .dot.m3 { background: var(--m3); } .dot.m4 { background: var(--m4); } .dot.m5 { background: var(--m5); }
-  .dot.m0 { background: transparent; border: 1px solid var(--muted); }
-  .entry { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; margin-bottom: 8px; }
-  .entry .meta { font-size: 13px; color: var(--muted); display: flex; gap: 8px; align-items: center; margin-bottom: 4px; }
-  .entry .meta .face { font-size: 16px; }
-  .entry .text { white-space: pre-wrap; overflow-wrap: anywhere; }
-  .entry.clamped .text { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  .entry .tools { display: flex; gap: 6px; margin-top: 8px; }
-  .entry textarea { margin-top: 6px; }
-  nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card); border-top: 1px solid var(--line); display: flex; padding: 6px 0 calc(6px + env(safe-area-inset-bottom)); z-index: 2; }
-  .waves { position: fixed; left: 0; right: 0; bottom: 0; height: 34vh; pointer-events: none; z-index: 0; overflow: hidden; }
+  .row { display: flex; gap: 10px; align-items: center; }
+  .row > .btn { flex: 1; }
+
+  .reassure { text-align: center; font-size: 13px; line-height: 1.6; color: var(--muted); margin: 18px 0 0; }
+
+  /* ---------- entry cards ---------- */
+  .daylist { margin-top: 24px; }
+  .entry { border-radius: 22px; padding: 16px 18px; margin-bottom: 10px; }
+  .entry .meta { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; font-size: 13px; color: var(--muted); font-weight: 500; }
+  .entry .meta .face { flex: 0 0 auto; }
+  .entry .text { font-size: 15px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .entry.clamped .text { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .entry .tools { display: flex; gap: 8px; margin-top: 12px; }
+  .entry textarea { width: 100%; font: inherit; font-size: 15px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; min-height: 96px; margin-top: 6px; outline: none; }
+  .entry .moods { margin: 10px 0; justify-content: flex-start; gap: 4px; }
+  .entry .moods button { width: 44px; height: 44px; }
+  .entry .moods button svg { width: 44px; height: 44px; }
+  .lead { font-size: 13px; color: var(--muted); margin: 0 0 10px 2px; }
+
+  /* ---------- tab bar ---------- */
+  nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 4; display: flex; justify-content: center; padding: 0 0 env(safe-area-inset-bottom); background: var(--card-a); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border-top: 1px solid var(--line); }
+  nav button { flex: 1; max-width: 160px; background: none; border: 0; font: inherit; font-size: 12px; color: var(--muted); padding: 8px 0 10px; display: flex; flex-direction: column; align-items: center; gap: 3px; min-height: 56px; }
+  nav button svg { width: 26px; height: 26px; }
+  nav button.on { color: var(--accent); font-weight: 600; }
+
+  /* ---------- month strip ---------- */
+  .month { margin-top: 18px; }
+  .month-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .month-head b { font-family: var(--serif); font-size: 17px; font-weight: 600; }
+  .mnav { width: 40px; height: 40px; border: 0; background: transparent; color: var(--muted); display: flex; align-items: center; justify-content: center; padding: 0; border-radius: 20px; }
+  .mnav svg { width: 18px; height: 18px; }
+  .mgrid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px 0; justify-items: center; }
+  .mgrid .dow { font-size: 13px; color: var(--muted); }
+  .mcell { width: 40px; height: 40px; border: 0; background: transparent; padding: 0; display: flex; align-items: center; justify-content: center; border-radius: 20px; }
+  .mcell i { display: block; width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--line); }
+  .mcell.has i { border-color: transparent; }
+  .mcell.today i { box-shadow: 0 0 0 2px var(--accent); }
+  .mcell.sel { background: var(--accent-soft); }
+  .mcell.blank { visibility: hidden; }
+
+  /* ---------- search + segmented ---------- */
+  .search { position: relative; margin-top: 18px; }
+  .search svg { position: absolute; left: 15px; top: 50%; margin-top: -9px; width: 18px; height: 18px; color: var(--muted); }
+  .search input { width: 100%; font: inherit; font-size: 17px; color: var(--ink); background: var(--track); border: 0; border-radius: 16px; padding: 14px 14px 14px 42px; outline: none; min-height: 52px; }
+  .search input::placeholder { color: var(--muted); }
+
+  .seg { position: relative; display: flex; background: var(--track); border-radius: 12px; padding: 2px; margin-top: 14px; }
+  .seg .thumb { position: absolute; top: 2px; bottom: 2px; left: 2px; border-radius: 10px; background: var(--card); box-shadow: 0 1px 3px rgba(0,0,0,.10); transition: transform .25s ease, width .25s ease; }
+  .seg button { position: relative; z-index: 1; flex: 1; background: none; border: 0; font: inherit; font-size: 13px; font-weight: 500; color: var(--muted); padding: 12px 4px; min-height: 46px; border-radius: 10px; }
+  .seg button.on { color: var(--ink); font-weight: 600; }
+  .seg.compact button { min-height: 28px; padding: 6px 2px; font-size: 12px; white-space: nowrap; }
+  .seg.compact { margin-top: 10px; }
+
+  /* ---------- day groups ---------- */
+  .day { margin-bottom: 22px; }
+  .dayhead { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; background: none; border: 0; padding: 0 0 8px; text-align: left; color: inherit; }
+  .dayhead b { font-family: var(--serif); font-size: 17px; font-weight: 600; color: var(--ink); }
+  .dayhead .arc { flex: 0 0 auto; }
+  .arc-line { fill: none; stroke: var(--accent); stroke-opacity: .4; stroke-width: 2; stroke-linecap: round; }
+
+  .empty { color: var(--muted); text-align: center; padding: 36px 10px; font-size: 15px; }
+
+  /* ---------- export ---------- */
+  .card { border-radius: 22px; padding: 18px 20px; margin-bottom: 14px; }
+  .card h2 { font-size: 17px; font-weight: 600; margin: 0 0 6px; }
+  .card p { margin: 0 0 12px; font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .stats { display: flex; gap: 10px; margin: 4px 0 14px; }
+  .stats div { flex: 1; text-align: center; background: var(--track); border-radius: 14px; padding: 12px 4px; }
+  .stats b { display: block; font-size: 20px; font-weight: 600; }
+  .stats span { font-size: 12px; color: var(--muted); }
+  .banner { background: var(--accent-soft); color: var(--accent); border-radius: 16px; padding: 12px 16px; font-size: 13px; margin-bottom: 14px; }
+  label.small { font-size: 13px; color: var(--muted); display: block; margin: 10px 0 4px; }
+  input[type=date] { width: 100%; font: inherit; font-size: 15px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; outline: none; }
+  .closing { text-align: center; font-size: 13px; color: var(--muted); margin: 18px 0 0; }
+
+  /* ---------- day sheet ---------- */
+  .sheet { position: fixed; inset: 0; z-index: 10; }
+  .sheet .backdrop { position: absolute; inset: 0; background: rgba(20,26,29,0.35); opacity: 0; transition: opacity .4s ease-out; }
+  .sheet.in .backdrop { opacity: 1; }
+  .sheet .panel { position: absolute; left: 0; right: 0; bottom: 0; max-height: 92dvh; overflow: auto; -webkit-overflow-scrolling: touch; background: var(--card); border-radius: 28px 28px 0 0; padding: 8px 24px calc(24px + env(safe-area-inset-bottom)); transform: translateY(100%); transition: transform .5s ease-out; box-shadow: 0 -8px 30px rgba(0,0,0,.12); }
+  .sheet.in .panel { transform: translateY(0); }
+  .grabber { width: 58px; height: 4px; border-radius: 2px; background: var(--line); margin: 8px auto 16px; }
+  .sheet h2 { font-family: var(--serif); font-size: 28px; font-weight: 600; margin: 0; }
+  .sheet .date { font-size: 13px; color: var(--muted); margin: 4px 0 0; }
+  .arc-big { background: var(--track); border-radius: 18px; padding: 12px; margin: 18px 0; }
+
+  .toast { position: fixed; left: 50%; bottom: 100px; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 999px; font-size: 14px; opacity: 0; transition: opacity .2s; pointer-events: none; z-index: 20; }
+  .toast.show { opacity: 1; }
+
+  /* ---------- waves and scene (preserved) ---------- */
+  .waves { position: fixed; left: 0; right: 0; bottom: 0; height: 34vh; pointer-events: none; z-index: 0; overflow: hidden; transition: transform 2.5s ease-out; }
+  body.listening .waves { transform: translateY(-12px); }
   .waves .wave-wrap { position: absolute; inset: 0; animation: bob 3s ease-in-out infinite alternate; }
   .waves svg { position: absolute; bottom: 0; left: 0; width: 200%; height: 100%; }
   .waves svg.w1 { animation: drift 14s linear infinite; }
   .waves svg.w2 { animation: drift 11s linear infinite; }
   .waves svg.w3 { animation: drift 9s linear infinite; }
-  .waves path.w1 { fill: var(--accent); opacity: 0.10; }
-  html[data-sky="evening"] .waves path.w1 { fill: #C98A5E; fill: color-mix(in srgb, var(--accent) 85%, #C98A5E); }
-  @media (prefers-color-scheme: dark) { html[data-sky="evening"] .waves path.w1 { fill: var(--accent); } }
-  .waves path.w2 { fill: var(--accent); opacity: 0.16; }
-  .waves path.w3 { fill: var(--accent); opacity: 0.24; }
+  .waves path.w1 { fill: var(--water); opacity: 0.10; }
+  html[data-sky="evening"] .waves path.w1 { fill: color-mix(in srgb, var(--water) 85%, #C98A5E); }
+  @media (prefers-color-scheme: dark) { html[data-sky="evening"] .waves path.w1 { fill: var(--water); } }
+  .waves path.w2 { fill: var(--water); opacity: 0.15; }
+  .waves path.w3 { fill: var(--water); opacity: 0.24; }
   @keyframes drift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
   @keyframes bob { from { transform: translateY(0); } to { transform: translateY(-4px); } }
 
-  /* ---------- fishing scene (Today tab, inside .waves) ---------- */
   .waves svg.dock { position: absolute; right: 0; left: auto; bottom: 38%; width: 130px; height: 90px; pointer-events: none; overflow: visible; }
   .dock .dock-figure { fill: var(--ink); opacity: .55; }
   .dock .rod { transform-origin: 30px 29px; animation: rodSway 5s ease-in-out infinite alternate; }
@@ -107,7 +243,6 @@
     100% { transform: scale(3); opacity: 0; }
   }
 
-  /* ---------- pelican (right post) ---------- */
   .dock .pelican { fill: var(--ink); opacity: .55; }
   .dock .pel-head { transform-box: fill-box; transform-origin: bottom center; animation: pelHead 25s ease-in-out infinite; }
   @keyframes pelHead {
@@ -123,14 +258,12 @@
     100%    { transform: scaleY(1); }
   }
 
-  /* ---------- mangroves (left) ---------- */
   .waves svg.mangrove { position: absolute; left: 0; bottom: 30%; width: 100px; height: 110px; pointer-events: none; overflow: visible; }
   .mangrove .canopy { transform-box: fill-box; transform-origin: bottom left; animation: leafSway 7s ease-in-out infinite alternate; }
   .mangrove .canopy ellipse { fill: var(--ink); opacity: .35; }
   .mangrove .roots path { fill: none; stroke: var(--ink); stroke-opacity: .45; stroke-width: 1.5; stroke-linecap: round; }
   @keyframes leafSway { from { transform: rotate(-1deg); } to { transform: rotate(1deg); } }
 
-  /* ---------- mullet jumps ---------- */
   .waves .mullet-wrap { position: absolute; bottom: 40%; pointer-events: none; }
   .waves .mullet-wrap.mu1 { left: 30%; }
   .waves .mullet-wrap.mu2 { left: 44%; }
@@ -187,7 +320,6 @@
   .fish .fish-accent { fill: var(--accent); }
   .fish1 .fish-accent { opacity: .26; }
   .fish2 .fish-accent { opacity: .22; }
-  .fish3 .fish-accent { fill: #6E7A6E; opacity: .24; }
   .fish3 .fish-accent { fill: color-mix(in srgb, var(--accent) 60%, #8A6E5A); opacity: .24; }
   .fish .fish-belly { fill: var(--bg); opacity: .12; }
   .fish .fish-eye { fill: var(--bg); opacity: .6; }
@@ -204,14 +336,11 @@
   .fish1 .fish-belly { animation: bellyFlash 40s ease-in-out infinite; }
   @keyframes bellyFlash { 0%, 90% { opacity: .12; } 95% { opacity: .35; } 100% { opacity: .12; } }
 
-  @media (prefers-reduced-motion: reduce) { .waves *, .waves-faint, .waves-faint svg { animation: none !important; } }
-
-  /* faint wave band shown only on History / Export tabs */
   .waves-faint { position: fixed; left: 0; right: 0; bottom: 0; height: 120px; pointer-events: none; z-index: 0; overflow: hidden; animation: bob 3s ease-in-out infinite alternate; }
   .waves-faint svg { position: absolute; bottom: 0; left: 0; width: 200%; height: 100%; animation: drift 14s linear infinite; }
-  .waves-faint path { fill: var(--accent); opacity: 0.08; }
+  .waves-faint path { fill: var(--water); opacity: 0.16; }
 
-  /* ---------- decorative sky layers (Today tab only) ---------- */
+  /* ---------- sky layers ---------- */
   .sky-breathe { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(circle at 50% 50%, var(--sky-top), transparent 70%); opacity: 0; animation: breathe 10s ease-in-out infinite alternate; }
   @keyframes breathe { from { opacity: 0; } to { opacity: 0.30; } }
 
@@ -219,11 +348,11 @@
   .cloud { position: absolute; top: 30px; background: rgba(255,255,255,0.75); border-radius: 50%; filter: blur(6px); animation: cloudDrift linear infinite; }
   .cloud::before, .cloud::after { content: ""; position: absolute; background: rgba(255,255,255,0.75); border-radius: 50%; }
   @media (prefers-color-scheme: dark) {
-    .cloud, .cloud::before, .cloud::after { background: rgba(255,255,255,0.12); }
+    .cloud, .cloud::before, .cloud::after { background: rgba(255,255,255,0.10); }
   }
   html[data-sky="evening"] .cloud, html[data-sky="evening"] .cloud::before, html[data-sky="evening"] .cloud::after { background: rgba(246,217,193,0.75); }
   @media (prefers-color-scheme: dark) {
-    html[data-sky="evening"] .cloud, html[data-sky="evening"] .cloud::before, html[data-sky="evening"] .cloud::after { background: rgba(255,255,255,0.12); }
+    html[data-sky="evening"] .cloud, html[data-sky="evening"] .cloud::before, html[data-sky="evening"] .cloud::after { background: rgba(255,255,255,0.10); }
   }
   .cloud.c1 { top: 20px; width: 180px; height: 50px; animation-duration: 90s; animation-delay: -10s; }
   .cloud.c1::before { width: 90px; height: 60px; left: 20px; top: -25px; }
@@ -237,58 +366,38 @@
   @keyframes cloudDrift { from { transform: translateX(110vw); } to { transform: translateX(-60vw); } }
 
   .orb { position: fixed; width: 120px; height: 120px; border-radius: 50%; pointer-events: none; z-index: 0; filter: blur(14px); opacity: 0; transition: opacity 2s; animation: orbPulse 40s ease-in-out infinite alternate; }
-  html[data-sky="morning"] .orb { opacity: 1; top: 18px; right: -20px; background: radial-gradient(circle, rgba(242,217,166,0.7), transparent 70%); }
+  html[data-sky="morning"] .orb { opacity: 1; top: 18px; right: -20px; background: radial-gradient(circle, rgba(241,215,164,0.75), transparent 70%); }
   html[data-sky="day"] .orb { opacity: 0; }
   html[data-sky="evening"] .orb { opacity: 1; width: 150px; height: 150px; top: 120px; left: -30px; background: radial-gradient(circle, #F0B37E 65%, transparent 70%); }
   @media (prefers-color-scheme: dark) {
-    html[data-sky="evening"] .orb { width: 120px; height: 120px; top: 22px; left: -30px; background: radial-gradient(circle, rgba(233,194,160,0.6), transparent 70%); }
+    html[data-sky="evening"] .orb { width: 120px; height: 120px; top: 22px; left: -30px; background: radial-gradient(circle, rgba(201,174,126,0.5), transparent 70%); }
   }
   html[data-sky="night"] .orb { opacity: 1; top: 26px; right: 10px; width: 90px; height: 90px; background: radial-gradient(circle, rgba(221,230,234,0.45), transparent 70%); }
   @keyframes orbPulse { from { transform: scale(1); } to { transform: scale(1.05); } }
 
-  #rain-toggle { position: absolute; top: calc(10px + env(safe-area-inset-top)); right: 16px; width: 34px; height: 34px; border-radius: 50%; border: 0; background: var(--chip); opacity: 0.5; display: flex; align-items: center; justify-content: center; padding: 0; z-index: 3; }
-  #rain-toggle svg { width: 18px; height: 18px; }
-  #rain-toggle.on { opacity: 1; }
-  html.rain #rain-toggle { color: var(--accent); }
-
   div.rain { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
-  div.rain span { position: absolute; top: -10vh; width: 2px; height: 18px; border-radius: 2px; background: rgba(63,110,122,0.25); animation: fall linear infinite; }
+  div.rain span { position: absolute; top: -10vh; width: 2px; height: 18px; border-radius: 2px; background: rgba(59,107,117,0.25); animation: fall linear infinite; }
   @media (prefers-color-scheme: dark) { div.rain span { background: rgba(127,176,186,0.25); } }
   @keyframes fall { from { transform: translateY(-10vh); } to { transform: translateY(105vh); } }
   html.rain .waves .wave-wrap { animation: bobRain 4s ease-in-out infinite alternate; }
   @keyframes bobRain { from { transform: translateY(0); } to { transform: translateY(8px); } }
 
-  .ripple { position: fixed; width: 20px; height: 20px; margin-left: -10px; margin-top: -10px; border-radius: 50%; border: 2px solid rgba(63,110,122,0.5); transform: scale(1); opacity: 0.6; animation: rippleOut 4.5s ease-out forwards; pointer-events: none; z-index: 5; }
+  .ripple { position: fixed; width: 20px; height: 20px; margin-left: -10px; margin-top: -10px; border-radius: 50%; border: 2px solid rgba(59,107,117,0.5); transform: scale(1); opacity: 0.6; animation: rippleOut 4.5s ease-out forwards; pointer-events: none; z-index: 5; }
   @keyframes rippleOut { to { transform: scale(12); opacity: 0; } }
 
   @media (prefers-reduced-motion: reduce) {
-    .sky-breathe, .cloud, .orb, div.rain span, .ripple, .waves-faint, .waves-faint svg { animation: none !important; }
+    .waves *, .waves-faint, .waves-faint svg, .sky-breathe, .cloud, .orb, div.rain span, .ripple, .ring { animation: none !important; }
     .sky-breathe { opacity: 0.2; }
     .orb { transform: none; }
+    .waves, section.pane, .sheet .panel, .sheet .backdrop, .seg .thumb { transition: none !important; }
+    body.listening .waves { transform: none; }
   }
-
-  nav button { flex: 1; background: none; border: 0; font: inherit; font-size: 13px; color: var(--muted); padding: 6px 0; }
-  nav button.on { color: var(--accent); font-weight: 700; }
-  nav button span { display: block; font-size: 22px; line-height: 1.1; }
-  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
-  .card h2 { font-size: 15px; margin: 0 0 8px; }
-  .card p { margin: 6px 0; font-size: 15px; color: var(--muted); }
-  .banner { background: #fbe9c9; color: #5b3d00; border-radius: 12px; padding: 10px 14px; font-size: 14px; margin-bottom: 12px; }
-  @media (prefers-color-scheme: dark) { .banner { background: #4a3a14; color: #ffe1a3; } }
-  .empty { color: var(--muted); text-align: center; padding: 30px 10px; font-size: 15px; }
-  .toast { position: fixed; left: 50%; bottom: 90px; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 8px 14px; border-radius: 999px; font-size: 14px; opacity: 0; transition: opacity .2s; pointer-events: none; }
-  .toast.show { opacity: 1; }
-  label.small { font-size: 13px; color: var(--muted); display: block; margin: 8px 0 4px; }
-  .stats { display: flex; gap: 8px; }
-  .stats div { flex: 1; text-align: center; background: var(--chip); border-radius: 10px; padding: 8px; }
-  .stats b { display: block; font-size: 20px; }
-  .stats span { font-size: 12px; color: var(--muted); }
 </style>
 </head>
 <body>
 <main>
   <!-- TODAY -->
-  <section id="tab-today">
+  <section id="tab-today" class="pane in">
     <div class="sky-breathe" aria-hidden="true"></div>
     <div class="clouds" aria-hidden="true">
       <div class="cloud c1"></div>
@@ -296,14 +405,6 @@
       <div class="cloud c3"></div>
     </div>
     <div class="orb" aria-hidden="true"></div>
-    <button id="rain-toggle" aria-label="Toggle rain" type="button">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M7 16a4 4 0 0 1 .5-7.97A5 5 0 0 1 17 9a3.5 3.5 0 0 1 .5 6.97"/>
-        <line x1="8" y1="19" x2="8" y2="21"/>
-        <line x1="12" y1="19" x2="12" y2="21"/>
-        <line x1="16" y1="19" x2="16" y2="21"/>
-      </svg>
-    </button>
     <div class="waves" aria-hidden="true">
       <div class="wave-wrap">
         <svg class="w1" viewBox="0 0 1200 200" preserveAspectRatio="none"><path class="w1" d="M0,60 C150,42 150,78 300,60 C450,42 450,78 600,60 C750,42 750,78 900,60 C1050,42 1050,78 1200,60 L1200,200 L0,200 Z"/></svg>
@@ -408,94 +509,152 @@
         <svg class="w3" viewBox="0 0 1200 200" preserveAspectRatio="none"><path class="w3" d="M0,60 C150,42 150,78 300,60 C450,42 450,78 600,60 C750,42 750,78 900,60 C1050,42 1050,78 1200,60 L1200,200 L0,200 Z"/></svg>
       </div>
     </div>
-    <h1 id="today-title">Today</h1>
-    <p class="sub row" style="justify-content:space-between">
-      <span id="today-date"></span>
-      <button class="chip" id="backdate" style="flex:0 0 auto">Yesterday</button>
-    </p>
-    <textarea id="text" placeholder="How are you doing? Tap the mic on the keyboard and just talk." autocapitalize="sentences"></textarea>
-    <p class="sub" style="margin:8px 2px 0">Nothing you write here is judged. It only has to be true.</p>
-    <div class="moods" id="moods">
-      <button data-m="1" aria-label="very bad"><svg viewBox="0 0 28 28"><circle class="mood-bg" cx="14" cy="14" r="13"/><circle class="mood-eye" cx="10" cy="11.5" r="1.5"/><circle class="mood-eye" cx="18" cy="11.5" r="1.5"/><path class="mood-mouth" d="M9 21.5 Q14 15.5 19 21.5"/></svg></button>
-      <button data-m="2" aria-label="bad"><svg viewBox="0 0 28 28"><circle class="mood-bg" cx="14" cy="14" r="13"/><circle class="mood-eye" cx="10" cy="11.5" r="1.5"/><circle class="mood-eye" cx="18" cy="11.5" r="1.5"/><path class="mood-mouth" d="M9 20.5 Q14 17 19 20.5"/></svg></button>
-      <button data-m="3" aria-label="okay"><svg viewBox="0 0 28 28"><circle class="mood-bg" cx="14" cy="14" r="13"/><circle class="mood-eye" cx="10" cy="11.5" r="1.5"/><circle class="mood-eye" cx="18" cy="11.5" r="1.5"/><path class="mood-mouth" d="M9.5 19.5 L18.5 19.5"/></svg></button>
-      <button data-m="4" aria-label="good"><svg viewBox="0 0 28 28"><circle class="mood-bg" cx="14" cy="14" r="13"/><circle class="mood-eye" cx="10" cy="11.5" r="1.5"/><circle class="mood-eye" cx="18" cy="11.5" r="1.5"/><path class="mood-mouth" d="M9 18.5 Q14 22 19 18.5"/></svg></button>
-      <button data-m="5" aria-label="very good"><svg viewBox="0 0 28 28"><circle class="mood-bg" cx="14" cy="14" r="13"/><circle class="mood-eye" cx="10" cy="11.5" r="1.5"/><circle class="mood-eye" cx="18" cy="11.5" r="1.5"/><path class="mood-mouth" d="M9 17.5 Q14 23.5 19 17.5"/></svg></button>
+
+    <div class="headrow">
+      <div>
+        <h1 id="today-title">Today</h1>
+        <p class="sub" id="today-date"></p>
+        <button class="pill" id="backdate" type="button">Yesterday</button>
+      </div>
+      <button id="rain-toggle" aria-label="Toggle rain" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M7 16a4 4 0 0 1 .5-7.97A5 5 0 0 1 17 9a3.5 3.5 0 0 1 .5 6.97"/>
+          <line x1="8" y1="19" x2="8" y2="21"/>
+          <line x1="12" y1="19" x2="12" y2="21"/>
+          <line x1="16" y1="19" x2="16" y2="21"/>
+        </svg>
+      </button>
     </div>
-    <button class="btn" id="save" disabled>Save</button>
+
+    <textarea id="text" class="textview frost" placeholder="How are you doing?&#10;Tap the mic and just talk." autocapitalize="sentences"></textarea>
+
+    <div class="voice">
+      <div class="mic-wrap">
+        <span class="ring r1" aria-hidden="true"></span>
+        <span class="ring r2" aria-hidden="true"></span>
+        <span class="ring r3" aria-hidden="true"></span>
+        <button class="mic" id="mic" type="button" aria-label="Start writing or dictating">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="2" width="6" height="12" rx="3" fill="currentColor" stroke="none"/>
+            <path d="M5 11a7 7 0 0 0 14 0"/>
+            <path d="M12 18v3"/>
+          </svg>
+        </button>
+      </div>
+      <p class="voice-cap" id="voice-cap">
+        <svg class="kb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+          <rect x="2" y="6" width="20" height="12" rx="2.5"/>
+          <path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M6 13h.01M18 13h.01"/>
+          <path d="M9 13h6"/>
+        </svg>
+        <span id="voice-cap-text">or use the keyboard</span>
+      </p>
+    </div>
+
+    <div class="moods" id="moods"></div>
+    <button class="btn" id="save" style="margin-top:24px" disabled>Save</button>
+    <p class="reassure">Nothing you write here is judged.<br>It only has to be true.</p>
     <div class="daylist" id="today-entries"></div>
   </section>
 
   <!-- HISTORY -->
-  <section id="tab-history" class="hidden">
+  <section id="tab-history" class="pane hidden">
     <div class="waves-faint" aria-hidden="true"><svg viewBox="0 0 1200 200" preserveAspectRatio="none"><path d="M0,60 C150,42 150,78 300,60 C450,42 450,78 600,60 C750,42 750,78 900,60 C1050,42 1050,78 1200,60 L1200,200 L0,200 Z"/></svg></div>
     <h1>History</h1>
-    <input type="search" id="search" placeholder="Search entries">
-    <p style="margin:10px 0 0; display:flex; gap:6px">
-      <button class="chip on" data-f="all">All</button>
-      <button class="chip" data-f="low">Bad days</button>
-      <button class="chip" data-f="high">Good days</button>
-      <button class="chip" data-f="session">Since session</button>
-    </p>
+    <div class="month">
+      <div class="month-head">
+        <button class="mnav" id="m-prev" type="button" aria-label="Previous month">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+        </button>
+        <b id="m-label"></b>
+        <button class="mnav" id="m-next" type="button" aria-label="Next month">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+      <div class="mgrid" id="mgrid"></div>
+    </div>
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5 21 21"/></svg>
+      <input type="search" id="search" placeholder="Search what you said">
+    </div>
+    <div class="seg" id="filter-seg">
+      <span class="thumb"></span>
+      <button data-f="all" class="on" type="button">All</button>
+      <button data-f="low" type="button">Bad days</button>
+      <button data-f="high" type="button">Good days</button>
+      <button data-f="session" type="button">Session</button>
+    </div>
     <div class="daylist" id="history"></div>
   </section>
 
   <!-- EXPORT -->
-  <section id="tab-export" class="hidden">
+  <section id="tab-export" class="pane hidden">
     <div class="waves-faint" aria-hidden="true"><svg viewBox="0 0 1200 200" preserveAspectRatio="none"><path d="M0,60 C150,42 150,78 300,60 C450,42 450,78 600,60 C750,42 750,78 900,60 C1050,42 1050,78 1200,60 L1200,200 L0,200 Z"/></svg></div>
     <h1>Export</h1>
+    <div style="height:18px"></div>
     <div id="backup-banner" class="banner hidden"></div>
-    <div class="card">
+
+    <div class="card frost">
       <h2>Sessions</h2>
       <p id="session-info">No session marked yet.</p>
-      <button class="btn ghost small" id="mark-session">Mark a session today</button>
+      <button class="btn ghost mid" id="mark-session" type="button">Mark a session today</button>
     </div>
-    <div class="card">
+
+    <div class="card frost">
       <h2>Prepare for your psychologist</h2>
-      <label class="small">Range</label>
-      <select id="range">
-        <option value="session">Since last session</option>
-        <option value="30">Last 30 days</option>
-        <option value="90">Last 90 days</option>
-        <option value="all">Everything</option>
-        <option value="custom">Custom</option>
-      </select>
+      <p>A quiet summary — dates, moods and your own words.</p>
+      <div class="seg compact" id="range-seg">
+        <span class="thumb"></span>
+        <button data-r="session" class="on" type="button">Session</button>
+        <button data-r="28" type="button">4 weeks</button>
+        <button data-r="all" type="button">Everything</button>
+        <button data-r="custom" type="button">Custom</button>
+      </div>
       <div id="custom-range" class="hidden">
-        <label class="small">From</label><input type="date" id="from">
-        <label class="small">To</label><input type="date" id="to">
+        <label class="small" for="from">From</label><input type="date" id="from">
+        <label class="small" for="to">To</label><input type="date" id="to">
       </div>
-      <p id="range-info"></p>
-      <div class="row" style="margin-top:10px">
-        <button class="btn" id="export-md">Share as text</button>
-        <button class="btn ghost" id="copy-md">Copy</button>
-      </div>
+      <p id="range-info" style="margin:12px 0"></p>
+      <button class="btn mid" id="export-md" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>
+        Share the summary
+      </button>
+      <button class="btn ghost mid" id="copy-md" type="button" style="margin-top:10px">Copy</button>
     </div>
-    <div class="card">
+
+    <div class="card frost">
       <h2>Backup</h2>
       <p>Your entries live only on this phone. Save a backup now and then.</p>
-      <div class="stats" style="margin:8px 0">
+      <div class="stats">
         <div><b id="st-entries">0</b><span>entries</span></div>
         <div><b id="st-days">0</b><span>days</span></div>
-        <div><b id="st-first">–</b><span>first entry</span></div>
+        <div><b id="st-size">0 KB</b><span>on this phone</span></div>
       </div>
       <div class="row">
-        <button class="btn ghost" id="export-json">Save backup</button>
-        <button class="btn ghost" id="import-json">Restore</button>
+        <button class="btn mid" id="export-json" type="button">Save backup</button>
+        <button class="btn ghost mid" id="import-json" type="button">Restore</button>
       </div>
       <input type="file" id="import-file" accept="application/json,.json" class="hidden">
-      <p id="last-export" style="margin-top:8px"></p>
+      <p id="last-export" style="margin:12px 0 0"></p>
     </div>
-    <div class="card">
-      <h2>About</h2>
-      <p>No account, no server, no AI. Nothing leaves this phone unless you share or back it up yourself.</p>
-    </div>
+
+    <p class="closing">Nothing leaves this phone.</p>
   </section>
 </main>
 
 <nav>
-  <button data-tab="today" class="on"><span>✎</span>Today</button>
-  <button data-tab="history"><span>☰</span>History</button>
-  <button data-tab="export"><span>⇪</span>Export</button>
+  <button data-tab="today" class="on" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6"/><path d="M18.4 2.6a2 2 0 0 1 2.8 2.8L12.5 14l-3.7 1 1-3.7z"/></svg>
+    Today
+  </button>
+  <button data-tab="history" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.2 2"/></svg>
+    History
+  </button>
+  <button data-tab="export" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>
+    Export
+  </button>
 </nav>
 <div class="toast" id="toast"></div>
 
@@ -509,8 +668,9 @@
 <script>
 (() => {
   const KEY = 'feeling.v1';
-  const FACES = ['', '😞', '🙁', '😐', '🙂', '😊'];
+  const FACES = ['', '😞', '🙁', '😐', '🙂', '😊'];   // export text only
   const WORDS = ['', 'very bad', 'bad', 'okay', 'good', 'very good'];
+  const MOUTHS = ['', 'M9 21.5 Q14 15.5 19 21.5', 'M9 20.5 Q14 17 19 20.5', 'M9.5 19.5 L18.5 19.5', 'M9 18.5 Q14 22 19 18.5', 'M9 17.5 Q14 23.5 19 17.5'];
   const DAY_START_HOUR = 4;
 
   // ---------- storage ----------
@@ -527,7 +687,12 @@
   function dayKey(ts) { const d = new Date(ts - DAY_START_HOUR * 3600e3); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; }
   function keyToDate(k) { const [y, m, d] = k.split('-').map(Number); return new Date(y, m - 1, d, 12); }
   function shiftKey(k, days) { const d = keyToDate(k); d.setDate(d.getDate() + days); return dayKey(d.getTime()); }
-  function fmtDay(k, long) { return keyToDate(k).toLocaleDateString(undefined, long ? { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' } : { weekday: 'short', day: 'numeric', month: 'short' }); }
+  function fmtDay(k, long) {
+    const d = keyToDate(k);
+    const wd = d.toLocaleDateString(undefined, { weekday: 'long' });
+    const mo = d.toLocaleDateString(undefined, { month: 'long' });
+    return long ? `${wd} ${d.getDate()} ${mo} ${d.getFullYear()}` : `${wd} ${d.getDate()} ${mo}`;
+  }
   function fmtTime(ts) { const d = new Date(ts); return `${pad(d.getHours())}:${pad(d.getMinutes())}`; }
   const todayKey = () => dayKey(Date.now());
 
@@ -535,6 +700,7 @@
   const $ = (s) => document.querySelector(s);
   const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
   const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  const SVGNS = 'http://www.w3.org/2000/svg';
   let toastT; function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 1800); }
   function groupByDay(entries) {
     const map = new Map();
@@ -543,10 +709,94 @@
     return [...map.entries()].sort((a, b) => (a[0] < b[0] ? 1 : -1));
   }
 
+  // ---------- drawn mood face, any size ----------
+  function faceSVG(m, size) {
+    const s = document.createElementNS(SVGNS, 'svg');
+    s.setAttribute('viewBox', '0 0 28 28');
+    s.setAttribute('width', size); s.setAttribute('height', size);
+    s.setAttribute('class', 'face m' + m); s.setAttribute('aria-hidden', 'true');
+    const bg = document.createElementNS(SVGNS, 'circle');
+    bg.setAttribute('class', 'mood-bg'); bg.setAttribute('cx', 14); bg.setAttribute('cy', 14); bg.setAttribute('r', 13);
+    s.appendChild(bg);
+    for (const cx of [10, 18]) {
+      const eye = document.createElementNS(SVGNS, 'circle');
+      eye.setAttribute('class', 'mood-eye'); eye.setAttribute('cx', cx); eye.setAttribute('cy', 11.5); eye.setAttribute('r', 1.5);
+      s.appendChild(eye);
+    }
+    const mouth = document.createElementNS(SVGNS, 'path');
+    mouth.setAttribute('class', 'mood-mouth'); mouth.setAttribute('d', MOUTHS[m]);
+    s.appendChild(mouth);
+    return s;
+  }
+  function moodRow(current, onPick, size) {
+    const row = el('div', 'moods');
+    for (let m = 1; m <= 5; m++) {
+      const b = el('button'); b.type = 'button'; b.dataset.m = m;
+      b.setAttribute('aria-label', WORDS[m]);
+      b.appendChild(faceSVG(m, size || 56));
+      if (current === m) b.classList.add('on');
+      row.appendChild(b);
+    }
+    row.addEventListener('click', (ev) => {
+      const b = ev.target.closest('button'); if (!b) return;
+      ev.stopPropagation();
+      const m = Number(b.dataset.m);
+      current = current === m ? 0 : m;
+      [...row.children].forEach((c) => c.classList.toggle('on', Number(c.dataset.m) === current));
+      onPick(current);
+    });
+    return row;
+  }
+
+  // ---------- mood arc ----------
+  function moodArc(entries, w, h) {
+    const pts = entries.filter((e) => e.mood > 0).sort((a, b) => a.ts - b.ts);
+    const s = document.createElementNS(SVGNS, 'svg');
+    s.setAttribute('class', 'arc'); s.setAttribute('width', w); s.setAttribute('height', h);
+    s.setAttribute('viewBox', `0 0 ${w} ${h}`); s.setAttribute('aria-hidden', 'true');
+    if (!pts.length) return s;
+    const padX = 10, padY = 9, r = h > 60 ? 6 : 4.5;
+    const n = pts.length;
+    const xy = pts.map((e, i) => [n === 1 ? w / 2 : padX + i * (w - 2 * padX) / (n - 1), h - padY - (e.mood - 1) / 4 * (h - 2 * padY)]);
+    if (n > 1) {
+      let d = `M${xy[0][0].toFixed(1)},${xy[0][1].toFixed(1)}`;
+      for (let i = 0; i < n - 1; i++) {
+        const p0 = xy[i - 1] || xy[i], p1 = xy[i], p2 = xy[i + 1], p3 = xy[i + 2] || xy[i + 1];
+        const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
+        const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+        d += ` C${c1[0].toFixed(1)},${c1[1].toFixed(1)} ${c2[0].toFixed(1)},${c2[1].toFixed(1)} ${p2[0].toFixed(1)},${p2[1].toFixed(1)}`;
+      }
+      const p = document.createElementNS(SVGNS, 'path');
+      p.setAttribute('class', 'arc-line'); p.setAttribute('d', d);
+      s.appendChild(p);
+    }
+    xy.forEach(([x, y], i) => {
+      const c = document.createElementNS(SVGNS, 'circle');
+      c.setAttribute('cx', x.toFixed(1)); c.setAttribute('cy', y.toFixed(1)); c.setAttribute('r', r);
+      c.setAttribute('fill', `var(--m${pts[i].mood})`);
+      s.appendChild(c);
+    });
+    return s;
+  }
+
   // ---------- today tab ----------
   const text = $('#text'), saveBtn = $('#save'), moodsEl = $('#moods'), backdateBtn = $('#backdate');
   let mood = 0, backdated = false;
 
+  moodsEl.replaceWith((() => { const r = moodRow(0, (m) => { mood = m; renderTodayHead(); storeDraft(); }, 56); r.id = 'moods'; return r; })());
+  function syncMoodRow() {
+    const row = $('#moods');
+    const fresh = moodRow(mood, (m) => { mood = m; renderTodayHead(); storeDraft(); }, 56);
+    fresh.id = 'moods'; row.replaceWith(fresh);
+  }
+
+  function greeting() {
+    const h = new Date().getHours();
+    if (h >= 5 && h < 11) return 'Good morning.';
+    if (h >= 11 && h < 17) return 'Good afternoon.';
+    if (h >= 17 && h < 22) return 'Good evening.';
+    return 'Still up.';
+  }
   function restoreDraft() {
     const d = db.draft; if (!d) return;
     text.value = d.text || ''; mood = d.mood || 0; backdated = !!d.backdated;
@@ -554,18 +804,23 @@
   function storeDraft() { db.draft = { text: text.value, mood, backdated }; save(); }
   function targetDay() { return backdated ? shiftKey(todayKey(), -1) : todayKey(); }
   function renderTodayHead() {
-    $('#today-title').textContent = backdated ? 'Yesterday' : 'Today';
-    $('#today-date').textContent = fmtDay(targetDay(), true);
+    $('#today-title').textContent = greeting();
+    $('#today-date').textContent = fmtDay(targetDay(), false);
     backdateBtn.textContent = backdated ? 'Back to today' : 'Yesterday';
     backdateBtn.classList.toggle('on', backdated);
-    [...moodsEl.children].forEach((b) => b.classList.toggle('on', Number(b.dataset.m) === mood));
     saveBtn.disabled = text.value.trim().length === 0;
   }
   text.addEventListener('input', () => { renderTodayHead(); storeDraft(); });
-  moodsEl.addEventListener('click', (e) => {
-    const b = e.target.closest('button'); if (!b) return;
-    const m = Number(b.dataset.m); mood = mood === m ? 0 : m; renderTodayHead(); storeDraft();
+  text.addEventListener('focus', () => {
+    document.body.classList.add('listening');
+    $('#voice-cap-text').textContent = 'Listening — take your time';
   });
+  text.addEventListener('blur', () => {
+    document.body.classList.remove('listening');
+    $('#voice-cap-text').textContent = 'or use the keyboard';
+  });
+  $('#mic').addEventListener('click', () => { text.focus(); });
+  $('#voice-cap').addEventListener('click', () => { text.focus(); });
   backdateBtn.addEventListener('click', () => { backdated = !backdated; renderTodayHead(); renderTodayEntries(); storeDraft(); });
   saveBtn.addEventListener('click', () => {
     const t = text.value.trim(); if (!t) return;
@@ -573,22 +828,22 @@
     const ts = backdated ? keyToDate(day).setHours(23, 0, 0, 0) : Date.now();
     db.entries.push({ id: uid(), ts, day, text: t, mood, edited: 0 });
     text.value = ''; mood = 0; backdated = false; db.draft = null; save();
-    renderTodayHead(); renderTodayEntries(); text.blur(); toast('Saved');
+    syncMoodRow(); renderTodayHead(); renderTodayEntries(); text.blur(); toast('Saved');
   });
   function renderTodayEntries() {
     const box = $('#today-entries'); box.innerHTML = '';
     const list = db.entries.filter((e) => e.day === targetDay()).sort((a, b) => b.ts - a.ts);
     if (!list.length) return;
-    box.appendChild(el('p', 'sub', `Earlier ${backdated ? 'that day' : 'today'}`));
+    box.appendChild(el('p', 'lead', `Earlier ${backdated ? 'that day' : 'today'}`));
     for (const e of list) box.appendChild(entryCard(e, false));
   }
 
   // ---------- entry card (shared) ----------
   function entryCard(e, clamped) {
-    const card = el('div', 'entry' + (clamped ? ' clamped' : ''));
+    const card = el('div', 'entry frost' + (clamped ? ' clamped' : ''));
     const meta = el('div', 'meta');
-    meta.appendChild(el('span', null, fmtTime(e.ts) + (e.backfilled ? '' : '')));
-    if (e.mood) { const f = el('span', 'face', FACES[e.mood]); f.title = WORDS[e.mood]; meta.appendChild(f); }
+    if (e.mood) { const f = faceSVG(e.mood, 18); f.setAttribute('role', 'img'); meta.appendChild(f); }
+    meta.appendChild(el('span', null, fmtTime(e.ts)));
     if (e.edited) meta.appendChild(el('span', null, 'edited'));
     card.appendChild(meta);
     const body = el('div', 'text', e.text); card.appendChild(body);
@@ -599,68 +854,200 @@
       if (!card.querySelector('.tools')) {
         const tools = el('div', 'tools');
         const edit = el('button', 'btn ghost small', 'Edit'); const del = el('button', 'btn danger small', 'Delete');
+        edit.type = 'button'; del.type = 'button';
         tools.append(edit, del); card.appendChild(tools);
         edit.addEventListener('click', () => {
           editing = true; tools.remove(); body.classList.add('hidden');
           const ta = el('textarea'); ta.value = e.text; card.appendChild(ta);
-          const mrow = el('div', 'moods');
-          for (let m = 1; m <= 5; m++) { const b = el('button', e.mood === m ? 'on' : '', FACES[m]); b.dataset.m = m; mrow.appendChild(b); }
           let nm = e.mood;
-          mrow.addEventListener('click', (x) => { const b = x.target.closest('button'); if (!b) return; nm = nm === Number(b.dataset.m) ? 0 : Number(b.dataset.m); [...mrow.children].forEach((c) => c.classList.toggle('on', Number(c.dataset.m) === nm)); });
-          card.appendChild(mrow);
-          const r = el('div', 'row'); const ok = el('button', 'btn small', 'Save'); const cancel = el('button', 'btn ghost small', 'Cancel'); r.append(ok, cancel); card.appendChild(r);
+          card.appendChild(moodRow(e.mood, (m) => { nm = m; }, 44));
+          const r = el('div', 'row');
+          const ok = el('button', 'btn small', 'Save'); const cancel = el('button', 'btn quiet small', 'Cancel');
+          ok.type = 'button'; cancel.type = 'button';
+          r.append(ok, cancel); card.appendChild(r);
           ok.addEventListener('click', () => {
             const nt = ta.value.trim(); if (!nt) return;
             if (nt !== e.text || nm !== e.mood) { e.text = nt; e.mood = nm; e.edited = Date.now(); save(); }
-            renderAll(); toast('Updated');
+            renderAll(); if (sheetDay) openSheet(sheetDay, true); toast('Updated');
           });
-          cancel.addEventListener('click', () => renderAll());
+          cancel.addEventListener('click', () => { renderAll(); if (sheetDay) openSheet(sheetDay, true); });
         });
         del.addEventListener('click', () => {
           if (!confirm('Delete this entry? This cannot be undone.')) return;
-          db.entries = db.entries.filter((x) => x.id !== e.id); save(); renderAll(); toast('Deleted');
+          db.entries = db.entries.filter((x) => x.id !== e.id); save(); renderAll();
+          if (sheetDay) { if (db.entries.some((x) => x.day === sheetDay)) openSheet(sheetDay, true); else closeSheet(); }
+          toast('Deleted');
         });
       } else { card.querySelector('.tools').remove(); }
     });
     return card;
   }
 
+  // ---------- segmented controls ----------
+  function wireSeg(root, onPick) {
+    const btns = [...root.querySelectorAll('button')];
+    const thumb = root.querySelector('.thumb');
+    function place() {
+      const b = btns.find((x) => x.classList.contains('on')) || btns[0];
+      thumb.style.width = b.offsetWidth + 'px';
+      thumb.style.transform = `translateX(${b.offsetLeft - 2}px)`;
+    }
+    btns.forEach((b) => b.addEventListener('click', () => {
+      btns.forEach((x) => x.classList.toggle('on', x === b));
+      place(); onPick(b);
+    }));
+    window.addEventListener('resize', place);
+    root._place = place;
+    return place;
+  }
+
   // ---------- history tab ----------
-  let filter = 'all';
-  $('#tab-history').querySelectorAll('.chip').forEach((c) => c.addEventListener('click', () => {
-    filter = c.dataset.f; $('#tab-history').querySelectorAll('.chip').forEach((x) => x.classList.toggle('on', x === c)); renderHistory();
-  }));
+  let filter = 'all', selDay = null;
+  const now0 = new Date();
+  let mY = now0.getFullYear(), mM = now0.getMonth();
+  const placeFilter = wireSeg($('#filter-seg'), (b) => { filter = b.dataset.f; renderHistory(); });
   $('#search').addEventListener('input', renderHistory);
+  $('#m-prev').addEventListener('click', () => { mM--; if (mM < 0) { mM = 11; mY--; } renderMonth(); });
+  $('#m-next').addEventListener('click', () => { mM++; if (mM > 11) { mM = 0; mY++; } renderMonth(); });
   function lastSession() { return db.sessions.length ? db.sessions[db.sessions.length - 1] : null; }
+
+  function renderMonth() {
+    const grid = $('#mgrid'); grid.innerHTML = '';
+    $('#m-label').textContent = new Date(mY, mM, 1).toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+    for (const d of ['M', 'T', 'W', 'T', 'F', 'S', 'S']) grid.appendChild(el('span', 'dow', d));
+    const first = new Date(mY, mM, 1);
+    const lead = (first.getDay() + 6) % 7;           // Monday-first
+    const days = new Date(mY, mM + 1, 0).getDate();
+    const byDay = new Map();
+    for (const e of db.entries) { if (!byDay.has(e.day)) byDay.set(e.day, []); byDay.get(e.day).push(e); }
+    for (let i = 0; i < lead; i++) { const b = el('span', 'mcell blank'); grid.appendChild(b); }
+    const tk = todayKey();
+    for (let d = 1; d <= days; d++) {
+      const k = `${mY}-${pad(mM + 1)}-${pad(d)}`;
+      const cell = el('button', 'mcell'); cell.type = 'button';
+      cell.setAttribute('aria-label', fmtDay(k, false));
+      const inner = el('i');
+      const es = byDay.get(k);
+      if (es) {
+        cell.classList.add('has');
+        const ms = es.map((e) => e.mood).filter((m) => m > 0);
+        const best = ms.length ? Math.max(...ms) : 3, worst = ms.length ? Math.min(...ms) : 3;
+        inner.style.background = `linear-gradient(to bottom, var(--m${best}) 0 50%, var(--m${worst}) 50% 100%)`;
+      }
+      if (k === tk) cell.classList.add('today');
+      if (k === selDay) cell.classList.add('sel');
+      cell.appendChild(inner);
+      cell.addEventListener('click', () => {
+        selDay = selDay === k ? null : k;
+        renderMonth(); renderHistory();
+      });
+      grid.appendChild(cell);
+    }
+  }
+
   function renderHistory() {
     const box = $('#history'); box.innerHTML = '';
     const q = $('#search').value.trim().toLowerCase();
     let list = db.entries;
     if (q) list = list.filter((e) => e.text.toLowerCase().includes(q));
     if (filter === 'session') { const s = lastSession(); list = s ? list.filter((e) => e.day >= s) : list; }
+    if (selDay) list = list.filter((e) => e.day === selDay);
     let days = groupByDay(list);
     if (filter === 'low') days = days.filter(([, es]) => es.some((e) => e.mood && e.mood <= 2));
     if (filter === 'high') days = days.filter(([, es]) => es.some((e) => e.mood >= 4));
     if (!days.length) { box.appendChild(el('div', 'empty', db.entries.length ? 'Nothing matches.' : 'No entries yet. Your record starts on the Today tab.')); return; }
     for (const [k, es] of days) {
-      const d = el('div', 'day'); const h = el('div', 'dayhead'); h.appendChild(el('b', null, fmtDay(k, false)));
-      const dots = el('div', 'dots'); for (const e of es) dots.appendChild(el('span', 'dot m' + (e.mood || 0)));
-      h.appendChild(dots); d.appendChild(h);
+      const d = el('div', 'day');
+      const head = el('button', 'dayhead'); head.type = 'button';
+      head.appendChild(el('b', null, fmtDay(k, false)));
+      head.appendChild(moodArc(es, 130, 40));
+      head.addEventListener('click', () => openSheet(k));
+      d.appendChild(head);
       for (const e of es) d.appendChild(entryCard(e, true));
       box.appendChild(d);
     }
   }
 
+  // ---------- day detail sheet ----------
+  let sheetDay = null, sheetEl = null;
+  function openSheet(k, instant) {
+    closeSheet(true);
+    sheetDay = k;
+    const es = db.entries.filter((e) => e.day === k).sort((a, b) => a.ts - b.ts);
+    const wrap = el('div', 'sheet');
+    const back = el('div', 'backdrop');
+    const panel = el('div', 'panel');
+    panel.appendChild(el('div', 'grabber'));
+    const d = keyToDate(k);
+    panel.appendChild(el('h2', null, d.toLocaleDateString(undefined, { weekday: 'long' })));
+    panel.appendChild(el('p', 'date', `${d.getDate()} ${d.toLocaleDateString(undefined, { month: 'long' })} ${d.getFullYear()}`));
+    const arcBox = el('div', 'arc-big');
+    const w = Math.min(window.innerWidth - 96, 544);
+    arcBox.appendChild(moodArc(es, w, 80));
+    panel.appendChild(arcBox);
+    for (const e of es) panel.appendChild(entryCard(e, false));
+    const share = el('button', 'btn mid');
+    share.type = 'button';
+    share.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>Share this day';
+    share.style.marginTop = '8px';
+    share.addEventListener('click', () => shareDay(k));
+    panel.appendChild(share);
+    const close = el('button', 'btn quiet mid', 'Close');
+    close.type = 'button'; close.style.marginTop = '10px';
+    close.addEventListener('click', () => closeSheet());
+    panel.appendChild(close);
+
+    back.addEventListener('click', () => closeSheet());
+    let y0 = null;
+    panel.addEventListener('touchstart', (ev) => { y0 = panel.scrollTop <= 0 ? ev.touches[0].clientY : null; }, { passive: true });
+    panel.addEventListener('touchmove', (ev) => {
+      if (y0 == null) return;
+      if (ev.touches[0].clientY - y0 > 70) { y0 = null; closeSheet(); }
+    }, { passive: true });
+
+    wrap.append(back, panel);
+    document.body.appendChild(wrap);
+    sheetEl = wrap;
+    if (instant) wrap.classList.add('in');
+    else requestAnimationFrame(() => requestAnimationFrame(() => wrap.classList.add('in')));
+  }
+  function closeSheet(silent) {
+    if (!sheetEl) { if (!silent) sheetDay = null; return; }
+    const w = sheetEl; sheetEl = null; if (!silent) sheetDay = null;
+    w.classList.remove('in');
+    setTimeout(() => w.remove(), silent ? 0 : 500);
+  }
+  document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && sheetEl) closeSheet(); });
+
+  async function shareDay(k) {
+    const es = db.entries.filter((e) => e.day === k).sort((a, b) => a.ts - b.ts);
+    if (!es.length) { toast('Nothing to share'); return; }
+    const md = toMarkdown(es);
+    const blob = new Blob([md], { type: 'text/markdown' });
+    const file = new File([blob], `feeling-${k}.md`, { type: blob.type });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try { await navigator.share({ files: [file], title: 'Feeling record' }); toast('Shared'); return; }
+      catch (e) { if (e.name === 'AbortError') return; }
+    }
+    try { await navigator.clipboard.writeText(md); toast('Copied this day'); return; } catch (e) {}
+    await shareOrDownload(blob, `feeling-${k}.md`, 'Feeling record');
+    toast('Saved');
+  }
+
   // ---------- export tab ----------
-  const rangeSel = $('#range');
-  rangeSel.addEventListener('change', () => { $('#custom-range').classList.toggle('hidden', rangeSel.value !== 'custom'); renderExport(); });
+  let range = 'session';
+  const placeRange = wireSeg($('#range-seg'), (b) => {
+    range = b.dataset.r;
+    $('#custom-range').classList.toggle('hidden', range !== 'custom');
+    renderExport();
+  });
   $('#from').addEventListener('change', renderExport); $('#to').addEventListener('change', renderExport);
   $('#mark-session').addEventListener('click', () => {
     const k = todayKey(); if (db.sessions.includes(k)) { toast('Already marked'); return; }
     db.sessions.push(k); db.sessions.sort(); save(); renderExport(); toast('Session marked');
   });
   function rangeBounds() {
-    const v = rangeSel.value, t = todayKey();
+    const v = range, t = todayKey();
     if (v === 'session') { const s = lastSession(); return [s || '0000', t]; }
     if (v === 'all') return ['0000', '9999'];
     if (v === 'custom') return [$('#from').value || '0000', $('#to').value || '9999'];
@@ -714,13 +1101,14 @@
   });
   function renderExport() {
     const s = lastSession();
-    $('#session-info').textContent = s ? `Last session: ${fmtDay(s, true)}. ${db.sessions.length} marked in total.` : 'No session marked yet. Mark one after each appointment so "since last session" works.';
+    $('#session-info').textContent = s ? `Last session — ${fmtDay(s, false)}. ${db.sessions.length} marked in total.` : 'No session marked yet. Mark one after each appointment so "since session" works.';
     const es = rangeEntries(); const days = new Set(es.map((e) => e.day)).size;
     $('#range-info').textContent = es.length ? `${es.length} entries over ${days} days in this range.` : 'No entries in this range.';
     $('#st-entries').textContent = db.entries.length;
     $('#st-days').textContent = new Set(db.entries.map((e) => e.day)).size;
-    const first = db.entries.length ? db.entries.reduce((m, e) => (e.day < m ? e.day : m), '9999') : null;
-    $('#st-first').textContent = first ? fmtDay(first, false) : '–';
+    let bytes = 0;
+    try { bytes = new Blob([localStorage.getItem(KEY) || '']).size; } catch (e) { bytes = (JSON.stringify(db) || '').length; }
+    $('#st-size').textContent = bytes < 1024 * 1024 ? Math.max(1, Math.round(bytes / 1024)) + ' KB' : (bytes / 1048576).toFixed(1) + ' MB';
     $('#last-export').textContent = db.lastExport ? `Last backup: ${new Date(db.lastExport).toLocaleDateString()}` : 'No backup yet.';
     const stale = db.entries.length && (!db.lastExport || Date.now() - db.lastExport > 14 * 864e5);
     $('#backup-banner').classList.toggle('hidden', !stale);
@@ -728,18 +1116,34 @@
   }
 
   // ---------- tabs ----------
+  const TABS = ['today', 'history', 'export'];
+  let current = 'today';
   document.querySelectorAll('nav button').forEach((b) => b.addEventListener('click', () => showTab(b.dataset.tab)));
   function showTab(name) {
-    ['today', 'history', 'export'].forEach((t) => { $('#tab-' + t).classList.toggle('hidden', t !== name); });
+    if (name === current) return;
+    const from = $('#tab-' + current), to = $('#tab-' + name);
+    current = name;
     document.querySelectorAll('nav button').forEach((b) => b.classList.toggle('on', b.dataset.tab === name));
-    window.scrollTo(0, 0);
-    if (name === 'history') renderHistory(); if (name === 'export') renderExport();
+    from.classList.remove('in');
+    setTimeout(() => {
+      from.classList.add('hidden');
+      if (name === 'history') { renderMonth(); renderHistory(); }
+      if (name === 'export') renderExport();
+      to.classList.remove('hidden');
+      if (name === 'history') placeFilter();
+      if (name === 'export') placeRange();
+      window.scrollTo(0, 0);
+      requestAnimationFrame(() => to.classList.add('in'));
+    }, 200);
   }
-  function renderAll() { renderTodayHead(); renderTodayEntries(); renderHistory(); renderExport(); }
+  function renderAll() { renderTodayHead(); renderTodayEntries(); renderMonth(); renderHistory(); renderExport(); }
 
   // ---------- boot ----------
-  restoreDraft(); renderAll();
-  document.addEventListener('visibilitychange', () => { if (!document.hidden) { db = load(); restoreDraft(); renderAll(); } });
+  restoreDraft(); syncMoodRow(); renderAll();
+  requestAnimationFrame(() => { placeFilter(); placeRange(); });
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) { db = load(); restoreDraft(); syncMoodRow(); renderAll(); }
+  });
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 })();
 </script>
@@ -755,15 +1159,14 @@
     const box = document.createElement('div');
     box.className = 'rain';
     box.setAttribute('aria-hidden', 'true');
-    // x positions as % of a 390px-wide viewport, per motion spec
     const xs = [18, 46, 63, 77, 104, 131, 158, 186, 213, 241, 268, 296, 323, 351];
     const vh = window.innerHeight || 812;
     const dur = (vh + 100) / 23; // fall speed 23px/s
     xs.forEach((x, i) => {
       const drop = document.createElement('span');
       drop.style.left = (x / 390 * 100) + '%';
-      const stagger = (i % 7) * 0.9; // 0 to 5.4s in 0.9s steps
-      const phase = -(Math.random() * dur); // randomised initial phase
+      const stagger = (i % 7) * 0.9;
+      const phase = -(Math.random() * dur);
       drop.style.animationDuration = dur.toFixed(2) + 's';
       drop.style.animationDelay = (phase + stagger).toFixed(2) + 's';
       box.appendChild(drop);
@@ -784,8 +1187,7 @@
   });
 
   // ---------- save ripple ----------
-  // Registered on the capture phase so it reads the button's disabled state
-  // before the existing bubble-phase save handler clears/resets the form.
+  // Capture phase so it reads the button's disabled state before the save handler resets the form.
   const saveBtn = document.getElementById('save');
   saveBtn.addEventListener('click', () => {
     if (saveBtn.disabled) return;
