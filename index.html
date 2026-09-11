@@ -90,6 +90,43 @@
   .waves path.w3 { fill: var(--accent); opacity: 0.24; }
   @keyframes drift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
   @keyframes bob { from { transform: translateY(0); } to { transform: translateY(-4px); } }
+
+  /* ---------- fishing scene (Today tab, inside .waves) ---------- */
+  .waves svg.dock { position: absolute; right: 0; left: auto; bottom: 38%; width: 130px; height: 90px; pointer-events: none; overflow: visible; }
+  .dock .dock-figure { fill: var(--ink); opacity: .55; }
+  .dock .rod { transform-origin: 30px 29px; animation: rodSway 5s ease-in-out infinite alternate; }
+  @keyframes rodSway { from { transform: rotate(-1.5deg); } to { transform: rotate(1.5deg); } }
+  .dock .line-ring { fill: none; stroke: var(--ink); stroke-width: 1; transform-box: fill-box; transform-origin: center; animation: ringPulse 9s ease-out infinite; }
+  @keyframes ringPulse {
+    0%   { transform: scale(1); opacity: .35; }
+    33%  { transform: scale(3); opacity: 0; }
+    100% { transform: scale(3); opacity: 0; }
+  }
+
+  .waves .fish-wrap { position: absolute; inset: 0; pointer-events: none; }
+  .waves .fish-wrap.fw1 { animation: swim 55s linear infinite; animation-delay: -27s; }
+  .waves .fish-wrap.fw2 { animation: swim 75s linear infinite; animation-delay: -38s; }
+  @keyframes swim { from { transform: translateX(110vw); } to { transform: translateX(-90px); } }
+
+  .waves svg.fish { position: absolute; left: 0; pointer-events: none; animation: fishBob 8s ease-in-out infinite alternate; }
+  .waves svg.fish.fish1 { width: 70px; height: 22px; bottom: 26%; }
+  .waves svg.fish.fish2 { width: 50px; height: 16px; bottom: 34%; }
+  @keyframes fishBob { from { transform: translateY(-6px); } to { transform: translateY(6px); } }
+
+  .fish .fish-accent { fill: var(--accent); }
+  .fish1 .fish-accent { opacity: .26; }
+  .fish2 .fish-accent { opacity: .18; }
+  .fish .fish-belly { fill: var(--bg); opacity: .12; }
+  .fish .fish-eye { fill: var(--bg); opacity: .6; }
+
+  .fish .tail { transform-origin: 58px 11px; animation: tailWag 2.4s ease-in-out infinite alternate; }
+  @keyframes tailWag { from { transform: rotate(-4deg); } to { transform: rotate(4deg); } }
+
+  .fish1 .body { transform-box: fill-box; transform-origin: center; animation: bodyRoll 40s ease-in-out infinite; }
+  @keyframes bodyRoll { 0%, 90% { transform: scaleY(1); } 95% { transform: scaleY(.7); } 100% { transform: scaleY(1); } }
+  .fish1 .fish-belly { animation: bellyFlash 40s ease-in-out infinite; }
+  @keyframes bellyFlash { 0%, 90% { opacity: .12; } 95% { opacity: .35; } 100% { opacity: .12; } }
+
   @media (prefers-reduced-motion: reduce) { .waves *, .waves-faint, .waves-faint svg { animation: none !important; } }
 
   /* faint wave band shown only on History / Export tabs */
@@ -187,6 +224,50 @@
       <div class="wave-wrap">
         <svg class="w1" viewBox="0 0 1200 200" preserveAspectRatio="none"><path class="w1" d="M0,60 C150,42 150,78 300,60 C450,42 450,78 600,60 C750,42 750,78 900,60 C1050,42 1050,78 1200,60 L1200,200 L0,200 Z"/></svg>
         <svg class="w2" viewBox="0 0 1200 200" preserveAspectRatio="none"><path class="w2" d="M0,60 C150,42 150,78 300,60 C450,42 450,78 600,60 C750,42 750,78 900,60 C1050,42 1050,78 1200,60 L1200,200 L0,200 Z"/></svg>
+        <svg class="dock" viewBox="0 0 130 90" aria-hidden="true">
+          <g class="dock-figure">
+            <rect x="10" y="40" width="120" height="4"/>
+            <rect x="10" y="45" width="120" height="4"/>
+            <rect x="10" y="50" width="120" height="4"/>
+            <rect x="18" y="54" width="5" height="34"/>
+            <rect x="108" y="54" width="5" height="34"/>
+            <rect x="4" y="39" width="5" height="22" rx="2.5" transform="rotate(12 6.5 39)"/>
+            <rect x="10" y="39" width="5" height="22" rx="2.5" transform="rotate(6 12.5 39)"/>
+            <rect x="18" y="26" width="13" height="15" rx="5"/>
+            <circle cx="24" cy="20" r="6"/>
+            <g class="rod">
+              <path d="M30,29 L-19.2,-5.4" fill="none" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M-19.2,-5.4 L-19.2,66" fill="none" stroke="var(--ink)" stroke-width="1"/>
+            </g>
+          </g>
+          <circle class="line-ring" cx="-19.2" cy="66" r="4"/>
+        </svg>
+        <div class="fish-wrap fw1">
+          <svg class="fish fish1" viewBox="0 0 70 22" aria-hidden="true">
+            <g class="body">
+              <path class="fish-belly" d="M3,12 C5,16 10,19 18,19.5 C27,20 35,18 41,15 C46,13 50,12 54,11.7 L58,11 L54,11.3 C50,11.7 46,12.7 41,15.5 C35,18.5 27,20.3 18,19.8 C10,19.3 5,16.5 3,12 Z"/>
+              <path class="fish-accent" d="M2,11 C4,5 10,2 18,2 C28,2 36,5 42,9 C47,12 51,12.5 55,11.5 L58,11 L55,10.5 C51,9.5 47,10 42,13 C36,17 28,20 18,20 C10,20 4,17 2,11 Z"/>
+              <path class="fish-accent" d="M25,3 L29,0 L33,4 Z"/>
+              <circle class="fish-eye" cx="9" cy="9" r="1.1"/>
+            </g>
+            <g class="tail">
+              <path class="fish-accent" d="M58,11 L70,2 L63,11 L70,20 Z"/>
+            </g>
+          </svg>
+        </div>
+        <div class="fish-wrap fw2">
+          <svg class="fish fish2" viewBox="0 0 70 22" aria-hidden="true">
+            <g class="body">
+              <path class="fish-belly" d="M3,12 C5,16 10,19 18,19.5 C27,20 35,18 41,15 C46,13 50,12 54,11.7 L58,11 L54,11.3 C50,11.7 46,12.7 41,15.5 C35,18.5 27,20.3 18,19.8 C10,19.3 5,16.5 3,12 Z"/>
+              <path class="fish-accent" d="M2,11 C4,5 10,2 18,2 C28,2 36,5 42,9 C47,12 51,12.5 55,11.5 L58,11 L55,10.5 C51,9.5 47,10 42,13 C36,17 28,20 18,20 C10,20 4,17 2,11 Z"/>
+              <path class="fish-accent" d="M25,3 L29,0 L33,4 Z"/>
+              <circle class="fish-eye" cx="9" cy="9" r="1.1"/>
+            </g>
+            <g class="tail">
+              <path class="fish-accent" d="M58,11 L70,2 L63,11 L70,20 Z"/>
+            </g>
+          </svg>
+        </div>
         <svg class="w3" viewBox="0 0 1200 200" preserveAspectRatio="none"><path class="w3" d="M0,60 C150,42 150,78 300,60 C450,42 450,78 600,60 C750,42 750,78 900,60 C1050,42 1050,78 1200,60 L1200,200 L0,200 Z"/></svg>
       </div>
     </div>
