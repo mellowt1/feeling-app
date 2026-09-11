@@ -240,9 +240,7 @@
   .dock .dock-figure .arm { fill: none; stroke: var(--silhouette); stroke-width: 4.6; stroke-linecap: round; }
   .dock .rod { transform-origin: 98px 44px; animation: rodSway 5s ease-in-out infinite alternate; }
   .dock .rod .rod-pole { fill: none; stroke: var(--silhouette); stroke-width: 1.8; stroke-linecap: round; }
-  .dock .rod .rod-line { fill: none; stroke: var(--silhouette); stroke-width: 0.8; stroke-linecap: round; opacity: .58; }
   @keyframes rodSway { from { transform: rotate(-1.5deg); } to { transform: rotate(1.5deg); } }
-  .dock .line-ring { fill: none; stroke: var(--silhouette); stroke-width: 1; transform-box: fill-box; transform-origin: center; animation: ringPulse 9s ease-out infinite; }
   @keyframes ringPulse {
     0%   { transform: scale(1); opacity: .35; }
     33%  { transform: scale(3); opacity: 0; }
@@ -375,8 +373,77 @@
   .ripple { position: fixed; width: 20px; height: 20px; margin-left: -10px; margin-top: -10px; border-radius: 50%; border: 2px solid rgba(59,107,117,0.5); transform: scale(1); opacity: 0.6; animation: rippleOut 4.5s ease-out forwards; pointer-events: none; z-index: 5; }
   @keyframes rippleOut { to { transform: scale(12); opacity: 0; } }
 
+  /* ---------- cast and reel: line goes out while you write, comes up empty when you save ---------- */
+  .dock .rod-wind, .dock .rod-cast { transform-origin: 98px 44px; }
+  .dock .rod-cast { transition: transform 1.2s cubic-bezier(.3,.7,.3,1); }
+  body.whip .dock .rod-cast { transform: rotate(26deg); transition: transform .32s ease-in; }
+  body.casting .dock .rod-cast { transform: rotate(12deg); transition: transform .7s cubic-bezier(.2,1.4,.4,1); }
+  .dock .cast-line { fill: none; stroke: var(--silhouette); stroke-width: .8; stroke-linecap: round; opacity: 0; stroke-dasharray: 70; stroke-dashoffset: 70; transition: stroke-dashoffset 1s ease-in, opacity .4s .6s; }
+  body.casting .dock .cast-line { opacity: .58; stroke-dashoffset: 0; transition: stroke-dashoffset .9s cubic-bezier(.3,.8,.4,1) .3s, opacity .2s .3s; }
+  .dock .cast-bobber { fill: var(--silhouette); opacity: 0; transition: opacity .4s; }
+  body.casting .dock .cast-bobber { opacity: .7; transition: opacity .3s 1.1s; animation: bobberBob 3s ease-in-out infinite alternate; }
+  @keyframes bobberBob { from { transform: translateY(-1px); } to { transform: translateY(1.5px); } }
+  .dock .cast-splash { fill: none; stroke: var(--silhouette); stroke-width: 1; opacity: 0; transform-box: fill-box; transform-origin: center; }
+  body.casting .dock .cast-splash { animation: splashOnce 2.4s ease-out 1.1s 1, ringPulse 9s ease-out 4s infinite; }
+  @keyframes splashOnce { 0% { transform: scale(.6); opacity: .45; } 100% { transform: scale(3.4); opacity: 0; } }
+
+  /* ---------- wind: a gust every couple of minutes ---------- */
+  .clouds { transition: transform 6s cubic-bezier(.25,.6,.3,1); }
+  body.gust .clouds { transform: translateX(-56px); transition-duration: 3.5s; }
+  .dock .rod-wind { transition: transform 3s ease-in-out; }
+  body.gust .dock .rod-wind { transform: rotate(-2.6deg); transition: transform 1.4s cubic-bezier(.3,.6,.3,1); }
+  body.gust .waves .wave-wrap { animation: bobGust 1.4s ease-in-out infinite alternate; }
+  @keyframes bobGust { from { transform: translateY(1px); } to { transform: translateY(-8px); } }
+  .textview { transition: filter 1.6s ease, opacity 1.6s ease, border-color .25s, box-shadow .25s; }
+  body.gust:not(.listening) .textview { filter: blur(.7px); opacity: .82; }
+  .wind { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .wind span { position: absolute; left: 0; width: 120px; height: 1px; border-radius: 1px; background: var(--silhouette); opacity: 0; }
+  .wind span:nth-child(1) { top: 24%; }
+  .wind span:nth-child(2) { top: 31%; }
+  .wind span:nth-child(3) { top: 40%; }
+  .wind span:nth-child(4) { top: 54%; }
+  body.gust .wind span { animation: windStreak 2.2s cubic-bezier(.2,.6,.4,1) 1; }
+  body.gust .wind span:nth-child(2) { animation-delay: .35s; }
+  body.gust .wind span:nth-child(3) { animation-delay: .7s; }
+  body.gust .wind span:nth-child(4) { animation-delay: 1.1s; }
+  @keyframes windStreak { 0% { transform: translateX(110vw) scaleX(.4); opacity: 0; } 15% { opacity: .16; } 85% { opacity: .1; } 100% { transform: translateX(-30vw) scaleX(1.4); opacity: 0; } }
+
+  /* ---------- sit on the dock: long press the screen, everything but the water goes away ---------- */
+  #tab-today { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+  #tab-today textarea, #tab-today .entry .text { -webkit-user-select: text; user-select: text; }
+  #tab-today > .headrow, #tab-today > .voice, #tab-today > .moods, #tab-today > #save, #tab-today > .reassure, #tab-today > .daylist, nav { transition: opacity 1.2s ease; }
+  body.dock #tab-today > :not(.sky-breathe):not(.clouds):not(.orb):not(.waves):not(.rain):not(.wind):not(.dock-ui), body.dock nav { opacity: 0 !important; pointer-events: none; }
+  .waves { transition: transform 2.5s ease-out, height 2.5s ease-in-out; }
+  body.dock .waves { height: 44vh; }
+  body.dock .sky-breathe { animation-duration: 16s; }
+  .dock-ui { position: fixed; inset: 0; pointer-events: none; z-index: 5; opacity: 0; visibility: hidden; transition: opacity 1s, visibility 0s 1s; }
+  body.dock .dock-ui { opacity: 1; visibility: visible; transition: opacity 1s, visibility 0s; }
+  .dock-hint { position: absolute; left: 0; right: 0; bottom: calc(24px + env(safe-area-inset-bottom)); margin: 0; text-align: center; font-size: 13px; color: var(--muted); opacity: 0; }
+  body.dock .dock-hint { animation: hintFade 7s ease 1.5s 1; }
+  @keyframes hintFade { 0% { opacity: 0; } 20% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; } }
+  .dock-sound { position: absolute; top: calc(14px + env(safe-area-inset-top)); right: 20px; width: 40px; height: 40px; border-radius: 20px; border: 1px solid var(--line); background: var(--card-a); color: var(--muted); display: flex; align-items: center; justify-content: center; padding: 0; opacity: .7; }
+  body.dock .dock-sound { pointer-events: auto; }
+  .dock-sound.on { color: var(--accent); opacity: 1; }
+  .dock-sound:not(.on) svg path:nth-child(n+2) { display: none; }
+  .dock-sound svg { width: 20px; height: 20px; }
+
+  /* ---------- late night: after 21:00 everything slows ---------- */
+  body.late .waves svg.w1 { animation-duration: 28s; }
+  body.late .waves svg.w2 { animation-duration: 22s; }
+  body.late .waves svg.w3 { animation-duration: 18s; }
+  body.late .waves .wave-wrap { animation-duration: 6s; }
+  body.late .cloud.c1 { animation-duration: 220s; }
+  body.late .cloud.c2 { animation-duration: 260s; }
+  body.late .cloud.c3 { animation-duration: 300s; }
+  body.late .sky-breathe { animation-duration: 20s; }
+  body.late .orb { opacity: .45; }
+  body.late .dock .rod { animation-duration: 9s; }
+  body.late .voice-cap .kb { display: none; }
+
   @media (prefers-reduced-motion: reduce) {
-    .waves *, .waves-faint, .waves-faint svg, .sky-breathe, .cloud, .orb, div.rain span, .ripple, .ring { animation: none !important; }
+    .waves *, .waves-faint, .waves-faint svg, .sky-breathe, .cloud, .orb, div.rain span, .ripple, .ring, .wind span, .dock-hint { animation: none !important; }
+    .clouds, .dock .rod-cast, .dock .rod-wind, .dock .cast-line, .textview { transition: none !important; }
+    body.dock .dock-hint { opacity: 1; }
     .sky-breathe { opacity: 0.2; }
     .orb { transform: none; }
     .waves, section.pane, .sheet .panel, .sheet .backdrop, .seg .thumb { transition: none !important; }
@@ -395,6 +462,13 @@
       <div class="cloud c3"></div>
     </div>
     <div class="orb" aria-hidden="true"></div>
+    <div class="wind" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+    <div class="dock-ui">
+      <button class="dock-sound" id="dock-sound" type="button" aria-label="Toggle wave sound">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+      </button>
+      <p class="dock-hint">Tap anywhere to come back</p>
+    </div>
     <div class="waves" aria-hidden="true">
       <div class="wave-wrap">
         <svg class="w1" viewBox="0 0 1200 200" preserveAspectRatio="none"><path class="w1" d="M0,60 C150,42 150,78 300,60 C450,42 450,78 600,60 C750,42 750,78 900,60 C1050,42 1050,78 1200,60 L1200,200 L0,200 Z"/></svg>
@@ -414,12 +488,15 @@
             <path d="M103.8 63.4C103.8 62.0745 102.725 61 101.4 61C100.075 61 99 62.0745 99 63.4V71.6C99 72.9255 100.075 74 101.4 74C102.725 74 103.8 72.9255 103.8 71.6V63.4Z"/>
             <path d="M110.8 63.4C110.8 62.0745 109.725 61 108.4 61C107.075 61 106 62.0745 106 63.4V69.6C106 70.9255 107.075 72 108.4 72C109.725 72 110.8 70.9255 110.8 69.6V63.4Z"/>
             <path class="arm" d="M99.5 40.5L96.5 52"/>
-            <g class="rod">
+            <g class="rod-wind"><g class="rod-cast"><g class="rod">
               <path class="rod-pole" d="M98 44L26 56"/>
-              <path class="rod-line" d="M25.9 56L24.1 92"/>
-            </g>
+            </g></g></g>
           </g>
-          <circle class="line-ring" cx="24" cy="92" r="3.5"/>
+          <g class="cast">
+            <path class="cast-line" d="M25 41 C22 58, 14 80, 12 96"/>
+            <circle class="cast-splash" cx="12" cy="96" r="3.5"/>
+            <circle class="cast-bobber" cx="12" cy="96" r="1.8"/>
+          </g>
           <g class="pelican" transform="translate(175 36)">
             <g class="pel-body">
               <path d="M6.99997 24.8857C3.35997 21.3572 3.35997 14.4857 8.7733 11.7C14.1866 8.9143 21.84 10.5857 25.0133 15.2286C27.0666 18.2 26.6933 22.2857 24.2666 24.8857H6.99997Z"/>
@@ -785,7 +862,7 @@
   });
   text.addEventListener('blur', () => {
     document.body.classList.remove('listening');
-    $('#voice-cap-text').textContent = 'or use the keyboard';
+    $('#voice-cap-text').textContent = document.body.classList.contains('late') ? 'or just sit' : 'or use the keyboard';
   });
   $('#mic').addEventListener('click', () => { text.focus(); });
   $('#voice-cap').addEventListener('click', () => { text.focus(); });
@@ -1167,6 +1244,136 @@
     document.body.appendChild(ripple);
     setTimeout(() => ripple.remove(), 4600);
   }, true);
+
+  // ---------- late night ----------
+  function applyLate() {
+    const h = new Date().getHours();
+    const late = h >= 21 || h < 5;
+    document.body.classList.toggle('late', late);
+    const cap = document.getElementById('voice-cap-text');
+    if (cap && !document.body.classList.contains('listening')) cap.textContent = late ? 'or just sit' : 'or use the keyboard';
+  }
+  applyLate(); setInterval(applyLate, 60000);
+
+  // ---------- cast and reel ----------
+  const textEl = document.getElementById('text');
+  let castTimer = null;
+  function syncCast() {
+    const want = textEl.value.trim().length > 0 || document.body.classList.contains('listening');
+    const has = document.body.classList.contains('casting') || document.body.classList.contains('whip');
+    if (want && !has) {
+      document.body.classList.add('whip');
+      clearTimeout(castTimer);
+      castTimer = setTimeout(() => { document.body.classList.remove('whip'); document.body.classList.add('casting'); }, 320);
+    } else if (!want && has) {
+      clearTimeout(castTimer);
+      document.body.classList.remove('whip', 'casting');
+    }
+  }
+  textEl.addEventListener('input', syncCast);
+  textEl.addEventListener('focus', () => setTimeout(syncCast, 0));
+  textEl.addEventListener('blur', () => setTimeout(syncCast, 0));
+  saveBtn.addEventListener('click', () => setTimeout(syncCast, 0));
+  setTimeout(syncCast, 800);
+
+  // ---------- wind ----------
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let gustTimer = null;
+  function scheduleGust(ms) { clearTimeout(gustTimer); gustTimer = setTimeout(gust, ms); }
+  function gust() {
+    if (document.hidden || !today.classList.contains('in')) return scheduleGust(20000);
+    document.body.classList.add('gust');
+    setTimeout(() => document.body.classList.remove('gust'), 4200);
+    scheduleGust(70000 + Math.random() * 80000);
+  }
+  if (!reduceMotion) scheduleGust(14000);
+
+  // ---------- sit on the dock ----------
+  const SOUND_KEY = 'feeling.docksound';
+  const soundBtn = document.getElementById('dock-sound');
+  let soundOn = true;
+  try { soundOn = (localStorage.getItem(SOUND_KEY) || '1') === '1'; } catch (e) {}
+  soundBtn.classList.toggle('on', soundOn);
+  let audio = null;
+  function startSea() {
+    try {
+      if (!audio) {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const len = ctx.sampleRate * 4;
+        const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+        const d = buf.getChannelData(0); let last = 0;
+        for (let i = 0; i < len; i++) { const w = Math.random() * 2 - 1; last = (last + 0.02 * w) / 1.02; d[i] = last * 3.5; }
+        const src = ctx.createBufferSource(); src.buffer = buf; src.loop = true;
+        const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 420; lp.Q.value = 0.5;
+        const swell = ctx.createGain(); swell.gain.value = 0.5;
+        const lfo = ctx.createOscillator(); lfo.type = 'sine'; lfo.frequency.value = 0.09;
+        const lfoGain = ctx.createGain(); lfoGain.gain.value = 0.35;
+        lfo.connect(lfoGain); lfoGain.connect(swell.gain);
+        const lfo2 = ctx.createOscillator(); lfo2.type = 'sine'; lfo2.frequency.value = 0.05;
+        const lfo2Gain = ctx.createGain(); lfo2Gain.gain.value = 180;
+        lfo2.connect(lfo2Gain); lfo2Gain.connect(lp.frequency);
+        const master = ctx.createGain(); master.gain.value = 0;
+        src.connect(lp); lp.connect(swell); swell.connect(master); master.connect(ctx.destination);
+        src.start(); lfo.start(); lfo2.start();
+        audio = { ctx, master };
+      }
+      audio.ctx.resume();
+      const g = audio.master.gain, t = audio.ctx.currentTime;
+      g.cancelScheduledValues(t); g.setValueAtTime(g.value, t); g.linearRampToValueAtTime(0.22, t + 4);
+    } catch (e) {}
+  }
+  function stopSea() {
+    if (!audio) return;
+    const g = audio.master.gain, t = audio.ctx.currentTime;
+    g.cancelScheduledValues(t); g.setValueAtTime(g.value, t); g.linearRampToValueAtTime(0, t + 1.5);
+    setTimeout(() => { if (audio && !document.body.classList.contains('dock')) audio.ctx.suspend(); }, 1700);
+  }
+  let dockSince = 0;
+  function enterDock() {
+    if (document.body.classList.contains('dock')) return;
+    textEl.blur();
+    document.body.classList.add('dock');
+    dockSince = Date.now();
+    if (soundOn) startSea();
+  }
+  function exitDock() {
+    if (!document.body.classList.contains('dock')) return;
+    document.body.classList.remove('dock');
+    stopSea();
+  }
+  soundBtn.addEventListener('click', (ev) => {
+    ev.stopPropagation();
+    soundOn = !soundOn; soundBtn.classList.toggle('on', soundOn);
+    try { localStorage.setItem(SOUND_KEY, soundOn ? '1' : '0'); } catch (e) {}
+    if (document.body.classList.contains('dock')) { if (soundOn) startSea(); else stopSea(); }
+  });
+  let pressTimer = null, px = 0, py = 0;
+  document.addEventListener('pointerdown', (ev) => {
+    if (document.body.classList.contains('dock') || !today.classList.contains('in')) return;
+    if (ev.target.closest('nav, textarea, button, input, .entry, a, .moods, .sheet, .pill')) return;
+    px = ev.clientX; py = ev.clientY;
+    clearTimeout(pressTimer);
+    pressTimer = setTimeout(() => { pressTimer = null; enterDock(); }, 650);
+  });
+  const cancelPress = (ev) => {
+    if (!pressTimer) return;
+    if (ev && ev.type === 'pointermove' && Math.hypot(ev.clientX - px, ev.clientY - py) < 12) return;
+    clearTimeout(pressTimer); pressTimer = null;
+  };
+  document.addEventListener('pointermove', cancelPress);
+  document.addEventListener('pointerup', cancelPress);
+  document.addEventListener('pointercancel', cancelPress);
+  document.addEventListener('scroll', () => cancelPress(), true);
+  document.addEventListener('click', (ev) => {
+    if (!document.body.classList.contains('dock')) return;
+    if (Date.now() - dockSince < 600) return;
+    if (ev.target.closest('.dock-sound')) return;
+    ev.preventDefault(); ev.stopPropagation();
+    exitDock();
+  }, true);
+  document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') exitDock(); });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) exitDock(); });
+  document.addEventListener('contextmenu', (ev) => { if (pressTimer || document.body.classList.contains('dock')) ev.preventDefault(); });
 })();
 </script>
 </body>
