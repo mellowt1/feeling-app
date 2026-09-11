@@ -132,7 +132,7 @@
   .row { display: flex; gap: 10px; align-items: center; }
   .row > .btn { flex: 1; }
 
-  .reassure { text-align: center; font-size: 13px; line-height: 1.6; color: var(--muted); margin: 12px 0 0; }
+  .reassure { text-align: center; font-size: 13px; line-height: 1.6; color: var(--muted); margin: 24px 0 0; }
 
   /* ---------- entry cards ---------- */
   .daylist { margin-top: 24px; }
@@ -177,8 +177,8 @@
 
   .seg { position: relative; display: flex; background: var(--track); border-radius: 12px; padding: 2px; margin-top: 14px; }
   .seg .thumb { position: absolute; top: 2px; bottom: 2px; left: 2px; border-radius: 10px; background: var(--card); box-shadow: 0 1px 3px rgba(0,0,0,.10); transition: transform .25s ease, width .25s ease; }
-  .seg button { position: relative; z-index: 1; flex: 1; background: none; border: 0; font: inherit; font-size: 13px; font-weight: 500; color: var(--muted); padding: 12px 4px; min-height: 46px; border-radius: 10px; }
-  .seg button.on { color: var(--ink); font-weight: 600; }
+  .seg button { position: relative; z-index: 1; flex: 1; background: none; border: 0; font: inherit; font-size: 14px; font-weight: 500; color: var(--ink); opacity: .72; padding: 12px 4px; min-height: 46px; border-radius: 10px; }
+  .seg button.on { opacity: 1; font-weight: 600; }
   .seg.compact button { min-height: 28px; padding: 6px 2px; font-size: 12px; white-space: nowrap; }
   .seg.compact { margin-top: 10px; }
 
@@ -211,6 +211,7 @@
   .sheet .panel { position: absolute; left: 0; right: 0; bottom: 0; max-height: 92dvh; overflow: auto; -webkit-overflow-scrolling: touch; background: var(--card); border-radius: 28px 28px 0 0; padding: 8px 24px calc(24px + env(safe-area-inset-bottom)); transform: translateY(100%); transition: transform .5s ease-out; box-shadow: 0 -8px 30px rgba(0,0,0,.12); }
   .sheet.in .panel { transform: translateY(0); }
   .grabber { width: 58px; height: 4px; border-radius: 2px; background: var(--line); margin: 8px auto 16px; }
+  .sheet .done { position: absolute; top: 18px; right: 20px; border: 0; background: none; font: inherit; font-size: 16px; font-weight: 600; color: var(--accent); padding: 8px 4px; }
   .sheet h2 { font-family: var(--serif); font-size: 28px; font-weight: 600; margin: 0; }
   .sheet .date { font-size: 13px; color: var(--muted); margin: 4px 0 0; }
   .arc-big { background: var(--track); border-radius: 18px; padding: 12px; margin: 18px 0; }
@@ -295,7 +296,6 @@
   .waves .fish-wrap { position: absolute; inset: 0; pointer-events: none; }
   .waves .fish-wrap.fw1 { animation: swim 55s linear infinite; animation-delay: -27s; }
   .waves .fish-wrap.fw2 { animation: swimSnook 68s linear infinite; animation-delay: -46s; }
-  .waves .fish-wrap.fw3 { animation: swimSnapper 82s linear infinite; animation-delay: -40s; }
   @keyframes swim { from { transform: translateX(110vw); } to { transform: translateX(-60px); } }
   @keyframes swimSnook {
     0%   { transform: translateX(110vw); }
@@ -303,24 +303,15 @@
     80%  { transform: translateX(40px); }
     100% { transform: translateX(-60px); }
   }
-  @keyframes swimSnapper {
-    0%   { transform: translateX(110vw); }
-    48%  { transform: translateX(-60px); }
-    52%  { transform: translateX(-60px); }
-    100% { transform: translateX(110vw); }
-  }
 
   .waves svg.fish { position: absolute; left: 0; pointer-events: none; animation: fishBob 8s ease-in-out infinite alternate; }
   .waves svg.fish.fish1 { width: 42px; height: 13px; bottom: 30%; }
   .waves svg.fish.fish2 { width: 38px; height: 10px; bottom: 38%; }
-  .waves svg.fish.fish3 { width: 30px; height: 11px; bottom: 24%; transform-origin: center; animation: fishBob 8s ease-in-out infinite alternate, snapperFlip 82s linear infinite; animation-delay: 0s, -40s; }
   @keyframes fishBob { from { transform: translateY(-6px); } to { transform: translateY(6px); } }
-  @keyframes snapperFlip { 0%, 48% { transform: scaleX(1); } 52%, 100% { transform: scaleX(-1); } }
 
   .fish .fish-accent { fill: var(--accent); }
   .fish1 .fish-accent { opacity: .26; }
   .fish2 .fish-accent { opacity: .22; }
-  .fish3 .fish-accent { fill: color-mix(in srgb, var(--accent) 60%, #8A6E5A); opacity: .24; }
   .fish .fish-belly { fill: var(--bg); opacity: .12; }
   .fish .fish-eye { fill: var(--bg); opacity: .6; }
   .fish .lateral-line { fill: none; stroke: var(--ink); stroke-opacity: .45; stroke-width: 1; }
@@ -328,7 +319,6 @@
 
   .fish .tail { transform-origin: 58px 11px; animation: tailWag 2.4s ease-in-out infinite alternate; }
   .fish2 .tail { transform-origin: 51px 8px; }
-  .fish3 .tail { transform-origin: 38px 9px; }
   @keyframes tailWag { from { transform: rotate(-4deg); } to { transform: rotate(4deg); } }
 
   .fish1 .body { transform-box: fill-box; transform-origin: center; animation: bodyRoll 40s ease-in-out infinite; }
@@ -472,22 +462,6 @@
             </g>
           </svg>
         </div>
-        <div class="fish-wrap fw3">
-          <svg class="fish fish3" viewBox="0 0 50 18" aria-hidden="true">
-            <g class="body">
-              <path class="fish-belly" d="M3,11 C7,14 14,15.5 22,15.3 C29,15.1 34,13.8 38,11.5 L38,10.8 C34,12.8 29,13.9 22,14.1 C14,14.3 7,13.2 3,10.5 Z"/>
-              <path class="fish-accent" d="M2,9 C2,5 6,2 14,2 C24,2 32,3.5 38,6 C36,7.3 36,8.7 38,12 C32,14.5 24,16 14,16 C6,16 2,13 2,9 Z"/>
-              <path class="fish-accent" d="M16,3 L20,0 L23,4 Z"/>
-              <path class="fish-bars" d="M14,5 L14,12"/>
-              <path class="fish-bars" d="M20,4.5 L20,13"/>
-              <path class="fish-bars" d="M27,5 L27,12.5"/>
-              <circle class="fish-eye" cx="8" cy="7" r="1"/>
-            </g>
-            <g class="tail">
-              <path class="fish-accent" d="M38,6 C42,6.5 46,7.8 46,9 C46,10.2 42,11.5 38,12 C39.5,10.3 39.5,7.7 38,6 Z"/>
-            </g>
-          </svg>
-        </div>
         <div class="mullet-wrap mu1" aria-hidden="true">
           <svg class="mullet" viewBox="0 0 20 10"><path d="M1,5 C3,1 10,1 14,3 L19,0 L15,5 L19,10 L14,7 C10,9 3,9 1,5 Z"/></svg>
           <svg class="splash" viewBox="0 0 28 28"><circle cx="14" cy="14" r="13"/></svg>
@@ -546,7 +520,7 @@
     </div>
 
     <div class="moods" id="moods"></div>
-    <button class="btn" id="save" style="margin-top:18px" disabled>Save</button>
+    <button class="btn ghost" id="save" style="margin-top:18px" disabled>Save</button>
     <p class="reassure">Nothing you write here is judged.<br>It only has to be true.</p>
     <div class="daylist" id="today-entries"></div>
   </section>
@@ -986,10 +960,10 @@
     share.style.marginTop = '8px';
     share.addEventListener('click', () => shareDay(k));
     panel.appendChild(share);
-    const close = el('button', 'btn quiet mid', 'Close');
-    close.type = 'button'; close.style.marginTop = '10px';
-    close.addEventListener('click', () => closeSheet());
-    panel.appendChild(close);
+    const done = el('button', 'done', 'Done');
+    done.type = 'button'; done.setAttribute('aria-label', 'Close');
+    done.addEventListener('click', () => closeSheet());
+    panel.appendChild(done);
 
     back.addEventListener('click', () => closeSheet());
     let y0 = null;
