@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Feeling</title>
+<meta name="description" content="A private, chronological record of how you have been doing.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Feeling">
+<meta name="theme-color" content="#2f5476">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<style>
+  :root {
+    --bg: #f6f3ec; --card: #fffdf8; --ink: #24303a; --muted: #6d7883; --line: #e4dfd4;
+    --accent: #2f5476; --accent-ink: #fff; --danger: #a8443c; --chip: #ece7dc;
+    --m1: #c0554b; --m2: #d8905a; --m3: #b9b3a6; --m4: #7fa66a; --m5: #3f8f6c;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #171a1e; --card: #22262b; --ink: #e8e4dc; --muted: #9aa3ad; --line: #33393f; --accent: #7fa7cc; --accent-ink: #10161c; --chip: #2d3237; }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.45 -apple-system, "SF Pro Text", system-ui, sans-serif; -webkit-text-size-adjust: 100%; }
+  body { min-height: 100dvh; display: flex; flex-direction: column; }
+  main { flex: 1; padding: calc(12px + env(safe-area-inset-top)) 16px 96px; max-width: 640px; width: 100%; margin: 0 auto; }
+  h1 { font-size: 22px; margin: 4px 0 2px; font-weight: 700; letter-spacing: -0.01em; }
+  .sub { color: var(--muted); font-size: 14px; margin: 0 0 12px; }
+  .hidden { display: none !important; }
+  textarea, input[type=text], input[type=search], input[type=date], select {
+    width: 100%; font: inherit; font-size: 17px; color: var(--ink); background: var(--card);
+    border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; outline: none;
+  }
+  textarea { min-height: 150px; resize: vertical; line-height: 1.5; }
+  textarea:focus, input:focus { border-color: var(--accent); }
+  .moods { display: flex; gap: 6px; margin: 12px 0; }
+  .moods button { flex: 1; font-size: 26px; line-height: 1; padding: 10px 0; background: var(--card); border: 1px solid var(--line); border-radius: 12px; opacity: 0.55; transition: transform .1s; }
+  .moods button.on { opacity: 1; border-color: var(--accent); transform: scale(1.08); background: var(--chip); }
+  .btn { font: inherit; font-weight: 600; border: 0; border-radius: 12px; padding: 14px 18px; background: var(--accent); color: var(--accent-ink); width: 100%; }
+  .btn:disabled { opacity: 0.4; }
+  .btn.ghost { background: var(--chip); color: var(--ink); }
+  .btn.small { width: auto; padding: 8px 14px; font-size: 14px; }
+  .btn.danger { background: transparent; color: var(--danger); }
+  .row { display: flex; gap: 8px; align-items: center; }
+  .row > * { flex: 1; }
+  .chip { display: inline-block; font-size: 13px; padding: 4px 10px; border-radius: 999px; background: var(--chip); color: var(--ink); border: 0; font-family: inherit; }
+  .chip.on { background: var(--accent); color: var(--accent-ink); }
+  .daylist { margin-top: 20px; }
+  .day { margin-bottom: 18px; }
+  .dayhead { display: flex; justify-content: space-between; align-items: baseline; padding: 0 2px 6px; border-bottom: 1px solid var(--line); margin-bottom: 8px; }
+  .dayhead b { font-size: 15px; }
+  .dots { display: flex; gap: 4px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--m3); }
+  .dot.m1 { background: var(--m1); } .dot.m2 { background: var(--m2); } .dot.m3 { background: var(--m3); } .dot.m4 { background: var(--m4); } .dot.m5 { background: var(--m5); }
+  .dot.m0 { background: transparent; border: 1px solid var(--muted); }
+  .entry { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; margin-bottom: 8px; }
+  .entry .meta { font-size: 13px; color: var(--muted); display: flex; gap: 8px; align-items: center; margin-bottom: 4px; }
+  .entry .meta .face { font-size: 16px; }
+  .entry .text { white-space: pre-wrap; overflow-wrap: anywhere; }
+  .entry.clamped .text { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .entry .tools { display: flex; gap: 6px; margin-top: 8px; }
+  .entry textarea { margin-top: 6px; }
+  nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card); border-top: 1px solid var(--line); display: flex; padding: 6px 0 calc(6px + env(safe-area-inset-bottom)); }
+  nav button { flex: 1; background: none; border: 0; font: inherit; font-size: 13px; color: var(--muted); padding: 6px 0; }
+  nav button.on { color: var(--accent); font-weight: 700; }
+  nav button span { display: block; font-size: 22px; line-height: 1.1; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  .card h2 { font-size: 15px; margin: 0 0 8px; }
+  .card p { margin: 6px 0; font-size: 15px; color: var(--muted); }
+  .banner { background: #fbe9c9; color: #5b3d00; border-radius: 12px; padding: 10px 14px; font-size: 14px; margin-bottom: 12px; }
+  @media (prefers-color-scheme: dark) { .banner { background: #4a3a14; color: #ffe1a3; } }
+  .empty { color: var(--muted); text-align: center; padding: 30px 10px; font-size: 15px; }
+  .toast { position: fixed; left: 50%; bottom: 90px; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 8px 14px; border-radius: 999px; font-size: 14px; opacity: 0; transition: opacity .2s; pointer-events: none; }
+  .toast.show { opacity: 1; }
+  label.small { font-size: 13px; color: var(--muted); display: block; margin: 8px 0 4px; }
+  .stats { display: flex; gap: 8px; }
+  .stats div { flex: 1; text-align: center; background: var(--chip); border-radius: 10px; padding: 8px; }
+  .stats b { display: block; font-size: 20px; }
+  .stats span { font-size: 12px; color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <!-- TODAY -->
+  <section id="tab-today">
+    <h1 id="today-title">Today</h1>
+    <p class="sub row" style="justify-content:space-between">
+      <span id="today-date"></span>
+      <button class="chip" id="backdate" style="flex:0 0 auto">Yesterday</button>
+    </p>
+    <textarea id="text" placeholder="How are you doing? Tap the mic on the keyboard and just talk." autocapitalize="sentences"></textarea>
+    <div class="moods" id="moods">
+      <button data-m="1" aria-label="very bad">😞</button>
+      <button data-m="2" aria-label="bad">🙁</button>
+      <button data-m="3" aria-label="okay">😐</button>
+      <button data-m="4" aria-label="good">🙂</button>
+      <button data-m="5" aria-label="very good">😊</button>
+    </div>
+    <button class="btn" id="save" disabled>Save</button>
+    <div class="daylist" id="today-entries"></div>
+  </section>
+
+  <!-- HISTORY -->
+  <section id="tab-history" class="hidden">
+    <h1>History</h1>
+    <input type="search" id="search" placeholder="Search entries">
+    <p style="margin:10px 0 0; display:flex; gap:6px">
+      <button class="chip on" data-f="all">All</button>
+      <button class="chip" data-f="low">Bad days</button>
+      <button class="chip" data-f="high">Good days</button>
+      <button class="chip" data-f="session">Since session</button>
+    </p>
+    <div class="daylist" id="history"></div>
+  </section>
+
+  <!-- EXPORT -->
+  <section id="tab-export" class="hidden">
+    <h1>Export</h1>
+    <div id="backup-banner" class="banner hidden"></div>
+    <div class="card">
+      <h2>Sessions</h2>
+      <p id="session-info">No session marked yet.</p>
+      <button class="btn ghost small" id="mark-session">Mark a session today</button>
+    </div>
+    <div class="card">
+      <h2>Prepare for your psychologist</h2>
+      <label class="small">Range</label>
+      <select id="range">
+        <option value="session">Since last session</option>
+        <option value="30">Last 30 days</option>
+        <option value="90">Last 90 days</option>
+        <option value="all">Everything</option>
+        <option value="custom">Custom</option>
+      </select>
+      <div id="custom-range" class="hidden">
+        <label class="small">From</label><input type="date" id="from">
+        <label class="small">To</label><input type="date" id="to">
+      </div>
+      <p id="range-info"></p>
+      <div class="row" style="margin-top:10px">
+        <button class="btn" id="export-md">Share as text</button>
+        <button class="btn ghost" id="copy-md">Copy</button>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Backup</h2>
+      <p>Your entries live only on this phone. Save a backup now and then.</p>
+      <div class="stats" style="margin:8px 0">
+        <div><b id="st-entries">0</b><span>entries</span></div>
+        <div><b id="st-days">0</b><span>days</span></div>
+        <div><b id="st-first">–</b><span>first entry</span></div>
+      </div>
+      <div class="row">
+        <button class="btn ghost" id="export-json">Save backup</button>
+        <button class="btn ghost" id="import-json">Restore</button>
+      </div>
+      <input type="file" id="import-file" accept="application/json,.json" class="hidden">
+      <p id="last-export" style="margin-top:8px"></p>
+    </div>
+    <div class="card">
+      <h2>About</h2>
+      <p>No account, no server, no AI. Nothing leaves this phone unless you share or back it up yourself.</p>
+    </div>
+  </section>
+</main>
+
+<nav>
+  <button data-tab="today" class="on"><span>✎</span>Today</button>
+  <button data-tab="history"><span>☰</span>History</button>
+  <button data-tab="export"><span>⇪</span>Export</button>
+</nav>
+<div class="toast" id="toast"></div>
+
+<script>
+(() => {
+  const KEY = 'feeling.v1';
+  const FACES = ['', '😞', '🙁', '😐', '🙂', '😊'];
+  const WORDS = ['', 'very bad', 'bad', 'okay', 'good', 'very good'];
+  const DAY_START_HOUR = 4;
+
+  // ---------- storage ----------
+  let db = load();
+  function load() {
+    try { const s = JSON.parse(localStorage.getItem(KEY) || 'null'); if (s && s.entries) return s; } catch (e) {}
+    return { entries: [], sessions: [], lastExport: 0, draft: null };
+  }
+  function save() { localStorage.setItem(KEY, JSON.stringify(db)); }
+  if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
+
+  // ---------- dates ----------
+  const pad = (n) => String(n).padStart(2, '0');
+  function dayKey(ts) { const d = new Date(ts - DAY_START_HOUR * 3600e3); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; }
+  function keyToDate(k) { const [y, m, d] = k.split('-').map(Number); return new Date(y, m - 1, d, 12); }
+  function shiftKey(k, days) { const d = keyToDate(k); d.setDate(d.getDate() + days); return dayKey(d.getTime()); }
+  function fmtDay(k, long) { return keyToDate(k).toLocaleDateString(undefined, long ? { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' } : { weekday: 'short', day: 'numeric', month: 'short' }); }
+  function fmtTime(ts) { const d = new Date(ts); return `${pad(d.getHours())}:${pad(d.getMinutes())}`; }
+  const todayKey = () => dayKey(Date.now());
+
+  // ---------- helpers ----------
+  const $ = (s) => document.querySelector(s);
+  const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+  const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  let toastT; function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 1800); }
+  function groupByDay(entries) {
+    const map = new Map();
+    for (const e of entries) { if (!map.has(e.day)) map.set(e.day, []); map.get(e.day).push(e); }
+    for (const list of map.values()) list.sort((a, b) => a.ts - b.ts);
+    return [...map.entries()].sort((a, b) => (a[0] < b[0] ? 1 : -1));
+  }
+
+  // ---------- today tab ----------
+  const text = $('#text'), saveBtn = $('#save'), moodsEl = $('#moods'), backdateBtn = $('#backdate');
+  let mood = 0, backdated = false;
+
+  function restoreDraft() {
+    const d = db.draft; if (!d) return;
+    text.value = d.text || ''; mood = d.mood || 0; backdated = !!d.backdated;
+  }
+  function storeDraft() { db.draft = { text: text.value, mood, backdated }; save(); }
+  function targetDay() { return backdated ? shiftKey(todayKey(), -1) : todayKey(); }
+  function renderTodayHead() {
+    $('#today-title').textContent = backdated ? 'Yesterday' : 'Today';
+    $('#today-date').textContent = fmtDay(targetDay(), true);
+    backdateBtn.textContent = backdated ? 'Back to today' : 'Yesterday';
+    backdateBtn.classList.toggle('on', backdated);
+    [...moodsEl.children].forEach((b) => b.classList.toggle('on', Number(b.dataset.m) === mood));
+    saveBtn.disabled = text.value.trim().length === 0;
+  }
+  text.addEventListener('input', () => { renderTodayHead(); storeDraft(); });
+  moodsEl.addEventListener('click', (e) => {
+    const b = e.target.closest('button'); if (!b) return;
+    const m = Number(b.dataset.m); mood = mood === m ? 0 : m; renderTodayHead(); storeDraft();
+  });
+  backdateBtn.addEventListener('click', () => { backdated = !backdated; renderTodayHead(); renderTodayEntries(); storeDraft(); });
+  saveBtn.addEventListener('click', () => {
+    const t = text.value.trim(); if (!t) return;
+    const day = targetDay();
+    const ts = backdated ? keyToDate(day).setHours(23, 0, 0, 0) : Date.now();
+    db.entries.push({ id: uid(), ts, day, text: t, mood, edited: 0 });
+    text.value = ''; mood = 0; backdated = false; db.draft = null; save();
+    renderTodayHead(); renderTodayEntries(); text.blur(); toast('Saved');
+  });
+  function renderTodayEntries() {
+    const box = $('#today-entries'); box.innerHTML = '';
+    const list = db.entries.filter((e) => e.day === targetDay()).sort((a, b) => b.ts - a.ts);
+    if (!list.length) return;
+    box.appendChild(el('p', 'sub', `Earlier ${backdated ? 'that day' : 'today'}`));
+    for (const e of list) box.appendChild(entryCard(e, false));
+  }
+
+  // ---------- entry card (shared) ----------
+  function entryCard(e, clamped) {
+    const card = el('div', 'entry' + (clamped ? ' clamped' : ''));
+    const meta = el('div', 'meta');
+    meta.appendChild(el('span', null, fmtTime(e.ts) + (e.backfilled ? '' : '')));
+    if (e.mood) { const f = el('span', 'face', FACES[e.mood]); f.title = WORDS[e.mood]; meta.appendChild(f); }
+    if (e.edited) meta.appendChild(el('span', null, 'edited'));
+    card.appendChild(meta);
+    const body = el('div', 'text', e.text); card.appendChild(body);
+    let editing = false;
+    card.addEventListener('click', (ev) => {
+      if (editing || ev.target.closest('button')) return;
+      if (card.classList.contains('clamped')) { card.classList.remove('clamped'); return; }
+      if (!card.querySelector('.tools')) {
+        const tools = el('div', 'tools');
+        const edit = el('button', 'btn ghost small', 'Edit'); const del = el('button', 'btn danger small', 'Delete');
+        tools.append(edit, del); card.appendChild(tools);
+        edit.addEventListener('click', () => {
+          editing = true; tools.remove(); body.classList.add('hidden');
+          const ta = el('textarea'); ta.value = e.text; card.appendChild(ta);
+          const mrow = el('div', 'moods');
+          for (let m = 1; m <= 5; m++) { const b = el('button', e.mood === m ? 'on' : '', FACES[m]); b.dataset.m = m; mrow.appendChild(b); }
+          let nm = e.mood;
+          mrow.addEventListener('click', (x) => { const b = x.target.closest('button'); if (!b) return; nm = nm === Number(b.dataset.m) ? 0 : Number(b.dataset.m); [...mrow.children].forEach((c) => c.classList.toggle('on', Number(c.dataset.m) === nm)); });
+          card.appendChild(mrow);
+          const r = el('div', 'row'); const ok = el('button', 'btn small', 'Save'); const cancel = el('button', 'btn ghost small', 'Cancel'); r.append(ok, cancel); card.appendChild(r);
+          ok.addEventListener('click', () => {
+            const nt = ta.value.trim(); if (!nt) return;
+            if (nt !== e.text || nm !== e.mood) { e.text = nt; e.mood = nm; e.edited = Date.now(); save(); }
+            renderAll(); toast('Updated');
+          });
+          cancel.addEventListener('click', () => renderAll());
+        });
+        del.addEventListener('click', () => {
+          if (!confirm('Delete this entry? This cannot be undone.')) return;
+          db.entries = db.entries.filter((x) => x.id !== e.id); save(); renderAll(); toast('Deleted');
+        });
+      } else { card.querySelector('.tools').remove(); }
+    });
+    return card;
+  }
+
+  // ---------- history tab ----------
+  let filter = 'all';
+  $('#tab-history').querySelectorAll('.chip').forEach((c) => c.addEventListener('click', () => {
+    filter = c.dataset.f; $('#tab-history').querySelectorAll('.chip').forEach((x) => x.classList.toggle('on', x === c)); renderHistory();
+  }));
+  $('#search').addEventListener('input', renderHistory);
+  function lastSession() { return db.sessions.length ? db.sessions[db.sessions.length - 1] : null; }
+  function renderHistory() {
+    const box = $('#history'); box.innerHTML = '';
+    const q = $('#search').value.trim().toLowerCase();
+    let list = db.entries;
+    if (q) list = list.filter((e) => e.text.toLowerCase().includes(q));
+    if (filter === 'session') { const s = lastSession(); list = s ? list.filter((e) => e.day >= s) : list; }
+    let days = groupByDay(list);
+    if (filter === 'low') days = days.filter(([, es]) => es.some((e) => e.mood && e.mood <= 2));
+    if (filter === 'high') days = days.filter(([, es]) => es.some((e) => e.mood >= 4));
+    if (!days.length) { box.appendChild(el('div', 'empty', db.entries.length ? 'Nothing matches.' : 'No entries yet. Your record starts on the Today tab.')); return; }
+    for (const [k, es] of days) {
+      const d = el('div', 'day'); const h = el('div', 'dayhead'); h.appendChild(el('b', null, fmtDay(k, false)));
+      const dots = el('div', 'dots'); for (const e of es) dots.appendChild(el('span', 'dot m' + (e.mood || 0)));
+      h.appendChild(dots); d.appendChild(h);
+      for (const e of es) d.appendChild(entryCard(e, true));
+      box.appendChild(d);
+    }
+  }
+
+  // ---------- export tab ----------
+  const rangeSel = $('#range');
+  rangeSel.addEventListener('change', () => { $('#custom-range').classList.toggle('hidden', rangeSel.value !== 'custom'); renderExport(); });
+  $('#from').addEventListener('change', renderExport); $('#to').addEventListener('change', renderExport);
+  $('#mark-session').addEventListener('click', () => {
+    const k = todayKey(); if (db.sessions.includes(k)) { toast('Already marked'); return; }
+    db.sessions.push(k); db.sessions.sort(); save(); renderExport(); toast('Session marked');
+  });
+  function rangeBounds() {
+    const v = rangeSel.value, t = todayKey();
+    if (v === 'session') { const s = lastSession(); return [s || '0000', t]; }
+    if (v === 'all') return ['0000', '9999'];
+    if (v === 'custom') return [$('#from').value || '0000', $('#to').value || '9999'];
+    return [shiftKey(t, -Number(v)), t];
+  }
+  function rangeEntries() { const [a, b] = rangeBounds(); return db.entries.filter((e) => e.day >= a && e.day <= b); }
+  function toMarkdown(entries) {
+    const days = groupByDay(entries).reverse();
+    let out = `# Feeling record\n\nExported ${new Date().toLocaleDateString()} · ${entries.length} entries over ${days.length} days\n\n`;
+    for (const [k, es] of days) {
+      out += `## ${fmtDay(k, true)}\n\n`;
+      for (const e of es) out += `**${fmtTime(e.ts)}**${e.mood ? ` · ${FACES[e.mood]} ${WORDS[e.mood]}` : ''}${e.edited ? ' · edited' : ''}\n\n${e.text}\n\n`;
+    }
+    for (const s of db.sessions) if (days.some(([k]) => k >= s)) out += `\n_Psychologist session on ${fmtDay(s, true)}_\n`;
+    return out;
+  }
+  async function shareOrDownload(blob, filename, label) {
+    const file = new File([blob], filename, { type: blob.type });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try { await navigator.share({ files: [file], title: label }); return true; } catch (e) { if (e.name === 'AbortError') return false; }
+    }
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000); return true;
+  }
+  $('#export-md').addEventListener('click', async () => {
+    const es = rangeEntries(); if (!es.length) { toast('No entries in this range'); return; }
+    const ok = await shareOrDownload(new Blob([toMarkdown(es)], { type: 'text/markdown' }), `feeling-${todayKey()}.md`, 'Feeling record');
+    if (ok) toast('Shared');
+  });
+  $('#copy-md').addEventListener('click', async () => {
+    const es = rangeEntries(); if (!es.length) { toast('No entries in this range'); return; }
+    try { await navigator.clipboard.writeText(toMarkdown(es)); toast('Copied'); } catch (e) { toast('Copy not allowed here'); }
+  });
+  $('#export-json').addEventListener('click', async () => {
+    const data = { app: 'feeling', version: 1, exportedAt: new Date().toISOString(), entries: db.entries, sessions: db.sessions };
+    const ok = await shareOrDownload(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }), `feeling-backup-${todayKey()}.json`, 'Feeling backup');
+    if (ok) { db.lastExport = Date.now(); save(); renderExport(); toast('Backup saved'); }
+  });
+  $('#import-json').addEventListener('click', () => $('#import-file').click());
+  $('#import-file').addEventListener('change', async (ev) => {
+    const f = ev.target.files[0]; if (!f) return;
+    try {
+      const data = JSON.parse(await f.text());
+      if (!Array.isArray(data.entries)) throw new Error('bad');
+      const have = new Set(db.entries.map((e) => e.id)); let added = 0;
+      for (const e of data.entries) if (e && e.id && !have.has(e.id)) { db.entries.push(e); added++; }
+      for (const s of data.sessions || []) if (!db.sessions.includes(s)) db.sessions.push(s);
+      db.sessions.sort(); save(); renderAll(); toast(`Restored ${added} new entries`);
+    } catch (e) { toast('That file is not a Feeling backup'); }
+    ev.target.value = '';
+  });
+  function renderExport() {
+    const s = lastSession();
+    $('#session-info').textContent = s ? `Last session: ${fmtDay(s, true)}. ${db.sessions.length} marked in total.` : 'No session marked yet. Mark one after each appointment so "since last session" works.';
+    const es = rangeEntries(); const days = new Set(es.map((e) => e.day)).size;
+    $('#range-info').textContent = es.length ? `${es.length} entries over ${days} days in this range.` : 'No entries in this range.';
+    $('#st-entries').textContent = db.entries.length;
+    $('#st-days').textContent = new Set(db.entries.map((e) => e.day)).size;
+    const first = db.entries.length ? db.entries.reduce((m, e) => (e.day < m ? e.day : m), '9999') : null;
+    $('#st-first').textContent = first ? fmtDay(first, false) : '–';
+    $('#last-export').textContent = db.lastExport ? `Last backup: ${new Date(db.lastExport).toLocaleDateString()}` : 'No backup yet.';
+    const stale = db.entries.length && (!db.lastExport || Date.now() - db.lastExport > 14 * 864e5);
+    $('#backup-banner').classList.toggle('hidden', !stale);
+    $('#backup-banner').textContent = db.lastExport ? `Your last backup was ${Math.floor((Date.now() - db.lastExport) / 864e5)} days ago.` : 'You have entries but no backup yet. Save one below.';
+  }
+
+  // ---------- tabs ----------
+  document.querySelectorAll('nav button').forEach((b) => b.addEventListener('click', () => showTab(b.dataset.tab)));
+  function showTab(name) {
+    ['today', 'history', 'export'].forEach((t) => { $('#tab-' + t).classList.toggle('hidden', t !== name); });
+    document.querySelectorAll('nav button').forEach((b) => b.classList.toggle('on', b.dataset.tab === name));
+    window.scrollTo(0, 0);
+    if (name === 'history') renderHistory(); if (name === 'export') renderExport();
+  }
+  function renderAll() { renderTodayHead(); renderTodayEntries(); renderHistory(); renderExport(); }
+
+  // ---------- boot ----------
+  restoreDraft(); renderAll();
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) { db = load(); restoreDraft(); renderAll(); } });
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+})();
+</script>
+</body>
+</html>
