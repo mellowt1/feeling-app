@@ -263,11 +263,6 @@
     100%    { transform: scaleY(1); }
   }
 
-  .waves svg.mangrove { position: absolute; left: 0; bottom: 34%; width: 100px; height: 122px; pointer-events: none; overflow: visible; }
-  .mangrove .canopy { transform-box: fill-box; transform-origin: bottom center; animation: leafSway 7s ease-in-out infinite alternate; }
-  .mangrove .canopy path { fill: var(--silhouette); opacity: .35; }
-  .mangrove .roots path { fill: none; stroke: var(--silhouette); stroke-opacity: .45; stroke-linecap: round; }
-  @keyframes leafSway { from { transform: rotate(-1deg); } to { transform: rotate(1deg); } }
 
   .waves .mullet-wrap { position: absolute; bottom: 40%; pointer-events: none; }
   .waves .mullet-wrap.mu1 { left: 30%; }
@@ -413,28 +408,6 @@
     <div class="waves" aria-hidden="true">
       <div class="wave-wrap">
         <svg class="w1" viewBox="0 0 1200 200" preserveAspectRatio="none"><path class="w1" d="M0,60 C150,42 150,78 300,60 C450,42 450,78 600,60 C750,42 750,78 900,60 C1050,42 1050,78 1200,60 L1200,200 L0,200 Z"/></svg>
-        <svg class="mangrove" viewBox="0 0 90 110" aria-hidden="true">
-          <g class="roots">
-            <path d="M42 24C41 32 41 38 42 48" stroke-width="5"/>
-            <path d="M41 40C30 44 20 53 14 76" stroke-width="3"/>
-            <path d="M44 40C55 44 65 53 71 80" stroke-width="2.8"/>
-            <path d="M41 46C33 50 25 60 22 86" stroke-width="2.6"/>
-            <path d="M44 46C52 51 59 62 62 90" stroke-width="2.6"/>
-            <path d="M42 50C40 64 39 76 40 98" stroke-width="3"/>
-            <path d="M14 76C18 69 25 69 30 76" stroke-width="1.8"/>
-            <path d="M71 80C67 72 59 72 54 79" stroke-width="1.8"/>
-            <path d="M22 86C26 80 32 81 35 88" stroke-width="1.5"/>
-            <path d="M62 90C58 83 52 83 48 89" stroke-width="1.5"/>
-            <path d="M30 76C31 84 31 92 30 100" stroke-width="1.6"/>
-            <path d="M54 79C54 87 55 94 54 102" stroke-width="1.6"/>
-          </g>
-          <g class="canopy">
-            <path d="M4 22C-1 18.5 0.999995 11 8 9.50003C10.5 3.50003 19 1.50003 25 5.00003C29.5 0.500027 39 0.500027 43.5 5.50003C49 1.00003 59 2.00003 62 7.50003C70 5.00003 80 9.00003 79.5 15C86.5 17 86 24 79 25.5C70 27.5 58 26 51 27.5C43 29 33 28 25 26.5C17 28 8 26.5 4 22Z"/>
-            <path d="M13 25.5C17 29.5 23 31 28 29.5C22.5 32.5 15.5 30.5 13 25.5Z"/>
-            <path d="M36 27.5C40 31.5 46 32.5 51 31C45.5 34 38.5 32.5 36 27.5Z"/>
-            <path d="M62 25C66 29 71 30 76 28.5C70.5 31.5 64.5 30 62 25Z"/>
-          </g>
-        </svg>
         <svg class="w2" viewBox="0 0 1200 200" preserveAspectRatio="none"><path class="w2" d="M0,60 C150,42 150,78 300,60 C450,42 450,78 600,60 C750,42 750,78 900,60 C1050,42 1050,78 1200,60 L1200,200 L0,200 Z"/></svg>
         <svg class="dock" viewBox="0 0 210 120" aria-hidden="true">
           <g class="dock-figure">
