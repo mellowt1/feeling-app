@@ -30,7 +30,7 @@
   html, body { margin: 0; color: var(--ink); font: 17px/1.45 -apple-system, "SF Pro Text", system-ui, sans-serif; -webkit-text-size-adjust: 100%; }
   body { min-height: 100dvh; display: flex; flex-direction: column; background: linear-gradient(var(--sky-top) 0px, var(--bg) 220px); }
   main { flex: 1; padding: calc(12px + env(safe-area-inset-top)) 16px 96px; max-width: 640px; width: 100%; margin: 0 auto; position: relative; z-index: 1; }
-  h1 { font-size: 22px; margin: 4px 0 2px; font-weight: 700; letter-spacing: -0.01em; }
+  h1 { font-family: ui-serif, "New York", Georgia, serif; font-size: 28px; margin: 4px 0 2px; font-weight: 500; letter-spacing: -0.01em; }
   .sub { color: var(--muted); font-size: 14px; margin: 0 0 12px; }
   .hidden { display: none !important; }
   textarea, input[type=text], input[type=search], input[type=date], select {
@@ -40,8 +40,20 @@
   textarea { min-height: 150px; resize: vertical; line-height: 1.5; }
   textarea:focus, input:focus { border-color: var(--accent); }
   .moods { display: flex; gap: 6px; margin: 12px 0; }
-  .moods button { flex: 1; font-size: 26px; line-height: 1; padding: 10px 0; background: var(--card); border: 1px solid var(--line); border-radius: 12px; opacity: 0.55; transition: transform .1s; }
-  .moods button.on { opacity: 1; border-color: var(--accent); transform: scale(1.08); background: var(--chip); }
+  .moods button { flex: 1; display: flex; align-items: center; justify-content: center; padding: 4px 0; background: transparent; border: 0; border-radius: 50%; transition: transform .1s; }
+  .moods button svg { width: 56px; height: 56px; }
+  .moods button[data-m="1"] { color: var(--m1); }
+  .moods button[data-m="2"] { color: var(--m2); }
+  .moods button[data-m="3"] { color: var(--m3); }
+  .moods button[data-m="4"] { color: var(--m4); }
+  .moods button[data-m="5"] { color: var(--m5); }
+  .moods .mood-bg { fill: currentColor; fill-opacity: .18; stroke: currentColor; stroke-opacity: .6; stroke-width: 1.5; }
+  .moods .mood-eye { fill: currentColor; }
+  .moods .mood-mouth { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .moods button.on { transform: scale(1.05); box-shadow: 0 0 0 2px var(--accent); border-radius: 50%; }
+  .moods button.on .mood-bg { fill-opacity: 1; }
+  .moods button.on .mood-eye { fill: var(--card); }
+  .moods button.on .mood-mouth { stroke: var(--card); }
   .btn { font: inherit; font-weight: 600; border: 0; border-radius: 12px; padding: 14px 18px; background: var(--accent); color: var(--accent-ink); width: 100%; }
   .btn:disabled { opacity: 0.4; }
   .btn.ghost { background: var(--chip); color: var(--ink); }
@@ -68,7 +80,7 @@
   .entry textarea { margin-top: 6px; }
   nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card); border-top: 1px solid var(--line); display: flex; padding: 6px 0 calc(6px + env(safe-area-inset-bottom)); z-index: 2; }
   .waves { position: fixed; left: 0; right: 0; bottom: 0; height: 34vh; pointer-events: none; z-index: 0; overflow: hidden; }
-  .waves .wave-wrap { position: absolute; inset: 0; animation: bob 6s ease-in-out infinite alternate; }
+  .waves .wave-wrap { position: absolute; inset: 0; animation: bob 3s ease-in-out infinite alternate; }
   .waves svg { position: absolute; bottom: 0; left: 0; width: 200%; height: 100%; }
   .waves svg.w1 { animation: drift 14s linear infinite; }
   .waves svg.w2 { animation: drift 11s linear infinite; }
@@ -77,36 +89,41 @@
   .waves path.w2 { fill: var(--accent); opacity: 0.16; }
   .waves path.w3 { fill: var(--accent); opacity: 0.24; }
   @keyframes drift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-  @keyframes bob { from { transform: translateY(0); } to { transform: translateY(4px); } }
-  @media (prefers-reduced-motion: reduce) { .waves * { animation: none !important; } }
+  @keyframes bob { from { transform: translateY(0); } to { transform: translateY(-4px); } }
+  @media (prefers-reduced-motion: reduce) { .waves *, .waves-faint, .waves-faint svg { animation: none !important; } }
+
+  /* faint wave band shown only on History / Export tabs */
+  .waves-faint { position: fixed; left: 0; right: 0; bottom: 0; height: 120px; pointer-events: none; z-index: 0; overflow: hidden; animation: bob 3s ease-in-out infinite alternate; }
+  .waves-faint svg { position: absolute; bottom: 0; left: 0; width: 200%; height: 100%; animation: drift 14s linear infinite; }
+  .waves-faint path { fill: var(--accent); opacity: 0.08; }
 
   /* ---------- decorative sky layers (Today tab only) ---------- */
-  .sky-breathe { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(circle at 50% 0%, var(--sky-top), transparent 70%); opacity: 0; animation: breathe 8s ease-in-out infinite alternate; }
-  @keyframes breathe { from { opacity: 0; } to { opacity: 0.35; } }
+  .sky-breathe { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(circle at 50% 50%, var(--sky-top), transparent 70%); opacity: 0; animation: breathe 10s ease-in-out infinite alternate; }
+  @keyframes breathe { from { opacity: 0; } to { opacity: 0.30; } }
 
   .clouds { position: fixed; top: 0; left: 0; right: 0; height: 220px; pointer-events: none; z-index: 0; overflow: hidden; }
-  .cloud { position: absolute; top: 30px; background: rgba(255,255,255,0.35); border-radius: 50%; filter: blur(6px); animation: cloudDrift linear infinite; }
-  .cloud::before, .cloud::after { content: ""; position: absolute; background: rgba(255,255,255,0.35); border-radius: 50%; }
+  .cloud { position: absolute; top: 30px; background: rgba(255,255,255,0.75); border-radius: 50%; filter: blur(6px); animation: cloudDrift linear infinite; }
+  .cloud::before, .cloud::after { content: ""; position: absolute; background: rgba(255,255,255,0.75); border-radius: 50%; }
   @media (prefers-color-scheme: dark) {
-    .cloud, .cloud::before, .cloud::after { background: rgba(255,255,255,0.06); }
+    .cloud, .cloud::before, .cloud::after { background: rgba(255,255,255,0.12); }
   }
   .cloud.c1 { top: 20px; width: 180px; height: 50px; animation-duration: 90s; animation-delay: -10s; }
   .cloud.c1::before { width: 90px; height: 60px; left: 20px; top: -25px; }
   .cloud.c1::after { width: 70px; height: 46px; left: 100px; top: -14px; }
-  .cloud.c2 { top: 90px; width: 120px; height: 36px; animation-duration: 70s; animation-delay: -35s; }
+  .cloud.c2 { top: 90px; width: 120px; height: 36px; animation-duration: 100s; animation-delay: -35s; }
   .cloud.c2::before { width: 60px; height: 40px; left: 15px; top: -18px; }
   .cloud.c2::after { width: 50px; height: 32px; left: 65px; top: -10px; }
-  .cloud.c3 { top: 150px; width: 220px; height: 60px; animation-duration: 110s; animation-delay: -60s; }
+  .cloud.c3 { top: 150px; width: 220px; height: 60px; animation-duration: 120s; animation-delay: -60s; }
   .cloud.c3::before { width: 110px; height: 70px; left: 25px; top: -30px; }
   .cloud.c3::after { width: 80px; height: 54px; left: 130px; top: -16px; }
   @keyframes cloudDrift { from { transform: translateX(110vw); } to { transform: translateX(-60vw); } }
 
-  .orb { position: fixed; width: 120px; height: 120px; border-radius: 50%; pointer-events: none; z-index: 0; filter: blur(14px); opacity: 0; transition: opacity 2s; animation: orbPulse 20s ease-in-out infinite alternate; }
-  html[data-sky="morning"] .orb { opacity: 1; top: 70px; right: -20px; background: radial-gradient(circle, rgba(242,217,166,0.7), transparent 70%); }
+  .orb { position: fixed; width: 120px; height: 120px; border-radius: 50%; pointer-events: none; z-index: 0; filter: blur(14px); opacity: 0; transition: opacity 2s; animation: orbPulse 40s ease-in-out infinite alternate; }
+  html[data-sky="morning"] .orb { opacity: 1; top: 18px; right: -20px; background: radial-gradient(circle, rgba(242,217,166,0.7), transparent 70%); }
   html[data-sky="day"] .orb { opacity: 0; }
-  html[data-sky="evening"] .orb { opacity: 1; top: 110px; left: -30px; background: radial-gradient(circle, rgba(233,194,160,0.6), transparent 70%); }
-  html[data-sky="night"] .orb { opacity: 1; top: 60px; right: 10px; width: 90px; height: 90px; background: radial-gradient(circle, rgba(221,230,234,0.45), transparent 70%); }
-  @keyframes orbPulse { from { transform: scale(1); } to { transform: scale(1.06); } }
+  html[data-sky="evening"] .orb { opacity: 1; top: 22px; left: -30px; background: radial-gradient(circle, rgba(233,194,160,0.6), transparent 70%); }
+  html[data-sky="night"] .orb { opacity: 1; top: 26px; right: 10px; width: 90px; height: 90px; background: radial-gradient(circle, rgba(221,230,234,0.45), transparent 70%); }
+  @keyframes orbPulse { from { transform: scale(1); } to { transform: scale(1.05); } }
 
   #rain-toggle { position: absolute; top: calc(10px + env(safe-area-inset-top)); right: 16px; width: 34px; height: 34px; border-radius: 50%; border: 0; background: var(--chip); opacity: 0.5; display: flex; align-items: center; justify-content: center; padding: 0; z-index: 3; }
   #rain-toggle svg { width: 18px; height: 18px; }
@@ -120,11 +137,11 @@
   html.rain .waves .wave-wrap { animation: bobRain 4s ease-in-out infinite alternate; }
   @keyframes bobRain { from { transform: translateY(0); } to { transform: translateY(8px); } }
 
-  .ripple { position: absolute; width: 20px; height: 20px; margin-left: -10px; margin-top: -10px; border-radius: 50%; border: 2px solid rgba(63,110,122,0.5); transform: scale(1); opacity: 0.6; animation: rippleOut 1.6s ease-out forwards; pointer-events: none; z-index: 0; }
-  @keyframes rippleOut { to { transform: scale(14); opacity: 0; } }
+  .ripple { position: fixed; width: 20px; height: 20px; margin-left: -10px; margin-top: -10px; border-radius: 50%; border: 2px solid rgba(63,110,122,0.5); transform: scale(1); opacity: 0.6; animation: rippleOut 4.5s ease-out forwards; pointer-events: none; z-index: 5; }
+  @keyframes rippleOut { to { transform: scale(12); opacity: 0; } }
 
   @media (prefers-reduced-motion: reduce) {
-    .sky-breathe, .cloud, .orb, div.rain span, .ripple { animation: none !important; }
+    .sky-breathe, .cloud, .orb, div.rain span, .ripple, .waves-faint, .waves-faint svg { animation: none !important; }
     .sky-breathe { opacity: 0.2; }
     .orb { transform: none; }
   }
@@ -181,11 +198,11 @@
     <textarea id="text" placeholder="How are you doing? Tap the mic on the keyboard and just talk." autocapitalize="sentences"></textarea>
     <p class="sub" style="margin:8px 2px 0">Nothing you write here is judged. It only has to be true.</p>
     <div class="moods" id="moods">
-      <button data-m="1" aria-label="very bad">😞</button>
-      <button data-m="2" aria-label="bad">🙁</button>
-      <button data-m="3" aria-label="okay">😐</button>
-      <button data-m="4" aria-label="good">🙂</button>
-      <button data-m="5" aria-label="very good">😊</button>
+      <button data-m="1" aria-label="very bad"><svg viewBox="0 0 28 28"><circle class="mood-bg" cx="14" cy="14" r="13"/><circle class="mood-eye" cx="10" cy="11.5" r="1.5"/><circle class="mood-eye" cx="18" cy="11.5" r="1.5"/><path class="mood-mouth" d="M9 21.5 Q14 15.5 19 21.5"/></svg></button>
+      <button data-m="2" aria-label="bad"><svg viewBox="0 0 28 28"><circle class="mood-bg" cx="14" cy="14" r="13"/><circle class="mood-eye" cx="10" cy="11.5" r="1.5"/><circle class="mood-eye" cx="18" cy="11.5" r="1.5"/><path class="mood-mouth" d="M9 20.5 Q14 17 19 20.5"/></svg></button>
+      <button data-m="3" aria-label="okay"><svg viewBox="0 0 28 28"><circle class="mood-bg" cx="14" cy="14" r="13"/><circle class="mood-eye" cx="10" cy="11.5" r="1.5"/><circle class="mood-eye" cx="18" cy="11.5" r="1.5"/><path class="mood-mouth" d="M9.5 19.5 L18.5 19.5"/></svg></button>
+      <button data-m="4" aria-label="good"><svg viewBox="0 0 28 28"><circle class="mood-bg" cx="14" cy="14" r="13"/><circle class="mood-eye" cx="10" cy="11.5" r="1.5"/><circle class="mood-eye" cx="18" cy="11.5" r="1.5"/><path class="mood-mouth" d="M9 18.5 Q14 22 19 18.5"/></svg></button>
+      <button data-m="5" aria-label="very good"><svg viewBox="0 0 28 28"><circle class="mood-bg" cx="14" cy="14" r="13"/><circle class="mood-eye" cx="10" cy="11.5" r="1.5"/><circle class="mood-eye" cx="18" cy="11.5" r="1.5"/><path class="mood-mouth" d="M9 17.5 Q14 23.5 19 17.5"/></svg></button>
     </div>
     <button class="btn" id="save" disabled>Save</button>
     <div class="daylist" id="today-entries"></div>
@@ -193,6 +210,7 @@
 
   <!-- HISTORY -->
   <section id="tab-history" class="hidden">
+    <div class="waves-faint" aria-hidden="true"><svg viewBox="0 0 1200 200" preserveAspectRatio="none"><path d="M0,60 C150,42 150,78 300,60 C450,42 450,78 600,60 C750,42 750,78 900,60 C1050,42 1050,78 1200,60 L1200,200 L0,200 Z"/></svg></div>
     <h1>History</h1>
     <input type="search" id="search" placeholder="Search entries">
     <p style="margin:10px 0 0; display:flex; gap:6px">
@@ -206,6 +224,7 @@
 
   <!-- EXPORT -->
   <section id="tab-export" class="hidden">
+    <div class="waves-faint" aria-hidden="true"><svg viewBox="0 0 1200 200" preserveAspectRatio="none"><path d="M0,60 C150,42 150,78 300,60 C450,42 450,78 600,60 C750,42 750,78 900,60 C1050,42 1050,78 1200,60 L1200,200 L0,200 Z"/></svg></div>
     <h1>Export</h1>
     <div id="backup-banner" class="banner hidden"></div>
     <div class="card">
@@ -518,14 +537,19 @@
     const box = document.createElement('div');
     box.className = 'rain';
     box.setAttribute('aria-hidden', 'true');
-    for (let i = 0; i < 14; i++) {
+    // x positions as % of a 390px-wide viewport, per motion spec
+    const xs = [18, 46, 63, 77, 104, 131, 158, 186, 213, 241, 268, 296, 323, 351];
+    const vh = window.innerHeight || 812;
+    const dur = (vh + 100) / 23; // fall speed 23px/s
+    xs.forEach((x, i) => {
       const drop = document.createElement('span');
-      drop.style.left = (Math.random() * 100) + 'vw';
-      const dur = 9 + Math.random() * 5;
+      drop.style.left = (x / 390 * 100) + '%';
+      const stagger = (i % 7) * 0.9; // 0 to 5.4s in 0.9s steps
+      const phase = -(Math.random() * dur); // randomised initial phase
       drop.style.animationDuration = dur.toFixed(2) + 's';
-      drop.style.animationDelay = (-Math.random() * dur).toFixed(2) + 's';
+      drop.style.animationDelay = (phase + stagger).toFixed(2) + 's';
       box.appendChild(drop);
-    }
+    });
     return box;
   }
   function applyRain(on) {
@@ -547,15 +571,13 @@
   const saveBtn = document.getElementById('save');
   saveBtn.addEventListener('click', () => {
     if (saveBtn.disabled) return;
-    const waves = document.querySelector('#tab-today .waves') || document.body;
     const btnRect = saveBtn.getBoundingClientRect();
-    const wavesRect = waves.getBoundingClientRect();
     const ripple = document.createElement('span');
     ripple.className = 'ripple';
-    ripple.style.left = (btnRect.left + btnRect.width / 2 - wavesRect.left) + 'px';
-    ripple.style.top = '0px';
-    waves.appendChild(ripple);
-    setTimeout(() => ripple.remove(), 1700);
+    ripple.style.left = (btnRect.left + btnRect.width / 2) + 'px';
+    ripple.style.top = (btnRect.top + btnRect.height / 2) + 'px';
+    document.body.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 4600);
   }, true);
 })();
 </script>
