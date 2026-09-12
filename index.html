@@ -1335,7 +1335,14 @@
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden) { db = load(); restoreDraft(); syncMoodRow(); renderAll(); }
   });
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+  if ('serviceWorker' in navigator) {
+    // A new version installs in the background; once it takes over, reload so it shows straight away.
+    const hadController = !!navigator.serviceWorker.controller;
+    navigator.serviceWorker.addEventListener('controllerchange', () => { if (hadController) location.reload(); });
+    navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' })
+      .then((reg) => { document.addEventListener('visibilitychange', () => { if (!document.hidden) reg.update().catch(() => {}); }); })
+      .catch(() => {});
+  }
 })();
 </script>
 <script>
