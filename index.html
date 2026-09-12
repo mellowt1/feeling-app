@@ -248,20 +248,6 @@
     100% { transform: scale(3); opacity: 0; }
   }
 
-  .dock .pelican { fill: var(--silhouette); opacity: .55; }
-  .dock .pel-head { transform-box: fill-box; transform-origin: bottom center; animation: pelHead 25s ease-in-out infinite; }
-  @keyframes pelHead {
-    0%, 80%  { transform: rotate(0); }
-    85%      { transform: rotate(-18deg); }
-    95%      { transform: rotate(-18deg); }
-    100%     { transform: rotate(0); }
-  }
-  .dock .pel-body { transform-box: fill-box; transform-origin: bottom center; animation: pelStretch 70s ease-in-out infinite; }
-  @keyframes pelStretch {
-    0%, 96% { transform: scaleY(1); }
-    98%     { transform: scaleY(1.08); }
-    100%    { transform: scaleY(1); }
-  }
 
 
   .waves .mullet-wrap { position: absolute; bottom: 40%; pointer-events: none; }
@@ -327,6 +313,48 @@
   .waves svg.fish.fish5 { width: 56px; height: 9px; bottom: 20%; animation: fishBob 11s ease-in-out infinite alternate; }
   .fish5 .fish-accent { opacity: .2; }
   .fish5 .tail { transform-origin: 80px 7px; animation: tailWag 1.6s ease-in-out infinite alternate; }
+  /* pinfish: a loose school of five, drifting the other way, hesitating once mid-screen */
+  .waves .fish-wrap.fw6 { animation: swimSchool 92s linear infinite; animation-delay: -30s; }
+  @keyframes swimSchool {
+    0%   { transform: translateX(-120px); }
+    38%  { transform: translateX(46vw); animation-timing-function: ease-out; }
+    46%  { transform: translateX(45vw); animation-timing-function: ease-in; }
+    100% { transform: translateX(112vw); }
+  }
+  .waves svg.fish.pin { width: 16px; height: 8px; animation: fishBob 6s ease-in-out infinite alternate; }
+  .waves svg.fish.pin .fish-accent { opacity: .2; }
+  .waves svg.fish.pin.p1 { bottom: 44%; left: 0;    animation-delay: -1s; }
+  .waves svg.fish.pin.p2 { bottom: 47%; left: 22px; animation-delay: -3s; }
+  .waves svg.fish.pin.p3 { bottom: 42%; left: 26px; animation-delay: -5s; }
+  .waves svg.fish.pin.p4 { bottom: 45%; left: 48px; animation-delay: -2s; }
+  .waves svg.fish.pin.p5 { bottom: 40%; left: 12px; animation-delay: -4s; }
+  .pin .tail { transform-origin: 12px 4px; animation: tailWag .7s ease-in-out infinite alternate; }
+  /* grouper: heavy, low, slow; crosses once and takes forever about it */
+  .waves .fish-wrap.fw7 { animation: swimGrouper 210s linear infinite; animation-delay: -95s; }
+  @keyframes swimGrouper {
+    0%   { transform: translateX(110vw); }
+    55%  { transform: translateX(-90px); }
+    100% { transform: translateX(-90px); }
+  }
+  .waves svg.fish.fish7 { width: 52px; height: 24px; bottom: 9%; animation: fishBob 14s ease-in-out infinite alternate; }
+  .fish7 .fish-accent { opacity: .3; }
+  .fish7 .fin { opacity: .16; }
+  .fish7 .fish-spots { fill: var(--ink); opacity: .12; }
+  .fish7 .tail { transform-origin: 58px 15px; animation: tailWag 3.2s ease-in-out infinite alternate; }
+  /* spanish mackerel: two quick passes back to back, then a long gap */
+  .waves .fish-wrap.fw8 { animation: swimMack 120s linear infinite; animation-delay: -66s; }
+  @keyframes swimMack {
+    0%     { transform: translateX(110vw) scaleX(1); }
+    7%     { transform: translateX(-80px) scaleX(1); }
+    7.01%  { transform: translateX(-80px) scaleX(-1); }
+    16%    { transform: translateX(110vw) scaleX(-1); }
+    16.01% { transform: translateX(110vw) scaleX(1); }
+    100%   { transform: translateX(110vw) scaleX(1); }
+  }
+  .waves svg.fish.fish8 { width: 40px; height: 9px; bottom: 27%; animation: fishBob 4s ease-in-out infinite alternate; }
+  .fish8 .fish-accent { opacity: .22; }
+  .fish8 .fish-bars { stroke-opacity: .22; }
+  .fish8 .tail { transform-origin: 58px 8px; animation: tailWag .6s ease-in-out infinite alternate; }
 
   /* distant boat on the horizon, once an hour, three minutes to cross */
   .waves svg.boat { position: absolute; bottom: auto; top: 13%; left: 0; width: 26px; height: 10px; fill: var(--silhouette); opacity: 0; animation: boatCross 3600s linear infinite; animation-delay: -3480s; }
@@ -561,21 +589,6 @@
             <circle class="cast-splash" cx="12" cy="96" r="3.5"/>
             <circle class="cast-bobber" cx="12" cy="96" r="1.8"/>
           </g>
-          <g class="pelican" transform="translate(175 36)">
-            <g class="pel-body">
-              <path d="M6.99997 24.8857C3.35997 21.3572 3.35997 14.4857 8.7733 11.7C14.1866 8.9143 21.84 10.5857 25.0133 15.2286C27.0666 18.2 26.6933 22.2857 24.2666 24.8857H6.99997Z"/>
-              <path d="M10.4533 14.3928C9.70665 10.5857 11.76 7.79998 14.9333 7.98569L16.9867 12.4428C14.56 12.6286 13.6267 13.9286 14 16.1571L10.4533 14.3928Z"/>
-              <path d="M24.4533 16.3429C26.5066 14.1143 27.6266 13.3714 27.9066 13.9286C28 14.8571 27.0666 17.0857 25.5733 18.9429L24.4533 16.3429Z"/>
-              <path d="M12.2267 24.3286H11.9467C11.5343 24.3286 11.2 24.6611 11.2 25.0714V25.2571C11.2 25.6674 11.5343 26 11.9467 26H12.2267C12.6391 26 12.9733 25.6674 12.9733 25.2571V25.0714C12.9733 24.6611 12.6391 24.3286 12.2267 24.3286Z"/>
-              <path d="M17.8267 24.3286H17.5467C17.1343 24.3286 16.8 24.6611 16.8 25.0714V25.2571C16.8 25.6674 17.1343 26 17.5467 26H17.8267C18.239 26 18.5733 25.6674 18.5733 25.2571V25.0714C18.5733 24.6611 18.239 24.3286 17.8267 24.3286Z"/>
-            </g>
-            <g class="pel-head">
-              <path d="M10.5404 7.50154C10.0178 9.57093 11.4116 11.4679 13.8507 12.675L15.9413 10.2607C13.6764 9.22603 12.4569 8.01889 12.8053 6.12195L10.5404 7.50154Z"/>
-              <path d="M11.0631 8.62247C13.0356 8.62247 14.6347 7.03971 14.6347 5.08727C14.6347 3.13483 13.0356 1.55206 11.0631 1.55206C9.09062 1.55206 7.49158 3.13483 7.49158 5.08727C7.49158 7.03971 9.09062 8.62247 11.0631 8.62247Z"/>
-              <path d="M8.62401 6.46686L4.44268 11.9852C3.92001 12.675 4.26846 13.451 5.05246 13.3217L6.35912 13.0199C7.23023 12.8044 7.84001 12.1577 8.18846 11.2954L10.5405 7.50155L8.62401 6.46686Z"/>
-              <path d="M10.0178 8.01892C8.62399 9.91586 7.75288 11.6403 7.66577 12.9337C8.79822 12.8475 9.75644 11.9852 10.4533 10.6057L10.0178 8.01892Z"/>
-            </g>
-          </g>
         </svg>
         <div class="fish-wrap fw1">
           <svg class="fish fish1" viewBox="0 0 70 22" aria-hidden="true">
@@ -629,6 +642,46 @@
             </g>
             <g class="tail">
               <path class="fish-accent" d="M80,7 L90,1 L86,7 L90,13 Z"/>
+            </g>
+          </svg>
+        </div>
+        <div class="fish-wrap fw6">
+          <svg class="fish pin p1" viewBox="0 0 16 8" aria-hidden="true"><g class="body"><path class="fish-accent" d="M12,4 C11,1.4 8,0.6 5,1 C2.6,1.4 1,2.6 0.6,4 C1,5.4 2.6,6.6 5,7 C8,7.4 11,6.6 12,4 Z"/><circle class="fish-eye" cx="3" cy="3.4" r="0.6"/></g><g class="tail"><path class="fish-accent" d="M12,4 L16,0.8 L14.2,4 L16,7.2 Z"/></g></svg>
+          <svg class="fish pin p2" viewBox="0 0 16 8" aria-hidden="true"><g class="body"><path class="fish-accent" d="M12,4 C11,1.4 8,0.6 5,1 C2.6,1.4 1,2.6 0.6,4 C1,5.4 2.6,6.6 5,7 C8,7.4 11,6.6 12,4 Z"/><circle class="fish-eye" cx="3" cy="3.4" r="0.6"/></g><g class="tail"><path class="fish-accent" d="M12,4 L16,0.8 L14.2,4 L16,7.2 Z"/></g></svg>
+          <svg class="fish pin p3" viewBox="0 0 16 8" aria-hidden="true"><g class="body"><path class="fish-accent" d="M12,4 C11,1.4 8,0.6 5,1 C2.6,1.4 1,2.6 0.6,4 C1,5.4 2.6,6.6 5,7 C8,7.4 11,6.6 12,4 Z"/><circle class="fish-eye" cx="3" cy="3.4" r="0.6"/></g><g class="tail"><path class="fish-accent" d="M12,4 L16,0.8 L14.2,4 L16,7.2 Z"/></g></svg>
+          <svg class="fish pin p4" viewBox="0 0 16 8" aria-hidden="true"><g class="body"><path class="fish-accent" d="M12,4 C11,1.4 8,0.6 5,1 C2.6,1.4 1,2.6 0.6,4 C1,5.4 2.6,6.6 5,7 C8,7.4 11,6.6 12,4 Z"/><circle class="fish-eye" cx="3" cy="3.4" r="0.6"/></g><g class="tail"><path class="fish-accent" d="M12,4 L16,0.8 L14.2,4 L16,7.2 Z"/></g></svg>
+          <svg class="fish pin p5" viewBox="0 0 16 8" aria-hidden="true"><g class="body"><path class="fish-accent" d="M12,4 C11,1.4 8,0.6 5,1 C2.6,1.4 1,2.6 0.6,4 C1,5.4 2.6,6.6 5,7 C8,7.4 11,6.6 12,4 Z"/><circle class="fish-eye" cx="3" cy="3.4" r="0.6"/></g><g class="tail"><path class="fish-accent" d="M12,4 L16,0.8 L14.2,4 L16,7.2 Z"/></g></svg>
+        </div>
+        <div class="fish-wrap fw7">
+          <svg class="fish fish7" viewBox="0 0 64 30" aria-hidden="true">
+            <g class="body">
+              <path class="fish-accent" d="M2,15 C3,8 10,3.5 20,3 C32,2.5 42,6 49,10.5 C52,12.5 54.5,13.8 57,14.4 L58,15 L57,15.6 C54.5,16.2 52,17.5 49,19.5 C42,24 32,27.5 20,27 C10,26.5 3,22 2,15 Z"/>
+              <path class="fish-accent" d="M16,4.5 C22,-0.5 34,-0.5 42,4.8 L38,7.2 C31,4.2 24,4.2 19,7 Z"/>
+              <path class="fish-accent fin" d="M20,19 L29,25.5 L17,23.5 Z"/>
+              <path class="fish-accent fin" d="M30,26 L40,29.5 L42,25.5 Z"/>
+              <path class="fish-spots" d="M18,10 a1.4,1.4 0 1,0 0.1,0 M27,8.5 a1.3,1.3 0 1,0 0.1,0 M36,11 a1.5,1.5 0 1,0 0.1,0 M24,16 a1.2,1.2 0 1,0 0.1,0 M33,19 a1.4,1.4 0 1,0 0.1,0 M43,15 a1.2,1.2 0 1,0 0.1,0 M14,17 a1.1,1.1 0 1,0 0.1,0 M40,21.5 a1.1,1.1 0 1,0 0.1,0"/>
+              <path class="lateral-line" d="M10,13.5 C26,11.5 40,12.5 56,15"/>
+              <circle class="fish-eye" cx="9" cy="11.5" r="1.3"/>
+            </g>
+            <g class="tail">
+              <path class="fish-accent" d="M58,15 C60,10 62,7 64,5 L63,15 L64,25 C62,23 60,20 58,15 Z"/>
+            </g>
+          </svg>
+        </div>
+        <div class="fish-wrap fw8">
+          <svg class="fish fish8" viewBox="0 0 70 16" aria-hidden="true">
+            <g class="body">
+              <path class="fish-accent" d="M1,8 C4,4.5 10,2.5 20,2.4 C34,2.2 48,4.4 55,7 L58,8 L55,9 C48,11.6 34,13.8 20,13.6 C10,13.5 4,11.5 1,8 Z"/>
+              <path class="fish-accent" d="M24,3 L27,0 L30,3.2 Z"/>
+              <path class="fish-accent" d="M40,3.6 L42,2 L44,4 Z"/>
+              <path class="fish-accent" d="M47,4.2 L48.6,3 L50.2,4.5 Z"/>
+              <path class="fish-accent" d="M40,12.4 L42,14 L44,12 Z"/>
+              <path class="fish-bars" d="M18,7 l2.4,2 M26,6 l2.4,2 M34,5.6 l2.4,2 M42,6.2 l2.4,2"/>
+              <path class="lateral-line" d="M2,8 C14,6.2 30,5.4 44,6.8"/>
+              <circle class="fish-eye" cx="7" cy="6.8" r="0.9"/>
+            </g>
+            <g class="tail">
+              <path class="fish-accent" d="M58,8 L70,1 L64,8 L70,15 Z"/>
             </g>
           </svg>
         </div>
@@ -1416,8 +1469,35 @@
         const master = ctx.createGain(); master.gain.value = 0;
         src.connect(lp); lp.connect(swell); swell.connect(master); master.connect(ctx.destination);
         src.start(); lfo.start(); lfo2.start();
-        audio = { ctx, master };
+        // breaking waves: a brighter noise that gathers, breaks and hisses out over the swell bed
+        const wlen = ctx.sampleRate * 3;
+        const wbuf = ctx.createBuffer(1, wlen, ctx.sampleRate);
+        const wd = wbuf.getChannelData(0); let wl = 0;
+        for (let i = 0; i < wlen; i++) { const w = Math.random() * 2 - 1; wl = (wl + 0.5 * w) / 1.5; wd[i] = wl * 1.8; }
+        const wsrc = ctx.createBufferSource(); wsrc.buffer = wbuf; wsrc.loop = true;
+        const wbp = ctx.createBiquadFilter(); wbp.type = 'bandpass'; wbp.frequency.value = 900; wbp.Q.value = 0.6;
+        const crash = ctx.createGain(); crash.gain.value = 0;
+        wsrc.connect(wbp); wbp.connect(crash); crash.connect(master);
+        wsrc.start();
+        audio = { ctx, master, crash, wbp, timer: null };
       }
+      const breakWave = () => {
+        if (!audio || !document.body.classList.contains('dock')) return;
+        const { ctx, crash, wbp } = audio, t = ctx.currentTime;
+        const size = 0.55 + Math.random() * 0.45;               // sets vary
+        const g = crash.gain, f = wbp.frequency;
+        g.cancelScheduledValues(t); f.cancelScheduledValues(t);
+        g.setValueAtTime(Math.max(g.value, 0.001), t);
+        g.linearRampToValueAtTime(0.04 * size, t + 1.6);          // the wave gathers
+        g.exponentialRampToValueAtTime(0.55 * size, t + 2.4);     // and breaks
+        g.exponentialRampToValueAtTime(0.001, t + 2.4 + 3.2 * size); // then washes out up the sand
+        f.setValueAtTime(700, t);
+        f.linearRampToValueAtTime(1500 + 600 * size, t + 2.4);
+        f.exponentialRampToValueAtTime(500, t + 2.4 + 3.2 * size);
+        audio.timer = setTimeout(breakWave, 6500 + Math.random() * 6500);
+      };
+      clearTimeout(audio.timer);
+      audio.timer = setTimeout(breakWave, 1200 + Math.random() * 2000);
       audio.ctx.resume();
       const g = audio.master.gain, t = audio.ctx.currentTime;
       g.cancelScheduledValues(t); g.setValueAtTime(g.value, t); g.linearRampToValueAtTime(0.22, t + 4);
@@ -1425,6 +1505,7 @@
   }
   function stopSea() {
     if (!audio) return;
+    clearTimeout(audio.timer); audio.timer = null;
     const g = audio.master.gain, t = audio.ctx.currentTime;
     g.cancelScheduledValues(t); g.setValueAtTime(g.value, t); g.linearRampToValueAtTime(0, t + 1.5);
     setTimeout(() => { if (audio && !document.body.classList.contains('dock')) audio.ctx.suspend(); }, 1700);
