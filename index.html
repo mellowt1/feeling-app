@@ -32,7 +32,7 @@
     --chip: #ECE8DF;
     --track: rgba(120,120,128,0.12);
     --danger: #B9584F;
-    --m1: #B9584F; --m2: #D3925C; --m3: #B5B0A4; --m4: #7EA46B; --m5: #3E8C6A;
+    --m1: #B9584F; --m2: #D3925C; --m3: #B5B0A4; --m4: #7EA46B; --m5: #3E8C6A; --m6: #9E3A33;
     --serif: ui-serif, "New York", "Iowan Old Style", Georgia, "Times New Roman", serif;
   }
   html[data-sky="morning"] { --sky-top: #E7EFEE; }
@@ -59,7 +59,7 @@
       --chip: #262E33;
       --track: rgba(255,255,255,0.08);
       --danger: #D4776D;
-      --m1: #C4675E; --m2: #DDA06B; --m3: #9E9A90; --m4: #8CB279; --m5: #4E9E7B;
+      --m1: #C4675E; --m2: #DDA06B; --m3: #9E9A90; --m4: #8CB279; --m5: #4E9E7B; --m6: #C9584F;
     }
     html[data-sky="morning"], html[data-sky="day"], html[data-sky="evening"], html[data-sky="night"] { --sky-top: #192226; }
     html[data-sky="evening"] body { background: linear-gradient(var(--sky-top) 0px, var(--bg) 220px); }
@@ -109,18 +109,20 @@
   body.listening .voice-cap .kb { display: none; }
 
   .moods { display: flex; justify-content: space-between; gap: 6px; margin: 20px 0 0; }
-  .moods button { flex: 0 0 auto; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; padding: 0; background: transparent; border: 0; border-radius: 50%; transition: transform .12s; }
-  .moods button svg { width: 56px; height: 56px; }
+  .moods button { flex: 0 0 auto; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; padding: 0; background: transparent; border: 0; border-radius: 50%; transition: transform .12s; }
+  .moods button svg { width: 50px; height: 50px; }
   .moods button.on { transform: scale(1.06); box-shadow: 0 0 0 2px var(--accent); }
 
   .face.m1 { color: var(--m1); } .face.m2 { color: var(--m2); } .face.m3 { color: var(--m3); }
-  .face.m4 { color: var(--m4); } .face.m5 { color: var(--m5); }
+  .face.m4 { color: var(--m4); } .face.m5 { color: var(--m5); } .face.m6 { color: var(--m6); }
   .face .mood-bg { fill: currentColor; fill-opacity: .18; stroke: currentColor; stroke-opacity: .55; stroke-width: 1.2; }
   .face .mood-eye { fill: currentColor; }
   .face .mood-mouth { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .face .mood-brow { fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; }
   .moods button.on .mood-bg { fill-opacity: 1; }
   .moods button.on .mood-eye { fill: var(--card); }
   .moods button.on .mood-mouth { stroke: var(--card); }
+  .moods button.on .mood-brow { stroke: var(--card); }
 
   .btn { font: inherit; font-size: 17px; font-weight: 600; border: 0; border-radius: 26px; padding: 14px 18px; background: var(--accent); color: var(--accent-ink); width: 100%; min-height: 52px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
   .btn:disabled { opacity: .35; }
@@ -145,8 +147,8 @@
   .entry .tools { display: flex; gap: 8px; margin-top: 12px; }
   .entry textarea { width: 100%; font: inherit; font-size: 15px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; min-height: 96px; margin-top: 6px; outline: none; }
   .entry .moods { margin: 10px 0; justify-content: flex-start; gap: 4px; }
-  .entry .moods button { width: 44px; height: 44px; }
-  .entry .moods button svg { width: 44px; height: 44px; }
+  .entry .moods button { width: 40px; height: 40px; }
+  .entry .moods button svg { width: 40px; height: 40px; }
   .lead { font-size: 13px; color: var(--muted); margin: 0 0 10px 2px; }
 
   /* ---------- tab bar ---------- */
@@ -859,9 +861,11 @@
 <script>
 (() => {
   const KEY = 'feeling.v1';
-  const FACES = ['', '😞', '🙁', '😐', '🙂', '😊'];   // export text only
-  const WORDS = ['', 'very bad', 'bad', 'okay', 'good', 'very good'];
-  const MOUTHS = ['', 'M9 21.5 Q14 15.5 19 21.5', 'M9 20.5 Q14 17 19 20.5', 'M9.5 19.5 L18.5 19.5', 'M9 18.5 Q14 22 19 18.5', 'M9 17.5 Q14 23.5 19 17.5'];
+  const FACES = ['', '😞', '🙁', '😐', '🙂', '😊', '😠'];   // export text only
+  const WORDS = ['', 'very bad', 'bad', 'okay', 'good', 'very good', 'angry'];
+  const MOUTHS = ['', 'M9 21.5 Q14 15.5 19 21.5', 'M9 20.5 Q14 17 19 20.5', 'M9.5 19.5 L18.5 19.5', 'M9 18.5 Q14 22 19 18.5', 'M9 17.5 Q14 23.5 19 17.5', 'M9 20 L19 20'];
+  // Angry (6) sits off the bad-to-good scale; for the arc, month grid and filters it counts as the lowest level.
+  const level = (m) => (m === 6 ? 1 : m);
   const DAY_START_HOUR = 4;
 
   // ---------- storage ----------
@@ -917,14 +921,19 @@
     const mouth = document.createElementNS(SVGNS, 'path');
     mouth.setAttribute('class', 'mood-mouth'); mouth.setAttribute('d', MOUTHS[m]);
     s.appendChild(mouth);
+    if (m === 6) for (const d of ['M8 6.5 L12 8.5', 'M20 6.5 L16 8.5']) {
+      const brow = document.createElementNS(SVGNS, 'path');
+      brow.setAttribute('class', 'mood-brow'); brow.setAttribute('d', d);
+      s.appendChild(brow);
+    }
     return s;
   }
   function moodRow(current, onPick, size) {
     const row = el('div', 'moods');
-    for (let m = 1; m <= 5; m++) {
+    for (let m = 1; m <= 6; m++) {
       const b = el('button'); b.type = 'button'; b.dataset.m = m;
       b.setAttribute('aria-label', WORDS[m]);
-      b.appendChild(faceSVG(m, size || 56));
+      b.appendChild(faceSVG(m, size || 50));
       if (current === m) b.classList.add('on');
       row.appendChild(b);
     }
@@ -948,7 +957,7 @@
     if (!pts.length) return s;
     const padX = 10, padY = 9, r = h > 60 ? 6 : 4.5;
     const n = pts.length;
-    const xy = pts.map((e, i) => [n === 1 ? w / 2 : padX + i * (w - 2 * padX) / (n - 1), h - padY - (e.mood - 1) / 4 * (h - 2 * padY)]);
+    const xy = pts.map((e, i) => [n === 1 ? w / 2 : padX + i * (w - 2 * padX) / (n - 1), h - padY - (level(e.mood) - 1) / 4 * (h - 2 * padY)]);
     if (n > 1) {
       let d = `M${xy[0][0].toFixed(1)},${xy[0][1].toFixed(1)}`;
       for (let i = 0; i < n - 1; i++) {
@@ -974,10 +983,10 @@
   const text = $('#text'), saveBtn = $('#save'), moodsEl = $('#moods'), backdateBtn = $('#backdate');
   let mood = 0, backdated = false;
 
-  moodsEl.replaceWith((() => { const r = moodRow(0, (m) => { mood = m; renderTodayHead(); storeDraft(); }, 56); r.id = 'moods'; return r; })());
+  moodsEl.replaceWith((() => { const r = moodRow(0, (m) => { mood = m; renderTodayHead(); storeDraft(); }, 50); r.id = 'moods'; return r; })());
   function syncMoodRow() {
     const row = $('#moods');
-    const fresh = moodRow(mood, (m) => { mood = m; renderTodayHead(); storeDraft(); }, 56);
+    const fresh = moodRow(mood, (m) => { mood = m; renderTodayHead(); storeDraft(); }, 50);
     fresh.id = 'moods'; row.replaceWith(fresh);
   }
 
@@ -1051,7 +1060,7 @@
           editing = true; tools.remove(); body.classList.add('hidden');
           const ta = el('textarea'); ta.value = e.text; card.appendChild(ta);
           let nm = e.mood;
-          card.appendChild(moodRow(e.mood, (m) => { nm = m; }, 44));
+          card.appendChild(moodRow(e.mood, (m) => { nm = m; }, 40));
           const r = el('div', 'row');
           const ok = el('button', 'btn small', 'Save'); const cancel = el('button', 'btn quiet small', 'Cancel');
           ok.type = 'button'; cancel.type = 'button';
@@ -1122,7 +1131,8 @@
       if (es) {
         cell.classList.add('has');
         const ms = es.map((e) => e.mood).filter((m) => m > 0);
-        const best = ms.length ? Math.max(...ms) : 3, worst = ms.length ? Math.min(...ms) : 3;
+        const sorted = ms.slice().sort((a, b) => level(a) - level(b));
+        const best = ms.length ? sorted[sorted.length - 1] : 3, worst = ms.length ? sorted[0] : 3;
         inner.style.background = `linear-gradient(to bottom, var(--m${best}) 0 50%, var(--m${worst}) 50% 100%)`;
       }
       if (k === tk) cell.classList.add('today');
@@ -1144,8 +1154,8 @@
     if (filter === 'session') { const s = lastSession(); list = s ? list.filter((e) => e.day >= s) : list; }
     if (selDay) list = list.filter((e) => e.day === selDay);
     let days = groupByDay(list);
-    if (filter === 'low') days = days.filter(([, es]) => es.some((e) => e.mood && e.mood <= 2));
-    if (filter === 'high') days = days.filter(([, es]) => es.some((e) => e.mood >= 4));
+    if (filter === 'low') days = days.filter(([, es]) => es.some((e) => e.mood && level(e.mood) <= 2));
+    if (filter === 'high') days = days.filter(([, es]) => es.some((e) => level(e.mood) >= 4));
     if (!days.length) { box.appendChild(el('div', 'empty', db.entries.length ? 'Nothing matches.' : 'No entries yet. Your record starts on the Today tab.')); return; }
     for (const [k, es] of days) {
       const d = el('div', 'day');
