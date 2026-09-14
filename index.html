@@ -217,6 +217,22 @@
   label.small { font-size: 13px; color: var(--muted); display: block; margin: 10px 0 4px; }
   .card input.field { width: 100%; font: inherit; font-size: 15px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 11px 14px; outline: none; margin-bottom: 8px; }
   .card input.field:focus { border-color: var(--accent); }
+  /* ---------- the daily question: one line a day, off until you ask for it ---------- */
+  .daily { border-top: 1px solid var(--line); margin-top: 18px; padding-top: 16px; }
+  .daily .head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+  .daily .head b { display: block; font-weight: 500; font-size: 15px; }
+  .daily .head span { display: block; font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .switch { flex: 0 0 auto; width: 51px; height: 31px; border-radius: 16px; border: 0; padding: 0; background: var(--track); transition: background .25s ease; position: relative; }
+  .switch i { position: absolute; top: 2px; left: 2px; width: 27px; height: 27px; border-radius: 50%; background: #FFF; box-shadow: 0 1px 3px rgba(0,0,0,.14); transition: transform .25s ease; }
+  .switch[aria-checked="true"] { background: var(--accent); }
+  .switch[aria-checked="true"] i { transform: translateX(20px); }
+  .switch[disabled] { opacity: .45; }
+  .daily .when { display: flex; align-items: center; gap: 10px; margin-top: 14px; font-size: 15px; color: var(--muted); transition: opacity .25s ease; }
+  .daily .when.off { opacity: .45; }
+  .daily .when input { font: inherit; font-size: 15px; font-weight: 500; color: var(--ink); background: var(--chip); border: 0; border-radius: 9px; padding: 6px 10px; outline: none; }
+  .daily .note { font-size: 12px; color: var(--muted); margin: 12px 0 0; }
+  .daily .note:empty { display: none; }
+
   /* ---------- circle: friends' last seven days under the mood log ---------- */
   .circle:empty { display: none; }
   .circle .friend { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
@@ -991,10 +1007,24 @@
           <button class="btn mid" id="circle-share" type="button">Share the code</button>
           <button class="btn ghost mid" id="circle-leave" type="button">Leave</button>
         </div>
+        <div class="daily">
+          <div class="head">
+            <div>
+              <b>The daily question</b>
+              <span>One a day, at a time you pick.</span>
+            </div>
+            <button class="switch" id="daily-switch" type="button" role="switch" aria-checked="false" aria-label="The daily question"><i></i></button>
+          </div>
+          <div class="when off" id="daily-when">
+            <span>At</span>
+            <input type="time" id="daily-at" value="20:00" step="300" aria-label="Time of the daily question">
+          </div>
+          <p class="note" id="daily-note"></p>
+        </div>
       </div>
     </div>
 
-    <p class="closing">Nothing leaves this phone, except the faces you choose to share in a circle.</p>
+    <p class="closing">Nothing leaves this phone, except the faces you choose to share in a circle,<br>and the daily question if you switch it on.</p>
   </section>
 </main>
 
@@ -1541,10 +1571,92 @@
     if (!(c.members || []).length) cap.textContent = 'Nobody else in the circle yet. Share the code from Export.';
     else cap.textContent = c.seen && Date.now() - c.seen > 10 * 60e3 ? `Last 7 days · last seen ${fmtTime(c.seen)}` : 'Last 7 days · today on the right';
   }
+  // ---------- the daily question ----------
+  // The only time the app speaks first. One a day, from the Worker, so it still
+  // arrives when the app is closed. On iPhone that needs Feeling on the Home Screen.
+  const PUSH_API = CIRCLE_API.replace('/api/circle/', '/api/push/');
+  const VAPID_PUBLIC = 'BDqfal8edn-T3m3GTi9py-oPvoR9s6pklUCMf0ZXfVav8mbfeTt9rM7c-0tZ0qcVyuzjMIePcsnIVPNpImrrKw0';
+  const dailySwitch = $('#daily-switch'), dailyAt = $('#daily-at'), dailyWhen = $('#daily-when'), dailyNote = $('#daily-note');
+  const pushable = 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
+  const standalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+  const iOS = /iP(hone|ad|od)/.test(navigator.platform || '') || (/Mac/.test(navigator.platform || '') && navigator.maxTouchPoints > 1);
+  function keyBytes(b64) {
+    const pad = '='.repeat((4 - (b64.length % 4)) % 4);
+    const raw = atob((b64 + pad).replace(/-/g, '+').replace(/_/g, '/'));
+    const out = new Uint8Array(raw.length);
+    for (let i = 0; i < raw.length; i++) out[i] = raw.charCodeAt(i);
+    return out;
+  }
+  function dailyState() { const c = db.circle; return (c && c.daily) || { on: false, time: '20:00' }; }
+  function renderDaily() {
+    const c = db.circle; if (!c || !c.code) return;
+    const d = dailyState();
+    const blocked = !pushable || (iOS && !standalone) || Notification.permission === 'denied';
+    dailySwitch.disabled = blocked;
+    dailySwitch.setAttribute('aria-checked', d.on && !blocked ? 'true' : 'false');
+    dailyAt.value = d.time;
+    dailyWhen.classList.toggle('off', !(d.on && !blocked));
+    dailyNote.textContent = !pushable ? 'This browser cannot send notifications.'
+      : (iOS && !standalone) ? 'On iPhone, add Feeling to the Home Screen first.'
+      : Notification.permission === 'denied' ? 'Notifications are off for Feeling in Settings.'
+      : d.on ? 'Nothing else is ever sent.' : '';
+  }
+  async function dailySubscribe() {
+    const c = db.circle; if (!c || !c.code) return false;
+    const perm = await Notification.requestPermission();
+    if (perm !== 'granted') { toast('Notifications stay off'); return false; }
+    const reg = await navigator.serviceWorker.ready;
+    const sub = await reg.pushManager.getSubscription()
+      || await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: keyBytes(VAPID_PUBLIC) });
+    const [hour, minute] = dailyAt.value.split(':').map(Number);
+    const res = await fetch(PUSH_API + c.code, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: c.id, sub: sub.toJSON(), hour, minute, tz: Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC' }),
+    });
+    if (!res.ok) throw new Error(res.status);
+    return true;
+  }
+  async function dailyUnsubscribe() {
+    const c = db.circle; if (!c || !c.code) return;
+    try {
+      const reg = await navigator.serviceWorker.ready;
+      const sub = await reg.pushManager.getSubscription();
+      if (sub) await sub.unsubscribe();
+    } catch (e) {}
+    await fetch(PUSH_API + c.code, {
+      method: 'DELETE', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: c.id }),
+    }).catch(() => {});
+  }
+  dailySwitch.addEventListener('click', async () => {
+    const c = db.circle; if (!c || !c.code || dailySwitch.disabled) return;
+    const turningOn = dailySwitch.getAttribute('aria-checked') !== 'true';
+    dailySwitch.disabled = true;
+    try {
+      if (turningOn) {
+        const ok = await dailySubscribe();
+        if (ok) { c.daily = { on: true, time: dailyAt.value }; save(); toast('Every day at ' + dailyAt.value); }
+      } else {
+        await dailyUnsubscribe();
+        c.daily = { on: false, time: dailyAt.value }; save();
+      }
+    } catch (e) { toast('Could not reach the circle'); }
+    dailySwitch.disabled = false;
+    renderDaily();
+  });
+  dailyAt.addEventListener('change', async () => {
+    const c = db.circle; if (!c || !c.code) return;
+    const d = dailyState();
+    c.daily = { on: d.on, time: dailyAt.value }; save();
+    if (!d.on) return;
+    try { await dailySubscribe(); toast('Every day at ' + dailyAt.value); } catch (e) { toast('Could not reach the circle'); }
+  });
+
   function renderCircleCard() {
     const c = db.circle, inC = !!(c && c.code);
     $('#circle-join').classList.toggle('hidden', inC); $('#circle-in').classList.toggle('hidden', !inC);
     if (inC) { const n = (c.members || []).length; $('#circle-info').textContent = `${c.name} in circle ${c.code} · ${n ? n + (n === 1 ? ' other' : ' others') : 'nobody else yet'}`; }
+    if (inC) renderDaily();
   }
   $('#circle-join-btn').addEventListener('click', () => {
     const name = circleName.value.trim(), code = cleanCode(circleCode.value);
@@ -1563,6 +1675,7 @@
     const c = db.circle; if (!c) return;
     if (!confirm('Leave the circle? Your faces disappear for the others.')) return;
     try { await fetch(CIRCLE_API + c.code, { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: c.id }) }); } catch (e) {}
+    if (c.daily && c.daily.on) await dailyUnsubscribe();
     db.circle = null; save(); renderCircleCard(); renderCircle(); toast('Left the circle');
   });
   document.addEventListener('visibilitychange', () => { if (!document.hidden) syncCircle(true); });

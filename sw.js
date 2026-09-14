@@ -1,5 +1,5 @@
 // Offline cache. No network calls are made except to fetch the app's own files.
-const CACHE = 'feeling-v26';
+const CACHE = 'feeling-v27';
 const FILES = ['./', './index.html', './manifest.webmanifest', './icon-180.png', './icon-512.png'];
 
 self.addEventListener('install', (e) => {
@@ -25,4 +25,22 @@ self.addEventListener('fetch', (e) => {
       return hit || fetching;
     })
   );
+});
+
+// The daily question. One line, or just the question when nobody has checked in.
+self.addEventListener('push', (e) => {
+  let data = {};
+  try { data = e.data ? e.data.json() : {}; } catch (err) {}
+  const title = data.title || 'How are you feeling?';
+  const options = { icon: './icon-180.png', badge: './icon-180.png', tag: 'daily', data: { url: './' } };
+  if (data.body) options.body = data.body;
+  e.waitUntil(self.registration.showNotification(title, options));
+});
+
+self.addEventListener('notificationclick', (e) => {
+  e.notification.close();
+  e.waitUntil(self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((list) => {
+    for (const c of list) if ('focus' in c) return c.focus();
+    return self.clients.openWindow('./');
+  }));
 });
