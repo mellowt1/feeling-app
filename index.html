@@ -930,7 +930,7 @@
   }
   function moodRow(current, onPick, size) {
     const row = el('div', 'moods');
-    for (let m = 1; m <= 6; m++) {
+    for (const m of [6, 1, 2, 3, 4, 5]) {   // angry sits before very bad, away from the good end
       const b = el('button'); b.type = 'button'; b.dataset.m = m;
       b.setAttribute('aria-label', WORDS[m]);
       b.appendChild(faceSVG(m, size || 50));
