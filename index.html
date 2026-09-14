@@ -172,6 +172,15 @@
   .mcell.sel { background: var(--accent-soft); }
   .mcell.blank { visibility: hidden; }
 
+  /* ---------- mood log: which faces this month, tap one to filter ---------- */
+  .moodlog { display: flex; justify-content: space-between; margin: 14px 0 0; }
+  .moodlog button { flex: 0 0 auto; width: 44px; background: transparent; border: 0; padding: 4px 0; display: flex; flex-direction: column; align-items: center; gap: 4px; border-radius: 14px; font: inherit; font-size: 13px; font-weight: 500; color: var(--muted); }
+  .moodlog button svg { width: 36px; height: 36px; border-radius: 50%; }
+  .moodlog button.zero { opacity: .35; }
+  .moodlog button.on svg { box-shadow: 0 0 0 2px var(--accent); }
+  .moodlog button.on { color: var(--ink); }
+  .moodlog-cap { margin: 6px 0 0; text-align: center; font-size: 13px; color: var(--muted); min-height: 20px; }
+
   /* ---------- search + segmented ---------- */
   .search { position: relative; margin-top: 18px; }
   .search svg { position: absolute; left: 15px; top: 50%; margin-top: -9px; width: 18px; height: 18px; color: var(--muted); }
@@ -794,6 +803,8 @@
       </div>
       <div class="mgrid" id="mgrid"></div>
     </div>
+    <div class="moodlog" id="moodlog"></div>
+    <p class="moodlog-cap" id="moodlog-cap"></p>
     <div class="search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5 21 21"/></svg>
       <input type="search" id="search" placeholder="Search what you said">
@@ -1130,18 +1141,37 @@
   }
 
   // ---------- history tab ----------
-  let filter = 'all', selDay = null;
+  let filter = 'all', selDay = null, pickMood = 0;   // pickMood: a face tapped in the mood log
   const now0 = new Date();
   let mY = now0.getFullYear(), mM = now0.getMonth();
   const placeFilter = wireSeg($('#filter-seg'), (b) => { filter = b.dataset.f; renderHistory(); });
   $('#search').addEventListener('input', renderHistory);
-  $('#m-prev').addEventListener('click', () => { mM--; if (mM < 0) { mM = 11; mY--; } renderMonth(); });
-  $('#m-next').addEventListener('click', () => { mM++; if (mM > 11) { mM = 0; mY++; } renderMonth(); });
+  $('#m-prev').addEventListener('click', () => { mM--; if (mM < 0) { mM = 11; mY--; } pickMood = 0; renderMonth(); renderHistory(); });
+  $('#m-next').addEventListener('click', () => { mM++; if (mM > 11) { mM = 0; mY++; } pickMood = 0; renderMonth(); renderHistory(); });
+  function renderMoodLog() {
+    const row = $('#moodlog'); row.innerHTML = '';
+    const prefix = `${mY}-${pad(mM + 1)}-`;
+    const counts = [0, 0, 0, 0, 0, 0, 0];
+    for (const e of db.entries) if (e.mood && e.day.startsWith(prefix)) counts[e.mood]++;
+    for (const m of [6, 1, 2, 3, 4, 5]) {
+      const b = el('button'); b.type = 'button'; b.dataset.m = m;
+      b.setAttribute('aria-label', `${WORDS[m]}, ${counts[m]} this month`);
+      b.appendChild(faceSVG(m, 36)); b.appendChild(el('span', null, String(counts[m])));
+      if (!counts[m]) b.classList.add('zero');
+      if (pickMood === m) b.classList.add('on');
+      b.addEventListener('click', () => { pickMood = pickMood === m ? 0 : m; renderMoodLog(); renderHistory(); });
+      row.appendChild(b);
+    }
+    const any = counts.some((c) => c);
+    const mo = new Date(mY, mM, 1).toLocaleDateString(undefined, { month: 'long' });
+    $('#moodlog-cap').textContent = !any ? '' : pickMood ? `Showing ${WORDS[pickMood]} entries` : `${mo} · tap a face to see just those entries`;
+  }
   function lastSession() { return db.sessions.length ? db.sessions[db.sessions.length - 1] : null; }
 
   function renderMonth() {
     const grid = $('#mgrid'); grid.innerHTML = '';
     $('#m-label').textContent = new Date(mY, mM, 1).toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+    renderMoodLog();
     for (const d of ['M', 'T', 'W', 'T', 'F', 'S', 'S']) grid.appendChild(el('span', 'dow', d));
     const first = new Date(mY, mM, 1);
     const lead = (first.getDay() + 6) % 7;           // Monday-first
@@ -1181,6 +1211,7 @@
     if (q) list = list.filter((e) => e.text.toLowerCase().includes(q));
     if (filter === 'session') { const s = lastSession(); list = s ? list.filter((e) => e.day >= s) : list; }
     if (selDay) list = list.filter((e) => e.day === selDay);
+    if (pickMood) list = list.filter((e) => e.mood === pickMood);
     let days = groupByDay(list);
     if (filter === 'low') days = days.filter(([, es]) => es.some((e) => e.mood && level(e.mood) <= 2));
     if (filter === 'high') days = days.filter(([, es]) => es.some((e) => level(e.mood) >= 4));
