@@ -28,7 +28,7 @@
     --water: #7FA5AD;
     --silhouette: var(--ink);
     --sky-top: #E7EFEE;
-    --orb: #F1D7A4;
+    --orb: #F1D7A4; --orb-rgb: 241,215,164;
     --chip: #ECE8DF;
     --track: rgba(120,120,128,0.12);
     --danger: #B9584F;
@@ -55,7 +55,7 @@
       --water: #5D7F87;
       --silhouette: #8FA3AD;
       --sky-top: #192226;
-      --orb: #C9AE7E;
+      --orb: #C9AE7E; --orb-rgb: 201,174,126;
       --chip: #262E33;
       --track: rgba(255,255,255,0.08);
       --danger: #D4776D;
@@ -510,6 +510,23 @@
   .dock-sound:not(.on) svg path:nth-child(n+2) { display: none; }
   .dock-sound svg { width: 20px; height: 20px; }
 
+  /* ---------- breathe: a ring that breathes 4 in, 1 hold, 7 out; after ten breaths, one question ---------- */
+  .breath { position: absolute; left: 50%; top: 38%; width: 150px; height: 150px; margin: -75px 0 0 -75px; border-radius: 50%; background: radial-gradient(circle, rgba(var(--orb-rgb),.5), rgba(var(--orb-rgb),.18) 60%, transparent 72%); border: 1.5px solid rgba(var(--orb-rgb),.8); box-shadow: 0 0 70px 24px rgba(var(--orb-rgb),.22); transform: scale(.7); opacity: 0; transition: opacity 2s .8s; }
+  body.dock .breath { opacity: 1; animation: breathCycle 12s infinite; }
+  @keyframes breathCycle { 0% { transform: scale(.7); animation-timing-function: cubic-bezier(.4,0,.6,1); } 33.33% { transform: scale(1); animation-timing-function: linear; } 41.67% { transform: scale(1); animation-timing-function: cubic-bezier(.4,0,.6,1); } 100% { transform: scale(.7); } }
+  .breath-cue { position: absolute; left: 0; right: 0; top: calc(38% + 100px); margin: 0; text-align: center; font-size: 15px; font-weight: 500; color: var(--muted); opacity: 0; transition: opacity 1.5s 1s; }
+  .breath-cue small { display: block; font-size: 13px; font-weight: 400; opacity: .8; margin-top: 4px; }
+  body.dock .breath-cue { opacity: 1; }
+  body.refocus .breath { opacity: .35; }
+  body.refocus .breath-cue { opacity: 0; transition: opacity .8s; }
+  .refocus { position: absolute; left: 24px; right: 24px; top: 30%; opacity: 0; visibility: hidden; transition: opacity 1.5s, visibility 0s 1.5s; }
+  body.refocus .refocus { opacity: 1; visibility: visible; pointer-events: auto; transition: opacity 1.5s, visibility 0s; }
+  .refocus h2 { margin: 0 0 16px; text-align: center; font: 500 22px/1.3 -apple-system, "SF Pro Text", system-ui, sans-serif; color: var(--ink); }
+  .refocus input { width: 100%; font: inherit; font-size: 17px; color: var(--ink); background: var(--card-a); border: 1px solid var(--line); border-radius: 20px; padding: 18px 20px; outline: none; }
+  .refocus input:focus { border-color: var(--accent); }
+  .refocus .btn { margin-top: 16px; }
+  .refocus p { margin: 12px 0 0; text-align: center; font-size: 13px; color: var(--muted); }
+
   /* ---------- late night: after 21:00 everything slows ---------- */
   body.late .waves svg.w1 { animation-duration: 28s; }
   body.late .waves svg.w2 { animation-duration: 22s; }
@@ -529,6 +546,7 @@
     .glitter span { opacity: .3; }
     .clouds, .dock .rod-cast, .dock .rod-wind, .dock .cast-line, .textview { transition: none !important; }
     body.dock .dock-hint { opacity: 1; }
+    body.dock .breath { animation: none !important; transform: scale(.85); }
     .sky-breathe { opacity: 0.2; }
     .orb { transform: none; }
     .waves, section.pane, .sheet .panel, .sheet .backdrop, .seg .thumb { transition: none !important; }
@@ -552,7 +570,15 @@
       <button class="dock-sound" id="dock-sound" type="button" aria-label="Toggle wave sound">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
       </button>
-      <p class="dock-hint">Tap anywhere to come back</p>
+      <div class="breath" aria-hidden="true"></div>
+      <p class="breath-cue" aria-live="polite"><span id="breath-word">In</span><small>4 · 1 · 7</small></p>
+      <form class="refocus" id="refocus" autocomplete="off">
+        <h2>What is the one thing to do next?</h2>
+        <input type="text" id="refocus-text" placeholder="One thing." maxlength="200" enterkeyhint="done">
+        <button class="btn" type="submit">Keep it</button>
+        <p>It goes in today’s record. Nothing else changes.</p>
+      </form>
+      <p class="dock-hint">Breathe with the water · tap anywhere to come back</p>
     </div>
     <div class="waves" aria-hidden="true">
       <div class="wave-wrap">
@@ -1496,7 +1522,7 @@
         const crash = ctx.createGain(); crash.gain.value = 0;
         wsrc.connect(wbp); wbp.connect(crash); crash.connect(master);
         wsrc.start();
-        audio = { ctx, master, crash, wbp, timer: null };
+        audio = { ctx, master, crash, wbp, lfo, timer: null, breakWave: null };
       }
       const breakWave = () => {
         if (!audio || !document.body.classList.contains('dock')) return;
@@ -1511,10 +1537,10 @@
         f.setValueAtTime(700, t);
         f.linearRampToValueAtTime(1500 + 600 * size, t + 2.4);
         f.exponentialRampToValueAtTime(500, t + 2.4 + 3.2 * size);
-        audio.timer = setTimeout(breakWave, 6500 + Math.random() * 6500);
       };
+      audio.breakWave = breakWave;                               // the breath ticker calls this on every out-breath
+      audio.lfo.frequency.setValueAtTime(1 / 12, audio.ctx.currentTime);
       clearTimeout(audio.timer);
-      audio.timer = setTimeout(breakWave, 1200 + Math.random() * 2000);
       audio.ctx.resume();
       const g = audio.master.gain, t = audio.ctx.currentTime;
       g.cancelScheduledValues(t); g.setValueAtTime(g.value, t); g.linearRampToValueAtTime(0.22, t + 4);
@@ -1528,18 +1554,48 @@
     setTimeout(() => { if (audio && !document.body.classList.contains('dock')) audio.ctx.suspend(); }, 1700);
   }
   let dockSince = 0;
+  // ---------- breathe: 4 in, 1 hold, 7 out. Ten breaths, then one question ----------
+  const BREATHS = 10, CYCLE = 12000;
+  const breathWord = document.getElementById('breath-word');
+  const refocus = document.getElementById('refocus'), refocusText = document.getElementById('refocus-text');
+  let breathTimers = [], breaths = 0;
+  function breathTick() {
+    if (!document.body.classList.contains('dock')) return;
+    breaths++;
+    breathWord.textContent = 'In';
+    breathTimers.push(setTimeout(() => { breathWord.textContent = 'Hold'; }, 4000));
+    breathTimers.push(setTimeout(() => { breathWord.textContent = 'Out'; if (audio && soundOn && audio.breakWave) audio.breakWave(); }, 5000));
+    if (breaths >= BREATHS) breathTimers.push(setTimeout(showRefocus, CYCLE));
+    else breathTimers.push(setTimeout(breathTick, CYCLE));
+  }
+  function showRefocus() {
+    if (!document.body.classList.contains('dock')) return;
+    document.body.classList.add('refocus');
+  }
   function enterDock() {
     if (document.body.classList.contains('dock')) return;
     textEl.blur();
     document.body.classList.add('dock');
     dockSince = Date.now();
+    breaths = 0; breathWord.textContent = 'In';
+    breathTimers.push(setTimeout(breathTick, 800));
     if (soundOn) startSea();
   }
   function exitDock() {
     if (!document.body.classList.contains('dock')) return;
-    document.body.classList.remove('dock');
+    document.body.classList.remove('dock', 'refocus');
+    breathTimers.forEach(clearTimeout); breathTimers = [];
+    refocusText.value = ''; refocusText.blur();
     stopSea();
   }
+  refocus.addEventListener('submit', (ev) => {
+    ev.preventDefault();
+    const v = refocusText.value.trim(); if (!v) { exitDock(); return; }
+    textEl.value = v;
+    textEl.dispatchEvent(new Event('input', { bubbles: true }));   // enables Save and stores the draft
+    exitDock();
+    setTimeout(() => document.getElementById('save').click(), 0);
+  });
   soundBtn.addEventListener('click', (ev) => {
     ev.stopPropagation();
     soundOn = !soundOn; soundBtn.classList.toggle('on', soundOn);
@@ -1566,7 +1622,7 @@
   document.addEventListener('click', (ev) => {
     if (!document.body.classList.contains('dock')) return;
     if (Date.now() - dockSince < 600) return;
-    if (ev.target.closest('.dock-sound')) return;
+    if (ev.target.closest('.dock-sound, .refocus')) return;
     ev.preventDefault(); ev.stopPropagation();
     exitDock();
   }, true);
