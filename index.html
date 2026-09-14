@@ -513,6 +513,8 @@
   /* ---------- breathe: a ring that breathes 4 in, 1 hold, 7 out; after ten breaths, one question ---------- */
   .breath { position: absolute; left: 50%; top: 38%; width: 150px; height: 150px; margin: -75px 0 0 -75px; border-radius: 50%; background: radial-gradient(circle, rgba(var(--orb-rgb),.5), rgba(var(--orb-rgb),.18) 60%, transparent 72%); border: 1.5px solid rgba(var(--orb-rgb),.8); box-shadow: 0 0 70px 24px rgba(var(--orb-rgb),.22); transform: scale(.7); opacity: 0; transition: opacity 2s .8s; }
   body.dock .breath { opacity: 1; animation: breathCycle 12s infinite; }
+  body.dock.slow .breath { animation: breathCycleSlow 15s infinite; }
+  @keyframes breathCycleSlow { 0% { transform: scale(.7); animation-timing-function: cubic-bezier(.4,0,.6,1); } 40% { transform: scale(1); animation-timing-function: linear; } 46.67% { transform: scale(1); animation-timing-function: cubic-bezier(.4,0,.6,1); } 100% { transform: scale(.7); } }
   @keyframes breathCycle { 0% { transform: scale(.7); animation-timing-function: cubic-bezier(.4,0,.6,1); } 33.33% { transform: scale(1); animation-timing-function: linear; } 41.67% { transform: scale(1); animation-timing-function: cubic-bezier(.4,0,.6,1); } 100% { transform: scale(.7); } }
   .breath-cue { position: absolute; left: 0; right: 0; top: calc(38% + 100px); margin: 0; text-align: center; font-size: 15px; font-weight: 500; color: var(--muted); opacity: 0; transition: opacity 1.5s 1s; }
   .breath-cue small { display: block; font-size: 13px; font-weight: 400; opacity: .8; margin-top: 4px; }
@@ -1555,7 +1557,8 @@
   }
   let dockSince = 0;
   // ---------- breathe: 4 in, 1 hold, 7 out. Ten breaths, then one question ----------
-  const BREATHS = 10, CYCLE = 12000;
+  const BREATHS = 10;
+  let CYCLE = 12000, IN_MS = 4000, HOLD_MS = 1000;   // 4 · 1 · 7; slow makes it 6 · 1 · 8
   const breathWord = document.getElementById('breath-word');
   const refocus = document.getElementById('refocus'), refocusText = document.getElementById('refocus-text');
   let breathTimers = [], breaths = 0;
@@ -1563,10 +1566,33 @@
     if (!document.body.classList.contains('dock')) return;
     breaths++;
     breathWord.textContent = 'In';
-    breathTimers.push(setTimeout(() => { breathWord.textContent = 'Hold'; }, 4000));
-    breathTimers.push(setTimeout(() => { breathWord.textContent = 'Out'; if (audio && soundOn && audio.breakWave) audio.breakWave(); }, 5000));
+    if (document.body.classList.contains('slow')) setSlow(true);
+    breathTimers.push(setTimeout(() => { breathWord.textContent = 'Hold'; }, IN_MS));
+    breathTimers.push(setTimeout(() => { breathWord.textContent = 'Out'; if (audio && soundOn && audio.breakWave) audio.breakWave(); }, IN_MS + HOLD_MS));
     if (breaths >= BREATHS) breathTimers.push(setTimeout(showRefocus, CYCLE));
     else breathTimers.push(setTimeout(breathTick, CYCLE));
+  }
+  // ---------- slow the scene: a second long press halves everything that moves ----------
+  const breathSub = document.querySelector('.breath-cue small'), dockHint = document.querySelector('.dock-hint');
+  let slowJustToggled = 0;
+  function setSlow(on) {
+    document.body.classList.toggle('slow', on);
+    CYCLE = on ? 15000 : 12000; IN_MS = on ? 6000 : 4000; HOLD_MS = 1000;
+    breathSub.textContent = on ? '6 · 1 · 8' : '4 · 1 · 7';
+    try {
+      for (const a of document.getAnimations()) {
+        const t = a.effect && a.effect.target; if (!t || t.closest('.dock-ui')) continue;   // the breath ring keeps its own timing
+        a.playbackRate = on ? 0.5 : 1;
+      }
+    } catch (e) {}
+    if (audio) audio.lfo.frequency.setValueAtTime(1 / (CYCLE / 1000), audio.ctx.currentTime);
+  }
+  function toggleSlow() {
+    const on = !document.body.classList.contains('slow');
+    setSlow(on);
+    slowJustToggled = Date.now();
+    dockHint.textContent = on ? 'Slower' : 'Back to pace';
+    dockHint.style.animation = 'none'; void dockHint.offsetWidth; dockHint.style.animation = 'hintFade 5s ease 1';
   }
   function showRefocus() {
     if (!document.body.classList.contains('dock')) return;
@@ -1578,12 +1604,15 @@
     document.body.classList.add('dock');
     dockSince = Date.now();
     breaths = 0; breathWord.textContent = 'In';
+    setSlow(false);
     breathTimers.push(setTimeout(breathTick, 800));
     if (soundOn) startSea();
   }
   function exitDock() {
     if (!document.body.classList.contains('dock')) return;
     document.body.classList.remove('dock', 'refocus');
+    setSlow(false);
+    dockHint.style.animation = ''; dockHint.textContent = 'Breathe with the water · tap anywhere to come back';
     breathTimers.forEach(clearTimeout); breathTimers = [];
     refocusText.value = ''; refocusText.blur();
     stopSea();
@@ -1604,11 +1633,12 @@
   });
   let pressTimer = null, px = 0, py = 0;
   document.addEventListener('pointerdown', (ev) => {
-    if (document.body.classList.contains('dock') || !today.classList.contains('in')) return;
-    if (ev.target.closest('nav, textarea, button, input, .entry, a, .moods, .sheet, .pill')) return;
+    if (!today.classList.contains('in')) return;
+    if (ev.target.closest('nav, textarea, button, input, .entry, a, .moods, .sheet, .pill, .refocus')) return;
+    const inDock = document.body.classList.contains('dock');
     px = ev.clientX; py = ev.clientY;
     clearTimeout(pressTimer);
-    pressTimer = setTimeout(() => { pressTimer = null; enterDock(); }, 650);
+    pressTimer = setTimeout(() => { pressTimer = null; if (inDock) toggleSlow(); else enterDock(); }, 650);
   });
   const cancelPress = (ev) => {
     if (!pressTimer) return;
@@ -1621,7 +1651,7 @@
   document.addEventListener('scroll', () => cancelPress(), true);
   document.addEventListener('click', (ev) => {
     if (!document.body.classList.contains('dock')) return;
-    if (Date.now() - dockSince < 600) return;
+    if (Date.now() - dockSince < 600 || Date.now() - slowJustToggled < 600) return;
     if (ev.target.closest('.dock-sound, .refocus')) return;
     ev.preventDefault(); ev.stopPropagation();
     exitDock();
