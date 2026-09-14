@@ -1420,6 +1420,7 @@
     const on = !document.documentElement.classList.contains('rain');
     applyRain(on);
     try { localStorage.setItem(RAIN_KEY, on ? '1' : '0'); } catch (e) {}
+    if (typeof updateLayers === 'function') updateLayers();
   });
 
   // ---------- save ripple ----------
@@ -1483,6 +1484,7 @@
     if (document.hidden || !today.classList.contains('in')) return scheduleGust(20000);
     document.body.classList.add('gust');
     setTimeout(() => document.body.classList.remove('gust'), 4200);
+    if (audio && soundOn && audio.windGust && document.body.classList.contains('dock')) audio.windGust();
     scheduleGust(70000 + Math.random() * 80000);
   }
   if (!reduceMotion) scheduleGust(14000);
@@ -1524,7 +1526,62 @@
         const crash = ctx.createGain(); crash.gain.value = 0;
         wsrc.connect(wbp); wbp.connect(crash); crash.connect(master);
         wsrc.start();
-        audio = { ctx, master, crash, wbp, lfo, timer: null, breakWave: null };
+        audio = { ctx, master, crash, wbp, lfo, timer: null, breakWave: null, creakTimer: null, cricketTimer: null };
+        // ---- Florida layers: wind in the sea grass, rain on the water, crickets after dark, the dock creaking
+        const noise = (len, k, amp) => { const b = ctx.createBuffer(1, ctx.sampleRate * len, ctx.sampleRate); const dd = b.getChannelData(0); let l = 0; for (let i = 0; i < dd.length; i++) { const w = Math.random() * 2 - 1; l = (l + k * w) / (1 + k); dd[i] = l * amp; } return b; };
+        const loop = (b) => { const n = ctx.createBufferSource(); n.buffer = b; n.loop = true; n.start(); return n; };
+        // wind
+        const windBp = ctx.createBiquadFilter(); windBp.type = 'bandpass'; windBp.frequency.value = 350; windBp.Q.value = 0.7;
+        const windGain = ctx.createGain(); windGain.gain.value = 0;
+        loop(buf).connect(windBp); windBp.connect(windGain); windGain.connect(master);
+        audio.windGust = () => {
+          const t0 = ctx.currentTime, g = windGain.gain, f = windBp.frequency;
+          g.cancelScheduledValues(t0); f.cancelScheduledValues(t0);
+          g.setValueAtTime(Math.max(g.value, 0.001), t0); g.linearRampToValueAtTime(0.18, t0 + 1.4); g.setValueAtTime(0.18, t0 + 1.9); g.linearRampToValueAtTime(0.001, t0 + 4.7);
+          f.setValueAtTime(300, t0); f.linearRampToValueAtTime(700, t0 + 1.6); f.linearRampToValueAtTime(350, t0 + 4.7);
+        };
+        // rain
+        const rainHp = ctx.createBiquadFilter(); rainHp.type = 'highpass'; rainHp.frequency.value = 2500;
+        const rainGain = ctx.createGain(); rainGain.gain.value = 0;
+        const flutter = ctx.createOscillator(); flutter.frequency.value = 0.4; const flutterG = ctx.createGain(); flutterG.gain.value = 0.015;
+        flutter.connect(flutterG); flutterG.connect(rainGain.gain); flutter.start();
+        loop(noise(2, 1, 0.5)).connect(rainHp); rainHp.connect(rainGain); rainGain.connect(master);
+        audio.setRain = (on) => { const t0 = ctx.currentTime, g = rainGain.gain; g.cancelScheduledValues(t0); g.setValueAtTime(g.value, t0); g.linearRampToValueAtTime(on ? 0.05 : 0, t0 + (on ? 3 : 2)); };
+        // crickets
+        const cricketGain = ctx.createGain(); cricketGain.gain.value = 0; cricketGain.connect(master);
+        const voices = [[4300, 38, -0.4], [3900, 33, 0.4]].map(([hz, am, pan]) => {
+          const o = ctx.createOscillator(); o.frequency.value = hz;
+          const mod = ctx.createOscillator(); mod.type = 'square'; mod.frequency.value = am; const modG = ctx.createGain(); modG.gain.value = 0.5;
+          const carrier = ctx.createGain(); carrier.gain.value = 0.5; mod.connect(modG); modG.connect(carrier.gain);
+          const gate = ctx.createGain(); gate.gain.value = 0;
+          const p = ctx.createStereoPanner ? ctx.createStereoPanner() : ctx.createGain(); if (p.pan) p.pan.value = pan;
+          o.connect(carrier); carrier.connect(gate); gate.connect(p); p.connect(cricketGain); o.start(); mod.start();
+          return gate;
+        });
+        const chirp = () => {
+          if (!audio || !audio.cricketsOn) return;
+          voices.forEach((gate, i) => {
+            const n = 4 + Math.floor(Math.random() * 4), t0 = ctx.currentTime + Math.random() * 0.4 + i * 0.2, g = gate.gain;
+            g.cancelScheduledValues(t0);
+            for (let k = 0; k < n; k++) { const a = t0 + k * 0.6; g.setValueAtTime(0, a); g.linearRampToValueAtTime(1, a + 0.05); g.setValueAtTime(1, a + 0.3); g.linearRampToValueAtTime(0, a + 0.35); }
+          });
+          audio.cricketTimer = setTimeout(chirp, 4200 + Math.random() * 2500);
+        };
+        audio.setCrickets = (on) => {
+          const t0 = ctx.currentTime, g = cricketGain.gain; g.cancelScheduledValues(t0); g.setValueAtTime(g.value, t0); g.linearRampToValueAtTime(on ? 0.012 : 0, t0 + 3);
+          if (on && !audio.cricketsOn) { audio.cricketsOn = true; chirp(); }
+          if (!on) { audio.cricketsOn = false; clearTimeout(audio.cricketTimer); }
+        };
+        // dock creak
+        const creakLp = ctx.createBiquadFilter(); creakLp.type = 'lowpass'; creakLp.frequency.value = 500; creakLp.connect(master);
+        audio.creak = () => {
+          const t0 = ctx.currentTime;
+          const o = ctx.createOscillator(); o.type = 'triangle'; o.frequency.setValueAtTime(110, t0); o.frequency.exponentialRampToValueAtTime(85, t0 + 0.7);
+          const g = ctx.createGain(); g.gain.setValueAtTime(0, t0); g.gain.linearRampToValueAtTime(0.05, t0 + 0.12); g.gain.linearRampToValueAtTime(0.001, t0 + 0.75);
+          o.connect(g); g.connect(creakLp); o.start(t0); o.stop(t0 + 0.8);
+          const n = ctx.createBufferSource(); n.buffer = noise(1, 0.3, 0.4); const ng = ctx.createGain(); ng.gain.setValueAtTime(0, t0); ng.gain.linearRampToValueAtTime(0.02, t0 + 0.1); ng.gain.linearRampToValueAtTime(0.001, t0 + 0.6);
+          n.connect(ng); ng.connect(creakLp); n.start(t0); n.stop(t0 + 0.7);
+        };
       }
       const breakWave = () => {
         if (!audio || !document.body.classList.contains('dock')) return;
@@ -1541,6 +1598,9 @@
         f.exponentialRampToValueAtTime(500, t + 2.4 + 3.2 * size);
       };
       audio.breakWave = breakWave;                               // the breath ticker calls this on every out-breath
+      const creakLoop = () => { if (!audio || !document.body.classList.contains('dock')) return; audio.creak(); audio.creakTimer = setTimeout(creakLoop, 25000 + Math.random() * 30000); };
+      clearTimeout(audio.creakTimer); audio.creakTimer = setTimeout(creakLoop, 9000 + Math.random() * 12000);
+      updateLayers();
       audio.lfo.frequency.setValueAtTime(1 / 12, audio.ctx.currentTime);
       clearTimeout(audio.timer);
       audio.ctx.resume();
@@ -1548,9 +1608,15 @@
       g.cancelScheduledValues(t); g.setValueAtTime(g.value, t); g.linearRampToValueAtTime(0.22, t + 4);
     } catch (e) {}
   }
+  function updateLayers() {
+    if (!audio || !soundOn || !document.body.classList.contains('dock')) return;
+    audio.setRain(document.documentElement.classList.contains('rain'));
+    audio.setCrickets(document.body.classList.contains('late'));
+  }
   function stopSea() {
     if (!audio) return;
     clearTimeout(audio.timer); audio.timer = null;
+    clearTimeout(audio.creakTimer); audio.setCrickets(false);
     const g = audio.master.gain, t = audio.ctx.currentTime;
     g.cancelScheduledValues(t); g.setValueAtTime(g.value, t); g.linearRampToValueAtTime(0, t + 1.5);
     setTimeout(() => { if (audio && !document.body.classList.contains('dock')) audio.ctx.suspend(); }, 1700);
@@ -1567,6 +1633,7 @@
     breaths++;
     breathWord.textContent = 'In';
     if (document.body.classList.contains('slow')) setSlow(true);
+    updateLayers();                                            // crickets follow the clock, rain follows the toggle
     breathTimers.push(setTimeout(() => { breathWord.textContent = 'Hold'; }, IN_MS));
     breathTimers.push(setTimeout(() => { breathWord.textContent = 'Out'; if (audio && soundOn && audio.breakWave) audio.breakWave(); }, IN_MS + HOLD_MS));
     if (breaths >= BREATHS) breathTimers.push(setTimeout(showRefocus, CYCLE));
