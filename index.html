@@ -213,6 +213,15 @@
   .stats span { font-size: 12px; color: var(--muted); }
   .banner { background: var(--accent-soft); color: var(--accent); border-radius: 16px; padding: 12px 16px; font-size: 13px; margin-bottom: 14px; }
   label.small { font-size: 13px; color: var(--muted); display: block; margin: 10px 0 4px; }
+  .card input.field { width: 100%; font: inherit; font-size: 15px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 11px 14px; outline: none; margin-bottom: 8px; }
+  .card input.field:focus { border-color: var(--accent); }
+  /* ---------- circle: friends' last seven days under the mood log ---------- */
+  .circle:empty { display: none; }
+  .circle .friend { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
+  .circle .friend b { font-weight: 500; font-size: 15px; }
+  .circle .week { display: flex; gap: 6px; }
+  .circle .week i { display: block; width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--line); }
+  .circle .week svg { display: block; }
   input[type=date] { width: 100%; font: inherit; font-size: 15px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; outline: none; }
   .closing { text-align: center; font-size: 13px; color: var(--muted); margin: 18px 0 0; }
 
@@ -805,6 +814,8 @@
     </div>
     <div class="moodlog" id="moodlog"></div>
     <p class="moodlog-cap" id="moodlog-cap"></p>
+    <div class="circle" id="circle"></div>
+    <p class="moodlog-cap" id="circle-cap"></p>
     <div class="search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5 21 21"/></svg>
       <input type="search" id="search" placeholder="Search what you said">
@@ -870,7 +881,24 @@
       <p id="last-export" style="margin:12px 0 0"></p>
     </div>
 
-    <p class="closing">Nothing leaves this phone.</p>
+    <div class="card frost">
+      <h2>Circle</h2>
+      <p>See each other’s faces. Only the faces travel — never your words.</p>
+      <div id="circle-join">
+        <input class="field" id="circle-name" type="text" placeholder="Your first name" maxlength="24" autocomplete="given-name">
+        <input class="field" id="circle-code" type="text" placeholder="Circle code · e.g. stillwater" maxlength="12" autocapitalize="none" autocorrect="off" spellcheck="false">
+        <button class="btn ghost mid" id="circle-join-btn" type="button">Join</button>
+      </div>
+      <div id="circle-in" class="hidden">
+        <p id="circle-info" style="margin:0 0 12px"></p>
+        <div class="row">
+          <button class="btn mid" id="circle-share" type="button">Share the code</button>
+          <button class="btn ghost mid" id="circle-leave" type="button">Leave</button>
+        </div>
+      </div>
+    </div>
+
+    <p class="closing">Nothing leaves this phone, except the faces you choose to share in a circle.</p>
   </section>
 </main>
 
@@ -1068,6 +1096,7 @@
     db.entries.push({ id: uid(), ts, day, text: t, mood, edited: 0 });
     text.value = ''; mood = 0; backdated = false; db.draft = null; save();
     syncMoodRow(); renderTodayHead(); renderTodayEntries(); text.blur(); toast('Saved');
+    syncCircle(true);
   });
   function renderTodayEntries() {
     const box = $('#today-entries'); box.innerHTML = '';
@@ -1359,6 +1388,70 @@
     } catch (e) { toast('That file is not a Feeling backup'); }
     ev.target.value = '';
   });
+  // ---------- circle: a few people see each other's faces ----------
+  const CIRCLE_API = 'https://feeling-circle.paul-o-a04.workers.dev/api/circle/';
+  if (!db.circle) db.circle = null;
+  const circleName = $('#circle-name'), circleCode = $('#circle-code');
+  function cleanCode(v) { return String(v || '').toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 12); }
+  function myDays() {
+    const out = {}, floor = shiftKey(todayKey(), -30);
+    for (const e of db.entries) if (e.mood && e.day >= floor) { if (!out[e.day] || out[e.day].ts < e.ts) out[e.day] = { ts: e.ts, mood: e.mood }; }
+    for (const k in out) out[k] = out[k].mood;
+    return out;
+  }
+  let syncing = false;
+  async function syncCircle(quiet) {
+    const c = db.circle; if (!c || !c.code || syncing) return;
+    syncing = true;
+    try {
+      const res = await fetch(CIRCLE_API + c.code, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: c.id, name: c.name, days: myDays() }) });
+      if (!res.ok) throw new Error(res.status);
+      const data = await res.json();
+      c.members = (data.members || []).filter((m) => m.id !== c.id); c.seen = Date.now(); save();
+    } catch (e) { if (!quiet) toast('Could not reach the circle'); }
+    syncing = false;
+    renderCircle();
+  }
+  function renderCircle() {
+    const box = $('#circle'), cap = $('#circle-cap'); box.innerHTML = ''; cap.textContent = '';
+    const c = db.circle; if (!c || !c.code) return;
+    const days = []; for (let i = 6; i >= 0; i--) days.push(shiftKey(todayKey(), -i));
+    for (const m of c.members || []) {
+      const row = el('div', 'friend'); row.appendChild(el('b', null, m.name));
+      const week = el('div', 'week');
+      for (const d of days) { const mood = m.days && m.days[d]; week.appendChild(mood ? faceSVG(mood, 22) : el('i')); }
+      row.appendChild(week); box.appendChild(row);
+    }
+    if (!(c.members || []).length) cap.textContent = 'Nobody else in the circle yet. Share the code from Export.';
+    else cap.textContent = c.seen && Date.now() - c.seen > 10 * 60e3 ? `Last 7 days · last seen ${fmtTime(c.seen)}` : 'Last 7 days · today on the right';
+  }
+  function renderCircleCard() {
+    const c = db.circle, inC = !!(c && c.code);
+    $('#circle-join').classList.toggle('hidden', inC); $('#circle-in').classList.toggle('hidden', !inC);
+    if (inC) { const n = (c.members || []).length; $('#circle-info').textContent = `${c.name} in circle ${c.code} · ${n ? n + (n === 1 ? ' other' : ' others') : 'nobody else yet'}`; }
+  }
+  $('#circle-join-btn').addEventListener('click', () => {
+    const name = circleName.value.trim(), code = cleanCode(circleCode.value);
+    if (!name) { toast('Your first name first'); circleName.focus(); return; }
+    if (code.length < 6) { toast('A code is 6 to 12 letters or digits'); circleCode.focus(); return; }
+    db.circle = { name, code, id: uid(), members: [], seen: 0 }; save();
+    renderCircleCard(); syncCircle();
+  });
+  $('#circle-share').addEventListener('click', async () => {
+    const c = db.circle; if (!c) return;
+    const text = `Join my circle in Feeling. Open the app, go to Export → Circle, and enter the code ${c.code}. Only our faces are shared, never what we write. https://mellowt1.github.io/feeling-app/`;
+    try { if (navigator.share) { await navigator.share({ text }); return; } } catch (e) { if (e.name === 'AbortError') return; }
+    try { await navigator.clipboard.writeText(text); toast('Copied'); } catch (e) { toast('Code: ' + c.code); }
+  });
+  $('#circle-leave').addEventListener('click', async () => {
+    const c = db.circle; if (!c) return;
+    if (!confirm('Leave the circle? Your faces disappear for the others.')) return;
+    try { await fetch(CIRCLE_API + c.code, { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: c.id }) }); } catch (e) {}
+    db.circle = null; save(); renderCircleCard(); renderCircle(); toast('Left the circle');
+  });
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) syncCircle(true); });
+  renderCircleCard(); renderCircle(); syncCircle(true);
+
   function renderExport() {
     const s = lastSession();
     $('#session-info').textContent = s ? `Last session — ${fmtDay(s, false)}. ${db.sessions.length} marked in total.` : 'No session marked yet. Mark one after each appointment so "since session" works.';
@@ -1387,7 +1480,7 @@
     from.classList.remove('in');
     setTimeout(() => {
       from.classList.add('hidden');
-      if (name === 'history') { renderMonth(); renderHistory(); }
+      if (name === 'history') { renderMonth(); renderHistory(); syncCircle(true); }
       if (name === 'export') renderExport();
       to.classList.remove('hidden');
       if (name === 'history') placeFilter();
