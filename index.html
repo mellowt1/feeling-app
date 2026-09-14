@@ -1410,7 +1410,7 @@
       c.members = (data.members || []).filter((m) => m.id !== c.id); c.seen = Date.now(); save();
     } catch (e) { if (!quiet) toast('Could not reach the circle'); }
     syncing = false;
-    renderCircle();
+    renderCircle(); renderCircleCard();
   }
   function renderCircle() {
     const box = $('#circle'), cap = $('#circle-cap'); box.innerHTML = ''; cap.textContent = '';
