@@ -1,6 +1,6 @@
 # Feeling v4, three places (design only)
 
-This is the in-progress v4 redesign. The app does not load anything from this folder, and nothing here is in `index.html` yet.
+This is the v4 redesign. It shipped in the app as Feeling 31 on 2026-09-16. The app does not load anything from this folder; these are the source files.
 
 ## Where the design lives
 
@@ -15,8 +15,11 @@ This is the in-progress v4 redesign. The app does not load anything from this fo
 - `scenes/CalmPresence.dc.html` is the figure sheet as delivered.
 - `scenes/canvas.json` is the canvas layout, with the per-place ambience lists in its notes.
 
+## Previewing
+
+Open the app with `?place=dock|campo|keywest` and `?sky=morning|day|evening|night` to see any place at any time of day, for example `index.html?place=keywest&sky=evening`.
+
 ## Still open
 
-1. Choose which ambient animals stay in each place.
-2. Confirm the dusk and night skies.
-3. Move to code: tokens, scene SVGs, figures and animations into `index.html`, then bump `sw.js`.
+1. Trim the ambient animals per place, if any feel like too much.
+2. Fine-tune the dusk and night skies on a real phone.
