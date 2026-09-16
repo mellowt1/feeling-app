@@ -98,6 +98,14 @@
   .btn svg { width: 18px; height: 18px; }
   .btn.ghost { background: var(--glass); color: var(--accent); border: 1px solid var(--glass-line); -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px); box-shadow: 0 10px 30px rgba(20,30,35,.07); }
   #save { min-height: 54px; border-radius: 27px; transition: background .4s, color .4s, opacity .4s; }
+  /* status: a few words for the circle, beside Save. Hidden when you are not in a circle. */
+  .saverow { display: flex; gap: 8px; margin-top: 18px; align-items: stretch; }
+  .saverow #save { flex: 0 0 112px; width: auto; }
+  .saverow.solo #save { flex: 1; }
+  .saverow.solo #status { display: none; }
+  #status { flex: 1; min-width: 0; font: inherit; font-size: 15px; color: var(--ink); background: var(--glass); border: 1px solid var(--glass-line); border-radius: 27px; padding: 0 18px; min-height: 54px; outline: none; -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px); box-shadow: 0 10px 30px rgba(20,30,35,.07); transition: border-color .25s, box-shadow .25s; }
+  #status::placeholder { color: var(--muted); }
+  #status:focus { border-color: var(--accent-40); box-shadow: 0 0 0 3px var(--accent-soft), 0 10px 30px rgba(20,30,35,.07); }
   #save:disabled { opacity: .7; }
   #save:not(:disabled) { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
   .btn.quiet { background: var(--chip); color: var(--ink); }
@@ -221,6 +229,8 @@
   .circle:empty { display: none; }
   .circle .friend { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
   .circle .friend b { font-weight: 500; font-size: 15px; display: flex; align-items: center; gap: 7px; }
+  .circle .friend .who { display: flex; flex-direction: column; gap: 2px; min-width: 0; padding-right: 10px; }
+  .circle .friend small { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .circle .place-mark { width: 14px; height: 11px; fill: var(--muted); opacity: .8; flex: 0 0 auto; }
   .circle .week { display: flex; gap: 6px; }
   .circle .week i { display: block; width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--line); }
@@ -400,7 +410,7 @@
   .bonnet use { transform-origin: 78% 50%; animation-duration: 1.3s; }
 
   /* distant boat on the horizon, once an hour, three minutes to cross */
-  .waves svg.boat { position: absolute; bottom: auto; top: 13%; left: 0; width: 26px; height: 10px; fill: var(--silhouette); opacity: 0; animation: boatCross 3600s linear infinite; animation-delay: -3480s; }
+  .waves svg.boat { position: absolute; bottom: 62%; top: auto; left: 0; width: 26px; height: 10px; fill: var(--silhouette); opacity: 0; animation: boatCross 3600s linear infinite; animation-delay: -3480s; }
   @keyframes boatCross { 0% { transform: translateX(-40px); opacity: 0; } 0.3% { opacity: .28; } 4.7% { opacity: .28; } 5% { transform: translateX(105vw); opacity: 0; } 100% { transform: translateX(105vw); opacity: 0; } }
 
   /* sun glitter on the water, mornings and evenings */
@@ -514,7 +524,7 @@
   /* ---------- sit on the dock: long press the screen, everything but the water goes away ---------- */
   #tab-today { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
   #tab-today textarea, #tab-today .entry .text { -webkit-user-select: text; user-select: text; }
-  #tab-today > .headrow, #tab-today > .entry-glass, #tab-today > .voice, #tab-today > .moods, #tab-today > #save, #tab-today > .daylist, nav { transition: opacity 1.2s ease; }
+  #tab-today > .headrow, #tab-today > .entry-glass, #tab-today > .voice, #tab-today > .moods, #tab-today > .saverow, #tab-today > .daylist, nav { transition: opacity 1.2s ease; }
   body.dock #tab-today > :not(.sky-breathe):not(.clouds):not(.orb):not(.waves):not(.rain):not(.wind):not(.dock-ui), body.dock nav { opacity: 0 !important; pointer-events: none; }
   .waves { transition: transform 2.5s ease-out, height 2.5s ease-in-out; }
   body.dock .waves { height: calc(44vh + var(--tide, 0px)); }
@@ -612,9 +622,9 @@
   .waves.keywest .wave-wrap { overflow: hidden; }
   html[data-place="keywest"] .waves.keywest { display: block; }
   /* a distant key on the horizon, a sailboat now and then behind the back wave */
-  .keywest svg.key { position: absolute; left: 8%; top: 12%; width: 120px; height: 24px; bottom: auto; }
+  .keywest svg.key { position: absolute; left: 8%; bottom: 62%; width: 120px; height: 24px; }
   .keywest .key path { fill: var(--silhouette); opacity: .18; }
-  .keywest svg.sail { position: absolute; bottom: auto; top: 5%; left: 0; width: 22px; height: 22px; opacity: 0; animation: sailCross 2400s linear infinite; animation-delay: -2300s; }
+  .keywest svg.sail { position: absolute; bottom: 62%; top: auto; left: 0; width: 22px; height: 22px; opacity: 0; animation: sailCross 2400s linear infinite; animation-delay: -2300s; }
   .keywest .sail path { fill: var(--silhouette); opacity: .28; }
   .keywest .sail .mast { fill: none; stroke: var(--silhouette); stroke-opacity: .28; stroke-width: .9; }
   @keyframes sailCross { 0% { transform: translateX(-40px); opacity: 0; } 0.3% { opacity: 1; } 9.7% { opacity: 1; } 10% { transform: translateX(110vw); opacity: 0; } 100% { transform: translateX(110vw); opacity: 0; } }
@@ -676,7 +686,7 @@
   .dolphins use { opacity: .42; }
   @keyframes dolphin { 0%, 78% { opacity: 0; transform: translate(0, 12px) rotate(-16deg); } 79.5% { opacity: 1; transform: translate(-18px, 0) rotate(0); } 81% { opacity: 0; transform: translate(-36px, 12px) rotate(16deg); } 82.5% { opacity: 1; transform: translate(-54px, 0) rotate(0); } 84% { opacity: 0; transform: translate(-72px, 12px) rotate(16deg); } 85.5% { opacity: 1; transform: translate(-90px, 0) rotate(0); } 87%, 100% { opacity: 0; transform: translate(-108px, 12px) rotate(16deg); } }
   /* great blue heron in the shallows: stands, takes one slow step now and then */
-  .waves .heron { left: 4%; bottom: 40%; width: auto; height: 40px; }
+  .waves .heron { left: 4%; bottom: 32.5%; width: auto; height: 40px; }
   .heron use { opacity: .55; animation: heronStalk 34s ease-in-out infinite; }
   @keyframes heronStalk { 0%, 60% { transform: translateX(0); } 64%, 96% { transform: translateX(-4%); } 100% { transform: translateX(0); } }
   .waves .manatee { left: 34%; bottom: 38%; width: 52px; height: auto; }
@@ -705,7 +715,7 @@
   .windpump .blades path, .windpump .blades circle { opacity: .35; }
   @keyframes spin { to { transform: rotate(360deg); } }
   /* sheep far off, white against the steppe; a ñandú with two chicks; a hare that sits by the tufts and bolts once in a while; a fox at dusk */
-  .campo .sheep-line { left: auto; right: 22%; bottom: 49%; width: 40px; height: 9px; }
+  .campo .sheep-line { left: 27%; bottom: 49%; width: 40px; height: 9px; }
   .sheep-line svg { position: absolute; bottom: 0; width: 11px; height: auto; fill: #F4F2EE; opacity: .6; }
   .sheep-line .sh2 { left: 14px; bottom: 1px; }
   .sheep-line .sh3 { left: 29px; width: 10px; }
@@ -735,9 +745,9 @@
   @keyframes setting { from { transform: translateY(-30px); } to { transform: translateY(40px); } }
   .keywest .green-flash { left: 18%; bottom: 69%; width: 40px; height: 3px; border-radius: 3px; background: #7CE0A0; filter: blur(2px); opacity: 0; animation: greenFlash 300s linear infinite; }
   @keyframes greenFlash { 0%, 49.6% { opacity: 0; } 49.8% { opacity: .8; } 50.1%, 100% { opacity: 0; } }
-  .keywest .lighthouse { left: 3%; bottom: 69%; width: 8px; height: 30px; }
+  .keywest .lighthouse { left: calc(8% + 57px); bottom: calc(62% + 12px); width: 6px; height: 22px; }   /* on the key */
   .lighthouse rect { opacity: .3; }
-  .keywest .beam { left: calc(3% + 4px); bottom: calc(69% + 26px); width: 200px; height: 60px; transform-origin: 0 50%; margin-bottom: -30px; background: linear-gradient(90deg, rgba(246,231,192,.14), rgba(246,231,192,0)); clip-path: polygon(0 45%, 100% 0, 100% 100%, 0 55%); filter: blur(3px); animation: sweep 24s ease-in-out infinite alternate; }
+  .keywest .beam { left: calc(8% + 60px); bottom: calc(62% + 31px); width: 200px; height: 60px; transform-origin: 0 50%; margin-bottom: -30px; background: linear-gradient(90deg, rgba(246,231,192,.14), rgba(246,231,192,0)); clip-path: polygon(0 45%, 100% 0, 100% 100%, 0 55%); filter: blur(3px); animation: sweep 24s ease-in-out infinite alternate; }
   @keyframes sweep { from { transform: rotate(-12deg); } to { transform: rotate(10deg); } }
   .keywest .pelican { left: 0; bottom: 74%; width: 34px; height: auto; animation: pelican 150s linear infinite; }
   .pelican svg { display: block; width: 100%; height: auto; overflow: visible; }
@@ -867,9 +877,9 @@
     </div>
     <div class="waves" aria-hidden="true">
       <div class="wave-wrap">
-        <svg class="boat" viewBox="0 0 30 12" aria-hidden="true"><path d="M2 8 L28 8 L25 11.5 L5 11.5 Z"/><path d="M11 8 L11 4.5 L19 4.5 L19 8 Z"/><path d="M14 4.5 L14 1.5 L15.2 1.5 L15.2 4.5 Z"/></svg>
         <div class="glitter" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
         <svg class="w1" viewBox="0 0 1200 200" preserveAspectRatio="none"><path class="w1" d="M0,60 C150,42 150,78 300,60 C450,42 450,78 600,60 C750,42 750,78 900,60 C1050,42 1050,78 1200,60 L1200,200 L0,200 Z"/></svg>
+        <svg class="boat" viewBox="0 0 30 12" aria-hidden="true"><path d="M2 8 L28 8 L25 11.5 L5 11.5 Z"/><path d="M11 8 L11 4.5 L19 4.5 L19 8 Z"/><path d="M14 4.5 L14 1.5 L15.2 1.5 L15.2 4.5 Z"/></svg>
         <div class="amb dolphins"><svg class="d1" viewBox="0 0 1536 497"><use href="#f-dolphin"/></svg><svg class="d2" viewBox="0 0 1536 497"><use href="#f-dolphin"/></svg></div>
         <svg class="w2" viewBox="0 0 1200 200" preserveAspectRatio="none"><path class="w2" d="M0,60 C150,42 150,78 300,60 C450,42 450,78 600,60 C750,42 750,78 900,60 C1050,42 1050,78 1200,60 L1200,200 L0,200 Z"/></svg>
         <div class="amb glade night-only"></div>
@@ -971,12 +981,12 @@
     <div class="waves keywest" aria-hidden="true">
       <div class="wave-wrap">
         <div class="amb setting-sun dusk-only"></div>
-        <svg class="amb lighthouse" viewBox="0 0 8 30"><rect x="2" y="6" width="4" height="24"/><rect x="0.5" y="3" width="7" height="4"/></svg>
-        <div class="amb beam night-only"></div>
-        <svg class="key" viewBox="0 0 120 24"><path d="M0,24 C10,18 22,12 40,10 C50,8 58,13 66,12 C68,8 72,7 74,10 C86,9 100,16 120,24 Z"/></svg>
-        <svg class="sail" viewBox="0 0 30 30"><path d="M3,24 L27,24 L24,28 L6,28 Z"/><path d="M14.4,4 L14.4,22 L5,22 Z"/><path d="M15.6,6 L26,22 L15.6,22 Z"/><path class="mast" d="M15,2 L15,24"/></svg>
         <div class="glitter" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
         <svg class="w1" viewBox="0 0 1200 200" preserveAspectRatio="none"><path class="w1" d="M0,60 C150,42 150,78 300,60 C450,42 450,78 600,60 C750,42 750,78 900,60 C1050,42 1050,78 1200,60 L1200,200 L0,200 Z"/></svg>
+        <svg class="key" viewBox="0 0 120 24"><path d="M0,24 C10,18 22,12 40,10 C50,8 58,13 66,12 C68,8 72,7 74,10 C86,9 100,16 120,24 Z"/></svg>
+        <svg class="amb lighthouse" viewBox="0 0 8 30"><rect x="2" y="6" width="4" height="24"/><rect x="0.5" y="3" width="7" height="4"/></svg>
+        <div class="amb beam night-only"></div>
+        <svg class="sail" viewBox="0 0 30 30"><path d="M3,24 L27,24 L24,28 L6,28 Z"/><path d="M14.4,4 L14.4,22 L5,22 Z"/><path d="M15.6,6 L26,22 L15.6,22 Z"/><path class="mast" d="M15,2 L15,24"/></svg>
         <svg class="w2" viewBox="0 0 1200 200" preserveAspectRatio="none"><path class="w2" d="M0,60 C150,42 150,78 300,60 C450,42 450,78 600,60 C750,42 750,78 900,60 C1050,42 1050,78 1200,60 L1200,200 L0,200 Z"/></svg>
         <div class="amb green-flash dusk-only"></div>
         <svg class="amb gull day-only" viewBox="0 0 1536 1347"><use href="#f-gull"/></svg>
@@ -987,7 +997,7 @@
         <div class="turtle-wrap"><svg class="turtle" viewBox="0 0 1536 1410"><use href="#f-turtle"/></svg></div>
         <svg class="w3" viewBox="0 0 1200 200" preserveAspectRatio="none"><path class="w3" d="M0,60 C150,42 150,78 300,60 C450,42 450,78 600,60 C750,42 750,78 900,60 C1050,42 1050,78 1200,60 L1200,200 L0,200 Z"/></svg>
       </div>
-      <svg class="sand" viewBox="0 0 390 240" preserveAspectRatio="none"><path class="beach" d="M0,168 C70,160 140,174 210,166 C250,160 266,152 300,146 C330,141 360,139 390,139 L390,240 L0,240 Z"/><path class="wet" d="M0,168 C70,160 140,174 210,166 C250,160 266,152 300,146 C330,141 360,139 390,139 L390,143 C360,143 330,145 300,150 C266,156 250,164 210,170 C140,178 70,164 0,172 Z"/><path class="foam" d="M0,165 C70,157 140,171 210,163 C250,157 266,149 300,143 C330,138 360,136 390,136 L390,139 C360,139 330,141 300,146 C266,152 250,160 210,166 C140,174 70,160 0,168 Z"/></svg>
+      <svg class="sand" viewBox="0 0 390 240" preserveAspectRatio="none"><path class="beach" d="M0,168 C70,160 140,174 200,168 C236,164 252,150 280,145 C320,139 360,139 390,139 L390,240 L0,240 Z"/><path class="wet" d="M0,168 C70,160 140,174 200,168 C236,164 252,150 280,145 C320,139 360,139 390,139 L390,143 C360,143 320,143 280,149 C252,154 236,168 200,172 C140,178 70,164 0,172 Z"/><path class="foam" d="M0,165 C70,157 140,171 200,165 C236,161 252,147 280,142 C320,136 360,136 390,136 L390,139 C360,139 320,139 280,145 C252,150 236,164 200,168 C140,174 70,160 0,168 Z"/></svg>
       <svg class="amb ig-log" viewBox="0 0 66 8"><path d="M0,4 L60,0 L62,4 L2,8 Z"/></svg>
       <svg class="amb iguana" viewBox="0 0 1536 1056"><use href="#f-iguana"/></svg>
       <svg class="amb hen" viewBox="0 0 1080 1536"><use href="#f-hen"/></svg>
@@ -1051,7 +1061,10 @@
     </div>
 
     <div class="moods" id="moods"></div>
-    <button class="btn ghost" id="save" style="margin-top:18px" disabled>Save</button>
+    <div class="saverow solo" id="saverow">
+      <input id="status" type="text" placeholder="A word for the circle…" maxlength="40" autocomplete="off" enterkeyhint="done" aria-label="A few words for your circle">
+      <button class="btn ghost" id="save" disabled>Save</button>
+    </div>
     <div class="daylist" id="today-entries"></div>
   </section>
 
@@ -1175,7 +1188,7 @@
       <p class="foot" id="checkin-note"></p>
     </div>
 
-    <p class="closing">Feeling 32 · Nothing leaves this phone except the faces you choose to share.</p>
+    <p class="closing">Feeling 33 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
   </section>
 </main>
 
@@ -1384,8 +1397,26 @@
   $('#mic').addEventListener('click', () => { text.focus(); });
   $('#voice-cap').addEventListener('click', () => { text.focus(); });
   backdateBtn.addEventListener('click', () => { backdated = !backdated; renderTodayHead(); renderTodayEntries(); storeDraft(); });
+  // ---------- status: a few words for the circle ----------
+  // Kept for the day it was written; travels with the faces on every sync.
+  const statusEl = $('#status');
+  function myStatus() { const s = db.status; return s && s.day === todayKey() ? s.text : ''; }
+  function restoreStatus() { statusEl.value = myStatus(); }
+  function setStatus() {
+    const t = statusEl.value.replace(/\s+/g, ' ').trim().slice(0, 40);
+    if (t === myStatus()) return;
+    db.status = t ? { day: todayKey(), text: t } : null; save();
+    syncCircle(true);
+  }
+  let statusT;
+  statusEl.addEventListener('input', () => { clearTimeout(statusT); statusT = setTimeout(setStatus, 900); });
+  statusEl.addEventListener('blur', () => { clearTimeout(statusT); setStatus(); });
+  statusEl.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); statusEl.blur(); } });
+  restoreStatus();
+
   saveBtn.addEventListener('click', () => {
     const t = text.value.trim(); if (!t) return;
+    clearTimeout(statusT); setStatus();
     const day = targetDay();
     const ts = backdated ? keyToDate(day).setHours(23, 0, 0, 0) : Date.now();
     db.entries.push({ id: uid(), ts, day, text: t, mood, edited: 0 });
@@ -1729,7 +1760,7 @@
     const c = db.circle; if (!c || !c.code || syncing) return;
     syncing = true;
     try {
-      const res = await fetch(CIRCLE_API + c.code, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: c.id, name: c.name, place: getPlace(), days: myDays() }) });
+      const res = await fetch(CIRCLE_API + c.code, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: c.id, name: c.name, place: getPlace(), days: myDays(), status: myStatus(), statusDay: todayKey() }) });
       if (!res.ok) throw new Error(res.status);
       const data = await res.json();
       c.members = (data.members || []).filter((m) => m.id !== c.id); c.seen = Date.now(); save();
@@ -1739,10 +1770,12 @@
   }
   function renderCircle() {
     const box = $('#circle'), cap = $('#circle-cap'); box.innerHTML = ''; cap.textContent = '';
-    const c = db.circle; if (!c || !c.code) return;
+    const c = db.circle; $('#saverow').classList.toggle('solo', !(c && c.code)); if (!c || !c.code) return;
     const days = []; for (let i = 6; i >= 0; i--) days.push(shiftKey(todayKey(), -i));
     for (const m of c.members || []) {
-      const row = el('div', 'friend'); const nm = el('b'); nm.appendChild(placeMark(m.place)); nm.appendChild(document.createTextNode(m.name)); row.appendChild(nm);
+      const row = el('div', 'friend'); const who = el('div', 'who'); const nm = el('b'); nm.appendChild(placeMark(m.place)); nm.appendChild(document.createTextNode(m.name)); who.appendChild(nm);
+      if (m.status && m.statusDay === todayKey()) who.appendChild(el('small', '', m.status));
+      row.appendChild(who);
       const week = el('div', 'week');
       for (const d of days) { const mood = m.days && m.days[d]; week.appendChild(mood ? faceSVG(mood, 22) : el('i')); }
       row.appendChild(week); box.appendChild(row);
@@ -2302,14 +2335,15 @@
     try { localStorage.setItem(SOUND_KEY, soundOn ? '1' : '0'); } catch (e) {}
     if (document.body.classList.contains('dock')) { if (soundOn) startSea(); else stopSea(); }
   });
-  let pressTimer = null, px = 0, py = 0;
+  let pressTimer = null, px = 0, py = 0, pressEntered = false;   // pressEntered: the click that ends this press is the press itself, not a tap
   document.addEventListener('pointerdown', (ev) => {
     if (!today.classList.contains('in')) return;
     if (ev.target.closest('nav, textarea, button, input, .entry, a, .moods, .sheet, .pill, .refocus')) return;
     const inDock = document.body.classList.contains('dock');
     px = ev.clientX; py = ev.clientY;
     clearTimeout(pressTimer);
-    pressTimer = setTimeout(() => { pressTimer = null; if (inDock) toggleSlow(); else enterDock(); }, 650);
+    pressEntered = false;
+    pressTimer = setTimeout(() => { pressTimer = null; pressEntered = true; if (inDock) toggleSlow(); else enterDock(); }, 650);
   });
   const cancelPress = (ev) => {
     if (!pressTimer) return;
@@ -2321,6 +2355,7 @@
   document.addEventListener('pointercancel', cancelPress);
   document.addEventListener('scroll', () => cancelPress(), true);
   document.addEventListener('click', (ev) => {
+    if (pressEntered) { pressEntered = false; ev.preventDefault(); ev.stopPropagation(); return; }   // however long the press was held
     if (!document.body.classList.contains('dock')) return;
     if (Date.now() - dockSince < 600 || Date.now() - slowJustToggled < 600) return;
     if (ev.target.closest('.dock-sound, .refocus')) return;
