@@ -19,7 +19,17 @@ This is the v4 redesign. It shipped in the app as Feeling 31 on 2026-09-16. The 
 
 Open the app with `?place=dock|campo|keywest` and `?sky=morning|day|evening|night` to see any place at any time of day, for example `index.html?place=keywest&sky=evening`.
 
+## Fauna (Feeling 32, 2026-09-16)
+
+Every animal is a real species silhouette from [PhyloPic](https://www.phylopic.org), used as one path with one fill: no shapes assembled from circles and triangles. In Figma they are the components `v4 / Fauna / …` (four rows under the screens, fill bound to `silhouette`); in the app the same paths sit in one `<symbol>` sprite at the top of `index.html` and every creature is a `<use>`. Licences: most are CC0 or public domain; these four are CC BY 4.0 and need the credit kept: southern lapwing and Magellanic horned owl by Edwin Price, mangrove snapper by Graham Montgomery, ghost crab by Loran Honório da Silva. The full list with authors is in each component's description and in `figures/fauna-credits.txt`.
+
+- **Still water:** tarpon (cruises, rolls at the surface once a pass), snook, jack, barracuda, pinfish school, goliath grouper, Spanish mackerel, mullet jumps, a group of four mangrove snappers hanging under the dock that startle once a minute, a blacktip every two and a half minutes, a bonnethead low over the sand every four, dolphins, manatee at dusk, great blue heron in the shallows.
+- **El campo:** guanaco, three sheep far off, ñandú with two chicks, European hare (the mara was replaced: it does not reach the Andes side of Santa Cruz), condor, southern lapwing (tero) by the road, chimango caracara on the fence post by day, Magellanic horned owl on it at night, piche (dwarf armadillo) at dusk, grey fox at dusk and night.
+- **Key West:** brown pelican, magnificent frigatebird, green turtle, green iguana on the log, hen and rooster, ghost crab, laughing gull by day, great egret on the wet line, dolphins rolling in the back water at dusk.
+
+After 21:00 the sky animals (condor, frigatebird, gull, lapwing) go to sleep, as before.
+
 ## Still open
 
-1. Trim the ambient animals per place, if any feel like too much.
-2. Fine-tune the dusk and night skies on a real phone.
+1. Fine-tune the dusk and night skies on a real phone.
+2. Say which animals feel like too much; each is one `<use>` line and one CSS block, easy to drop.

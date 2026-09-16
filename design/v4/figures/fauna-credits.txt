@@ -1,0 +1,36 @@
+PhyloPic silhouettes used in Feeling (design/v4 and index.html sprite). Licence URLs are relative to https://creativecommons.org/
+
+guanaco      Lama guanicoe              Steven Traver                                  publicdomain/zero/1.0/  https://www.phylopic.org/images/a0afbb0a-2bb8-4d69-999d-3ed3a09e9966
+sheep        Ovis aries                 public domain                                  publicdomain/zero/1.0/  https://www.phylopic.org/images/d9c0cddb-6f19-4570-94f4-60316d3f3051
+rhea         Rhea pennata               Kai Caspar                                     publicdomain/zero/1.0/  https://www.phylopic.org/images/40f348ce-a217-4f4b-8c6d-550d5ebabe70
+hare         Lepus europaeus            Ferran Sayol                                   publicdomain/zero/1.0/  https://www.phylopic.org/images/4afd156c-051f-4b43-9064-cf6b673faadb
+condor       Vultur gryphus             Andy Wilson                                    publicdomain/zero/1.0/  https://www.phylopic.org/images/688f6667-961e-4903-bde2-220b3b2b898e
+fox          Lycalopex                  Margot Michaud                                 publicdomain/zero/1.0/  https://www.phylopic.org/images/930b6b96-f873-4abc-838c-df8f6f35acf8
+lapwing      Vanellus chilensis         Edwin Price                                    licenses/by/4.0/  https://www.phylopic.org/images/8eb2943b-f2eb-4f1a-90bc-a109ec004514
+caracara     Milvago chimango           Eugenia Andrea Bonetti                         publicdomain/zero/1.0/  https://www.phylopic.org/images/b7d97fac-7105-4d01-954d-325bcb1bba4a
+piche        Zaedyus pichiy             Celeste Luna                                   publicdomain/zero/1.0/  https://www.phylopic.org/images/761070a1-039a-4586-9162-b7c6a149128f
+owl          bubo                       Edwin Price                                    licenses/by/4.0/  https://www.phylopic.org/images/3a4a5945-358d-43ae-8969-e482c023a3d9
+pelican      Pelecanus occidentalis     Caleb M. Gordon                                publicdomain/zero/1.0/  https://www.phylopic.org/images/06ef4ac4-6118-4caf-87d5-108a699dd43f
+pelicanDive  Pelecanus occidentalis     Caleb M. Gordon                                publicdomain/zero/1.0/  https://www.phylopic.org/images/e7e93e67-625d-4f37-a284-d70e8a1e02c6
+frigate      Fregata magnificens        Antonio Medina                                 publicdomain/zero/1.0/  https://www.phylopic.org/images/44dcfdfc-6879-42ef-ae02-8df23a174efd
+turtle       Chelonia mydas             Edwin Price                                    publicdomain/zero/1.0/  https://www.phylopic.org/images/09e1c81c-459f-4b44-b475-546380fa1998
+iguana       Iguana iguana              Becky Barnes                                   publicdomain/zero/1.0/  https://www.phylopic.org/images/618bc4ee-b96a-46ab-8b20-e9a6f674c690
+rooster      Gallus gallus              Steven Traver                                  publicdomain/zero/1.0/  https://www.phylopic.org/images/2de1c95c-7e1f-429b-9c08-17f0a27d176f
+hen          Gallus gallus              Steven Traver                                  publicdomain/zero/1.0/  https://www.phylopic.org/images/aff847b0-ecbd-4d41-98ce-665921a6d96e
+crab         Ocypode                    Loran Honório da Silva                         licenses/by/4.0/  https://www.phylopic.org/images/8988a8a4-cd9d-43b8-b18a-4b12e1c7b14a
+egret        Ardea alba                 Caleb M. Gordon                                publicdomain/zero/1.0/  https://www.phylopic.org/images/212cc317-8edf-4ae3-9743-761cb94b6aab
+dolphin      Tursiops truncatus         public domain                                  publicdomain/zero/1.0/  https://www.phylopic.org/images/ddaedcc2-7fb3-4b1e-a8e9-e3074b2e58a7
+snapper      Lutjanus griseus           Graham Montgomery                              licenses/by/4.0/  https://www.phylopic.org/images/107de00e-8571-4caf-b7dc-16476796dfee
+snapper2     Lutjanus                   public domain                                  publicdomain/zero/1.0/  https://www.phylopic.org/images/c1bb2fb0-08dc-4841-ae91-6c09146c4289
+grouper      Epinephelus itajara        public domain                                  publicdomain/mark/1.0/  https://www.phylopic.org/images/467fc74c-18bf-47fb-8227-3b544e4652b9
+blacktip     Carcharhinus limbatus      public domain                                  publicdomain/mark/1.0/  https://www.phylopic.org/images/49039ecb-e03b-4cdc-9c9a-0393bf0ffe99
+bonnethead   Sphyrna tiburo             Margot Michaud                                 publicdomain/zero/1.0/  https://www.phylopic.org/images/daf1fe53-5f67-42b3-a89c-6dc839da331d
+snook        Centropomus undecimalis    public domain                                  publicdomain/zero/1.0/  https://www.phylopic.org/images/a113b966-b8a0-4b3c-8cdf-7a178f9da2e1
+cuda         Sphyraena barracuda        public domain                                  publicdomain/mark/1.0/  https://www.phylopic.org/images/b89902e1-4130-442a-9d70-a7bd34d1e658
+mullet       Mugil cephalus             public domain                                  publicdomain/mark/1.0/  https://www.phylopic.org/images/490289f4-b525-4d72-9a31-369fc76e514c
+pinfish      Lagodon rhomboides         public domain                                  publicdomain/mark/1.0/  https://www.phylopic.org/images/fa1ddbeb-32f4-444e-b35a-db85897a1ec7
+tarpon       megalops                   public domain                                  publicdomain/zero/1.0/  https://www.phylopic.org/images/cce80cff-99d2-4642-8ceb-3936c2cc4a3e
+gull         larus                      Sharon Wegner-Larsen                           publicdomain/zero/1.0/  https://www.phylopic.org/images/0871b630-2dcd-4d35-b0a4-6a6551140553
+jack         caranx                     public domain                                  publicdomain/mark/1.0/  https://www.phylopic.org/images/4972110b-5e1f-4308-b315-449a2a400dbc
+mackerel     scomber                    public domain                                  publicdomain/zero/1.0/  https://www.phylopic.org/images/9417ae4b-a8d2-4b12-88bd-d05a94b65332
+manatee      trichechus                 Steven Traver                                  publicdomain/zero/1.0/  https://www.phylopic.org/images/d88fc903-0deb-4b78-b2fd-7c15d206d3f9
