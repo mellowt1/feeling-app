@@ -1188,7 +1188,7 @@
       <p class="foot" id="checkin-note"></p>
     </div>
 
-    <p class="closing">Feeling 33 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
+    <p class="closing">Feeling 34 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
   </section>
 </main>
 
@@ -2347,12 +2347,19 @@
   });
   const cancelPress = (ev) => {
     if (!pressTimer) return;
-    if (ev && ev.type === 'pointermove' && Math.hypot(ev.clientX - px, ev.clientY - py) < 12) return;
+    if (ev && (ev.type === 'pointermove' || ev.type === 'touchmove')) {
+      const t = ev.touches ? ev.touches[0] : ev;
+      if (Math.hypot(t.clientX - px, t.clientY - py) < 12) return;
+    }
     clearTimeout(pressTimer); pressTimer = null;
   };
   document.addEventListener('pointermove', cancelPress);
   document.addEventListener('pointerup', cancelPress);
-  document.addEventListener('pointercancel', cancelPress);
+  // iOS sends pointercancel the moment it suspects a scroll, even for a still finger, so the press listens to the touch events instead
+  document.addEventListener('pointercancel', (ev) => { if (ev.pointerType !== 'touch') cancelPress(ev); });
+  document.addEventListener('touchmove', cancelPress, { passive: true });
+  document.addEventListener('touchend', cancelPress, { passive: true });
+  document.addEventListener('touchcancel', cancelPress, { passive: true });
   document.addEventListener('scroll', () => cancelPress(), true);
   document.addEventListener('click', (ev) => {
     if (pressEntered) { pressEntered = false; ev.preventDefault(); ev.stopPropagation(); return; }   // however long the press was held
