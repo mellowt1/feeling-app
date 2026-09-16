@@ -1953,7 +1953,7 @@
 
   // ---------- sit on the dock, or by the road ----------
   const HINTS = { dock: 'Breathe with the water · tap anywhere to come back', campo: 'Breathe with the wind · tap anywhere to come back', keywest: 'Breathe with the water · tap anywhere to come back' };
-  const place = getPlace;
+  const place = () => { const p = document.documentElement.getAttribute('data-place'); return p === 'campo' || p === 'keywest' ? p : 'dock'; };
   const SOUND_KEY = 'feeling.docksound';
   const soundBtn = document.getElementById('dock-sound');
   let soundOn = true;
