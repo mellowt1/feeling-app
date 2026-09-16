@@ -106,6 +106,19 @@
   #status { flex: 1; min-width: 0; font: inherit; font-size: 15px; color: var(--ink); background: var(--glass); border: 1px solid var(--glass-line); border-radius: 27px; padding: 0 18px; min-height: 54px; outline: none; -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px); box-shadow: 0 10px 30px rgba(20,30,35,.07); transition: border-color .25s, box-shadow .25s; }
   #status::placeholder { color: var(--muted); }
   #status:focus { border-color: var(--accent-40); box-shadow: 0 0 0 3px var(--accent-soft), 0 10px 30px rgba(20,30,35,.07); }
+  /* message in a bottle: a friend's words live in the scene, not in a feed. Only there when someone wrote something today. */
+  #bottle { --tilt: -28deg; position: fixed; left: 9%; bottom: 112px; width: 14px; height: 24px; padding: 10px; margin: -10px; box-sizing: content-box; border: 0; background: none; z-index: 1; display: none; transform: rotate(var(--tilt)); animation: bottleBob 3.4s ease-in-out infinite alternate; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  #bottle.show { display: block; }
+  #bottle svg { width: 14px; height: 24px; display: block; overflow: visible; }
+  #bottle g { opacity: .62; }
+  #bottle .glass { fill: var(--silhouette); }
+  #bottle .note { fill: var(--bg); }
+  html[data-place="campo"] #bottle { --tilt: 22deg; bottom: 100px; animation: none; }
+  html[data-place="keywest"] #bottle { --tilt: -34deg; }
+  @keyframes bottleBob { from { transform: rotate(var(--tilt)) translateY(0); } to { transform: rotate(calc(var(--tilt) + 6deg)) translateY(-3px); } }
+  #bottle-note { position: fixed; left: 15%; bottom: 158px; z-index: 3; max-width: 260px; padding: 11px 16px; border-radius: 22px; background: var(--glass-strong); border: 1px solid var(--glass-line); -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px); box-shadow: 0 10px 30px rgba(20,30,35,.07); font-family: var(--serif); font-style: italic; font-weight: 300; font-size: 15px; line-height: 1.45; color: var(--ink); opacity: 0; transform: translateY(6px); pointer-events: none; transition: opacity .35s, transform .35s; }
+  #bottle-note.show { opacity: 1; transform: none; }
+  #bottle-note div + div { margin-top: 4px; }
   #save:disabled { opacity: .7; }
   #save:not(:disabled) { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
   .btn.quiet { background: var(--chip); color: var(--ink); }
@@ -1065,6 +1078,8 @@
       <input id="status" type="text" placeholder="A word for the circle…" maxlength="40" autocomplete="off" enterkeyhint="done" aria-label="A few words for your circle">
       <button class="btn ghost" id="save" disabled>Save</button>
     </div>
+    <button id="bottle" type="button" aria-label="A message in a bottle from your circle"><svg viewBox="0 0 24 40" aria-hidden="true"><g><path class="glass" d="M9 1h6v2q0 1 1 1.5v5q6 3 6 10v16q0 4-4 4H6q-4 0-4-4v-16q0-7 6-10v-5q1-.5 1-1.5z"/><rect class="note" x="7" y="17" width="10" height="14" rx="1.5"/></g></svg></button>
+    <div id="bottle-note" role="status"></div>
     <div class="daylist" id="today-entries"></div>
   </section>
 
@@ -1188,7 +1203,7 @@
       <p class="foot" id="checkin-note"></p>
     </div>
 
-    <p class="closing">Feeling 34 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
+    <p class="closing">Feeling 35 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
   </section>
 </main>
 
@@ -1744,6 +1759,24 @@
     svg.appendChild(path); return svg;
   }
 
+  // ---------- message in a bottle ----------
+  // A friend's words for today drift into the scene as a bottle. Tap it to read; it closes on the next tap or after 6 s.
+  const bottle = $('#bottle'), bottleNote = $('#bottle-note'); let bottleT;
+  function bottleWords() {
+    const c = db.circle; if (!c || !c.code) return [];
+    return (c.members || []).filter((m) => m.status && m.statusDay === todayKey()).map((m) => ({ name: m.name, text: m.status }));
+  }
+  function closeBottle() { bottleNote.classList.remove('show'); clearTimeout(bottleT); }
+  function renderBottle() { const w = bottleWords(); bottle.classList.toggle('show', w.length > 0); if (!w.length) closeBottle(); }
+  bottle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (bottleNote.classList.contains('show')) return closeBottle();
+    bottleNote.innerHTML = '';
+    for (const w of bottleWords()) bottleNote.appendChild(el('div', '', '“' + w.text + '” — ' + w.name));
+    bottleNote.classList.add('show'); clearTimeout(bottleT); bottleT = setTimeout(closeBottle, 6000);
+  });
+  document.addEventListener('click', closeBottle);
+
   // ---------- circle: a few people see each other's faces ----------
   const CIRCLE_API = 'https://feeling-circle.paul-o-a04.workers.dev/api/circle/';
   if (!db.circle) db.circle = null;
@@ -1770,7 +1803,7 @@
   }
   function renderCircle() {
     const box = $('#circle'), cap = $('#circle-cap'); box.innerHTML = ''; cap.textContent = '';
-    const c = db.circle; $('#saverow').classList.toggle('solo', !(c && c.code)); if (!c || !c.code) return;
+    const c = db.circle; $('#saverow').classList.toggle('solo', !(c && c.code)); renderBottle(); if (!c || !c.code) return;
     const days = []; for (let i = 6; i >= 0; i--) days.push(shiftKey(todayKey(), -i));
     for (const m of c.members || []) {
       const row = el('div', 'friend'); const who = el('div', 'who'); const nm = el('b'); nm.appendChild(placeMark(m.place)); nm.appendChild(document.createTextNode(m.name)); who.appendChild(nm);
