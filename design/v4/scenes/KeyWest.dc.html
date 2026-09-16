@@ -1,0 +1,183 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    body { margin: 0; font-family: system-ui, sans-serif; }
+    a { color: #2e8a8e; } a:hover { color: #223238; }
+    .scene { --sky1:#CFE9EC; --sky2:#E4F0EE; --sky3:#F4F1E8; --back:#A6DADB; --mid:#77C2C6; --front:#45A1A8; --sand:#EDDDB5; --wet:rgba(255,255,255,.35); --sil:#34474D; --orb:#F7D59B; --haze:rgba(255,255,255,.35); --cloud:rgba(255,255,255,.75); --star:0; --sun:1; --moon:0; --glit:1; --warm:0; --beam:0; --flash:0; }
+    .scene.time-dusk { --sky1:#D39C9C; --sky2:#F2BE9B; --sky3:#EEE3CE; --back:#B9B5B1; --mid:#8DA9A9; --front:#4F8A92; --sand:#E7C9A4; --sil:#3B3540; --orb:#F3B98A; --haze:rgba(255,220,190,.35); --cloud:rgba(246,200,180,.7); --sun:0; --warm:1; --flash:1; }
+    .scene.time-night { --sky1:#0B161D; --sky2:#142530; --sky3:#23384A; --back:#26454F; --mid:#1E3A44; --front:#172D36; --sand:#3B3A32; --wet:rgba(255,255,255,.08); --sil:#93A8AE; --orb:#DDE5E8; --haze:rgba(255,255,255,.05); --cloud:rgba(255,255,255,.08); --star:1; --sun:0; --moon:1; --glit:0; --beam:1; }
+    .sky { position:absolute; inset:0; background: linear-gradient(var(--sky1) 0%, var(--sky2) 50%, var(--sky3) 78%); }
+    .breathe { position:absolute; inset:0; background: radial-gradient(circle at 50% 45%, var(--sky1), transparent 70%); animation: breathe 14s ease-in-out infinite alternate; }
+    @keyframes breathe { from { opacity:0 } to { opacity:.3 } }
+    svg.layer { position:absolute; left:0; top:0; width:390px; height:844px; overflow:visible; }
+    .sun { fill: var(--orb); opacity: var(--sun); filter: blur(10px); }
+    .sunglow { fill: var(--orb); opacity: calc(var(--sun) * .35); filter: blur(28px); }
+    .dusksun { fill: var(--orb); opacity: var(--warm); filter: blur(6px); animation: setting 300s linear infinite; }
+    @keyframes setting { 0% { transform: translateY(-40px) } 100% { transform: translateY(40px) } }
+    .greenflash { fill:#7CE0A0; opacity:0; filter: blur(4px); animation: gflash 300s linear infinite; }
+    @keyframes gflash { 0%,49.6% { opacity:0 } 49.8% { opacity: calc(var(--flash) * .8) } 50.1% { opacity:0 } 100% { opacity:0 } }
+    .moon { fill: var(--orb); opacity: var(--moon); }
+    .moonglow { fill:#fff; opacity: calc(var(--moon) * .18); filter: blur(22px); }
+    .star { fill:#fff; opacity:0; animation: twinkle 6s ease-in-out infinite; }
+    .time-night .star { animation-name: twinkleOn; }
+    @keyframes twinkle { from { opacity:0 } to { opacity:0 } }
+    @keyframes twinkleOn { 0%,100% { opacity:.25 } 50% { opacity:.85 } }
+    .cloud { fill: var(--cloud); filter: blur(5px); animation: cloudDrift linear infinite; }
+    .cloud.c1 { animation-duration: 110s; } .cloud.c2 { animation-duration: 160s; animation-delay:-80s; }
+    @keyframes cloudDrift { from { transform: translateX(420px) } to { transform: translateX(-300px) } }
+    .haze { fill: var(--haze); }
+    .water { animation: bob 4s ease-in-out infinite alternate; }
+    @keyframes bob { from { transform: translateY(0) } to { transform: translateY(-4px) } }
+    .band { animation: drift linear infinite; }
+    .band.back { fill: var(--back); animation-duration: 26s; } .band.mid { fill: var(--mid); animation-duration: 19s; } .band.front { fill: var(--front); animation-duration: 14s; }
+    @keyframes drift { from { transform: translateX(0) } to { transform: translateX(-390px) } }
+    .glit circle { fill:#fff; opacity:0; animation: glint 4s ease-in-out infinite; }
+    .time-dusk .glit circle { fill:#F6D9A8; }
+    @keyframes glint { 0%,100% { opacity:0 } 50% { opacity: calc(var(--glit) * .7) } }
+    .sand { fill: var(--sand); } .wet { fill: var(--wet); animation: wetline 7s ease-in-out infinite alternate; }
+    @keyframes wetline { from { transform: translateY(0) } to { transform: translateY(-5px) } }
+    .foam { fill:#fff; opacity:.35; animation: foam 7s ease-in-out infinite alternate; }
+    @keyframes foam { from { opacity:.15; transform: translateY(2px) } to { opacity:.4; transform: translateY(-4px) } }
+    .sil { fill: var(--sil); opacity:.62; } .sil.far { opacity:.3; } .sil.mid { opacity:.48; }
+    .stroke { fill:none; stroke: var(--sil); stroke-opacity:.62; stroke-linecap: round; }
+    .frond { transform-box: fill-box; transform-origin: 0% 50%; animation: frond 5s ease-in-out infinite alternate; }
+    .frond.f1, .frond.f2 { transform-origin: 100% 50%; }
+    .frond.f2 { animation-duration: 6s; animation-delay:-2s } .frond.f3 { animation-duration: 4.5s; animation-delay:-1s } .frond.f4 { animation-duration: 5.5s; animation-delay:-3s }
+    @keyframes frond { from { transform: rotate(-3deg) } to { transform: rotate(4deg) } }
+    .frigate { animation: frigate 120s linear infinite; }
+    .frigatetilt { transform-box: fill-box; transform-origin: center; animation: tilt 6s ease-in-out infinite alternate; }
+    @keyframes frigate { 0% { transform: translate(90px,0) scale(1) } 25% { transform: translate(0,16px) scale(1.12) } 50% { transform: translate(-90px,0) scale(1) } 75% { transform: translate(0,-10px) scale(.86) } 100% { transform: translate(90px,0) scale(1) } }
+    @keyframes tilt { from { transform: rotate(-5deg) } to { transform: rotate(5deg) } }
+    .time-night .frigate, .time-night .pelican { display:none; }
+    .pelican { animation: pelican 150s linear infinite; }
+    @keyframes pelican { 0% { transform: translate(420px,0) } 30% { transform: translate(200px,6px) } 33% { transform: translate(180px,60px) rotate(60deg) } 33.4% { opacity:0 } 40% { opacity:0; transform: translate(150px,0) } 40.5% { opacity:1 } 70% { transform: translate(-60px,-4px) } 100% { transform: translate(-60px,-4px) } }
+    .splash { fill:none; stroke:#fff; stroke-opacity:.7; opacity:0; transform-box: fill-box; transform-origin:center; animation: psplash 150s linear infinite; }
+    @keyframes psplash { 0%,33.2% { opacity:0; transform: scale(.4) } 33.6% { opacity:.8 } 35% { opacity:0; transform: scale(3) } 100% { opacity:0 } }
+    .sail { animation: sail 2400s linear infinite; animation-delay:-2300s; }
+    @keyframes sail { 0% { transform: translateX(-40px); opacity:0 } .3% { opacity:1 } 9.7% { opacity:1 } 10% { transform: translateX(430px); opacity:0 } 100% { transform: translateX(430px); opacity:0 } }
+    .turtle { animation: turtle 100s ease-in-out infinite; }
+    @keyframes turtle { 0%,40% { transform: translate(0,14px); opacity:0 } 42% { opacity:1 } 44%,48% { transform: translate(20px,0); opacity:1 } 50% { transform: translate(40px,14px); opacity:0 } 100% { transform: translate(120px,14px); opacity:0 } }
+    .rooster { animation: peck 30s ease-in-out infinite; }
+    .roosterhead { transform-box: fill-box; transform-origin: 20% 100%; animation: peckhead 3s ease-in-out infinite; }
+    @keyframes peck { 0%,60% { transform: translateX(0) } 70% { transform: translateX(-24px) } 100% { transform: translateX(-24px) } }
+    @keyframes peckhead { 0%,70% { transform: rotate(0) } 80% { transform: rotate(30deg) } 90% { transform: rotate(0) } 100% { transform: rotate(0) } }
+    .iguanatail { transform-box: fill-box; transform-origin: 100% 50%; animation: igtail 40s ease-in-out infinite; }
+    @keyframes igtail { 0%,92% { transform: rotate(0) } 94% { transform: rotate(-6deg) } 97% { transform: rotate(3deg) } 100% { transform: rotate(0) } }
+    .crab { animation: crab 220s linear infinite; }
+    @keyframes crab { 0% { transform: translateX(-20px) } 30% { transform: translateX(80px) } 34% { transform: translateX(80px) } 70% { transform: translateX(200px) } 74% { transform: translateX(200px) } 100% { transform: translateX(420px) } }
+    .beam { fill:#F6E7C0; opacity: calc(var(--beam) * .12); filter: blur(6px); transform-box: fill-box; transform-origin: 0% 50%; animation: sweep 24s ease-in-out infinite alternate; }
+    @keyframes sweep { from { transform: rotate(-16deg) } to { transform: rotate(14deg) } }
+    .lamp { fill:#F2C98A; opacity: calc(var(--beam) * .9); }
+    .glade { fill:#fff; opacity: calc(var(--moon) * .10); animation: glade 9s ease-in-out infinite alternate; }
+    @keyframes glade { from { opacity: calc(var(--moon) * .06) } to { opacity: calc(var(--moon) * .14) } }
+
+    /* people: one silhouette, one opacity, small living motions */
+
+    .figure { opacity:.8; }
+    .breath { transform-box: fill-box; transform-origin: 50% 100%; animation: breath2 4.6s ease-in-out infinite alternate; }
+    @keyframes breath2 { from { transform: scaleY(1) } to { transform: scaleY(1.018) } }
+    .rodg { transform-box: fill-box; transform-origin: 100% 50%; animation: rodSway 6s ease-in-out infinite alternate; }
+    .fore1 { transform-box: fill-box; transform-origin: 100% 100%; animation: sip 46s ease-in-out infinite; }
+    @keyframes sip { 0%,84% { transform: rotate(0) } 87% { transform: rotate(35deg) } 93% { transform: rotate(35deg) } 96% { transform: rotate(0) } 100% { transform: rotate(0) } }
+    .figure .fl { fill: var(--sil); }
+    .figure .ln { fill:none; stroke: var(--sil); stroke-linecap: round; stroke-linejoin: round; }
+    .figure .fb { fill: var(--sil); stroke: var(--sil); stroke-linecap: round; stroke-linejoin: round; }
+    .breath { transform-box: fill-box; transform-origin: 50% 100%; animation: breath2 4.6s ease-in-out infinite alternate; }
+    @keyframes breath2 { from { transform: scaleY(1) } to { transform: scaleY(1.025) } }
+    .swing { transform-box: fill-box; transform-origin: 50% 0%; animation: swing 5.2s ease-in-out infinite alternate; }
+    @keyframes swing { from { transform: rotate(-3deg) } to { transform: rotate(3deg) } }
+    .toe { transform-box: fill-box; transform-origin: 50% 100%; animation: toe 22s ease-in-out infinite; }
+    @keyframes toe { 0%,88% { transform: rotate(0) } 91% { transform: rotate(-10deg) } 94% { transform: rotate(4deg) } 97%,100% { transform: rotate(0) } }
+    .sip { transform-box: fill-box; transform-origin: 100% 100%; animation: sip 46s ease-in-out infinite; }
+    @keyframes sip { 0%,84% { transform: rotate(0) } 87% { transform: rotate(40deg) } 93% { transform: rotate(40deg) } 96% { transform: rotate(0) } 100% { transform: rotate(0) } }
+    .rodg { transform-box: fill-box; transform-origin: 100% 0%; animation: rodSway 6s ease-in-out infinite alternate; }
+
+  </style>
+</helmet>
+<div class="scene {{timeClass}}" style="position: relative; width: 390px; height: 844px; overflow: hidden; background: #E4F0EE;">
+  <div class="sky"></div>
+  <div class="breathe"></div>
+  <svg class="layer" viewBox="0 0 390 844" aria-hidden="true">
+    <defs>
+      <path id="kb" d="M0,634 C97.5,616 97.5,652 195,634 C292.5,616 292.5,652 390,634 L390,844 L0,844 Z"/>
+      <path id="km" d="M0,686 C97.5,670 97.5,702 195,686 C292.5,670 292.5,702 390,686 L390,844 L0,844 Z"/>
+      <path id="kf" d="M0,738 C97.5,722 97.5,754 195,738 C292.5,722 292.5,754 390,738 L390,844 L0,844 Z"/>
+    </defs>
+    <g class="stars">
+      <circle class="star" cx="40" cy="80" r="1.1" style="animation-delay:-1s"/><circle class="star" cx="120" cy="140" r=".9" style="animation-delay:-3s"/><circle class="star" cx="210" cy="60" r="1.2" style="animation-delay:-2s"/><circle class="star" cx="300" cy="200" r=".8" style="animation-delay:-4s"/><circle class="star" cx="70" cy="260" r="1" style="animation-delay:-.5s"/><circle class="star" cx="180" cy="300" r=".9" style="animation-delay:-5s"/><circle class="star" cx="350" cy="90" r="1" style="animation-delay:-2.5s"/><circle class="star" cx="250" cy="380" r=".8" style="animation-delay:-1.5s"/><circle class="star" cx="140" cy="430" r="1" style="animation-delay:-3.5s"/>
+    </g>
+    <circle class="sunglow" cx="330" cy="100" r="90"/><circle class="sun" cx="330" cy="100" r="48"/>
+    <g><circle class="dusksun" cx="90" cy="596" r="46"/><ellipse class="greenflash" cx="90" cy="634" rx="30" ry="3"/></g>
+    <circle class="moonglow" cx="324" cy="122" r="60"/><circle class="moon" cx="324" cy="122" r="26"/>
+    <g class="cloud c1"><ellipse cx="0" cy="170" rx="70" ry="16"/><ellipse cx="-20" cy="160" rx="34" ry="20"/><ellipse cx="26" cy="162" rx="30" ry="16"/></g>
+    <g class="cloud c2"><ellipse cx="0" cy="280" rx="56" ry="13"/><ellipse cx="-12" cy="272" rx="26" ry="16"/></g>
+    <!-- frigatebird very high -->
+    <g transform="translate(180,420)"><g class="frigate"><path class="sil far frigatetilt" d="M-22,0 C-14,-9 -6,-9 0,-2 C6,-9 14,-9 22,0 C14,-3 6,-2 0,4 C-6,-2 -14,-3 -22,0 Z M0,2 L0,10"/></g></g>
+    <!-- pelican glides low and dives -->
+    <g transform="translate(0,560)"><g class="pelican"><path class="sil mid" d="M-16,0 C-10,-5 -4,-5 0,-1 C4,-5 10,-5 16,0 C10,-2 4,-1 0,2 C-4,-1 -10,-2 -16,0 Z M0,-1 L10,3 L14,3"/></g></g>
+    <!-- lighthouse far left, beam at night -->
+    <g transform="translate(24,588)"><rect class="sil far" x="0" y="8" width="6" height="40"/><rect class="sil far" x="-2" y="4" width="10" height="5"/><circle class="lamp" cx="3" cy="4" r="2"/><path class="beam" d="M3,4 L200,-30 L200,38 Z"/></g>
+    <!-- distant key with palms -->
+    <g transform="translate(40,616)"><path class="sil far" d="M0,20 C20,12 40,8 60,10 C80,8 100,12 120,20 Z"/><path class="stroke" d="M30,12 L30,4 M30,4 L24,0 M30,4 L36,0 M70,10 L70,2 M70,2 L64,-2 M70,2 L76,-2" style="stroke-width:1;stroke-opacity:.3"/></g>
+    <g transform="translate(0,606)"><g class="sail"><path class="sil far" d="M3,24 L27,24 L24,28 L6,28 Z M14.4,4 L14.4,22 L5,22 Z M15.6,6 L26,22 L15.6,22 Z"/></g></g>
+    <rect class="haze" x="0" y="600" width="390" height="70"/>
+    <g class="water">
+      <g class="band back"><use href="#kb"/><use href="#kb" transform="translate(390)"/></g>
+      <g class="glit" transform="translate(0,652)"><circle cx="20" cy="4" r="1.4" style="animation-delay:-1s"/><circle cx="60" cy="14" r="1.2" style="animation-delay:-2.2s"/><circle cx="95" cy="2" r="1.4" style="animation-delay:-.5s"/><circle cx="130" cy="18" r="1.2" style="animation-delay:-3s"/><circle cx="170" cy="8" r="1.4" style="animation-delay:-1.7s"/><circle cx="205" cy="20" r="1.2" style="animation-delay:-.9s"/><circle cx="240" cy="6" r="1.4" style="animation-delay:-2.6s"/><circle cx="275" cy="16" r="1.2" style="animation-delay:-3.4s"/></g>
+      <rect class="glade" x="290" y="636" width="68" height="150" rx="30"/>
+      <circle class="splash" cx="180" cy="676" r="6"/>
+      <g class="band mid"><use href="#km"/><use href="#km" transform="translate(390)"/></g>
+      <g transform="translate(90,712)"><g class="turtle"><path class="sil mid" d="M8,12 C10,4 26,4 30,12 Z M30,11 C33,9 37,10 38,12 L30,13 Z M12,12 L5,15 L15,14 Z M24,12 L18,15 L27,14 Z"/></g></g>
+      <g class="band front"><use href="#kf"/><use href="#kf" transform="translate(390)"/></g>
+    </g>
+    <!-- the beach: a spit on the right where Nick sits, the wet line, foam -->
+    <path class="sand" d="M0,800 C60,792 120,806 190,798 C240,792 262,770 300,750 C330,736 360,730 390,732 L390,844 L0,844 Z"/>
+    <path class="wet" d="M0,800 C60,792 120,806 190,798 C240,792 262,770 300,750 C330,736 360,730 390,732 L390,744 C360,742 330,748 302,762 C266,782 244,806 190,812 C120,820 60,806 0,814 Z"/>
+    <path class="foam" d="M0,796 C60,788 120,802 190,794 C240,788 262,766 300,746 C330,732 360,726 390,728 L390,734 C360,732 330,738 302,752 C266,770 244,794 190,800 C120,808 60,794 0,802 Z"/>
+    <!-- conch shell -->
+    <path class="sil mid" transform="translate(150,808)" d="M0,6 C2,1 8,-1 12,2 C15,4 14,8 10,9 L0,9 Z M12,2 L16,0"/>
+    <!-- hermit crab along the wet line -->
+    <g transform="translate(0,806)"><g class="crab"><path class="sil mid" d="M0,4 C1,1 5,0 7,2 C9,4 8,6 5,6 L1,6 Z M1,6 L0,8 M3,6 L3,8 M5,6 L6,8"/></g></g>
+    <!-- iguana on a driftwood log, motionless, tail flicks -->
+    <g transform="translate(40,772)"><path class="sil" d="M0,16 L60,12 L62,16 L2,20 Z" style="opacity:.5"/><path class="sil" d="M14,10 C16,6 24,5 32,6 C38,7 42,9 44,12 L14,12 Z M44,10 L50,8 L52,11 L46,13 Z"/><path class="sil iguanatail" d="M14,11 C6,11 0,6 -4,2 L-2,1 C2,5 8,9 14,9 Z"/><path class="stroke" d="M16,12 L15,16 M40,12 L41,16" style="stroke-width:1.2"/></g>
+    <!-- rooster and hen on the sand -->
+    <g transform="translate(250,798)"><g class="rooster">
+      <path class="sil" d="M6,16 C6,10 14,8 20,10 L22,13 C22,19 16,22 10,21 Z"/><path class="sil" d="M6,15 C2,12 0,6 4,2 C4,8 6,11 8,13 Z"/>
+      <g class="roosterhead"><path class="sil" d="M19,10 L20,4 C21,1 24,1 25,3 L28,4 L25,5 L24,10 Z"/><path class="sil" d="M20,3 L21,0 L23,2 Z" style="fill:#C4675E;opacity:.7"/></g>
+      <path class="stroke" d="M11,21 L11,26 M17,21 L17,26" style="stroke-width:1.2"/>
+      <g transform="translate(-30,4) scale(.7)"><path class="sil mid" d="M6,16 C6,10 14,8 20,10 L22,13 C22,19 16,22 10,21 Z M19,10 L20,4 L24,4 L24,10 Z"/></g>
+    </g></g>
+    <!-- the palm and Nick, sitting against it on the spit, hat, legs out -->
+    <g transform="translate(232,556)">
+      <path class="sil" d="M118,196 C112,160 100,120 82,86 L88,84 C106,118 118,158 124,196 Z"/>
+      <g class="frond f1"><path class="sil" d="M84,84 C64,80 44,88 30,108 C46,98 64,94 84,84 Z"/></g>
+      <g class="frond f2"><path class="sil" d="M84,84 C70,70 52,64 34,68 C52,70 68,76 84,84 Z"/></g>
+      <g class="frond f3"><path class="sil" d="M84,84 C82,68 88,56 100,50 C90,62 88,72 84,84 Z"/></g>
+      <g class="frond f4"><path class="sil" d="M84,84 C98,68 116,62 134,66 C116,68 100,76 84,84 Z"/><path class="sil" d="M84,84 C104,80 124,90 136,110 C120,98 102,94 84,84 Z"/></g>
+      <circle class="sil" cx="82" cy="88" r="3"/><circle class="sil" cx="88" cy="89" r="3"/>
+      <!-- Nick on the sand, back against the trunk, one knee up, legs toward the water -->
+<g class="figure" transform="translate(30,100) scale(.5)" style="fill:var(--sil);stroke:var(--sil)" stroke-linecap="round" stroke-linejoin="round"><g class="breath">
+  <path stroke="none" d="M150 74 C162 78,168 90,166 106 C164 120,162 130,162 140 L44 140 C34 140,28 134,27 124 C26 116,24 106,29 102 C34 99,39 104,40 112 C42 118,50 114,60 110 C66 107,70 104,74 102 C92 98,108 108,120 114 C124 106,130 92,136 82 C140 76,144 74,150 74 Z"></path>
+  <path stroke="none" d="M137 81 L153 75 L153 60 L140 66 Z"></path>
+  <ellipse cx="146" cy="60" rx="15" ry="17" transform="rotate(6 146 60)" stroke="none"></ellipse>
+  <path fill="none" stroke-width="11" d="M160 90 C170 106,182 122,190 136"></path>
+  <circle cx="192" cy="137" r="6" stroke="none"></circle>
+</g></g>
+    </g>
+  </svg>
+</div>
+</x-dc>
+<script data-dc-script data-props='{"time":{"editor":"enum","options":["day","dusk","night"],"default":"day","section":"Sky"}}'>
+class Component extends DCLogic {
+  renderVals() { return { timeClass: 'time-' + (this.props.time ?? 'day') }; }
+}
+</script>
+</body>
+</html>

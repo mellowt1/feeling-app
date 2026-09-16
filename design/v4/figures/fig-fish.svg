@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 210" width="200" height="210">
+<g id="fig-fish" fill="#66777c" stroke="#66777c" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M128 66 C140 70,148 80,148 96 C148 112,150 128,150 140 L90 140 C88 156,84 174,84 188 C84 195,80 199,73 199 L58 202 C52 202,50 196,55 193 L68 190 C66 172,64 156,66 143 C67 128,72 118,84 116 L100 116 C105 112,104 100,108 88 C112 76,116 70,120 67 Z"></path>
+  <path stroke="none" d="M118 69 L136 66 L131 54 L115 60 Z"></path>
+  <ellipse cx="121" cy="50" rx="15" ry="17" transform="rotate(-8 121 50)" stroke="none"></ellipse>
+  <path fill="none" stroke-width="11" d="M138 86 C132 98,124 108,116 113 C108 118,98 121,90 121"></path>
+  <circle cx="88" cy="122" r="6.5" stroke="none"></circle>
+  <path fill="none" stroke-width="2.4" d="M94 118 L10 86"></path>
+  <path fill="none" stroke-width="1" stroke-opacity=".7" d="M10 86 C8 120,6 160,6 200"></path>
+</g>
+</svg>

@@ -1,0 +1,96 @@
+{
+  "pages": [
+    {
+      "id": "page-figures",
+      "name": "The people"
+    },
+    {
+      "id": "page-places",
+      "name": "Three places"
+    }
+  ],
+  "artboards": [
+    {
+      "file": "CalmPresence.dc.html",
+      "title": "Calm Presence — your figures",
+      "page": "page-figures",
+      "x": 0,
+      "y": 0,
+      "w": 1264,
+      "h": 504
+    },
+    {
+      "file": "Main.dc.html",
+      "title": "Florida dock — Paul",
+      "page": "page-places",
+      "x": 0,
+      "y": 0,
+      "w": 390,
+      "h": 844
+    },
+    {
+      "file": "ElCampo.dc.html",
+      "title": "El campo — Elias",
+      "page": "page-places",
+      "x": 780,
+      "y": 0,
+      "w": 390,
+      "h": 844
+    },
+    {
+      "file": "KeyWest.dc.html",
+      "title": "Key West — Nick",
+      "page": "page-places",
+      "x": 1560,
+      "y": 0,
+      "w": 390,
+      "h": 844
+    }
+  ],
+  "annotations": [
+    {
+      "id": "figures-note",
+      "page": "page-figures",
+      "x": 0,
+      "y": -160,
+      "w": 1264,
+      "text": "Your figures, as delivered (calm-presence.svg): fishing with legs dangling, knees up with the mug, leaning back. Paths untouched. In the scenes they are placed at half size on the dock edge, on the steppe in front of the fence, and on the sand spit, coloured by the place and breathing."
+    },
+    {
+      "id": "how-to-read",
+      "page": "page-places",
+      "x": 0,
+      "y": -260,
+      "w": 1950,
+      "text": "Three places, alive. Each frame is the background behind the Today screen, drawn as it would move in the app. Use the Sky tweak above a frame to switch day / dusk / night (El campo also has dawn, for the pink Fitz Roy). Everything on the water or land is a real loop: the slow things run on 2 to 6 minute cycles, so give a frame a minute. Nothing here is in the app yet."
+    },
+    {
+      "id": "dock-list",
+      "page": "page-places",
+      "x": 470,
+      "y": 0,
+      "w": 250,
+      "text": "Florida dock — what moves\n\nAlways: three water bands drifting, the whole water breathing (4 s), rod sway, cat tail, bobber and its ring, clouds, sun glitter (day, dusk).\n\nEvery minute or two: mullet jump (three spots), a pair of dolphins surfacing across the back water (96 s), the great blue heron in the shallows turns its head (34 s), a dragonfly hovers by the pilings (day).\n\nRarely: tarpon and snook under the mid wave, a grouper low and slow (3.5 min), a manatee surfaces by the dock (3.5 min, dusk and night), heat lightning inside the far cloud (2 min, dusk and night), the distant boat once an hour.\n\nNight: stars, the dock lamp on the piling, a moon glade on the water. Sound: tree frogs and cicadas after dark, water against the pilings, the rod line.\n\nLeft out on purpose: pelican (you took it out before), osprey (too much)."
+    },
+    {
+      "id": "campo-list",
+      "page": "page-places",
+      "x": 1250,
+      "y": 0,
+      "w": 250,
+      "text": "El campo — what moves\n\nAlways: coirón tufts swaying, a gust every 140 s that leans all of them and sends three wind streaks, the lenticular cloud sitting on the peak, the estancia windpump turning far left, mate steam.\n\nEvery minute or two: Elias lifts the mate (46 s), the guanaco grazes (24 s) and walks a little (6 min), the ñandú with two chicks crosses the mid steppe (4 min), the condor circles (110 s, gone at night).\n\nRarely: a hare darts (5 min), the grey fox trots the road edge (7 min, dusk and night), the truck once an hour.\n\nDawn: Fitz Roy turns pink for a few minutes (alpenglow), then fades. Night: Milky Way band, the Southern Cross, the lamp on the fence post. Sound: wind, the thermos, a distant sheep."
+    },
+    {
+      "id": "keywest-list",
+      "page": "page-places",
+      "x": 2030,
+      "y": 0,
+      "w": 250,
+      "text": "Key West — what moves\n\nAlways: three turquoise bands, the wet line breathing on the sand, foam, palm fronds swaying (four, out of phase), Nick breathing against the trunk.\n\nEvery minute or two: the rooster and hen peck along the sand (30 s), the sea turtle surfaces (100 s), the frigatebird high up (2 min), the brown pelican glides in, folds and dives with a splash (2.5 min, day and dusk).\n\nRarely: a hermit crab works its way along the wet line (3.5 min), the iguana on the driftwood flicks its tail (40 s), the sailboat crosses (40 min).\n\nDusk: the sun sets in front of you over five minutes with a one-frame green flash at the horizon. Night: stars, moon glade, the Key West lighthouse beam sweeping slowly from the left. Sound: trade wind in the palms, small waves, the rooster (yes, at night too)."
+    }
+  ],
+  "launch": {
+    "view": "canvas",
+    "page": "page-figures"
+  }
+}
