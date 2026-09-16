@@ -1,5 +1,5 @@
 // Offline cache. No network calls are made except to fetch the app's own files.
-const CACHE = 'feeling-v27';
+const CACHE = 'feeling-v28';
 const FILES = ['./', './index.html', './manifest.webmanifest', './icon-180.png', './icon-512.png'];
 
 self.addEventListener('install', (e) => {
@@ -27,12 +27,12 @@ self.addEventListener('fetch', (e) => {
   );
 });
 
-// The daily question. One line, or just the question when nobody has checked in.
+// Check-ins: one line when someone in the circle puts up a face.
 self.addEventListener('push', (e) => {
   let data = {};
   try { data = e.data ? e.data.json() : {}; } catch (err) {}
   const title = data.title || 'How are you feeling?';
-  const options = { icon: './icon-180.png', badge: './icon-180.png', tag: 'daily', data: { url: './' } };
+  const options = { icon: './icon-180.png', badge: './icon-180.png', tag: 'checkin', data: { url: './' } };
   if (data.body) options.body = data.body;
   e.waitUntil(self.registration.showNotification(title, options));
 });
