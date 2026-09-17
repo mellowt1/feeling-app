@@ -1,0 +1,1426 @@
+<!doctype html>
+<html lang="en" data-sky="day" data-place="dock" style="--tide: 4.05px;"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Feeling</title>
+<meta name="description" content="A private, chronological record of how you have been doing.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Feeling">
+<meta name="theme-color" content="#D9E5E5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#D9E5E5" media="(prefers-color-scheme: dark)">
+
+
+<style>
+  /* ---------- v4: three places, each with a day and a night. html.night = after 22:00 or a dark phone ---------- */
+  :root { --sky-top:#D9E5E5; --sky-mid:#E9EEEB; --sky-horizon:#F3F1EA; --bg:#F3F1EA; --card:#FBF9F4; --glass:rgba(255,255,255,.52); --glass-strong:rgba(255,255,255,.74); --card-a:var(--glass); --glass-line:rgba(255,255,255,.6); --line:rgba(38,49,58,.10); --ink:#26313A; --muted:#6B7780; --accent:#3B6B75; --accent-rgb:59,107,117; --accent-ink:#FFFFFF; --accent-soft:rgba(59,107,117,.14); --accent-40:rgba(59,107,117,.40); --orb:#F2D8A6; --orb-rgb:242,216,166; --scene-back:#A9C3C6; --scene-mid:#86A9AF; --scene-front:#5E8891; --scene-land:#C9CBC3; --water:#86A9AF; --range:#A9C3C6; --ground:#5E8891; --sand:#C9CBC3; --silhouette:#3A4A52; --chip:rgba(40,50,55,.06); --track:rgba(120,120,128,.12); --danger:#B9584F; --m1:#B9584F; --m2:#D3925C; --m3:#B5B0A4; --m4:#7EA46B; --m5:#3E8C6A; --m6:#9E3A33;
+    --serif: ui-serif, "New York", "Iowan Old Style", Georgia, "Times New Roman", serif; }
+  html[data-place="campo"] { --sky-top:#CFDDEA; --sky-mid:#E4E9EC; --sky-horizon:#F2EEE3; --bg:#F2EEE3; --card:#FCF9F1; --glass:rgba(255,255,255,.52); --glass-strong:rgba(255,255,255,.74); --card-a:var(--glass); --glass-line:rgba(255,255,255,.6); --line:rgba(40,44,40,.10); --ink:#2C2C27; --muted:#746F63; --accent:#6B7749; --accent-rgb:107,119,73; --accent-ink:#FFFFFF; --accent-soft:rgba(107,119,73,.14); --accent-40:rgba(107,119,73,.40); --orb:#F4D8A0; --orb-rgb:244,216,160; --scene-back:#B4B6C4; --scene-mid:#D9C78F; --scene-front:#BFA765; --scene-land:#A79A7A; --water:#D9C78F; --range:#B4B6C4; --ground:#BFA765; --sand:#A79A7A; --silhouette:#4A463C; --chip:rgba(40,50,55,.06); --track:rgba(120,120,128,.12); }
+  html[data-place="keywest"] { --sky-top:#CFE9EC; --sky-mid:#E4F0EE; --sky-horizon:#F4F1E8; --bg:#F4F1E8; --card:#FCFAF3; --glass:rgba(255,255,255,.52); --glass-strong:rgba(255,255,255,.74); --card-a:var(--glass); --glass-line:rgba(255,255,255,.6); --line:rgba(40,44,40,.10); --ink:#223238; --muted:#67777C; --accent:#2E8A8E; --accent-rgb:46,138,142; --accent-ink:#FFFFFF; --accent-soft:rgba(46,138,142,.14); --accent-40:rgba(46,138,142,.40); --orb:#F7D59B; --orb-rgb:247,213,155; --scene-back:#A6DADB; --scene-mid:#77C2C6; --scene-front:#45A1A8; --scene-land:#EDDDB5; --water:#77C2C6; --range:#A6DADB; --ground:#45A1A8; --sand:#EDDDB5; --silhouette:#34474D; --chip:rgba(40,50,55,.06); --track:rgba(120,120,128,.12); }
+  html.night { color-scheme: dark; --sky-top:#0F171C; --sky-mid:#17232A; --sky-horizon:#22313A; --bg:#22313A; --card:#1B2529; --glass:rgba(27,37,41,.55); --glass-strong:rgba(27,37,41,.78); --card-a:var(--glass); --glass-line:rgba(255,255,255,.14); --line:rgba(255,255,255,.09); --ink:#E6E9E4; --muted:#93A0A8; --accent:#86B7C0; --accent-rgb:134,183,192; --accent-ink:#0F171C; --accent-soft:rgba(134,183,192,.14); --accent-40:rgba(134,183,192,.40); --orb:#D9DFE4; --orb-rgb:217,223,228; --scene-back:#2C4149; --scene-mid:#24363D; --scene-front:#1B2A30; --scene-land:#3A4046; --water:#24363D; --range:#2C4149; --ground:#1B2A30; --sand:#3A4046; --silhouette:#8FA3AD; --chip:rgba(255,255,255,.07); --track:rgba(255,255,255,.08); --danger:#D4776D; --m1:#C4675E; --m2:#DDA06B; --m3:#9E9A90; --m4:#8CB279; --m5:#4E9E7B; --m6:#C9584F; }
+  html.night[data-place="campo"] { --sky-top:#0E1220; --sky-mid:#18202F; --sky-horizon:#2A2F38; --bg:#2A2F38; --card:#1C1F26; --glass:rgba(28,31,38,.55); --glass-strong:rgba(28,31,38,.78); --card-a:var(--glass); --glass-line:rgba(255,255,255,.14); --line:rgba(255,255,255,.09); --ink:#EAE6DC; --muted:#9B978C; --accent:#B9BE86; --accent-rgb:185,190,134; --accent-ink:#0E1220; --accent-soft:rgba(185,190,134,.14); --accent-40:rgba(185,190,134,.40); --orb:#E1E4E8; --orb-rgb:225,228,232; --scene-back:#343A4B; --scene-mid:#3A3728; --scene-front:#2A281D; --scene-land:#3A362C; --water:#3A3728; --range:#343A4B; --ground:#2A281D; --sand:#3A362C; --silhouette:#9A9483; --chip:rgba(255,255,255,.07); --track:rgba(255,255,255,.08); }
+  html.night[data-place="keywest"] { --sky-top:#0B161D; --sky-mid:#142530; --sky-horizon:#23384A; --bg:#23384A; --card:#17252C; --glass:rgba(23,37,44,.55); --glass-strong:rgba(23,37,44,.78); --card-a:var(--glass); --glass-line:rgba(255,255,255,.14); --line:rgba(255,255,255,.09); --ink:#E5EAE8; --muted:#8FA3A9; --accent:#7FC7C9; --accent-rgb:127,199,201; --accent-ink:#0B161D; --accent-soft:rgba(127,199,201,.14); --accent-40:rgba(127,199,201,.40); --orb:#DDE5E8; --orb-rgb:221,229,232; --scene-back:#26454F; --scene-mid:#1E3A44; --scene-front:#172D36; --scene-land:#3B3A32; --water:#1E3A44; --range:#26454F; --ground:#172D36; --sand:#3B3A32; --silhouette:#93A8AE; --chip:rgba(255,255,255,.07); --track:rgba(255,255,255,.08); }
+  /* dusk is a gradient over the day palette, per place */
+  html[data-sky="evening"]:not(.night) { --sky-top:#B9A9B4; --sky-mid:#E8C6AC; --sky-horizon:#F2E4D2; --bg:#F2E4D2; }
+  html[data-sky="evening"][data-place="campo"]:not(.night) { --sky-top:#A79BC0; --sky-mid:#EBBF9C; --sky-horizon:#F4E3CE; --bg:#F4E3CE; }
+  html[data-sky="evening"][data-place="keywest"]:not(.night) { --sky-top:#D39C9C; --sky-mid:#F2BE9B; --sky-horizon:#EEE3CE; --bg:#EEE3CE; }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; color: var(--ink); font: 17px/1.5 -apple-system, "SF Pro Text", system-ui, sans-serif; -webkit-text-size-adjust: 100%; }
+  html { background: var(--sky-horizon); }
+  body { min-height: 100dvh; display: flex; flex-direction: column; background: linear-gradient(var(--sky-top) 0%, var(--sky-mid) 50%, var(--sky-horizon) 78%) top / 100% 100dvh no-repeat, var(--sky-horizon); transition: background-color 1.5s; }
+  main { flex: 1; padding: calc(16px + env(safe-area-inset-top)) 24px 142px; max-width: 640px; width: 100%; margin: 0 auto; position: relative; z-index: 1; }
+  .hidden { display: none !important; }
+
+  h1 { font-family: var(--serif); font-size: 36px; line-height: 1.2; margin: 0; font-weight: 300; letter-spacing: -0.01em; }
+  .sub { color: var(--muted); font-size: 13px; margin: 6px 0 0; }
+
+  section.pane { opacity: 0; transition: opacity .4s ease-in-out; }
+  section.pane.in { opacity: 1; }
+
+  /* ---------- frosted surfaces ---------- */
+  .frost { background: var(--glass); -webkit-backdrop-filter: blur(24px) saturate(1.2); backdrop-filter: blur(24px) saturate(1.2); border: 1px solid var(--glass-line); box-shadow: 0 10px 30px rgba(20,30,35,.07); }
+
+  /* ---------- Today ---------- */
+  .headrow { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+  .pill { display: inline-flex; align-items: center; font: inherit; font-size: 13px; line-height: 1; padding: 7px 12px; border-radius: 999px; background: var(--chip); color: var(--muted); border: 0; margin-top: 8px; }
+  .pill.on { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+
+  #rain-toggle { flex: 0 0 auto; width: 40px; height: 40px; border-radius: 20px; padding: 0; display: flex; align-items: center; justify-content: center; background: var(--glass); -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px); border: 1px solid var(--glass-line); color: var(--muted); opacity: .75; z-index: 3; position: relative; }
+  #rain-toggle svg { width: 22px; height: 22px; }
+  #rain-toggle.on { opacity: 1; color: var(--accent); }
+
+  .entry-glass { margin-top: 20px; border-radius: 28px; transition: border-color .25s, box-shadow .25s; }
+  .entry-glass:focus-within { border-color: var(--accent-40); box-shadow: 0 0 0 3px var(--accent-soft), 0 10px 30px rgba(20,30,35,.07); }
+  .textview { width: 100%; display: block; font: inherit; font-size: 17px; line-height: 1.5; color: var(--ink); background: transparent; border: 0; border-radius: 28px; padding: 18px 20px 6px; min-height: 112px; resize: none; outline: none; }
+  .entry-glass .reassure { margin: 0; padding: 0 20px 14px; text-align: left; font-size: 12px; line-height: 1.5; opacity: .8; }
+  .textview::placeholder { color: var(--muted); }
+  
+
+  .voice { display: flex; flex-direction: column; align-items: center; gap: 18px; margin-top: 20px; }
+  .mic-wrap { position: relative; width: 80px; height: 80px; isolation: isolate; }
+  .mic-wrap::before, .mic-wrap::after { content: ""; position: absolute; left: 50%; top: 50%; border-radius: 50%; pointer-events: none; }
+  .mic-wrap::before { width: 100px; height: 100px; margin: -50px 0 0 -50px; border: 1px solid rgba(var(--accent-rgb),.24); }
+  .mic-wrap::after { width: 124px; height: 124px; margin: -62px 0 0 -62px; background: rgba(var(--accent-rgb),.12); filter: blur(8px); z-index: -1; animation: halo 10s ease-in-out infinite alternate; }
+  @keyframes halo { from { transform: scale(.94); opacity: .7; } to { transform: scale(1.04); opacity: 1; } }
+  .mic { position: relative; z-index: 1; width: 80px; height: 80px; border-radius: 40px; border: 0; padding: 0; background: var(--accent); color: var(--accent-ink); display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 24px rgba(var(--accent-rgb),.28); transition: transform .15s; }
+  .mic:active { transform: scale(.96); }
+  .mic svg { width: 32px; height: 32px; }
+  .ring { position: absolute; left: 50%; top: 50%; width: 80px; height: 80px; margin: -40px 0 0 -40px; border-radius: 50%; border: 1.5px solid var(--accent); opacity: 0; pointer-events: none; }
+  body.listening .ring { animation: ringOut 3s ease-out infinite; }
+  body.listening .ring.r2 { animation-delay: 1s; }
+  body.listening .ring.r3 { animation-delay: 2s; }
+  @keyframes ringOut { 0% { transform: scale(1); opacity: .45; } 100% { transform: scale(1.6); opacity: 0; } }
+
+  .voice-cap { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 13px; color: var(--muted); height: 20px; }
+  .voice-cap svg { width: 16px; height: 16px; flex: 0 0 auto; }
+  body.listening .voice-cap .kb { display: none; }
+
+  .moods { display: flex; justify-content: space-between; gap: 6px; margin: 20px 0 0; }
+  .moods button { flex: 0 0 auto; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; padding: 0; background: transparent; border: 0; border-radius: 50%; transition: transform .12s; }
+  .moods button svg { width: 50px; height: 50px; }
+  .moods button.on { transform: scale(1.06); box-shadow: 0 0 0 2px var(--accent); }
+
+  .face.m1 { color: var(--m1); } .face.m2 { color: var(--m2); } .face.m3 { color: var(--m3); }
+  .face.m4 { color: var(--m4); } .face.m5 { color: var(--m5); } .face.m6 { color: var(--m6); }
+  .face .mood-bg { fill: currentColor; fill-opacity: .18; stroke: currentColor; stroke-opacity: .55; stroke-width: 1.2; }
+  .face .mood-eye { fill: currentColor; }
+  .face .mood-mouth { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .face .mood-brow { fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; }
+  .moods button.on .mood-bg { fill-opacity: 1; }
+  .moods button.on .mood-eye { fill: var(--card); }
+  .moods button.on .mood-mouth { stroke: var(--card); }
+  .moods button.on .mood-brow { stroke: var(--card); }
+
+  .btn { font: inherit; font-size: 17px; font-weight: 600; border: 0; border-radius: 26px; padding: 14px 18px; background: var(--accent); color: var(--accent-ink); width: 100%; min-height: 52px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn:disabled { opacity: .35; }
+  .btn svg { width: 18px; height: 18px; }
+  .btn.ghost { background: var(--glass); color: var(--accent); border: 1px solid var(--glass-line); -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px); box-shadow: 0 10px 30px rgba(20,30,35,.07); }
+  #save { min-height: 54px; border-radius: 27px; transition: background .4s, color .4s, opacity .4s; }
+  /* status: a few words for the circle, beside Save. Hidden when you are not in a circle. */
+  .saverow { display: flex; gap: 8px; margin-top: 18px; align-items: stretch; }
+  .saverow #save { flex: 0 0 112px; width: auto; }
+  .saverow.solo #save { flex: 1; }
+  .saverow.solo #status { display: none; }
+  #status { flex: 1; min-width: 0; font: inherit; font-size: 15px; color: var(--ink); background: var(--glass); border: 1px solid var(--glass-line); border-radius: 27px; padding: 0 18px; min-height: 54px; outline: none; -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px); box-shadow: 0 10px 30px rgba(20,30,35,.07); transition: border-color .25s, box-shadow .25s; }
+  #status::placeholder { color: var(--muted); }
+  #status:focus { border-color: var(--accent-40); box-shadow: 0 0 0 3px var(--accent-soft), 0 10px 30px rgba(20,30,35,.07); }
+  /* message in a bottle: a friend's words live in the scene, not in a feed. Only there when someone wrote something today. */
+  #bottle { --tilt: -28deg; position: fixed; left: 9%; bottom: 112px; width: 14px; height: 24px; padding: 10px; margin: -10px; box-sizing: content-box; border: 0; background: none; z-index: 1; display: none; transform: rotate(var(--tilt)); animation: bottleBob 3.4s ease-in-out infinite alternate; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  #bottle.show { display: block; }
+  #bottle svg { width: 14px; height: 24px; display: block; overflow: visible; }
+  #bottle g { opacity: .62; }
+  #bottle .glass { fill: var(--silhouette); }
+  #bottle .note { fill: var(--bg); }
+  html[data-place="campo"] #bottle { --tilt: 22deg; bottom: 100px; animation: none; }
+  html[data-place="keywest"] #bottle { --tilt: -34deg; }
+  @keyframes bottleBob { from { transform: rotate(var(--tilt)) translateY(0); } to { transform: rotate(calc(var(--tilt) + 6deg)) translateY(-3px); } }
+  #bottle-note { position: fixed; left: 15%; bottom: 158px; z-index: 3; max-width: 260px; padding: 11px 16px; border-radius: 22px; background: var(--glass-strong); border: 1px solid var(--glass-line); -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px); box-shadow: 0 10px 30px rgba(20,30,35,.07); font-family: var(--serif); font-style: italic; font-weight: 300; font-size: 15px; line-height: 1.45; color: var(--ink); opacity: 0; transform: translateY(6px); pointer-events: none; transition: opacity .35s, transform .35s; }
+  #bottle-note.show { opacity: 1; transform: none; }
+  #bottle-note div + div { margin-top: 4px; }
+  #save:disabled { opacity: .7; }
+  #save:not(:disabled) { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+  .btn.quiet { background: var(--chip); color: var(--ink); }
+  .btn.mid { min-height: 42px; padding: 10px 16px; font-size: 15px; border-radius: 21px; }
+  .btn.small { width: auto; min-height: 40px; padding: 8px 16px; font-size: 14px; border-radius: 20px; }
+  .btn.danger { background: transparent; color: var(--danger); }
+  .row { display: flex; gap: 10px; align-items: center; }
+  .row > .btn { flex: 1; }
+
+  .reassure { text-align: center; font-size: 13px; line-height: 1.6; color: var(--muted); margin: 24px 0 0; }
+
+  /* ---------- entry cards ---------- */
+  .daylist { margin-top: 24px; }
+  .entry { border-radius: 22px; padding: 16px 18px; margin-bottom: 10px; }
+  .entry .meta { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; font-size: 13px; color: var(--muted); font-weight: 500; }
+  .entry .meta .face { flex: 0 0 auto; }
+  .entry .text { font-size: 15px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .entry.clamped .text { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .entry .tools { display: flex; gap: 8px; margin-top: 12px; }
+  .entry textarea { width: 100%; font: inherit; font-size: 15px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; min-height: 96px; margin-top: 6px; outline: none; }
+  .entry .moods { margin: 10px 0; justify-content: flex-start; gap: 4px; }
+  .entry .moods button { width: 40px; height: 40px; }
+  .entry .moods button svg { width: 40px; height: 40px; }
+  .lead { font-size: 13px; color: var(--muted); margin: 0 0 10px 2px; }
+
+  /* ---------- tab bar ---------- */
+  nav { position: fixed; left: 50%; bottom: calc(14px + env(safe-area-inset-bottom)); width: 270px; transform: translateX(-50%); z-index: 4; display: flex; justify-content: center; padding: 0; border-radius: 32px; overflow: hidden; background: var(--glass-strong); -webkit-backdrop-filter: blur(24px) saturate(1.2); backdrop-filter: blur(24px) saturate(1.2); border: 1px solid var(--glass-line); box-shadow: 0 10px 30px rgba(20,30,35,.10); }
+  nav button { flex: 1; background: none; border: 0; font: inherit; font-size: 11px; font-weight: 500; color: var(--muted); padding: 10px 0 9px; display: flex; flex-direction: column; align-items: center; gap: 3px; min-height: 62px; }
+  nav button svg { width: 24px; height: 24px; }
+  nav button.on { color: var(--accent); font-weight: 600; }
+
+  /* ---------- month strip ---------- */
+  .month { margin-top: 18px; }
+  .month-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .month-head b { font-family: var(--serif); font-size: 17px; font-weight: 600; }
+  .mnav { width: 40px; height: 40px; border: 0; background: transparent; color: var(--muted); display: flex; align-items: center; justify-content: center; padding: 0; border-radius: 20px; }
+  .mnav svg { width: 18px; height: 18px; }
+  .mgrid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px 0; justify-items: center; }
+  .mgrid .dow { font-size: 13px; color: var(--muted); }
+  .mcell { width: 40px; height: 40px; border: 0; background: transparent; padding: 0; display: flex; align-items: center; justify-content: center; border-radius: 20px; }
+  .mcell i { display: block; width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--line); }
+  .mcell.has i { border-color: transparent; }
+  .mcell.today i { box-shadow: 0 0 0 2px var(--accent); }
+  .mcell.sel { background: var(--accent-soft); }
+  .mcell.blank { visibility: hidden; }
+
+  /* ---------- mood log: which faces this month, tap one to filter ---------- */
+  .moodlog { display: flex; justify-content: space-between; margin: 14px 0 0; }
+  .moodlog button { flex: 0 0 auto; width: 44px; background: transparent; border: 0; padding: 4px 0; display: flex; flex-direction: column; align-items: center; gap: 4px; border-radius: 14px; font: inherit; font-size: 13px; font-weight: 500; color: var(--muted); }
+  .moodlog button svg { width: 36px; height: 36px; border-radius: 50%; }
+  .moodlog button.zero { opacity: .35; }
+  .moodlog button.on svg { box-shadow: 0 0 0 2px var(--accent); }
+  .moodlog button.on { color: var(--ink); }
+  .moodlog-cap { margin: 6px 0 0; text-align: center; font-size: 13px; color: var(--muted); min-height: 20px; }
+
+  /* ---------- search + segmented ---------- */
+  .search { position: relative; margin-top: 18px; }
+  .search svg { position: absolute; left: 15px; top: 50%; margin-top: -9px; width: 18px; height: 18px; color: var(--muted); }
+  .search input { width: 100%; font: inherit; font-size: 17px; color: var(--ink); background: var(--track); border: 0; border-radius: 16px; padding: 14px 14px 14px 42px; outline: none; min-height: 52px; }
+  .search input::placeholder { color: var(--muted); }
+
+  .seg { position: relative; display: flex; background: var(--track); border-radius: 12px; padding: 2px; margin-top: 14px; }
+  .seg .thumb { position: absolute; top: 2px; bottom: 2px; left: 2px; border-radius: 10px; background: var(--glass-strong); box-shadow: 0 1px 3px rgba(0,0,0,.10); transition: transform .25s ease, width .25s ease; }
+  .seg button { position: relative; z-index: 1; flex: 1; background: none; border: 0; font: inherit; font-size: 14px; font-weight: 500; color: var(--ink); opacity: .72; padding: 12px 4px; min-height: 46px; border-radius: 10px; }
+  .seg button.on { opacity: 1; font-weight: 600; }
+  .seg.compact button { min-height: 28px; padding: 6px 2px; font-size: 12px; white-space: nowrap; }
+  .seg.compact { margin-top: 10px; }
+
+  /* ---------- day groups ---------- */
+  .day { margin-bottom: 22px; }
+  .dayhead { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; background: none; border: 0; padding: 0 0 8px; text-align: left; color: inherit; }
+  .dayhead b { font-family: var(--serif); font-size: 17px; font-weight: 600; color: var(--ink); }
+  .dayhead .arc { flex: 0 0 auto; }
+  .arc-line { fill: none; stroke: var(--accent); stroke-opacity: .4; stroke-width: 2; stroke-linecap: round; }
+
+  .empty { color: var(--muted); text-align: center; padding: 36px 10px; font-size: 15px; }
+
+  /* ---------- export: a settings screen. One card for you, then grouped lists ---------- */
+  .hero { border-radius: 22px; padding: 18px 20px; margin-bottom: 22px; }
+  .hero b { display: block; font-size: 20px; font-weight: 600; }
+  .hero .sub { margin: 2px 0 0; }
+  .stats { display: flex; gap: 10px; margin: 14px 0 0; }
+  .stats div { flex: 1; text-align: center; background: var(--track); border-radius: 14px; padding: 12px 4px; }
+  .stats b { display: block; font-size: 20px; font-weight: 600; }
+  .stats span { font-size: 12px; color: var(--muted); }
+  .group { margin-bottom: 22px; }
+  .group h2 { font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 0 0 6px 16px; }
+  .group .foot { font-size: 12px; line-height: 16px; color: var(--muted); margin: 6px 16px 0; }
+  .group .foot:empty { display: none; }
+  .list { border-radius: 18px; overflow: hidden; }
+  .list .wrap { display: contents; }
+  .list .item, .list .sub { position: relative; }
+  .list .item::before, .list .sub::before { content: ""; position: absolute; left: 58px; right: 0; top: 0; height: 1px; background: var(--line); }
+  .list .item:first-child::before, .list .sub:first-child::before, .list .sub::before { display: none; }
+  .list .item { display: flex; align-items: center; gap: 12px; width: 100%; padding: 11px 16px; min-height: 52px; background: none; border: 0; font: inherit; font-size: 15px; font-weight: 500; color: var(--ink); text-align: left; }
+  .list button.item:active { background: var(--track); }
+  .list .item.danger { color: var(--danger); }
+  .list .tile { flex: 0 0 30px; width: 30px; height: 30px; border-radius: 8px; background: var(--accent); display: flex; align-items: center; justify-content: center; color: var(--accent-ink); transition: background .25s; }
+  .list .tile.muted { background: var(--muted); color: var(--card); }
+  .list .tile.danger { background: var(--danger); }
+  .list .tile svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .list .tile svg.mark { fill: currentColor; stroke: none; width: 16px; height: 12px; }
+  .list .lbl { flex: 1; min-width: 0; }
+  .list .val { color: var(--muted); font-weight: 400; }
+  .list .chev { width: 8px; height: 14px; fill: none; stroke: var(--muted); stroke-opacity: .7; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; flex: 0 0 auto; }
+  .list .check { width: 16px; height: 16px; fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; opacity: 0; transition: opacity .2s; }
+  .list .item.on .check { opacity: 1; }
+  .list .sub { padding: 4px 16px 14px; }
+  .list .sub .seg { margin-top: 0; }
+  label.small { font-size: 13px; color: var(--muted); display: block; margin: 10px 0 4px; }
+  input.field { width: 100%; font: inherit; font-size: 15px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 11px 14px; outline: none; margin-bottom: 8px; }
+  input.field:focus { border-color: var(--accent); }
+  /* ---------- the switch, iOS-shaped ---------- */
+  .switch { flex: 0 0 auto; width: 51px; height: 31px; border-radius: 16px; border: 0; padding: 0; background: var(--track); transition: background .25s ease; position: relative; }
+  .switch i { position: absolute; top: 2px; left: 2px; width: 27px; height: 27px; border-radius: 50%; background: #FFF; box-shadow: 0 1px 3px rgba(0,0,0,.14); transition: transform .25s ease; }
+  .switch[aria-checked="true"] { background: var(--accent); }
+  .switch[aria-checked="true"] i { transform: translateX(20px); }
+  .switch[disabled] { opacity: .45; }
+
+  /* ---------- circle: friends' last seven days under the mood log ---------- */
+  .circle:empty { display: none; }
+  .circle .friend { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
+  .circle .friend b { font-weight: 500; font-size: 15px; display: flex; align-items: center; gap: 7px; }
+  .circle .friend .who { display: flex; flex-direction: column; gap: 2px; min-width: 0; padding-right: 10px; }
+  .circle .friend small { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .circle .place-mark { width: 14px; height: 11px; fill: var(--muted); opacity: .8; flex: 0 0 auto; }
+  .circle .week { display: flex; gap: 6px; }
+  .circle .week i { display: block; width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--line); }
+  .circle .week svg { display: block; }
+  input[type=date] { width: 100%; font: inherit; font-size: 15px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; outline: none; }
+  .closing { text-align: center; font-size: 13px; color: var(--muted); margin: 18px 0 0; }
+
+  /* ---------- day sheet ---------- */
+  .sheet { position: fixed; inset: 0; z-index: 10; }
+  .sheet .backdrop { position: absolute; inset: 0; background: rgba(20,26,29,0.35); opacity: 0; transition: opacity .4s ease-out; }
+  .sheet.in .backdrop { opacity: 1; }
+  .sheet .panel { position: absolute; left: 0; right: 0; bottom: 0; max-height: 92dvh; overflow: auto; -webkit-overflow-scrolling: touch; background: var(--card); border-radius: 28px 28px 0 0; padding: 8px 24px calc(24px + env(safe-area-inset-bottom)); transform: translateY(100%); transition: transform .5s ease-out; box-shadow: 0 -8px 30px rgba(0,0,0,.12); }
+  .sheet.in .panel { transform: translateY(0); }
+  .grabber { width: 58px; height: 4px; border-radius: 2px; background: var(--line); margin: 8px auto 16px; }
+  .sheet .done { position: absolute; top: 18px; right: 20px; border: 0; background: none; font: inherit; font-size: 16px; font-weight: 600; color: var(--accent); padding: 8px 4px; }
+  .sheet h2 { font-family: var(--serif); font-size: 28px; font-weight: 600; margin: 0; }
+  .sheet .date { font-size: 13px; color: var(--muted); margin: 4px 0 0; }
+  .arc-big { background: var(--track); border-radius: 18px; padding: 12px; margin: 18px 0; }
+
+  .toast { position: fixed; left: 50%; bottom: 100px; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 999px; font-size: 14px; opacity: 0; transition: opacity .2s; pointer-events: none; z-index: 20; }
+  .toast.show { opacity: 1; }
+
+  /* ---------- waves and scene (preserved) ---------- */
+  .waves { position: fixed; left: 0; right: 0; bottom: 0; height: calc(28vh + var(--tide, 0px)); pointer-events: none; z-index: 0; overflow: hidden; transition: transform 2.5s ease-out; }
+  body.listening .waves { transform: translateY(-12px); }
+  .waves .wave-wrap { position: absolute; inset: 0; animation: bob 3s ease-in-out infinite alternate; }
+  .waves svg { position: absolute; bottom: 0; left: 0; width: 200%; height: 100%; }
+  .waves svg.w1 { animation: drift 14s linear infinite; }
+  .waves svg.w2 { animation: drift 11s linear infinite; }
+  .waves svg.w3 { animation: drift 9s linear infinite; }
+  .waves path.w1 { fill: var(--scene-back); opacity: 1; }
+  .waves svg.w2 { height: 78%; top: auto; }
+  .waves svg.w3 { height: 52%; top: auto; }
+  html[data-sky="evening"]:not(.night) .waves path.w1 { fill: color-mix(in srgb, var(--scene-back) 80%, #D8A58C); }
+  
+  .waves path.w2 { fill: var(--scene-mid); opacity: 1; }
+  .waves path.w3 { fill: var(--scene-front); opacity: .76; }
+  /* dusk warms the whole scene a little */
+  .waves::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(rgba(233,169,124,.28), rgba(233,169,124,0)); opacity: 0; transition: opacity 2s; z-index: 3; }
+  html[data-sky="evening"]:not(.night) .waves::after { opacity: 1; }
+  @keyframes drift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes bob { from { transform: translateY(0); } to { transform: translateY(-4px); } }
+
+  .waves svg.dock { position: absolute; right: 0; left: auto; bottom: 42%; width: 150px; height: 86px; pointer-events: none; overflow: visible; }
+  .dock .dock-figure { fill: var(--silhouette); opacity: .55; }
+  .dock .dock-figure .arm { fill: none; stroke: var(--silhouette); stroke-width: 4.6; stroke-linecap: round; }
+  .dock .rod { transform-box: fill-box; transform-origin: 100% 28%; animation: rodSway 5s ease-in-out infinite alternate; }
+  .dock .rod .rod-pole { fill: none; stroke: var(--silhouette); stroke-width: 1.8; stroke-linecap: round; }
+  @keyframes rodSway { from { transform: rotate(-1.5deg); } to { transform: rotate(1.5deg); } }
+  @keyframes ringPulse {
+    0%   { transform: scale(1); opacity: .35; }
+    33%  { transform: scale(3); opacity: 0; }
+    100% { transform: scale(3); opacity: 0; }
+  }
+
+
+
+  .waves .mullet-wrap { position: absolute; bottom: 40%; pointer-events: none; }
+  .waves .mullet-wrap.mu1 { left: 30%; }
+  .waves .mullet-wrap.mu2 { left: 44%; }
+  .waves .mullet-wrap.mu3 { left: 58%; }
+  .mullet-wrap .mullet { display: block; width: 22px; height: auto; overflow: visible; animation: mulletJump 60s linear infinite; }
+  .mullet-wrap.mu1 .mullet { animation-delay: 0s; }
+  .mullet-wrap.mu2 .mullet { animation-delay: -20s; }
+  .mullet-wrap.mu3 .mullet { animation-delay: -40s; }
+  .mullet use { fill: var(--accent); opacity: .5; }
+  @keyframes mulletJump {
+    0%, 44%   { transform: translateY(0) rotate(-20deg); opacity: 0; }
+    45%       { opacity: .5; }
+    45.75%    { transform: translateY(-22px) rotate(0deg); }
+    46.5%     { transform: translateY(0) rotate(20deg); opacity: .5; }
+    46.55%, 100% { opacity: 0; }
+  }
+  .mullet-wrap .splash { position: absolute; left: -5px; bottom: -2px; width: 28px; height: 28px; animation: splash 60s linear infinite; }
+  .mullet-wrap.mu1 .splash { animation-delay: 0s; }
+  .mullet-wrap.mu2 .splash { animation-delay: -20s; }
+  .mullet-wrap.mu3 .splash { animation-delay: -40s; }
+  .splash circle { fill: none; stroke: var(--accent); stroke-width: 1; }
+  @keyframes splash {
+    0%, 46.3% { transform: scale(.3); opacity: 0; }
+    46.6%     { opacity: .4; }
+    50.6%     { transform: scale(1); opacity: 0; }
+    100%      { opacity: 0; }
+  }
+
+  .waves .fish-wrap { position: absolute; inset: 0; pointer-events: none; }
+  /* living water: every wrap carries one fish (or school) along its own path: translate, then a turn (scaleX), then pitch.
+     The origin sits on the fish so turns and pitch happen in place. Nose always leads: pinfish, mackerel and snapper are drawn facing right.
+     Two shared clocks make the animals notice each other: snook, pinfish and barracuda run on one 130 s cycle (delay -18 s),
+     blacktip and snappers on one 150 s cycle (delay -100 s); the jack (120 s) is phased to the mullet (40 s) so one jumps clear of its nose. */
+  .waves .fish-wrap { animation-timing-function: cubic-bezier(.35,.15,.65,.85); animation-iteration-count: infinite; }
+  /* every fish is one silhouette: the body sways from a point behind the head, the whole fish bobs */
+  .waves svg.fish { position: absolute; left: 0; height: auto; overflow: visible; pointer-events: none; fill: var(--accent); animation: fishBob 8s ease-in-out infinite alternate; }
+  /* depth: three tiers, still one fill each. Far fish are hazed toward the water (color-mix), smaller, paler and bob less; near fish are fuller and bob more */
+  .waves svg.fish.far  { fill: color-mix(in srgb, var(--accent) 62%, var(--scene-mid)); animation-duration: 11s; }
+  .waves svg.fish.near { fill: color-mix(in srgb, var(--accent) 100%, var(--scene-front)); animation-name: fishBobNear; }
+  @keyframes fishBobNear { from { transform: translateY(-5px); } to { transform: translateY(5px); } }
+  .waves svg.fish use { transform-box: fill-box; transform-origin: 30% 50%; animation: sway 2.4s ease-in-out infinite alternate; }
+  .pin use, .fish8 use, .snap.s1 use, .snap.s3 use, .snap.s4 use { transform-origin: 70% 50%; }
+  @keyframes sway { from { transform: rotate(-1.4deg); } to { transform: rotate(1.4deg); } }
+  @keyframes fishBob { from { transform: translateY(-4px); } to { transform: translateY(4px); } }
+  /* tarpon: crosses, climbs to roll at the surface, sinks again; later comes back the other way, deeper */
+  .waves .fish-wrap.fw1 { transform-origin: 33px calc(66% - 13px); animation-name: swimTarpon; animation-duration: 96s; animation-delay: -12s; }
+  @keyframes swimTarpon {
+    0%   { transform: translate(112vw, 0) scaleX(1) rotate(0deg); }
+    18%  { transform: translate(62vw, 4px) scaleX(1) rotate(-2deg); }
+    24%  { transform: translate(50vw, -34px) scaleX(1) rotate(14deg); }
+    26%  { transform: translate(46vw, -40px) scaleX(1) rotate(0deg); }
+    29%  { transform: translate(40vw, -20px) scaleX(1) rotate(-12deg); }
+    34%  { transform: translate(30vw, 6px) scaleX(1) rotate(0deg); }
+    48%  { transform: translate(-25vw, 0) scaleX(1) rotate(0deg); }
+    50%  { transform: translate(-25vw, 30px) scaleX(-1) rotate(0deg); }
+    62%  { transform: translate(-25vw, 30px) scaleX(-1) rotate(0deg); }
+    74%  { transform: translate(40vw, 20px) scaleX(-1) rotate(3deg); }
+    86%  { transform: translate(112vw, 26px) scaleX(-1) rotate(0deg); }
+    100% { transform: translate(112vw, 0) scaleX(1) rotate(0deg); }
+  }
+  .waves svg.fish.fish1 { width: 58px; bottom: 34%; opacity: .2; animation: tarponRoll 96s ease-in-out infinite; animation-delay: -12s; }
+  .fish1 use { animation-duration: 3.2s; }
+  @keyframes tarponRoll { 0%, 24% { transform: scaleY(1); } 26% { transform: scaleY(.68); } 28.5%, 100% { transform: scaleY(1); } }
+  /* snook: a resident on the 130 s clock. Holds by the piling facing the current, tenses, strikes the pinfish at 33 % (the school scatters at the same
+     moment), coasts out of the strike, turns, and drifts home along the bottom of its band */
+  .waves .fish-wrap.fw2 { transform-origin: 28px calc(60% - 10px); animation-name: swimSnook; animation-duration: 130s; animation-delay: -18s; }
+  @keyframes swimSnook {
+    0%    { transform: translate(64vw, 0) scaleX(1) rotate(0deg); }
+    12%   { transform: translate(62vw, 3px) scaleX(1) rotate(0deg); }
+    24%   { transform: translate(64vw, 1px) scaleX(1) rotate(0deg); }
+    31%   { transform: translate(63vw, 0) scaleX(1) rotate(2deg); }
+    31.6% { transform: translate(60vw, -2px) scaleX(1) rotate(4deg); }
+    33.2% { transform: translate(45vw, -8px) scaleX(1) rotate(3deg); }
+    36%   { transform: translate(39vw, -4px) scaleX(1) rotate(0deg); }
+    41%   { transform: translate(37vw, 0) scaleX(1) rotate(0deg); }
+    43%   { transform: translate(36vw, 1px) scaleX(-1) rotate(0deg); }
+    58%   { transform: translate(52vw, 6px) scaleX(-1) rotate(-3deg); }
+    72%   { transform: translate(66vw, 2px) scaleX(-1) rotate(0deg); }
+    75%   { transform: translate(67vw, 1px) scaleX(1) rotate(0deg); }
+    100%  { transform: translate(64vw, 0) scaleX(1) rotate(0deg); }
+  }
+  .waves svg.fish.fish2 { width: 56px; bottom: 40%; opacity: .25; animation-duration: 10s; }
+  /* jack crevalle: one fast dipping pass, a long nothing, then back the other way higher up.
+     120 s is two mullet cycles: with this delay the middle mullet (mu2, left 44 %) jumps clear just ahead of the jack's nose on the left-going pass */
+  .waves .fish-wrap.fw4 { transform-origin: 25px calc(64% - 8px); animation-name: swimJack; animation-duration: 120s; animation-delay: -59.7s; }
+  @keyframes swimJack {
+    0%   { transform: translate(112vw, 0) scaleX(1) rotate(0deg); }
+    3%   { transform: translate(80vw, 14px) scaleX(1) rotate(-8deg); }
+    6%   { transform: translate(45vw, -6px) scaleX(1) rotate(7deg); }
+    9%   { transform: translate(10vw, 8px) scaleX(1) rotate(-4deg); }
+    11%  { transform: translate(-25vw, 0) scaleX(1) rotate(0deg); }
+    50%  { transform: translate(-25vw, -20px) scaleX(-1) rotate(0deg); }
+    53%  { transform: translate(10vw, -10px) scaleX(-1) rotate(-6deg); }
+    57%  { transform: translate(55vw, -24px) scaleX(-1) rotate(5deg); }
+    61%  { transform: translate(112vw, -14px) scaleX(-1) rotate(0deg); }
+    100% { transform: translate(112vw, 0) scaleX(1) rotate(0deg); }
+  }
+  .waves svg.fish.fish4 { width: 50px; bottom: 36%; opacity: .24; animation-duration: 5s; }
+  .fish4 use { animation-duration: .9s; transform-origin: 35% 50%; }
+  /* barracuda: on the 130 s clock. Arrives at 20 %, hangs dead still under the school's turning point from 24 % to 58 %, then is gone in a flash beneath them */
+  .waves .fish-wrap.fw5 { animation-name: swimCuda; animation-duration: 130s; animation-delay: -18s; animation-timing-function: linear; }
+  @keyframes swimCuda {
+    0%   { transform: translateX(110vw); }
+    20%  { transform: translateX(62vw); animation-timing-function: ease-out; }
+    24%  { transform: translateX(59vw); }
+    58%  { transform: translateX(57vw); animation-timing-function: cubic-bezier(.7,0,.9,.4); }
+    61%  { transform: translateX(-140px); }
+    100% { transform: translateX(-140px); }
+  }
+  .waves svg.fish.fish5 { width: 56px; bottom: 22%; opacity: .17; animation-duration: 13s; }
+  .fish5 use { animation-duration: 1.6s; }
+  /* pinfish: the school on the 130 s clock. Wanders in, stops to feed, is hit by the snook at 33 % (wrap flees right and up, each fish bursts its own way,
+     regroups by 37 %), rises and turns when it meets the hanging barracuda at 39 %, hurries off, feeds again, and leaves */
+  .waves .fish-wrap.fw6 { transform-origin: 32px 57%; animation-name: swimSchool; animation-duration: 130s; animation-delay: -18s; }
+  @keyframes swimSchool {
+    0%    { transform: translate(-25vw, 0) scaleX(1); }
+    14%   { transform: translate(22vw, 4px) scaleX(1); }
+    22%   { transform: translate(24vw, 10px) scaleX(1); }
+    29%   { transform: translate(38vw, 2px) scaleX(1); }
+    33%   { transform: translate(44vw, 0) scaleX(1); }
+    33.8% { transform: translate(52vw, -10px) scaleX(1); }
+    37%   { transform: translate(54vw, -6px) scaleX(1); }
+    39%   { transform: translate(56vw, -14px) scaleX(1); }
+    40%   { transform: translate(56vw, -14px) scaleX(-1); }
+    45%   { transform: translate(42vw, -6px) scaleX(-1); }
+    54%   { transform: translate(18vw, 6px) scaleX(-1); }
+    56%   { transform: translate(17vw, 6px) scaleX(1); }
+    66%   { transform: translate(30vw, 12px) scaleX(1); }
+    74%   { transform: translate(34vw, 10px) scaleX(1); }
+    100%  { transform: translate(115vw, -4px) scaleX(1); }
+  }
+  /* each pinfish: its own small orbit, a nose-down feed in the two holds (right-facing art, so nose down is rotate(+)), a burst away from the snook
+     at 33 %. Same 130 s clock and delay as the wrap so the beats line up */
+  .waves svg.fish.pin { width: 16px; opacity: .26; animation: pinP1 130s ease-in-out infinite; animation-delay: -18s; }
+  .waves svg.fish.pin.p1 { bottom: 44%; left: 0; }
+  .waves svg.fish.pin.p2 { bottom: 47%; left: 22px; animation-name: pinP2; }
+  .waves svg.fish.pin.p3 { bottom: 42%; left: 26px; animation-name: pinP3; }
+  .waves svg.fish.pin.p4 { bottom: 45%; left: 48px; animation-name: pinP4; }
+  .waves svg.fish.pin.p5 { bottom: 40%; left: 12px; animation-name: pinP5; }
+  .pin use { animation-duration: .7s; }
+  @keyframes pinP1 {
+    0%    { transform: translate(0, 0) rotate(0deg); }
+    10%   { transform: translate(3px, -2px) rotate(0deg); }
+    16%   { transform: translate(1px, 0) rotate(0deg); }
+    17.5% { transform: translate(1px, 4px) rotate(24deg); }
+    20%   { transform: translate(0, 4px) rotate(24deg); }
+    21.5% { transform: translate(0, 0) rotate(0deg); }
+    33%   { transform: translate(0, 0) rotate(0deg); }
+    33.8% { transform: translate(-7px, 9px) rotate(-10deg); }
+    37%   { transform: translate(1px, 1px) rotate(0deg); }
+    48%   { transform: translate(-2px, 1px) rotate(0deg); }
+    68%   { transform: translate(-1px, 0) rotate(0deg); }
+    69.5% { transform: translate(-1px, 3px) rotate(22deg); }
+    72%   { transform: translate(0, 3px) rotate(22deg); }
+    73.5% { transform: translate(0, 0) rotate(0deg); }
+    100%  { transform: translate(0, 0) rotate(0deg); }
+  }
+  @keyframes pinP2 {
+    0%    { transform: translate(0, 0) rotate(0deg); }
+    8%    { transform: translate(-2px, 2px) rotate(0deg); }
+    19%   { transform: translate(1px, 0) rotate(0deg); }
+    20.5% { transform: translate(1px, 4px) rotate(26deg); }
+    23%   { transform: translate(0, 4px) rotate(26deg); }
+    24.5% { transform: translate(0, 0) rotate(0deg); }
+    33%   { transform: translate(0, 0) rotate(0deg); }
+    33.8% { transform: translate(10px, -8px) rotate(6deg); }
+    37%   { transform: translate(1px, 1px) rotate(0deg); }
+    50%   { transform: translate(3px, 2px) rotate(0deg); }
+    66%   { transform: translate(-1px, 0) rotate(0deg); }
+    67.5% { transform: translate(-1px, 3px) rotate(24deg); }
+    70%   { transform: translate(0, 3px) rotate(24deg); }
+    71.5% { transform: translate(0, 0) rotate(0deg); }
+    100%  { transform: translate(0, 0) rotate(0deg); }
+  }
+  @keyframes pinP3 {
+    0%    { transform: translate(0, 0) rotate(0deg); }
+    12%   { transform: translate(2px, 2px) rotate(0deg); }
+    23.5% { transform: translate(1px, 0) rotate(0deg); }
+    25%   { transform: translate(1px, 4px) rotate(28deg); }
+    27.5% { transform: translate(0, 4px) rotate(28deg); }
+    29%   { transform: translate(0, 0) rotate(0deg); }
+    33%   { transform: translate(0, 0) rotate(0deg); }
+    33.8% { transform: translate(-9px, -6px) rotate(-8deg); }
+    37%   { transform: translate(1px, 1px) rotate(0deg); }
+    46%   { transform: translate(-3px, 0) rotate(0deg); }
+    71%   { transform: translate(-1px, 0) rotate(0deg); }
+    72.5% { transform: translate(-1px, 3px) rotate(24deg); }
+    75%   { transform: translate(0, 3px) rotate(24deg); }
+    76.5% { transform: translate(0, 0) rotate(0deg); }
+    100%  { transform: translate(0, 0) rotate(0deg); }
+  }
+  @keyframes pinP4 {
+    0%    { transform: translate(0, 0) rotate(0deg); }
+    9%    { transform: translate(-3px, -1px) rotate(0deg); }
+    15%   { transform: translate(1px, 0) rotate(0deg); }
+    16.5% { transform: translate(1px, 4px) rotate(25deg); }
+    19%   { transform: translate(0, 4px) rotate(25deg); }
+    20.5% { transform: translate(0, 0) rotate(0deg); }
+    33%   { transform: translate(0, 0) rotate(0deg); }
+    33.8% { transform: translate(12px, 6px) rotate(10deg); }
+    37%   { transform: translate(1px, 1px) rotate(0deg); }
+    52%   { transform: translate(1px, -2px) rotate(0deg); }
+    70%   { transform: translate(-1px, 0) rotate(0deg); }
+    71.5% { transform: translate(-1px, 3px) rotate(22deg); }
+    74%   { transform: translate(0, 3px) rotate(22deg); }
+    75.5% { transform: translate(0, 0) rotate(0deg); }
+    100%  { transform: translate(0, 0) rotate(0deg); }
+  }
+  @keyframes pinP5 {
+    0%    { transform: translate(0, 0) rotate(0deg); }
+    14%   { transform: translate(2px, -3px) rotate(0deg); }
+    24%   { transform: translate(1px, 0) rotate(0deg); }
+    25.5% { transform: translate(1px, 4px) rotate(26deg); }
+    28%   { transform: translate(0, 4px) rotate(26deg); }
+    29.5% { transform: translate(0, 0) rotate(0deg); }
+    33%   { transform: translate(0, 0) rotate(0deg); }
+    33.8% { transform: translate(-4px, 12px) rotate(-14deg); }
+    37%   { transform: translate(1px, 1px) rotate(0deg); }
+    44%   { transform: translate(2px, 2px) rotate(0deg); }
+    72%   { transform: translate(-1px, 0) rotate(0deg); }
+    73.5% { transform: translate(-1px, 3px) rotate(20deg); }
+    76%   { transform: translate(0, 3px) rotate(20deg); }
+    77.5% { transform: translate(0, 0) rotate(0deg); }
+    100%  { transform: translate(0, 0) rotate(0deg); }
+  }
+  /* goliath grouper: a resident of the bottom. Patrols from the piling to mid water and back, hovering for long spells */
+  .waves .fish-wrap.fw7 { transform-origin: 34px calc(93% - 16px); animation-name: swimGrouper; animation-duration: 180s; animation-delay: -30s; animation-timing-function: ease-in-out; }
+  @keyframes swimGrouper {
+    0%   { transform: translate(62vw, 0) scaleX(1); }
+    20%  { transform: translate(60vw, -3px) scaleX(1); }
+    45%  { transform: translate(24vw, 4px) scaleX(1); }
+    60%  { transform: translate(22vw, 1px) scaleX(1); }
+    63%  { transform: translate(22vw, 1px) scaleX(-1); }
+    88%  { transform: translate(60vw, -2px) scaleX(-1); }
+    96%  { transform: translate(63vw, 0) scaleX(-1); }
+    100% { transform: translate(62vw, 0) scaleX(1); }
+  }
+  .waves svg.fish.fish7 { width: 72px; bottom: 7%; opacity: .34; animation-duration: 14s; transition: bottom 2.5s ease-in-out; }
+  /* outside sit mode the tab bar covers the bottom 90 px (about 38 % of the water). The grouper rises to sit at the glass's top edge, its back showing
+     above the bar as a big slow shadow; when the water rises for sit mode it settles back to the sand. The bonnethead stays on the sand and belongs to sit mode */
+  body:not(.dock) .waves svg.fish.fish7 { bottom: 33%; }
+  .fish7 use { animation-duration: 4s; transform-origin: 40% 50%; }
+  /* spanish mackerel: one quick pass each way, a minute apart (turns happen off screen) */
+  .waves .fish-wrap.fw8 { transform-origin: 22px calc(72% - 7px); animation-name: swimMack; animation-duration: 120s; animation-delay: -66s; }
+  @keyframes swimMack {
+    0%    { transform: translate(112vw, 0) scaleX(-1) rotate(0deg); }
+    3.5%  { transform: translate(55vw, -10px) scaleX(-1) rotate(-5deg); }
+    7%    { transform: translate(-25vw, 4px) scaleX(-1) rotate(4deg); }
+    7.5%  { transform: translate(-25vw, 14px) scaleX(1) rotate(0deg); }
+    53%   { transform: translate(-25vw, 14px) scaleX(1) rotate(0deg); }
+    57.5% { transform: translate(50vw, 2px) scaleX(1) rotate(-5deg); }
+    61.5% { transform: translate(112vw, 12px) scaleX(1) rotate(3deg); }
+    99.5% { transform: translate(112vw, 12px) scaleX(1) rotate(0deg); }
+    100%  { transform: translate(112vw, 0) scaleX(-1) rotate(0deg); }
+  }
+  .waves svg.fish.fish8 { width: 44px; bottom: 28%; opacity: .22; animation-duration: 4s; }
+  .fish8 use { animation-duration: .6s; }
+  /* mangrove snappers: a loose group in the shadow of the dock; they hang, shift, one turns now and then, and all bolt when the blacktip passes under them */
+  .waves .fish-wrap.fw9 { inset: auto; right: 4%; bottom: 18%; width: 130px; height: 60px; animation-name: snapStartle; animation-duration: 150s; animation-delay: -100s; animation-timing-function: linear; }
+  @keyframes snapStartle { 0%, 4% { transform: translate(0, 0); } 4.5% { transform: translate(-34px, -10px); } 10%, 55% { transform: translate(0, 0); } 55.4% { transform: translate(-22px, 4px); } 61%, 100% { transform: translate(0, 0); } }
+  .waves svg.fish.snap { opacity: .3; animation: snapHover 14s ease-in-out infinite alternate; }
+  .waves svg.fish.snap use { animation-duration: 2s; }
+  .snap.s1 { width: 36px; left: 0;    bottom: 30px; animation-delay: -3s; }
+  .waves svg.fish.snap.s2 { width: 30px; left: 44px; bottom: 44px; animation: snapTurn 23s ease-in-out infinite; animation-delay: -9s; }
+  .snap.s3 { width: 34px; left: 62px; bottom: 12px; animation-delay: -6s; animation-duration: 12s; }
+  .snap.s4 { width: 28px; left: 96px; bottom: 34px; animation-delay: -1s; animation-duration: 19s; }
+  @keyframes snapHover { 0% { transform: translate(0, 0); } 40% { transform: translate(-6px, 3px); } 70% { transform: translate(-4px, -4px); } 100% { transform: translate(5px, 2px); } }
+  @keyframes snapTurn {
+    0%   { transform: translate(0, 0) scaleX(1); }
+    38%  { transform: translate(-8px, 3px) scaleX(1); }
+    42%  { transform: translate(-8px, 3px) scaleX(-1); }
+    78%  { transform: translate(7px, -3px) scaleX(-1); }
+    82%  { transform: translate(7px, -3px) scaleX(1); }
+    100% { transform: translate(0, 0) scaleX(1); }
+  }
+  /* blacktip: a steady pass on a slow S every two and a half minutes; bonnethead: low over the sand, the other way, every four */
+  .waves .fish-wrap.fw10 { transform-origin: 42px calc(74% - 20px); animation-name: swimShark; animation-duration: 150s; animation-delay: -100s; animation-timing-function: linear; }
+  @keyframes swimShark {
+    0%   { transform: translate(110vw, 0) rotate(0deg); }
+    7%   { transform: translate(74vw, -10px) rotate(3deg); }
+    14%  { transform: translate(38vw, 8px) rotate(-3deg); }
+    21%  { transform: translate(5vw, -6px) rotate(2deg); }
+    28%  { transform: translate(-40vw, 0) rotate(0deg); }
+    100% { transform: translate(-40vw, 0) rotate(0deg); }
+  }
+  .waves svg.fish.blacktip { width: 76px; bottom: 26%; opacity: .18; animation-duration: 12s; }
+  .blacktip use { transform-origin: 28% 50%; animation-duration: 1.7s; }
+  .waves .fish-wrap.fw11 { transform-origin: 37px calc(95% - 15px); animation-name: swimBonnet; animation-duration: 250s; animation-delay: -60s; animation-timing-function: linear; }
+  @keyframes swimBonnet {
+    0%   { transform: translate(-35vw, 0) rotate(0deg); }
+    9%   { transform: translate(15vw, -8px) rotate(-3deg); }
+    18%  { transform: translate(65vw, 4px) rotate(2deg); }
+    26%  { transform: translate(112vw, 0) rotate(0deg); }
+    100% { transform: translate(112vw, 0) rotate(0deg); }
+  }
+  .waves svg.fish.bonnet { width: 78px; bottom: 5%; opacity: .26; animation-duration: 12s; }
+  .bonnet use { transform-origin: 78% 50%; animation-duration: 1.3s; }
+
+  /* light in the water: two soft shafts of surface light drift and breathe across the fish layer, so the fish sit in water rather than on it.
+     Gradients only, animated on transform and opacity. Dimmer at dusk, dimmest at night; slower after 21:00 */
+  .waves .light { position: absolute; left: -20%; right: -20%; top: 30%; bottom: 0; pointer-events: none; opacity: .5;
+    background:
+      linear-gradient(104deg, transparent 20%, rgba(255,255,255,.26) 30%, rgba(255,255,255,.08) 37%, transparent 43%),
+      linear-gradient(98deg, transparent 54%, rgba(255,255,255,.2) 62%, rgba(255,255,255,.06) 68%, transparent 73%);
+    -webkit-mask-image: linear-gradient(rgba(0,0,0,.9), rgba(0,0,0,.35) 60%, transparent); mask-image: linear-gradient(rgba(0,0,0,.9), rgba(0,0,0,.35) 60%, transparent);
+    animation: lightDrift 46s ease-in-out infinite alternate, lightBreathe 19s ease-in-out infinite alternate; }
+  html[data-sky="evening"]:not(.night) .waves .light { opacity: .4; }
+  html.night .waves .light { opacity: .16; }
+  body.late .waves .light { animation-duration: 70s, 28s; }
+  @keyframes lightDrift { from { transform: translateX(-4%); } to { transform: translateX(4%); } }
+  @keyframes lightBreathe { from { opacity: .4; } to { opacity: .7; } }
+  html.night .waves .light { animation-name: lightDrift, lightBreatheNight; }
+  @keyframes lightBreatheNight { from { opacity: .08; } to { opacity: .18; } }
+
+  /* night under the lamp. Real dock behaviour: bait gathers in the lamp's glade and the snook holds just below it, nose to the current, and takes one
+     fish a cycle. Same 130 s clock and delays, so the strike and the school's burst still land together at 33 %. The glade is the only light on the
+     water at night, so the daytime light shafts go; fish inside the glade are brighter than the rest of the night water */
+  html.night .waves .light { display: none; }
+  html.night .waves .glade { background: rgba(242,201,138,.13); width: 78px; right: 6%; }
+  html.night .waves .fish-wrap.fw2 { animation-name: swimSnookNight; }
+  html.night .waves svg.fish.fish2 { opacity: .36; }
+  @keyframes swimSnookNight {
+    0%    { transform: translate(80vw, 10px) scaleX(1) rotate(0deg); }
+    14%   { transform: translate(79vw, 12px) scaleX(1) rotate(0deg); }
+    26%   { transform: translate(80vw, 9px) scaleX(1) rotate(0deg); }
+    31%   { transform: translate(80vw, 8px) scaleX(1) rotate(2deg); }
+    31.6% { transform: translate(78vw, 6px) scaleX(1) rotate(5deg); }
+    33.2% { transform: translate(69vw, -2px) scaleX(1) rotate(3deg); }
+    36%   { transform: translate(66vw, 1px) scaleX(1) rotate(0deg); }
+    43%   { transform: translate(65vw, 4px) scaleX(1) rotate(0deg); }
+    45%   { transform: translate(65vw, 5px) scaleX(-1) rotate(0deg); }
+    60%   { transform: translate(75vw, 11px) scaleX(-1) rotate(-2deg); }
+    74%   { transform: translate(82vw, 10px) scaleX(-1) rotate(0deg); }
+    77%   { transform: translate(82vw, 10px) scaleX(1) rotate(0deg); }
+    100%  { transform: translate(80vw, 10px) scaleX(1) rotate(0deg); }
+  }
+  html.night .waves .fish-wrap.fw6 { animation-name: swimSchoolNight; }
+  html.night .waves svg.fish.pin { opacity: .34; }
+  @keyframes swimSchoolNight {
+    0%    { transform: translate(74vw, -10px) scaleX(1); }
+    16%   { transform: translate(76vw, -7px) scaleX(1); }
+    24%   { transform: translate(75vw, -11px) scaleX(1); }
+    33%   { transform: translate(75vw, -10px) scaleX(1); }
+    33.8% { transform: translate(63vw, -16px) scaleX(1); }
+    37%   { transform: translate(65vw, -12px) scaleX(1); }
+    40%   { transform: translate(65vw, -12px) scaleX(-1); }
+    52%   { transform: translate(73vw, -10px) scaleX(-1); }
+    54%   { transform: translate(73vw, -10px) scaleX(1); }
+    78%   { transform: translate(76vw, -8px) scaleX(1); }
+    100%  { transform: translate(74vw, -10px) scaleX(1); }
+  }
+
+  /* distant boat on the horizon, once an hour, three minutes to cross */
+  .waves svg.boat { position: absolute; bottom: 62%; top: auto; left: 0; width: 26px; height: 10px; fill: var(--silhouette); opacity: 0; animation: boatCross 3600s linear infinite; animation-delay: -3480s; }
+  @keyframes boatCross { 0% { transform: translateX(-40px); opacity: 0; } 0.3% { opacity: .28; } 4.7% { opacity: .28; } 5% { transform: translateX(105vw); opacity: 0; } 100% { transform: translateX(105vw); opacity: 0; } }
+
+  /* sun glitter on the water, mornings and evenings */
+  .waves .glitter { position: absolute; left: 0; right: 0; top: 22%; height: 22%; pointer-events: none; display: none; animation: glitterDrift 18s ease-in-out infinite alternate; }
+  html[data-sky="morning"] .glitter, html[data-sky="evening"] .glitter { display: block; }
+  @keyframes glitterDrift { from { transform: translateX(-8px); } to { transform: translateX(8px); } }
+  .glitter span { position: absolute; width: 3px; height: 2px; border-radius: 2px; background: #FFFFFF; opacity: 0; filter: blur(.2px); animation: glint 4s ease-in-out infinite; }
+  html[data-sky="evening"] .glitter span { background: #F6D9A8; }
+  html.night .glitter span { animation-name: glintDim; }
+  @keyframes glint { 0%, 100% { opacity: 0; } 50% { opacity: .75; } }
+  @keyframes glintDim { 0%, 100% { opacity: 0; } 50% { opacity: .3; } }
+  .glitter span:nth-child(1) { left: 6%; top: 30%; animation-duration: 3.1s; animation-delay: -1s; }
+  .glitter span:nth-child(2) { left: 14%; top: 62%; animation-duration: 4.4s; animation-delay: -2.2s; }
+  .glitter span:nth-child(3) { left: 23%; top: 18%; animation-duration: 3.7s; animation-delay: -.5s; }
+  .glitter span:nth-child(4) { left: 31%; top: 48%; animation-duration: 5.2s; animation-delay: -3s; }
+  .glitter span:nth-child(5) { left: 39%; top: 80%; animation-duration: 3.4s; animation-delay: -1.7s; }
+  .glitter span:nth-child(6) { left: 47%; top: 36%; animation-duration: 4.8s; animation-delay: -.9s; }
+  .glitter span:nth-child(7) { left: 55%; top: 10%; animation-duration: 3.9s; animation-delay: -2.6s; }
+  .glitter span:nth-child(8) { left: 62%; top: 58%; animation-duration: 4.1s; animation-delay: -3.4s; }
+  .glitter span:nth-child(9) { left: 70%; top: 26%; animation-duration: 3.3s; animation-delay: -.3s; }
+  .glitter span:nth-child(10) { left: 78%; top: 70%; animation-duration: 5.6s; animation-delay: -1.3s; }
+  .glitter span:nth-child(11) { left: 86%; top: 42%; animation-duration: 3.6s; animation-delay: -2.9s; }
+  .glitter span:nth-child(12) { left: 93%; top: 14%; animation-duration: 4.6s; animation-delay: -.7s; }
+
+  /* ragdoll on the dock: tail hangs over the edge and flicks, one ear twitches now and then */
+  .dock .cat .cat-tail { fill: none; stroke: var(--silhouette); stroke-width: 2.8; stroke-linecap: round; transform-origin: 139px 60.5px; animation: catTail 7s ease-in-out infinite alternate; }
+  @keyframes catTail { from { transform: rotate(-9deg); } to { transform: rotate(7deg); } }
+  .dock .cat .ear-l { transform-origin: 125.5px 46.2px; animation: earTwitch 23s ease-in-out infinite; }
+  @keyframes earTwitch { 0%, 91% { transform: rotate(0); } 93% { transform: rotate(-16deg); } 95% { transform: rotate(0); } 100% { transform: rotate(0); } }
+
+
+  .waves-faint { position: fixed; left: 0; right: 0; bottom: 0; height: 120px; pointer-events: none; z-index: 0; overflow: hidden; animation: bob 3s ease-in-out infinite alternate; }
+  .waves-faint svg { position: absolute; bottom: 0; left: 0; width: 200%; height: 100%; animation: drift 14s linear infinite; }
+  .waves-faint path { fill: var(--scene-mid); opacity: 0.5; }
+
+  /* ---------- sky layers ---------- */
+  .sky-breathe { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(circle at 50% 50%, var(--sky-top), transparent 70%); opacity: 0; animation: breathe 10s ease-in-out infinite alternate; }
+  @keyframes breathe { from { opacity: 0; } to { opacity: 0.30; } }
+
+  .clouds { position: fixed; top: 0; left: 0; right: 0; height: 220px; pointer-events: none; z-index: 0; overflow: hidden; }
+  .cloud { position: absolute; top: 30px; background: rgba(255,255,255,0.75); border-radius: 50%; filter: blur(6px); animation: cloudDrift linear infinite; }
+  .cloud::before, .cloud::after { content: ""; position: absolute; background: rgba(255,255,255,0.75); border-radius: 50%; }
+  html.night .cloud, html.night .cloud::before, html.night .cloud::after { background: rgba(255,255,255,0.08); }
+  html[data-sky="evening"]:not(.night) .cloud, html[data-sky="evening"]:not(.night) .cloud::before, html[data-sky="evening"]:not(.night) .cloud::after { background: rgba(246,217,193,0.75); }
+  
+  .cloud.c1 { top: 20px; width: 180px; height: 50px; animation-duration: 90s; animation-delay: -10s; }
+  .cloud.c1::before { width: 90px; height: 60px; left: 20px; top: -25px; }
+  .cloud.c1::after { width: 70px; height: 46px; left: 100px; top: -14px; }
+  .cloud.c2 { top: 90px; width: 120px; height: 36px; animation-duration: 100s; animation-delay: -35s; }
+  .cloud.c2::before { width: 60px; height: 40px; left: 15px; top: -18px; }
+  .cloud.c2::after { width: 50px; height: 32px; left: 65px; top: -10px; }
+  .cloud.c3 { top: 150px; width: 220px; height: 60px; animation-duration: 120s; animation-delay: -60s; }
+  .cloud.c3::before { width: 110px; height: 70px; left: 25px; top: -30px; }
+  .cloud.c3::after { width: 80px; height: 54px; left: 130px; top: -16px; }
+  @keyframes cloudDrift { from { transform: translateX(110vw); } to { transform: translateX(-60vw); } }
+
+  .orb { position: fixed; width: 120px; height: 120px; border-radius: 50%; pointer-events: none; z-index: 0; filter: blur(14px); opacity: 0; transition: opacity 2s; animation: orbPulse 40s ease-in-out infinite alternate; }
+  html[data-sky="morning"] .orb, html[data-sky="day"] .orb { opacity: 1; top: 18px; right: -20px; background: radial-gradient(circle, rgba(var(--orb-rgb),0.75), transparent 70%); }
+  
+  html[data-sky="evening"] .orb { opacity: 1; width: 130px; height: 130px; top: auto; bottom: calc(28vh - 70px); left: -30px; background: radial-gradient(circle, rgba(243,185,138,.95), rgba(243,185,138,.5) 55%, transparent 70%); }
+  html.night[data-sky="evening"] .orb { width: 120px; height: 120px; top: 22px; left: -30px; background: radial-gradient(circle, rgba(201,174,126,0.5), transparent 70%); }
+  html.night:not([data-sky="night"]) .orb { opacity: 1; top: 26px; right: 10px; left: auto; width: 90px; height: 90px; background: radial-gradient(circle, rgba(221,230,234,0.45), transparent 70%); }
+  html[data-sky="night"] .orb { opacity: 1; top: 26px; right: 10px; width: 90px; height: 90px; background: radial-gradient(circle, rgba(221,230,234,0.45), transparent 70%); }
+  @keyframes orbPulse { from { transform: scale(1); } to { transform: scale(1.05); } }
+
+  div.rain { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  div.rain span { position: absolute; top: -10vh; width: 2px; height: 18px; border-radius: 2px; background: rgba(var(--accent-rgb),0.25); animation: fall linear infinite; }
+  html.night div.rain span { background: rgba(var(--accent-rgb),0.25); }
+  @keyframes fall { from { transform: translateY(-10vh); } to { transform: translateY(105vh); } }
+  html.rain .waves .wave-wrap { animation: bobRain 4s ease-in-out infinite alternate; }
+  @keyframes bobRain { from { transform: translateY(0); } to { transform: translateY(8px); } }
+
+  .ripple { position: fixed; width: 20px; height: 20px; margin-left: -10px; margin-top: -10px; border-radius: 50%; border: 2px solid rgba(59,107,117,0.5); transform: scale(1); opacity: 0.6; animation: rippleOut 4.5s ease-out forwards; pointer-events: none; z-index: 5; }
+  @keyframes rippleOut { to { transform: scale(12); opacity: 0; } }
+
+  /* ---------- cast and reel: line goes out while you write, comes up empty when you save ---------- */
+  .dock .rod-wind, .dock .rod-cast { transform-box: fill-box; transform-origin: 100% 28%; }
+  .dock .rod-cast { transition: transform 1.2s cubic-bezier(.3,.7,.3,1); }
+  body.whip .dock .rod-cast { transform: rotate(8deg); transition: transform .32s ease-in; }
+  body.casting .dock .rod-cast { transform: rotate(3deg); transition: transform .7s cubic-bezier(.2,1.4,.4,1); }
+  .dock .cast-line { fill: none; stroke: var(--silhouette); stroke-width: .8; stroke-linecap: round; opacity: 0; stroke-dasharray: 70; stroke-dashoffset: 70; transition: stroke-dashoffset 1s ease-in, opacity .4s .6s; }
+  body.casting .dock .cast-line { opacity: .58; stroke-dashoffset: 0; transition: stroke-dashoffset .9s cubic-bezier(.3,.8,.4,1) .3s, opacity .2s .3s; }
+  .dock .cast-bobber { fill: var(--silhouette); opacity: 0; transition: opacity .4s; }
+  body.casting .dock .cast-bobber { opacity: .7; transition: opacity .3s 1.1s; animation: bobberBob 3s ease-in-out infinite alternate; }
+  @keyframes bobberBob { from { transform: translateY(-1px); } to { transform: translateY(1.5px); } }
+  .dock .cast-splash { fill: none; stroke: var(--silhouette); stroke-width: 1; opacity: 0; transform-box: fill-box; transform-origin: center; }
+  body.casting .dock .cast-splash { animation: splashOnce 2.4s ease-out 1.1s 1, ringPulse 9s ease-out 4s infinite; }
+  @keyframes splashOnce { 0% { transform: scale(.6); opacity: .45; } 100% { transform: scale(3.4); opacity: 0; } }
+
+  /* ---------- wind: a gust every couple of minutes ---------- */
+  .clouds { transition: transform 6s cubic-bezier(.25,.6,.3,1); }
+  body.gust .clouds { transform: translateX(-56px); transition-duration: 3.5s; }
+  .dock .rod-wind { transition: transform 3s ease-in-out; }
+  body.gust .dock .rod-wind { transform: rotate(-2.6deg); transition: transform 1.4s cubic-bezier(.3,.6,.3,1); }
+  body.gust .waves .wave-wrap { animation: bobGust 1.4s ease-in-out infinite alternate; }
+  @keyframes bobGust { from { transform: translateY(1px); } to { transform: translateY(-8px); } }
+  .textview { transition: filter 1.6s ease, opacity 1.6s ease, border-color .25s, box-shadow .25s; }
+  body.gust:not(.listening) .textview { filter: blur(.7px); opacity: .82; }
+  .wind { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .wind span { position: absolute; left: 0; width: 120px; height: 1px; border-radius: 1px; background: var(--silhouette); opacity: 0; }
+  .wind span:nth-child(1) { top: 24%; }
+  .wind span:nth-child(2) { top: 31%; }
+  .wind span:nth-child(3) { top: 40%; }
+  .wind span:nth-child(4) { top: 54%; }
+  body.gust .wind span { animation: windStreak 2.2s cubic-bezier(.2,.6,.4,1) 1; }
+  body.gust .wind span:nth-child(2) { animation-delay: .35s; }
+  body.gust .wind span:nth-child(3) { animation-delay: .7s; }
+  body.gust .wind span:nth-child(4) { animation-delay: 1.1s; }
+  @keyframes windStreak { 0% { transform: translateX(110vw) scaleX(.4); opacity: 0; } 15% { opacity: .16; } 85% { opacity: .1; } 100% { transform: translateX(-30vw) scaleX(1.4); opacity: 0; } }
+
+  /* ---------- sit on the dock: long press the screen, everything but the water goes away ---------- */
+  #tab-today { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+  #tab-today textarea, #tab-today .entry .text { -webkit-user-select: text; user-select: text; }
+  #tab-today > .headrow, #tab-today > .entry-glass, #tab-today > .voice, #tab-today > .moods, #tab-today > .saverow, #tab-today > .daylist, nav { transition: opacity 1.2s ease; }
+  body.dock #tab-today > :not(.sky-breathe):not(.clouds):not(.orb):not(.waves):not(.rain):not(.wind):not(.dock-ui), body.dock nav { opacity: 0 !important; pointer-events: none; }
+  .waves { transition: transform 2.5s ease-out, height 2.5s ease-in-out; }
+  body.dock .waves { height: calc(44vh + var(--tide, 0px)); }
+  body.dock .sky-breathe { animation-duration: 16s; }
+  .dock-ui { position: fixed; inset: 0; pointer-events: none; z-index: 5; opacity: 0; visibility: hidden; transition: opacity 1s, visibility 0s 1s; }
+  body.dock .dock-ui { opacity: 1; visibility: visible; transition: opacity 1s, visibility 0s; }
+  .dock-hint { position: absolute; left: 0; right: 0; bottom: calc(24px + env(safe-area-inset-bottom)); margin: 0; text-align: center; font-size: 13px; color: var(--muted); opacity: 0; }
+  body.dock .dock-hint { animation: hintFade 7s ease 1.5s 1; }
+  @keyframes hintFade { 0% { opacity: 0; } 20% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; } }
+  .dock-sound { position: absolute; top: calc(14px + env(safe-area-inset-top)); right: 20px; width: 40px; height: 40px; border-radius: 20px; border: 1px solid var(--line); background: var(--card-a); color: var(--muted); display: flex; align-items: center; justify-content: center; padding: 0; opacity: .7; }
+  body.dock .dock-sound { pointer-events: auto; }
+  .dock-sound.on { color: var(--accent); opacity: 1; }
+  .dock-sound:not(.on) svg path:nth-child(n+2) { display: none; }
+  .dock-sound svg { width: 20px; height: 20px; }
+
+  /* ---------- breathe: a ring that breathes 4 in, 1 hold, 7 out; after ten breaths, one question ---------- */
+  .breath { position: absolute; left: 50%; top: 36%; width: 190px; height: 190px; margin: -95px 0 0 -95px; border-radius: 50%; background: radial-gradient(circle, rgba(var(--orb-rgb),.42), rgba(var(--orb-rgb),.14) 58%, transparent 72%); border: 1.5px solid rgba(var(--orb-rgb),.85); box-shadow: 0 0 90px 30px rgba(var(--orb-rgb),.2); transform: scale(.6); opacity: 0; transition: opacity 2s .8s; }
+  /* a second, fainter ring trails the first by a beat, so the in-breath reads as expanding rather than resizing */
+  .breath::after { content: ""; position: absolute; inset: -1.5px; border-radius: 50%; border: 1px solid rgba(var(--orb-rgb),.45); transform: scale(1); }
+  body.dock .breath::after { animation: breathTrail 12s infinite; }
+  body.dock.slow .breath::after { animation: breathTrailSlow 15s infinite; }
+  @keyframes breathTrail { 0%, 4% { transform: scale(.94); opacity: .5; } 33.33% { transform: scale(1.12); opacity: .25; } 41.67% { transform: scale(1.14); opacity: .2; } 100% { transform: scale(.94); opacity: .5; } }
+  @keyframes breathTrailSlow { 0%, 4% { transform: scale(.94); opacity: .5; } 40% { transform: scale(1.12); opacity: .25; } 46.67% { transform: scale(1.14); opacity: .2; } 100% { transform: scale(.94); opacity: .5; } }
+  body.dock .breath { opacity: 1; animation: breathCycle 12s infinite; }
+  body.dock.slow .breath { animation: breathCycleSlow 15s infinite; }
+  /* 4 in, 1 hold, 7 out. The ring doubles in area on the in-breath (.6 → 1.25) and the glow fills with it; the out-breath is the long slow half */
+  @keyframes breathCycleSlow { 0% { transform: scale(.6); opacity: .55; animation-timing-function: cubic-bezier(.4,0,.6,1); } 40% { transform: scale(1.25); opacity: 1; animation-timing-function: linear; } 46.67% { transform: scale(1.25); opacity: 1; animation-timing-function: cubic-bezier(.4,0,.6,1); } 100% { transform: scale(.6); opacity: .55; } }
+  @keyframes breathCycle { 0% { transform: scale(.6); opacity: .55; animation-timing-function: cubic-bezier(.4,0,.6,1); } 33.33% { transform: scale(1.25); opacity: 1; animation-timing-function: linear; } 41.67% { transform: scale(1.25); opacity: 1; animation-timing-function: cubic-bezier(.4,0,.6,1); } 100% { transform: scale(.6); opacity: .55; } }
+  .breath-cue { position: absolute; left: 0; right: 0; top: calc(36% + 136px); margin: 0; text-align: center; font-size: 15px; font-weight: 500; color: var(--muted); opacity: 0; transition: opacity 1.5s 1s; }
+  .breath-cue small { display: block; font-size: 13px; font-weight: 400; opacity: .8; margin-top: 4px; }
+  body.dock .breath-cue { opacity: 1; }
+  body.refocus .breath { opacity: .35; }
+  body.refocus .breath-cue { opacity: 0; transition: opacity .8s; }
+  .refocus { position: absolute; left: 24px; right: 24px; top: 30%; opacity: 0; visibility: hidden; transition: opacity 1.5s, visibility 0s 1.5s; }
+  body.refocus .refocus { opacity: 1; visibility: visible; pointer-events: auto; transition: opacity 1.5s, visibility 0s; }
+  .refocus h2 { margin: 0 0 16px; text-align: center; font: 500 22px/1.3 -apple-system, "SF Pro Text", system-ui, sans-serif; color: var(--ink); }
+  .refocus input { width: 100%; font: inherit; font-size: 17px; color: var(--ink); background: var(--card-a); border: 1px solid var(--line); border-radius: 20px; padding: 18px 20px; outline: none; }
+  .refocus input:focus { border-color: var(--accent); }
+  .refocus .btn { margin-top: 16px; }
+  .refocus p { margin: 12px 0 0; text-align: center; font-size: 13px; color: var(--muted); }
+
+
+  /* the people (design/v4/figures): one silhouette each, breathing */
+  .person { fill: var(--silhouette); stroke: var(--silhouette); stroke-linecap: round; stroke-linejoin: round; }
+  .person .breathe-fig { transform-box: fill-box; transform-origin: 50% 100%; animation: figBreath 4.6s ease-in-out infinite alternate; }
+  @keyframes figBreath { from { transform: scaleY(1); } to { transform: scaleY(1.018); } }
+  .dock .person-wrap, .fence .person-wrap, .palm .person-wrap { opacity: .62; }
+  .dock .lamp-glow, .campo .lamp-glow { fill: #F2C98A; opacity: 0; transition: opacity 2s; }
+  html.night .dock .lamp-glow, html.night .campo .lamp-glow { opacity: .9; }
+  /* ---------- El campo argentino: Elias's place. Same engine, ground instead of water ---------- */
+  html[data-place="campo"] .waves:not(.campo) { display: none; }
+  .waves.campo { display: none; }
+  html[data-place="campo"] .waves.campo { display: block; }
+  .campo .campo-wrap { position: absolute; inset: 0; }
+  .campo svg.band { position: absolute; left: 0; bottom: 0; width: 100%; height: 100%; }
+  .campo .range { fill: var(--scene-back); opacity: 1; }
+  html[data-sky="evening"]:not(.night) .campo .range { fill: color-mix(in srgb, var(--scene-back) 85%, #D39A86); }
+  
+  .campo .steppe-mid { fill: var(--scene-mid); opacity: 1; }
+  .campo .steppe-front { fill: var(--scene-front); opacity: 1; }
+  .campo .road { fill: var(--scene-land); opacity: 1; }
+  .campo .dash { fill: var(--bg); opacity: .55; }
+  /* coirón: the wind moves the grass, a gust leans it */
+  .campo svg.tuft { position: absolute; width: 40px; height: 24px; transform-origin: 50% 100%; animation: tuftSway 3.2s ease-in-out infinite alternate; overflow: visible; }
+  .campo .tuft path { fill: none; stroke: var(--silhouette); stroke-opacity: .5; stroke-width: 1.2; stroke-linecap: round; }
+  .campo .tuft.t1 { left: 5%; bottom: 34%; }
+  .campo .tuft.t2 { left: 3%; bottom: 29%; width: 32px; height: 19px; animation-duration: 2.7s; animation-delay: -1.1s; }
+  .campo .tuft.t3 { left: 22%; bottom: 31%; width: 44px; height: 26px; animation-duration: 3.6s; animation-delay: -2s; }
+  .campo .tuft.t4 { left: 91%; bottom: 35%; width: 28px; height: 17px; animation-duration: 2.9s; animation-delay: -.6s; }
+  @keyframes tuftSway { from { transform: skewX(-4deg); } to { transform: skewX(5deg); } }
+  body.gust .campo .tuft { animation: tuftLean 4.4s cubic-bezier(.3,.6,.3,1) 1; }
+  @keyframes tuftLean { 0% { transform: skewX(0); } 30% { transform: skewX(12deg); } 100% { transform: skewX(0); } }
+  /* fence and figure: the rail sits on the front band, the figure has a mate */
+  .campo svg.fence { position: absolute; right: 0; left: auto; bottom: 36%; width: 150px; height: 86px; overflow: visible; }
+  .campo .fence .fig { fill: var(--silhouette); opacity: .55; }
+  .campo .fence .arm { fill: none; stroke: var(--silhouette); stroke-opacity: .55; stroke-linecap: round; }
+  /* guanaco on the mid band: stands and stares, now and then walks a little */
+  .campo .guanaco-wrap { position: absolute; left: 15%; bottom: 50%; width: 22px; height: 24px; animation: guanacoWalk 360s linear infinite; }
+  .campo svg.guanaco { width: 100%; height: auto; overflow: visible; fill: var(--silhouette); opacity: .5; }
+  @keyframes guanacoWalk { 0%, 40% { transform: translateX(0) scaleX(1); } 46%, 89.9% { transform: translateX(-36px) scaleX(1); } 90% { transform: translateX(-36px) scaleX(-1); } 96%, 99.9% { transform: translateX(0) scaleX(-1); } 100% { transform: translateX(0) scaleX(1); } }
+  /* condor over the range: circles, tilts, nearer and farther; gone after dark */
+  .campo .condor-wrap { position: absolute; left: 50%; top: 10%; width: 30px; height: 8px; margin-left: -15px; animation: condorCircle 90s linear infinite; }
+  .campo svg.condor { width: 100%; height: auto; overflow: visible; fill: var(--silhouette); opacity: .5; animation: condorTilt 4s ease-in-out infinite alternate; }
+  @keyframes condorCircle { 0% { transform: translate(60px, 0) scale(1); } 12.5% { transform: translate(42px, 9px) scale(1.08); } 25% { transform: translate(0, 13px) scale(1.15); } 37.5% { transform: translate(-42px, 9px) scale(1.08); } 50% { transform: translate(-60px, 0) scale(1); } 62.5% { transform: translate(-42px, -9px) scale(.9); } 75% { transform: translate(0, -13px) scale(.8); } 87.5% { transform: translate(42px, -9px) scale(.9); } 100% { transform: translate(60px, 0) scale(1); } }
+  @keyframes condorTilt { from { transform: rotate(-6deg); } to { transform: rotate(6deg); } }
+  body.late .campo .condor-wrap { display: none; }
+  /* distant truck: once an hour it comes down the road from the vanishing point */
+  .campo svg.truck { position: absolute; left: 50%; top: 50%; width: 8px; height: 3.2px; margin-left: -4px; transform-origin: 50% 100%; opacity: 0; animation: truckDown 3600s linear infinite; animation-delay: -3560s; }
+  .campo .truck path, .campo .truck circle { fill: var(--silhouette); opacity: .5; }
+  .campo .truck .lights { fill: var(--orb); opacity: 0; }
+  body.late .campo .truck .lights { opacity: .9; }
+  @keyframes truckDown { 0% { transform: translate(0, 0) scale(.15); opacity: 0; } 0.05% { opacity: .6; } 1.1% { transform: translate(-60px, 60px) scale(1.4); opacity: .6; } 1.15%, 100% { transform: translate(-60px, 60px) scale(1.4); opacity: 0; } }
+  /* the faint band on the other tabs follows the place */
+  .waves-faint path.steppe { display: none; fill: var(--scene-mid); }
+  html[data-place="campo"] .waves-faint path.steppe { display: block; }
+  html[data-place="campo"] .waves-faint path:not(.steppe) { display: none; }
+  html[data-place="campo"] .waves-faint, html[data-place="campo"] .waves-faint svg { animation: none; width: 100%; }
+
+  /* ---------- Key West: Nick's place. The same water, a beach instead of a dock ---------- */
+  html[data-place="keywest"] .waves:not(.keywest) { display: none; }
+  .waves.keywest { display: none; overflow-x: clip; overflow-y: visible; }
+  .waves.keywest .wave-wrap { overflow: hidden; }
+  html[data-place="keywest"] .waves.keywest { display: block; }
+  /* a distant key on the horizon, a sailboat now and then behind the back wave */
+  .keywest svg.key { position: absolute; left: 8%; bottom: 62%; width: 120px; height: 24px; }
+  .keywest .key path { fill: var(--silhouette); opacity: .18; }
+  .keywest svg.sail { position: absolute; bottom: 62%; top: auto; left: 0; width: 22px; height: 22px; opacity: 0; animation: sailCross 2400s linear infinite; animation-delay: -2300s; }
+  .keywest .sail path { fill: var(--silhouette); opacity: .28; }
+  .keywest .sail .mast { fill: none; stroke: var(--silhouette); stroke-opacity: .28; stroke-width: .9; }
+  @keyframes sailCross { 0% { transform: translateX(-40px); opacity: 0; } 0.3% { opacity: 1; } 9.7% { opacity: 1; } 10% { transform: translateX(110vw); opacity: 0; } 100% { transform: translateX(110vw); opacity: 0; } }
+  /* frigatebird high over the water, gone after dark */
+  .keywest .frigate-wrap { position: absolute; left: 30%; top: 3%; width: 16px; height: 28px; margin-left: -8px; animation: frigateLoop 110s linear infinite; }
+  .keywest svg.frigate { width: 100%; height: auto; overflow: visible; fill: var(--silhouette); opacity: .5; animation: frigateTilt 6s ease-in-out infinite alternate; }
+  @keyframes frigateLoop { 0% { transform: translate(90px, 0) scale(1); } 25% { transform: translate(0, 16px) scale(1.12); } 50% { transform: translate(-90px, 0) scale(1); } 75% { transform: translate(0, -10px) scale(.86); } 100% { transform: translate(90px, 0) scale(1); } }
+  @keyframes frigateTilt { from { transform: rotate(-5deg); } to { transform: rotate(5deg); } }
+  body.late .keywest .frigate-wrap { display: none; }
+  /* sea turtle surfaces between the mid and front wave */
+  .keywest .turtle-wrap { position: absolute; left: 30%; bottom: 36%; width: 24px; height: 22px; animation: turtleMove 260s linear infinite; }
+  .keywest svg.turtle { width: 100%; height: auto; overflow: visible; fill: var(--accent); opacity: .3; animation: turtleSurface 100s ease-in-out infinite; }
+  @keyframes turtleSurface { 0%, 40% { transform: translateY(14px); opacity: 0; } 42% { opacity: 1; } 44%, 48% { transform: translateY(0); opacity: 1; } 50% { transform: translateY(14px); opacity: 0; } 100% { transform: translateY(14px); opacity: 0; } }
+  @keyframes turtleMove { from { transform: translateX(0); } to { transform: translateX(120px); } }
+  /* the beach in front of the front wave; land does not bob with the water */
+  .keywest svg.sand { position: absolute; left: 0; bottom: 0; width: 100%; height: 100%; }
+  .keywest .sand .beach { fill: var(--scene-land); }
+  .keywest .sand .wet { fill: #FFFFFF; opacity: .35; }
+  html.night .keywest .sand .wet { opacity: .08; }
+  /* the palm leans out over the water, the figure sits against it with knees up */
+  .keywest svg.palm { position: absolute; right: 0; left: auto; bottom: calc(39% - 10px); width: 210px; height: 160px; overflow: visible; }
+  .keywest .palm .fig { fill: var(--silhouette); opacity: .55; }
+  .keywest .palm .arm { fill: none; stroke: var(--silhouette); stroke-opacity: .55; stroke-width: 4.6; stroke-linecap: round; }
+  .keywest .palm .crown { transform-origin: 106px 32px; animation: crownSway 4s ease-in-out infinite alternate; }
+  .keywest .palm .crown path:nth-child(odd) { transform-origin: 106px 32px; animation: frondSway 3.4s ease-in-out infinite alternate; }
+  .keywest .palm .crown path:nth-child(even) { transform-origin: 106px 32px; animation: frondSway 4.6s ease-in-out -2s infinite alternate; }
+  @keyframes crownSway { from { transform: rotate(-1.5deg); } to { transform: rotate(1.5deg); } }
+  @keyframes frondSway { from { transform: rotate(-1.2deg); } to { transform: rotate(1.6deg); } }
+  body.gust .keywest .palm .crown { animation: crownLean 4.4s cubic-bezier(.3,.6,.3,1) 1; }
+  @keyframes crownLean { 0% { transform: rotate(0); } 30% { transform: rotate(-5deg); } 100% { transform: rotate(0); } }
+  /* a Key West rooster walks the sand, stops, pecks twice, walks back */
+  .keywest .rooster-wrap { position: absolute; left: 20%; bottom: 29.5%; width: 16px; height: 18px; animation: roosterWalk 120s linear infinite; }
+  .keywest svg.rooster { width: 100%; height: auto; overflow: visible; fill: var(--silhouette); opacity: .5; }
+  .keywest .rooster use { transform-box: fill-box; transform-origin: 45% 100%; animation: peck 120s ease-in-out infinite; }
+  @keyframes roosterWalk { 0% { transform: translateX(0) scaleX(1); } 10%, 20% { transform: translateX(40px) scaleX(1); } 20.1% { transform: translateX(40px) scaleX(-1); } 30% { transform: translateX(0) scaleX(-1); } 30.1%, 100% { transform: translateX(0) scaleX(1); } }
+  @keyframes peck { 0%, 11% { transform: rotate(0); } 12% { transform: rotate(14deg); } 13% { transform: rotate(0); } 15% { transform: rotate(14deg); } 16%, 100% { transform: rotate(0); } }
+
+
+  /* ---------- v4 ambience: the fast things are tiny, the big things are rare ---------- */
+  .amb { position: absolute; pointer-events: none; overflow: visible; }
+  .amb, .amb path, .amb circle, .amb ellipse, .amb rect { fill: var(--silhouette); }
+  .amb use, .amb svg { transform-box: fill-box; }
+  .night-only, .dusk-night, .dusk-only, .day-only { display: none; }
+  html[data-sky="evening"]:not(.night) .dusk-only { display: block; }
+  html.night .night-only, html.night .dusk-night, html[data-sky="evening"] .dusk-night { display: block; }
+  html:not(.night) .day-only { display: block; }
+  html[data-sky="evening"] .day-only.not-dusk { display: none; }
+  /* stars and the Milky Way, every place, after dark */
+  .nightsky { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0; transition: opacity 3s; }
+  html.night .nightsky { opacity: 1; }
+  .nightsky i { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: #FFF; opacity: .25; animation: twinkle 6s ease-in-out infinite; }
+  @keyframes twinkle { 0%, 100% { opacity: .2; } 50% { opacity: .8; } }
+  .nightsky .milky { display: none; position: absolute; left: 10%; top: -10%; width: 90px; height: 120%; border-radius: 50%; background: rgba(255,255,255,.06); filter: blur(18px); transform: rotate(-28deg); }
+  html[data-place="campo"] .nightsky .milky { display: block; }
+  /* Florida dock: a pair of dolphins, a heron in the shallows, a manatee at dusk, a dragonfly by day, heat lightning */
+  .waves .dolphins { left: 10%; bottom: 60%; width: 60px; height: 14px; }
+  .dolphins svg { position: absolute; bottom: 0; left: 0; width: 26px; height: auto; opacity: 0; animation: dolphin 96s linear infinite; }
+  .dolphins svg + svg { left: 28px; width: 20px; animation-delay: 1.6s; }
+  .dolphins use { opacity: .42; }
+  @keyframes dolphin { 0%, 78% { opacity: 0; transform: translate(0, 12px) rotate(-16deg); } 79.5% { opacity: 1; transform: translate(-18px, 0) rotate(0); } 81% { opacity: 0; transform: translate(-36px, 12px) rotate(16deg); } 82.5% { opacity: 1; transform: translate(-54px, 0) rotate(0); } 84% { opacity: 0; transform: translate(-72px, 12px) rotate(16deg); } 85.5% { opacity: 1; transform: translate(-90px, 0) rotate(0); } 87%, 100% { opacity: 0; transform: translate(-108px, 12px) rotate(16deg); } }
+  /* great blue heron in the shallows: stands, takes one slow step now and then */
+  .waves .heron { left: 4%; bottom: 32.5%; width: auto; height: 40px; }
+  .heron use { opacity: .55; animation: heronStalk 34s ease-in-out infinite; }
+  @keyframes heronStalk { 0%, 60% { transform: translateX(0); } 64%, 96% { transform: translateX(-4%); } 100% { transform: translateX(0); } }
+  .waves .manatee { left: 34%; bottom: 38%; width: 52px; height: auto; }
+  .manatee use { opacity: 0; animation: manatee 210s linear infinite; }
+  @keyframes manatee { 0%, 60% { opacity: 0; transform: translateY(10px); } 62%, 68% { opacity: .4; transform: translateY(0); } 70%, 100% { opacity: 0; transform: translateY(10px); } }
+  .waves .dragonfly { left: auto; right: 26%; bottom: 72%; width: 12px; height: 10px; animation: dragonfly 26s ease-in-out infinite; }
+  .dragonfly path { fill: none; stroke: var(--silhouette); stroke-opacity: .6; stroke-width: .8; }
+  @keyframes dragonfly { 0%, 100% { transform: translate(0, 0); } 20%, 22% { transform: translate(-14px, -6px); } 45%, 50% { transform: translate(10px, -14px); } 75% { transform: translate(-6px, 4px); } }
+  .waves .glade { right: 8%; bottom: 0; width: 64px; height: 64%; border-radius: 30px; background: rgba(255,255,255,.1); filter: blur(4px); animation: glade 9s ease-in-out infinite alternate; }
+  @keyframes glade { from { opacity: .6; } to { opacity: 1; } }
+  .clouds .flash { position: absolute; left: 30%; top: 130px; width: 160px; height: 50px; border-radius: 50%; background: #FFF; filter: blur(14px); opacity: 0; animation: heatFlash 118s linear infinite; }
+  @keyframes heatFlash { 0%, 95.6% { opacity: 0; } 95.8% { opacity: .45; } 96% { opacity: 0; } 96.3% { opacity: .3; } 96.6%, 100% { opacity: 0; } }
+  html[data-place="campo"] .clouds .flash, html[data-place="keywest"] .clouds .flash { display: none; }
+  /* El campo: snow and the pink of Fitz Roy at dawn, a lenticular, a windpump, sheep, a ñandú with chicks, a hare, a fox at dusk */
+  .campo .snow { fill: #F4F2EE; opacity: .85; }
+  html.night .campo .snow { opacity: .3; }
+  .campo .alpenglow { fill: #F2A48A; opacity: 0; }
+  html[data-sky="morning"]:not(.night) .campo .alpenglow { animation: alpenglow 300s ease-in-out 1 forwards; }
+  @keyframes alpenglow { 0% { opacity: .5; } 40% { opacity: .45; } 100% { opacity: 0; } }
+  .campo .lenticular { left: 43%; bottom: 86%; width: 76px; height: 9px; border-radius: 50%; background: rgba(255,255,255,.7); filter: blur(3px); animation: lenti 40s ease-in-out infinite alternate; }
+  html.night .campo .lenticular { background: rgba(255,255,255,.08); }
+  @keyframes lenti { from { transform: translateX(-6px); } to { transform: translateX(6px) scaleX(1.06); } }
+  .campo .windpump { left: 9%; bottom: 49%; width: 14px; height: 24px; }
+  .windpump .legs { fill: none; stroke: var(--silhouette); stroke-opacity: .35; stroke-width: 1; }
+  .windpump .blades { transform-box: fill-box; transform-origin: center; animation: spin 14s linear infinite; }
+  .windpump .blades path, .windpump .blades circle { opacity: .35; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  /* sheep far off, white against the steppe; a ñandú with two chicks; a hare that sits by the tufts and bolts once in a while; a fox at dusk */
+  .campo .sheep-line { left: 27%; bottom: 49%; width: 40px; height: 9px; }
+  .sheep-line svg { position: absolute; bottom: 0; width: 11px; height: auto; fill: #F4F2EE; opacity: .6; }
+  .sheep-line .sh2 { left: 14px; bottom: 1px; }
+  .sheep-line .sh3 { left: 29px; width: 10px; }
+  html.night .sheep-line svg { opacity: .15; }
+  .campo .rhea-wrap { left: 0; bottom: 43%; width: 60px; height: 30px; animation: rheaWalk 240s linear infinite; }
+  .rhea-wrap svg { position: absolute; bottom: 0; left: 0; width: 24px; height: auto; opacity: .45; animation: rheaStep .7s ease-in-out infinite alternate; }
+  .rhea-wrap .chick { width: 10px; }
+  .rhea-wrap .c1 { left: 28px; animation-delay: -.3s; }
+  .rhea-wrap .c2 { left: 42px; bottom: 1px; animation-delay: -.5s; }
+  @keyframes rheaStep { from { transform: translateY(0); } to { transform: translateY(-1px); } }
+  @keyframes rheaWalk { from { transform: translateX(110vw); } to { transform: translateX(-80px); } }
+  .campo .hare { left: auto; right: 30%; bottom: 41%; width: 12px; height: auto; opacity: 0; animation: hare 300s linear infinite; }
+  @keyframes hare { 0%, 70% { opacity: 0; transform: translate(0, 0); } 70.2% { opacity: .55; } 71% { transform: translate(-30px, -6px); } 72% { transform: translate(-60px, 0); } 73% { transform: translate(-90px, -6px); } 74% { opacity: .55; transform: translate(-120px, 0); } 74.2%, 100% { opacity: 0; } }
+  .campo .fox { left: auto; right: 44%; bottom: 31%; width: 30px; height: auto; opacity: 0; animation: fox 420s linear infinite; }
+  .fox use { animation: trot .4s ease-in-out infinite alternate; }
+  @keyframes trot { from { transform: translateY(0); } to { transform: translateY(-3%); } }
+  @keyframes fox { 0%, 50% { opacity: 0; transform: translateX(0); } 50.5% { opacity: .5; } 60% { opacity: .5; transform: translateX(-160px); } 60.5%, 100% { opacity: 0; } }
+  /* a tero by the road that runs a few steps and stands; a chimango on the fence post by day, a horned owl there at night; a piche scurrying at dusk */
+  .campo .lapwing { left: 30%; bottom: 33%; width: auto; height: 15px; opacity: .5; animation: lapwingRun 40s linear infinite; }
+  @keyframes lapwingRun { 0%, 40% { transform: translateX(0); } 44%, 84% { transform: translateX(-14px); } 88%, 100% { transform: translateX(0); } }
+  .campo .caracara { left: calc(100% - 150px + 16px); bottom: calc(36% + 45px); width: auto; height: 13px; opacity: .55; }
+  .campo .owl { left: calc(100% - 150px + 17px); bottom: calc(36% + 45px); width: auto; height: 12px; opacity: .55; }
+  .campo .piche { left: auto; right: 12%; bottom: 31%; width: 16px; height: auto; opacity: 0; animation: piche 300s linear infinite; }
+  @keyframes piche { 0%, 60% { opacity: 0; transform: translateX(0); } 60.3% { opacity: .5; } 61% { transform: translateX(-16px); } 62% { transform: translateX(-16px); } 63% { transform: translateX(-34px); } 64.5% { transform: translateX(-34px); } 65.5% { opacity: .5; transform: translateX(-56px); } 66%, 100% { opacity: 0; transform: translateX(-56px); } }
+  /* Key West: the sun sets in front of you with a green flash, a pelican dives, an iguana, a hen, a hermit crab, foam, the lighthouse at night */
+  .keywest .setting-sun { left: 16%; bottom: 62%; width: 56px; height: 56px; border-radius: 50%; background: radial-gradient(circle, #F3B98A 55%, rgba(243,185,138,0) 70%); animation: setting 300s linear infinite; }
+  @keyframes setting { from { transform: translateY(-30px); } to { transform: translateY(40px); } }
+  .keywest .green-flash { left: 18%; bottom: 69%; width: 40px; height: 3px; border-radius: 3px; background: #7CE0A0; filter: blur(2px); opacity: 0; animation: greenFlash 300s linear infinite; }
+  @keyframes greenFlash { 0%, 49.6% { opacity: 0; } 49.8% { opacity: .8; } 50.1%, 100% { opacity: 0; } }
+  .keywest .lighthouse { left: calc(8% + 57px); bottom: calc(62% + 12px); width: 6px; height: 22px; }   /* on the key */
+  .lighthouse rect { opacity: .3; }
+  .keywest .beam { left: calc(8% + 60px); bottom: calc(62% + 31px); width: 200px; height: 60px; transform-origin: 0 50%; margin-bottom: -30px; background: linear-gradient(90deg, rgba(246,231,192,.14), rgba(246,231,192,0)); clip-path: polygon(0 45%, 100% 0, 100% 100%, 0 55%); filter: blur(3px); animation: sweep 24s ease-in-out infinite alternate; }
+  @keyframes sweep { from { transform: rotate(-12deg); } to { transform: rotate(10deg); } }
+  .keywest .pelican { left: 0; bottom: 74%; width: 34px; height: auto; animation: pelican 150s linear infinite; }
+  .pelican svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .pelican use { opacity: .45; }
+  @keyframes pelican { 0% { transform: translate(110vw, 0); } 30% { transform: translate(52vw, 4px); } 33% { transform: translate(46vw, 40px) rotate(60deg); opacity: 1; } 33.4%, 40% { opacity: 0; transform: translate(40vw, 0); } 40.5% { opacity: 1; } 70%, 100% { transform: translate(-60px, -4px); } }
+  .keywest .splash-kw { left: 47%; bottom: 58%; width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(255,255,255,.7); opacity: 0; animation: psplash 150s linear infinite; }
+  @keyframes psplash { 0%, 33.2% { opacity: 0; transform: scale(.4); } 33.6% { opacity: .8; } 35% { opacity: 0; transform: scale(3); } 100% { opacity: 0; } }
+  .keywest .ig-log { left: 2%; bottom: 26%; width: 64px; height: 8px; }
+  .ig-log path { opacity: .3; }
+  .keywest .iguana { left: 7%; bottom: calc(26% + 5px); width: 36px; height: auto; opacity: .5; }
+  .iguana use { transform-origin: 70% 70%; animation: igTail 40s ease-in-out infinite; }
+  @keyframes igTail { 0%, 92% { transform: rotate(0); } 94% { transform: rotate(-2deg); } 97% { transform: rotate(1deg); } 100% { transform: rotate(0); } }
+  .keywest .hen { left: 36%; bottom: 29%; width: auto; height: 14px; opacity: .42; }
+  .hen use { transform-origin: 40% 100%; animation: henPeck 5s ease-in-out infinite; }
+  @keyframes henPeck { 0%, 70% { transform: rotate(0); } 80% { transform: rotate(14deg); } 90%, 100% { transform: rotate(0); } }
+  .keywest .crab { left: 0; bottom: 28.5%; width: 9px; height: auto; opacity: .45; animation: crab 220s linear infinite; }
+  /* a laughing gull crosses high by day; a great egret stands on the wet line and stalks; dolphins roll in the back water at dusk */
+  .keywest .gull { left: 0; bottom: auto; top: 9%; width: 22px; height: auto; opacity: .45; animation: gullCross 100s linear infinite; animation-delay: -20s; }
+  .gull use { transform-origin: 50% 50%; animation: gullTilt 5s ease-in-out infinite alternate; }
+  @keyframes gullCross { 0% { transform: translateX(110vw); } 45% { transform: translateX(-40px); } 100% { transform: translateX(-40px); } }
+  @keyframes gullTilt { from { transform: rotate(-4deg); } to { transform: rotate(4deg); } }
+  body.late .keywest .gull, body.late .campo .lapwing { display: none; }
+  .keywest .egret { left: 58%; bottom: 31%; width: auto; height: 34px; opacity: .5; }
+  .egret use { animation: heronStalk 40s ease-in-out infinite; }
+  .keywest .dolphins { left: 24%; bottom: 62%; }
+  @keyframes crab { 0% { transform: translateX(-20px); } 30%, 34% { transform: translateX(22vw); } 70%, 74% { transform: translateX(52vw); } 100% { transform: translateX(110vw); } }
+  .keywest .sand .foam { fill: #FFF; opacity: .3; animation: foam 7s ease-in-out infinite alternate; }
+  html.night .keywest .sand .foam { opacity: .08; }
+  @keyframes foam { from { transform: translateY(2px); opacity: .15; } to { transform: translateY(-3px); opacity: .4; } }
+  @media (prefers-reduced-motion: reduce) {
+    .amb, .amb *, .nightsky i, .mic-wrap::after, .keywest .sand .foam, .clouds .flash, .campo .alpenglow { animation: none !important; }
+    .dolphins svg, .manatee use, .hare, .fox, .pelican, .splash-kw, .green-flash, .rhea-wrap, .crab, .piche, .gull { opacity: 0 !important; }
+  }
+
+  /* ---------- late night: after 21:00 everything slows ---------- */
+  body.late .waves svg.w1 { animation-duration: 28s; }
+  body.late .waves svg.w2 { animation-duration: 22s; }
+  body.late .waves svg.w3 { animation-duration: 18s; }
+  body.late .waves .wave-wrap { animation-duration: 6s; }
+  body.late .cloud.c1 { animation-duration: 220s; }
+  body.late .cloud.c2 { animation-duration: 260s; }
+  body.late .cloud.c3 { animation-duration: 300s; }
+  body.late .sky-breathe { animation-duration: 20s; }
+  body.late .orb { opacity: .45; }
+  body.late .dock .rod { animation-duration: 9s; }
+  body.late .campo .tuft { animation-duration: 6s; }
+  body.late .keywest .palm .crown { animation-duration: 7s; }
+  body.late .voice-cap .kb { display: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    /* the water keeps its life (slow and small); waves, clouds and UI motion stop */
+    .waves *:not(.fish-wrap):not(.fish-wrap *):not(.mullet-wrap *), .waves-faint, .waves-faint svg, .sky-breathe, .cloud, .orb, div.rain span, .ripple, .ring, .wind span, .dock-hint, .glitter span, .boat { animation: none !important; }
+    .waves svg.boat, .waves svg.sail { opacity: 0; }
+    .glitter span { opacity: .3; }
+    .clouds, .dock .rod-cast, .dock .rod-wind, .dock .cast-line, .textview { transition: none !important; }
+    body.dock .dock-hint { opacity: 1; }
+    body.dock .breath { animation: none !important; transform: scale(.85); }
+    .sky-breathe { opacity: 0.2; }
+    .orb { transform: none; }
+    .waves, section.pane, .sheet .panel, .sheet .backdrop, .seg .thumb { transition: none !important; }
+    body.listening .waves { transform: none; }
+  }
+
+  /* =============== Boca inlet: the dock place reimagined. Everything below is scoped to html[data-place="dock"] and overrides the rules above =============== */
+  /* palette: one oklch family. Water far → deep is a teal run; fish share the water's chroma and move hue (teal shadow, olive, one warm gold, silver flash) */
+  html[data-place="dock"]:not(.night) { --sky-top:#B9D3E2; --sky-mid:#D9E7EE; --sky-horizon:#F1F4F1; --bg:#F1F4F1; --scene-back:#A7D4D3; --scene-mid:#63B2B4; --scene-front:#3F9AA1; --water:#63B2B4; --water-deep:#2E7E88; --silhouette:#35545B; --orb-rgb:255,252,240;
+    --mangrove:#2E5646; --glare:#FFFFFF; --glare-a:.75; --gust-a:1; --fish:oklch(40% .05 205); --fish-olive:oklch(40% .05 145); --fish-gold:oklch(42% .06 90); --fish-silver:oklch(78% .02 205); }
+  /* golden hour: the glare goes orange, the mangroves go black, the wind drops so the cat's-paws fade */
+  html[data-place="dock"][data-sky="evening"]:not(.night) { --sky-top:#B9A9B4; --sky-mid:#E8C6AC; --sky-horizon:#F2E4D2; --bg:#F2E4D2; --scene-back:#E3C4A6; --scene-mid:#7FA5A8; --scene-front:#4E7F86; --water-deep:#2F5158; --mangrove:#2A3F38; --glare:#F6C89A; --glare-a:.7; --gust-a:0; --orb-rgb:243,185,138;
+    --fish:oklch(38% .05 190); --fish-olive:oklch(38% .05 130); --fish-gold:oklch(42% .07 80); --fish-silver:oklch(80% .05 75); }
+  /* night: the app's night palette, water to deep teal, mangroves nearly black, no glare; the lamp glade and the channel markers are the only light */
+  html[data-place="dock"].night { --scene-back:#1E3A42; --scene-mid:#183036; --scene-front:#12262C; --water-deep:#0B1A1F; --silhouette:#8FA3AD; --mangrove:#0C1816; --glare:#DDE6EA; --glare-a:.06; --gust-a:.4;
+    --fish:oklch(62% .04 205); --fish-olive:oklch(60% .04 150); --fish-gold:oklch(64% .05 90); --fish-silver:oklch(85% .02 205); }
+  html[data-place="dock"] .waves path.w1 { fill: var(--scene-back); }
+  html[data-place="dock"][data-sky="evening"]:not(.night) .waves::after { background: linear-gradient(rgba(233,169,124,.22), rgba(233,169,124,0) 55%); }
+    html[data-place="dock"] .waves .deep { position: absolute; left: 0; right: 0; bottom: 0; height: 30%; background: linear-gradient(transparent, var(--water-deep)); opacity: .55; pointer-events: none; }
+  html[data-place="dock"] .waves .swell { position: absolute; inset: 0; }
+  /* slow water: long swells. 48 / 40 / 34 s, the middle band against the others; slower still after 21:00 */
+  html[data-place="dock"] .waves svg.w1 { animation-duration: 48s; }
+  html[data-place="dock"] .waves svg.w2 { animation-duration: 40s; animation-direction: reverse; }
+  html[data-place="dock"] .waves svg.w3 { animation-duration: 34s; }
+  html[data-place="dock"] .waves .wave-wrap { animation-duration: 8s; }
+  html[data-place="dock"] body.late .waves svg.w1 { animation-duration: 70s; }
+  html[data-place="dock"] body.late .waves svg.w2 { animation-duration: 60s; }
+  html[data-place="dock"] body.late .waves svg.w3 { animation-duration: 50s; }
+  html[data-place="dock"] body.late .waves .wave-wrap { animation-duration: 11s; }
+  /* the sun straight up: a wide white orb over the middle */
+  html[data-place="dock"][data-sky="day"]:not(.night) .orb, html[data-place="dock"][data-sky="morning"]:not(.night) .orb { top: -50px; right: auto; left: 50%; width: 220px; height: 220px; margin-left: -110px; filter: blur(22px); background: radial-gradient(circle, rgba(var(--orb-rgb),.95), rgba(var(--orb-rgb),.35) 45%, transparent 70%); }
+  /* wind in the sky: low, flat, stretched clouds */
+  html[data-place="dock"] .cloud { filter: blur(1.5px); border-radius: 14px; }
+  html[data-place="dock"] .cloud.c1 { top: 12%; width: 190px; height: 14px; animation-duration: 110s; } html[data-place="dock"] .cloud.c1::before { left: 40px; top: -9px; width: 70px; height: 22px; } html[data-place="dock"] .cloud.c1::after { display: none; }
+  html[data-place="dock"] .cloud.c2 { top: 21%; width: 120px; height: 10px; opacity: .8; animation-duration: 90s; } html[data-place="dock"] .cloud.c2::before { left: 30px; top: -6px; width: 44px; height: 16px; } html[data-place="dock"] .cloud.c2::after { display: none; }
+  html[data-place="dock"] .cloud.c3 { top: 30%; width: 260px; height: 9px; opacity: .6; animation-duration: 130s; } html[data-place="dock"] .cloud.c3::after { left: 120px; top: -5px; width: 80px; height: 14px; } html[data-place="dock"] .cloud.c3::before { display: none; }
+  /* birds hanging in the wind: a frigatebird high up, almost still; a gull that holds, then gives up and slides downwind. Both asleep after dark */
+  .bird { position: fixed; fill: var(--silhouette); pointer-events: none; z-index: 0; }
+  .bird.frigate { top: 9%; left: 62%; width: 22px; height: auto; opacity: .55; animation: hang 16s ease-in-out infinite alternate; }
+  .bird.frigate use { transform-box: fill-box; transform-origin: 50% 50%; animation: birdTilt 11s ease-in-out infinite alternate; }
+  .bird.gull { top: 36%; left: 0; width: 18px; height: auto; opacity: .45; animation: gullSlide 150s ease-in-out infinite; }
+  .bird.gull use { transform-box: fill-box; transform-origin: 50% 50%; animation: birdTilt 7s ease-in-out infinite alternate; }
+  @keyframes hang { from { transform: translate(0, 0); } to { transform: translate(-7px, 4px); } }
+  @keyframes birdTilt { from { transform: rotate(-4deg); } to { transform: rotate(4deg); } }
+  @keyframes gullSlide { 0% { transform: translate(105vw, 0); } 30% { transform: translate(70vw, -6px); } 34% { transform: translate(66vw, -8px); } 62% { transform: translate(60vw, -4px); } 100% { transform: translate(-30vw, 10px); } }
+  html.night .bird, body.late .bird, html[data-sky="evening"] .bird.gull { display: none; }
+  /* mangroves on the far bank, left: one soft canopy mass, no roots; the canopy leans on the shared wind clock */
+  .waves svg.mangrove { position: absolute; left: -2%; bottom: 60%; width: 62%; height: 26%; fill: var(--mangrove); opacity: .78; overflow: visible; transform-origin: 50% 100%; animation: canopyWind 90s ease-in-out infinite; }
+  .waves svg.mangrove.far { left: 46%; width: 60%; height: 12%; bottom: 62%; opacity: .32; animation-delay: -1.5s; }
+  html[data-place="dock"][data-sky="evening"]:not(.night) .waves svg.mangrove { opacity: .9; }
+  /* glare: the sun overhead whites out the far water and throws glints across the whole surface */
+  .waves .glare { position: absolute; left: 0; right: 0; top: 0; height: 100%; pointer-events: none; background: linear-gradient(color-mix(in srgb, var(--glare) calc(var(--glare-a) * 100%), transparent), color-mix(in srgb, var(--glare) calc(var(--glare-a) * 37%), transparent) 22%, transparent 50%); }
+  .glare span { position: absolute; width: 4px; height: 2px; border-radius: 2px; background: var(--glare); opacity: 0; animation: glareGlint 3s ease-in-out infinite; }
+  @keyframes glareGlint { 0%, 100% { opacity: 0; } 50% { opacity: .75; } }
+  html.night .glare span { display: none; }
+  .glare span:nth-child(1) { left: 5%; top: 10%; animation-duration: 5.2s; animation-delay: -0.0s; }
+  .glare span:nth-child(2) { left: 42%; top: 63%; animation-duration: 8.6s; animation-delay: -1.3s; }
+  .glare span:nth-child(3) { left: 79%; top: 26%; animation-duration: 7.2s; animation-delay: -2.6s; }
+  .glare span:nth-child(4) { left: 20%; top: 79%; animation-duration: 5.8s; animation-delay: -3.9s; }
+  .glare span:nth-child(5) { left: 57%; top: 42%; animation-duration: 9.2s; animation-delay: -1.2s; }
+  .glare span:nth-child(6) { left: 94%; top: 5%; animation-duration: 7.8s; animation-delay: -2.5s; }
+  .glare span:nth-child(7) { left: 35%; top: 58%; animation-duration: 6.2s; animation-delay: -3.8s; }
+  .glare span:nth-child(8) { left: 72%; top: 21%; animation-duration: 9.6s; animation-delay: -1.1s; }
+  .glare span:nth-child(9) { left: 13%; top: 74%; animation-duration: 8.2s; animation-delay: -2.4s; }
+  .glare span:nth-child(10) { left: 50%; top: 37%; animation-duration: 6.8s; animation-delay: -3.7s; }
+  .glare span:nth-child(11) { left: 87%; top: 0%; animation-duration: 5.2s; animation-delay: -1.0s; }
+  .glare span:nth-child(12) { left: 28%; top: 53%; animation-duration: 8.6s; animation-delay: -2.3s; }
+  .glare span:nth-child(13) { left: 65%; top: 16%; animation-duration: 7.2s; animation-delay: -3.6s; }
+  .glare span:nth-child(14) { left: 6%; top: 69%; animation-duration: 5.8s; animation-delay: -0.9s; }
+  .glare span:nth-child(15) { left: 43%; top: 32%; animation-duration: 9.2s; animation-delay: -2.2s; }
+  .glare span:nth-child(16) { left: 80%; top: 85%; animation-duration: 7.8s; animation-delay: -3.5s; }
+  .glare span:nth-child(17) { left: 21%; top: 48%; animation-duration: 6.2s; animation-delay: -0.8s; }
+  .glare span:nth-child(18) { left: 58%; top: 11%; animation-duration: 9.6s; animation-delay: -2.1s; }
+  .glare span:nth-child(19) { left: 95%; top: 64%; animation-duration: 8.2s; animation-delay: -3.4s; }
+  .glare span:nth-child(20) { left: 36%; top: 27%; animation-duration: 6.8s; animation-delay: -0.7s; }
+  .glare span:nth-child(21) { left: 73%; top: 80%; animation-duration: 5.2s; animation-delay: -2.0s; }
+  .glare span:nth-child(22) { left: 14%; top: 43%; animation-duration: 8.6s; animation-delay: -3.3s; }
+  .glare span:nth-child(23) { left: 51%; top: 6%; animation-duration: 7.2s; animation-delay: -0.6s; }
+  .glare span:nth-child(24) { left: 88%; top: 59%; animation-duration: 5.8s; animation-delay: -1.9s; }
+  .glare span:nth-child(25) { left: 29%; top: 22%; animation-duration: 9.2s; animation-delay: -3.2s; }
+  .glare span:nth-child(26) { left: 66%; top: 75%; animation-duration: 7.8s; animation-delay: -0.5s; }
+
+  /* wind on the water: cat's-paws, dark gusts that slide downwind. g1 rides the shared wind clock and crosses during the gust; g2 and g3 wander on their own */
+  .gust { position: absolute; left: 0; width: 70%; height: 10%; opacity: var(--gust-a); background: linear-gradient(90deg, transparent, rgba(30,70,80,.16) 30%, rgba(30,70,80,.16) 70%, transparent); transform: translateX(-80%) skewX(-30deg); animation: gustRun linear infinite; transition: opacity 3s; }
+  .gust.g1 { top: 30%; animation: gustClock 90s linear infinite; }
+  .gust.g2 { top: 52%; height: 8%; animation-duration: 42s; animation-delay: -18s; }
+  .gust.g3 { top: 72%; height: 12%; animation-duration: 50s; animation-delay: -32s; opacity: calc(var(--gust-a) * .7); }
+  @keyframes gustRun { from { transform: translateX(-80%) skewX(-30deg); } to { transform: translateX(170%) skewX(-30deg); } }
+  @keyframes gustClock { 0%, 30% { transform: translateX(-80%) skewX(-30deg); } 48% { transform: translateX(170%) skewX(-30deg); } 100% { transform: translateX(170%) skewX(-30deg); } }
+  /* the shared wind clock: 90 s. Calm, then at 32 % a gust arrives, builds to 40 %, eases off by 52 %. Canopy, rod, line, cat's tail and the cat's-paw all answer it */
+  @keyframes canopyWind { 0%, 28% { transform: skewX(-.4deg); } 32% { transform: skewX(-.8deg); } 40% { transform: skewX(-2.6deg); } 46% { transform: skewX(-1.8deg); } 52% { transform: skewX(-.6deg); } 70% { transform: skewX(-.9deg); } 100% { transform: skewX(-.4deg); } }
+  .dock .rod-wind { animation: rodWind 90s ease-in-out infinite; transition: none; }
+  @keyframes rodWind { 0%, 28% { transform: rotate(0deg); } 34% { transform: rotate(-1.2deg); } 40% { transform: rotate(-3deg); } 46% { transform: rotate(-2.2deg); } 54% { transform: rotate(-.4deg); } 100% { transform: rotate(0deg); } }
+  .dock .rod { animation-duration: 6.5s; }
+  .dock .fishline { transform-box: fill-box; transform-origin: 50% 0; animation: lineWind 90s ease-in-out infinite; }
+  @keyframes lineWind { 0%, 28% { transform: skewX(-2deg); } 36% { transform: skewX(-7deg); } 42% { transform: skewX(-9deg); } 50% { transform: skewX(-4deg); } 64% { transform: skewX(-1deg); } 100% { transform: skewX(-2deg); } }
+  html[data-place="dock"] .dock .cat .cat-tail { animation: tailWind 90s ease-in-out infinite; }
+  @keyframes tailWind { 0%, 26% { transform: rotate(0deg); } 30% { transform: rotate(-3deg); } 38% { transform: rotate(-9deg); } 44% { transform: rotate(-7deg); } 50% { transform: rotate(-2deg); } 58% { transform: rotate(1deg); } 100% { transform: rotate(0deg); } }
+  /* the bobber: rides the front swell all day; on the 130 s fish clock (same delay as the snook) it dips twice at 74 %, then nothing. A ring where the line enters */
+  html[data-place="dock"] .dock .cast-bobber { opacity: .7; animation: bobberLife 130s ease-in-out infinite; animation-delay: -18s; transform-box: fill-box; transform-origin: center; }
+  @keyframes bobberLife { 0%, 100% { transform: translateY(0); } 10% { transform: translateY(1.2px); } 20% { transform: translateY(-.8px); } 40% { transform: translateY(1px); } 60% { transform: translateY(-1px); } 73.4% { transform: translateY(0); } 73.9% { transform: translateY(2.6px); } 74.4% { transform: translateY(.4px); } 75.1% { transform: translateY(3px); } 75.8% { transform: translateY(0); } 88% { transform: translateY(1px); } }
+  html[data-place="dock"] .dock .cast-splash { animation: nibbleRing 130s ease-out infinite; animation-delay: -18s; }
+  @keyframes nibbleRing { 0%, 73.8% { transform: scale(.5); opacity: 0; } 74% { opacity: .4; } 77% { transform: scale(3); opacity: 0; } 100% { transform: scale(3); opacity: 0; } }
+  /* channel markers on the inlet after dark: red left, green right, on the horizon line. A slow blink each, never together */
+  .waves .marker { position: absolute; bottom: 62%; width: 3px; height: 3px; border-radius: 50%; opacity: 0; filter: blur(.3px); }
+  .waves .marker.red { left: 18%; background: #E0554A; box-shadow: 0 0 6px #E0554A; }
+  .waves .marker.green { left: 88%; background: #4FBF7A; box-shadow: 0 0 6px #4FBF7A; }
+  html.night .waves .marker.red { animation: blinkRed 6s linear infinite; }
+  html.night .waves .marker.green { animation: blinkGreen 4s linear infinite; animation-delay: -1.3s; }
+  @keyframes blinkRed { 0%, 82% { opacity: 0; } 86%, 92% { opacity: .9; } 96%, 100% { opacity: 0; } }
+  @keyframes blinkGreen { 0%, 80% { opacity: 0; } 85%, 90% { opacity: .85; } 95%, 100% { opacity: 0; } }
+  /* boat wake: the hourly boat passes far off, and a minute later a long slow swell rolls through and lifts the whole water. Also on the "boat + swell now" button */
+  .waves .swell { animation: boatSwell 3600s linear infinite; animation-delay: -3480s; }
+  @keyframes boatSwell { 0%, 6.5% { transform: translateY(0); } 6.6% { transform: translateY(-4px); } 6.7% { transform: translateY(6px); } 6.8% { transform: translateY(-3px); } 6.9% { transform: translateY(0); } 100% { transform: translateY(0); } }
+  body.boatnow .waves .boat, body.boatnow .waves .swell { animation-delay: 0s; }
+  /* colour per fish, one fill each */
+  .waves svg.fish, .waves svg.fish.near { fill: var(--fish); }
+  .waves svg.fish.far { fill: color-mix(in srgb, var(--fish) 62%, var(--scene-mid)); }
+  .waves svg.fish.fish2, .waves svg.fish.fish7, .waves svg.fish.fish7.near, .waves svg.fish.snap, .waves svg.fish.snap.near { fill: var(--fish-olive); }
+  .waves svg.fish.fish4 { fill: var(--fish-gold); }
+  .waves svg.fish.fish1 { animation: tarponRoll 96s ease-in-out infinite, tarponFlash 96s linear infinite; animation-delay: -12s, -12s; }
+  @keyframes tarponFlash { 0%, 23.5% { fill: color-mix(in srgb, var(--fish) 62%, var(--scene-mid)); opacity: .2; } 25% { fill: var(--fish-silver); opacity: .7; } 27% { fill: var(--fish-silver); opacity: .6; } 29%, 100% { fill: color-mix(in srgb, var(--fish) 62%, var(--scene-mid)); opacity: .2; } }
+  .mullet use { fill: var(--fish); }
+  .splash circle { stroke: var(--fish); }
+  @media (prefers-reduced-motion: reduce) {
+    .bird, .bird use, .waves svg.mangrove, .glare span, .gust, .dock .rod-wind, .dock .fishline, html[data-place="dock"] .dock .cat .cat-tail, .waves .marker, .waves .swell, html[data-place="dock"] .dock .cast-bobber, html[data-place="dock"] .dock .cast-splash { animation: none !important; }
+    .glare span { opacity: .35; } .gust { opacity: 0; } html.night .waves .marker { opacity: .6; } html[data-place="dock"] .dock .cast-splash { opacity: 0; }
+  }
+</style>
+</head>
+<body>
+<!-- fauna: PhyloPic silhouettes (CC0 / public domain / CC BY, see design/v4/README.md); the same paths are the "v4 / Fauna" components in Figma -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<symbol id="f-tarpon" viewBox="0 0 1536 626"><g transform="translate(0,626) scale(.1,-.1)"><path d="M7528 6236 c-178 -73 -496 -349 -687 -596 -98 -128 -158 -220 -305 -475 -146 -252 -193 -321 -263 -387 -127 -118 -204 -132 -943 -168 -1457 -72 -2177 -149 -2598 -276 -235 -71 -644 -239 -1374 -563 -907 -403 -1234 -582 -1321 -723 -55 -88 -46 -168 31 -288 49 -76 346 -369 467 -461 305 -232 705 -445 1072 -572 133 -47 438 -129 1194 -323 420 -108 646 -129 1224 -119 479 9 802 -9 1205 -66 324 -46 525 -95 597 -148 64 -46 75 -78 148 -423 53 -250 102 -386 163 -452 98 -104 215 -56 458 188 207 209 363 424 371 514 4 42 2 50 -24 74 -15 15 -62 41 -103 58 -82 34 -120 56 -120 69 0 12 68 38 147 56 145 32 612 96 958 132 239 24 606 24 695 0 119 -32 208 -83 290 -167 97 -99 171 -219 338 -550 159 -314 241 -455 303 -523 50 -55 72 -58 89 -12 5 14 21 119 35 233 85 695 229 997 607 1278 132 98 312 207 658 399 496 275 518 301 333 394 -97 48 -90 55 108 99 231 52 344 65 524 59 272 -8 498 -71 1090 -302 679 -265 1046 -399 1520 -555 634 -208 932 -276 943 -216 7 34 -178 198 -540 478 -176 136 -465 342 -843 599 -562 383 -706 506 -746 637 -26 88 4 132 241 347 178 162 256 251 547 625 122 157 326 411 453 565 350 423 430 535 430 600 0 55 -88 53 -258 -6 -182 -64 -339 -153 -682 -388 -718 -490 -1005 -671 -1327 -834 -537 -272 -893 -365 -1258 -328 -168 18 -306 45 -810 161 -721 166 -948 207 -1655 300 -428 56 -482 64 -557 86 -142 40 -19 72 517 134 96 11 219 27 273 35 188 28 159 39 -196 75 -377 38 -453 57 -649 157 -386 199 -700 586 -733 904 -9 89 6 156 71 309 82 194 95 315 37 360 -33 26 -74 25 -145 -4z"></path></g></symbol>
+<symbol id="f-snook" viewBox="0 0 1536 554"><g transform="translate(0,554) scale(.1,-.1)"><path d="M6687 5456 c-199 -173 -474 -509 -653 -796 -97 -155 -233 -399 -274 -493 -64 -147 -92 -176 -156 -158 -46 13 -67 -7 -90 -85 -9 -31 -29 -70 -44 -87 l-28 -32 -379 -7 c-208 -4 -389 -9 -403 -12 -14 -3 -81 -10 -150 -16 -69 -6 -177 -20 -240 -30 -63 -10 -140 -21 -170 -25 -143 -17 -539 -102 -651 -140 -41 -14 -110 -35 -154 -46 -176 -44 -479 -153 -710 -254 -71 -31 -211 -88 -310 -127 -99 -38 -218 -85 -265 -103 -113 -45 -593 -193 -683 -210 -40 -8 -117 -26 -172 -40 -55 -14 -143 -32 -195 -40 -109 -17 -135 -23 -359 -77 -165 -39 -222 -62 -242 -100 -19 -35 7 -70 116 -152 57 -43 107 -87 110 -98 15 -46 -39 -60 -131 -34 -27 8 -69 20 -94 26 -34 9 -58 27 -106 76 l-61 64 -62 0 c-52 0 -66 -4 -86 -25 -62 -61 -12 -142 149 -243 321 -200 1157 -540 1606 -652 69 -17 175 -46 235 -64 61 -19 126 -36 145 -40 55 -10 370 -83 530 -123 324 -79 530 -123 625 -133 122 -13 312 -45 391 -66 58 -15 178 -31 399 -53 418 -41 551 -52 711 -60 111 -5 190 -13 205 -21 13 -7 87 -74 164 -150 284 -276 553 -475 708 -521 39 -11 88 -32 110 -46 69 -43 289 -143 402 -182 84 -29 139 -41 231 -51 138 -14 156 -9 173 43 19 57 -11 266 -55 383 -73 195 -87 218 -207 319 -66 56 -78 71 -75 93 6 54 29 57 383 53 634 -7 902 -5 1045 7 80 7 197 16 260 22 158 12 322 30 340 35 8 3 69 9 135 15 66 6 185 22 265 35 229 39 458 68 540 69 74 1 76 1 150 -50 41 -28 116 -83 165 -122 50 -39 113 -84 140 -98 28 -15 95 -62 150 -104 208 -159 605 -427 730 -494 27 -14 62 -26 76 -26 15 0 66 19 114 42 84 40 88 41 136 30 28 -7 98 -32 157 -57 58 -25 125 -48 147 -52 59 -8 70 9 72 120 1 49 7 118 14 153 10 50 10 82 1 152 -9 66 -9 104 -1 148 6 32 9 93 5 134 -4 52 -1 94 9 135 15 58 26 149 44 375 5 58 14 140 22 184 l13 78 -27 24 c-24 21 -38 24 -106 24 -80 0 -101 9 -101 43 0 24 56 47 118 47 27 0 68 6 93 14 109 36 653 61 874 41 197 -18 526 -122 790 -249 94 -46 276 -144 406 -219 130 -74 281 -158 335 -186 55 -27 169 -88 254 -136 289 -161 437 -225 635 -277 103 -27 171 -21 265 23 135 62 191 152 198 314 4 97 3 104 -42 241 -36 109 -62 167 -117 259 -104 175 -134 215 -275 378 -233 268 -261 316 -230 392 26 60 21 84 -26 133 -42 42 -43 44 -43 111 0 65 4 76 63 191 35 67 119 206 186 309 196 297 213 324 297 492 165 330 196 447 149 557 -26 61 -83 116 -137 132 -59 18 -273 25 -342 11 -173 -34 -381 -129 -762 -349 -123 -71 -291 -167 -374 -215 -82 -47 -220 -130 -305 -185 -419 -268 -792 -437 -1018 -461 -337 -37 -339 -37 -707 -12 -152 10 -199 22 -273 73 -58 39 -266 241 -321 311 -90 115 -193 263 -210 303 -11 23 -46 71 -79 107 -40 43 -66 82 -81 121 -11 31 -44 92 -73 134 -29 42 -66 116 -84 164 -18 47 -49 113 -70 145 -20 32 -49 94 -64 138 -32 94 -54 141 -123 253 -57 93 -77 112 -123 112 -66 0 -453 -213 -642 -353 -51 -37 -125 -88 -164 -114 -157 -101 -295 -213 -516 -420 -155 -147 -286 -259 -324 -279 -63 -33 -233 -65 -393 -74 -88 -5 -192 -13 -231 -16 -83 -8 -191 8 -250 37 -54 26 -91 80 -105 154 -13 71 -19 80 -73 104 -57 25 -92 64 -117 130 -28 76 -51 186 -43 215 10 40 -4 63 -51 86 -36 17 -50 32 -72 78 -27 54 -28 64 -28 194 l0 137 -42 36 c-23 19 -54 61 -70 93 -24 49 -29 72 -33 172 l-5 115 -42 20 c-64 31 -93 63 -134 152 -21 44 -42 84 -48 87 -5 4 -43 -23 -84 -58z"></path></g></symbol>
+<symbol id="f-jack" viewBox="0 0 1536 511"><g transform="translate(0,511) scale(.1,-.1)"><path d="M7965 5066 c-331 -111 -598 -262 -1080 -611 -115 -84 -230 -164 -255 -178 -104 -60 -86 -58 -695 -61 -837 -5 -1295 -31 -1910 -112 -722 -94 -1039 -150 -1457 -254 -381 -96 -598 -175 -943 -345 -506 -249 -831 -460 -1042 -678 -256 -265 -505 -628 -472 -689 5 -9 68 -63 140 -119 88 -68 135 -112 144 -133 15 -36 9 -90 -12 -108 -10 -8 -73 -14 -183 -18 -192 -6 -200 -9 -200 -77 0 -93 43 -142 190 -217 221 -113 849 -337 1026 -366 51 -8 112 -31 374 -140 253 -104 467 -168 725 -215 179 -33 845 -128 1080 -154 372 -42 849 -64 1590 -76 478 -7 867 -22 1080 -40 308 -26 357 -27 695 -10 351 18 476 16 574 -10 33 -9 134 -49 226 -90 470 -209 953 -365 1129 -365 88 0 129 95 56 128 -12 6 -32 30 -43 54 -12 24 -51 77 -88 118 -95 107 -98 113 -90 166 8 64 51 137 111 192 71 65 192 147 240 162 60 19 451 205 570 271 56 31 195 117 306 190 270 176 412 260 665 395 117 62 241 132 276 157 68 46 277 139 368 163 30 8 148 28 262 44 l207 30 118 -59 c216 -108 446 -236 603 -335 272 -173 919 -576 1087 -677 456 -276 968 -473 1353 -520 124 -15 232 -5 322 28 l72 27 -64 11 c-77 12 -90 19 -90 48 0 18 -16 30 -79 60 -148 71 -397 245 -588 410 -106 92 -209 167 -228 167 -19 0 -65 40 -65 57 0 8 18 22 40 30 22 9 40 19 40 22 0 3 -22 20 -49 38 -60 39 -481 376 -611 489 -105 91 -247 234 -274 276 -13 20 -15 31 -7 46 10 19 153 120 462 327 250 168 751 459 974 566 145 70 267 113 377 134 46 9 107 21 136 26 36 7 63 20 83 40 26 25 37 29 90 29 65 0 129 21 129 42 0 87 -276 158 -620 160 -200 1 -440 -35 -740 -112 -149 -38 -198 -54 -605 -197 -510 -180 -873 -328 -1379 -562 -298 -139 -319 -145 -446 -145 -94 -1 -111 2 -164 27 -77 35 -167 97 -411 282 -428 324 -570 411 -935 570 -229 100 -373 171 -408 200 -17 14 -52 32 -79 40 -26 8 -79 35 -117 60 -39 24 -92 52 -120 61 -27 9 -82 31 -121 49 -39 18 -98 38 -130 45 -41 9 -67 21 -82 38 -20 24 -26 25 -116 23 -112 -2 -210 11 -274 35 l-46 18 84 77 c46 42 81 80 77 84 -3 3 -30 -1 -59 -9 -75 -23 -100 -20 -125 11 -17 22 -29 27 -56 25 -19 -1 -55 7 -79 18 -29 13 -66 20 -109 20 -49 0 -76 6 -111 24 -25 13 -63 28 -84 32 -60 10 -106 37 -153 88 -41 44 -42 47 -42 115 0 89 28 177 84 267 60 97 86 149 106 214 17 52 17 55 -2 81 -23 31 -17 64 12 72 25 7 27 47 3 47 -10 0 -76 -20 -148 -44z"></path></g></symbol>
+<symbol id="f-cuda" viewBox="0 0 1536 902"><g transform="translate(0,902) scale(.1,-.1)"><path d="M13974 8879 c-251 -247 -444 -470 -767 -885 -103 -131 -228 -291 -277 -354 -50 -63 -155 -203 -234 -310 -379 -515 -640 -782 -848 -868 -40 -17 -167 -58 -283 -91 -115 -33 -264 -81 -330 -107 -506 -195 -816 -232 -1033 -122 -77 38 -170 123 -303 274 -68 77 -107 114 -126 118 -38 9 -134 -17 -218 -59 -100 -48 -205 -128 -442 -337 -619 -544 -673 -576 -1863 -1116 -763 -346 -944 -425 -1225 -534 -431 -167 -507 -199 -758 -319 -425 -203 -1101 -554 -1497 -777 -248 -139 -760 -445 -985 -587 -319 -201 -1021 -732 -1245 -941 -182 -171 -669 -585 -980 -834 -262 -210 -440 -390 -440 -446 0 -62 232 -25 502 82 205 81 278 83 278 9 0 -50 -48 -99 -173 -173 -127 -75 -273 -145 -427 -202 -63 -24 -132 -51 -153 -62 -77 -39 -156 -129 -143 -164 3 -8 32 -27 63 -42 55 -26 65 -27 208 -26 83 0 186 6 230 13 260 41 606 126 971 237 121 36 284 86 364 110 80 25 215 63 300 85 204 53 257 70 435 141 223 90 496 225 636 315 68 44 183 113 254 153 169 94 287 169 460 290 77 54 210 143 295 198 85 55 207 134 270 177 132 88 364 205 525 265 242 90 456 141 689 165 252 27 355 58 374 114 5 15 5 56 0 99 -17 146 7 163 656 442 341 147 544 243 643 307 144 92 404 202 800 337 287 98 373 133 528 215 61 32 143 71 183 85 78 28 304 86 512 132 l125 28 635 6 c697 7 679 5 779 69 55 36 71 64 71 126 0 60 -53 201 -103 276 -80 118 -80 118 -85 193 -7 113 16 178 86 246 32 30 97 78 145 105 200 114 538 331 747 480 178 126 521 274 742 319 100 21 428 21 1053 1 540 -17 1061 -19 1265 -4 183 13 327 41 408 82 155 76 114 132 -149 202 -72 19 -174 53 -227 76 -102 42 -251 101 -414 163 -134 51 -152 66 -213 176 -29 52 -68 122 -87 155 -19 34 -74 101 -128 156 -81 82 -108 102 -181 137 -78 37 -88 44 -103 81 -21 53 -21 177 -1 291 19 108 20 226 2 315 -44 213 -21 427 69 643 107 258 152 378 221 580 41 123 72 226 69 229 -3 4 -72 -59 -152 -138z"></path></g></symbol>
+<symbol id="f-pinfish" viewBox="0 0 1536 531"><g transform="translate(0,531) scale(.1,-.1)"><path d="M9025 5303 c-16 -2 -78 -15 -137 -29 -59 -13 -167 -29 -240 -34 -211 -16 -313 -29 -442 -55 -148 -30 -307 -45 -486 -45 -169 -1 -294 -12 -502 -45 -218 -35 -310 -54 -328 -70 -8 -7 -62 -36 -120 -63 -58 -27 -123 -64 -145 -82 -105 -85 -407 -239 -610 -310 -155 -55 -455 -200 -610 -295 -67 -41 -173 -95 -236 -120 -213 -86 -285 -142 -373 -293 -48 -84 -54 -101 -85 -241 -12 -51 -35 -126 -52 -167 -30 -72 -32 -75 -92 -103 -78 -37 -269 -95 -368 -112 -90 -15 -154 -3 -305 57 -49 19 -161 62 -249 96 -178 68 -317 134 -439 210 -44 29 -209 128 -366 222 -157 93 -406 245 -555 336 -385 238 -635 386 -914 544 -134 76 -266 152 -295 171 -28 18 -145 85 -261 150 -116 64 -224 128 -241 141 -18 13 -56 35 -85 49 -30 14 -72 35 -94 47 -43 22 -137 35 -180 24 -67 -17 -73 -161 -13 -288 50 -104 115 -185 223 -278 51 -44 125 -114 163 -155 64 -69 106 -121 342 -429 131 -171 757 -797 1057 -1057 253 -219 316 -282 340 -338 32 -74 0 -111 -190 -222 -329 -192 -406 -244 -539 -361 -108 -95 -159 -125 -245 -143 -214 -46 -659 -197 -742 -252 -84 -55 -143 -114 -279 -283 -69 -85 -170 -206 -224 -268 -54 -61 -101 -124 -104 -138 -9 -36 13 -71 71 -111 80 -56 126 -61 361 -43 313 25 501 61 809 157 436 135 901 315 1310 506 375 175 934 359 1225 403 197 29 393 14 657 -51 393 -96 572 -188 671 -345 41 -64 92 -127 217 -265 154 -169 184 -224 231 -412 18 -73 35 -137 38 -142 15 -24 244 -94 425 -130 160 -32 291 -40 824 -51 638 -13 686 -17 1168 -111 350 -68 382 -76 499 -129 109 -50 170 -65 354 -90 245 -33 326 -63 326 -120 0 -33 27 -77 67 -107 l37 -28 225 1 c408 2 622 40 915 166 104 44 157 61 215 68 42 5 396 14 786 20 1355 19 1535 42 2040 263 255 111 672 325 900 462 116 70 246 145 289 167 98 49 433 181 541 213 110 32 134 44 143 74 4 14 7 118 7 231 0 242 1 237 -121 400 -112 149 -216 250 -399 385 -321 237 -463 345 -580 445 -66 55 -180 151 -254 213 -74 62 -220 186 -325 276 -491 421 -846 684 -1141 846 -88 49 -221 122 -295 163 -202 113 -403 215 -515 262 -166 70 -292 125 -446 194 -145 64 -513 206 -659 252 -290 93 -688 164 -1020 183 -225 13 -536 20 -575 14z"></path></g></symbol>
+<symbol id="f-grouper" viewBox="0 0 1536 708"><g transform="translate(0,708) scale(.1,-.1)"><path d="M4350 7074 c-173 -70 -247 -95 -415 -145 -415 -121 -1049 -344 -1315 -462 -183 -81 -540 -259 -690 -345 -169 -96 -737 -446 -951 -587 -384 -252 -671 -489 -772 -635 -56 -81 -195 -366 -203 -415 -19 -130 108 -356 321 -571 102 -103 168 -155 272 -213 40 -23 141 -84 224 -136 190 -119 353 -202 611 -311 438 -185 526 -212 813 -244 185 -21 282 -47 415 -109 151 -70 165 -76 355 -146 83 -30 168 -67 190 -83 49 -34 82 -95 90 -170 19 -174 97 -376 212 -552 134 -205 382 -474 492 -534 73 -39 178 -55 371 -56 124 0 187 5 255 19 186 39 506 149 580 199 58 39 311 293 383 384 33 43 102 138 152 212 72 105 98 136 118 140 15 3 94 17 177 32 82 14 179 35 215 46 36 10 81 23 100 28 58 16 202 11 307 -9 319 -62 1108 -93 1458 -57 88 9 230 19 315 22 143 6 160 5 219 -15 80 -28 161 -68 271 -136 47 -28 117 -68 155 -89 109 -57 234 -162 445 -376 107 -109 233 -228 280 -266 196 -157 481 -319 680 -385 284 -95 539 -15 693 219 96 144 132 269 162 550 17 165 37 247 61 256 32 12 110 -41 227 -154 185 -177 289 -303 573 -691 93 -126 304 -360 536 -591 226 -226 375 -358 483 -430 98 -65 281 -155 405 -198 58 -21 126 -46 152 -56 41 -16 54 -17 104 -6 133 28 180 67 504 432 282 318 305 346 405 500 194 297 335 578 394 785 22 77 61 196 86 265 26 69 53 152 61 185 28 117 46 936 24 1113 -6 46 -26 133 -44 195 -18 62 -55 184 -81 272 -55 186 -82 248 -163 382 -33 54 -72 123 -87 153 -140 279 -426 534 -653 581 -53 11 -60 9 -141 -21 -113 -43 -421 -186 -871 -405 -201 -97 -444 -213 -540 -257 -295 -134 -352 -164 -439 -227 -91 -66 -110 -74 -162 -69 -47 4 -58 33 -65 164 -10 190 -34 275 -126 437 -78 138 -207 304 -517 666 -286 334 -618 674 -726 744 -91 58 -345 185 -472 236 -199 79 -338 109 -715 151 -300 34 -460 60 -594 95 -126 33 -269 58 -564 100 -140 20 -302 47 -360 60 -58 13 -157 31 -220 40 -150 20 -166 27 -196 86 -26 52 -37 57 -68 34 -31 -23 -78 -18 -209 25 -152 49 -206 57 -437 70 -371 20 -484 34 -655 80 -127 35 -583 99 -920 130 -511 46 -948 75 -975 64z"></path></g></symbol>
+<symbol id="f-mackerel" viewBox="0 0 1536 503"><g transform="translate(0,503) scale(.1,-.1)"><path d="M9845 5001 c-10 -46 -37 -65 -87 -58 -24 2 -51 8 -61 12 -14 6 -21 -3 -38 -44 -17 -39 -28 -53 -48 -57 -54 -11 -56 -15 -63 -129 -21 -308 -150 -501 -471 -705 -125 -79 -79 -71 -512 -95 -562 -31 -1102 -92 -1710 -190 -187 -30 -298 -40 -347 -31 -19 3 -102 45 -184 92 -193 111 -399 214 -497 249 l-77 28 -38 -25 c-20 -14 -82 -65 -137 -113 -182 -161 -299 -237 -578 -377 -77 -38 -158 -81 -181 -96 l-41 -26 75 -12 c124 -21 190 -36 190 -44 0 -9 -107 -39 -251 -72 l-97 -21 -103 36 c-57 21 -110 37 -118 37 -16 0 -136 -73 -168 -103 -30 -27 -21 -37 33 -37 24 0 44 -4 44 -10 0 -5 -2 -10 -4 -10 -2 0 -68 -18 -147 -41 l-142 -41 -113 42 -113 43 -108 -69 -108 -69 67 -5 c36 -3 69 -8 73 -12 8 -8 -93 -40 -202 -64 l-81 -17 -85 27 c-128 39 -142 37 -246 -33 -53 -35 -53 -36 -25 -39 16 -1 40 -5 53 -8 21 -4 22 -7 10 -19 -18 -18 -122 -45 -174 -45 -22 0 -84 11 -138 24 -90 23 -102 23 -145 11 -26 -8 -56 -21 -67 -29 -22 -16 -19 -18 40 -31 27 -6 28 -8 12 -20 -22 -16 -250 -41 -343 -36 -43 1 -112 49 -360 248 -115 93 -299 241 -409 329 -650 522 -997 731 -1360 820 -116 29 -255 38 -262 18 -2 -6 33 -51 78 -100 134 -146 233 -275 384 -503 188 -285 312 -458 481 -673 192 -244 233 -315 234 -404 0 -60 -50 -151 -191 -349 -180 -250 -266 -382 -416 -634 -164 -274 -235 -377 -375 -545 -59 -70 -108 -132 -108 -137 0 -15 100 -10 191 10 229 51 512 200 860 452 185 135 411 317 768 619 396 335 403 341 487 354 51 9 304 -10 341 -26 28 -11 28 -11 -27 -28 l-55 -16 50 -23 c78 -35 97 -35 212 -5 l108 28 78 -19 c42 -10 85 -24 94 -30 15 -11 11 -15 -32 -26 l-48 -14 80 -53 81 -53 98 30 c54 17 116 31 139 31 43 -1 259 -51 272 -64 14 -14 -22 -26 -82 -26 l-60 0 35 -22 c19 -12 61 -39 94 -60 73 -48 99 -48 217 -4 l90 34 126 -34 c69 -19 134 -39 144 -45 35 -18 19 -29 -43 -29 l-63 0 35 -22 c19 -11 66 -41 104 -65 77 -50 65 -50 224 -8 102 27 103 27 183 10 103 -20 239 -63 239 -75 0 -4 -33 -13 -72 -20 -119 -18 -143 -25 -143 -40 0 -7 78 -55 175 -107 303 -162 392 -231 517 -396 41 -54 82 -101 91 -104 47 -19 256 71 623 267 216 117 198 113 444 75 987 -156 1588 -212 2610 -246 355 -12 702 -8 1077 12 201 11 271 8 252 -11 -5 -5 -77 -43 -161 -85 -239 -119 -239 -119 -229 -520 9 -373 16 -476 33 -482 55 -21 183 61 358 228 68 65 130 119 138 119 29 0 206 251 402 571 157 256 136 236 252 243 263 18 677 70 1073 136 1145 192 2091 504 2656 875 164 109 265 229 224 268 -16 17 -175 12 -307 -8 -192 -30 -191 -23 18 89 258 139 262 142 254 173 -9 37 -59 106 -101 141 -85 70 -436 242 -754 370 -869 349 -1725 535 -3145 682 -232 25 -299 35 -334 52 -33 16 -65 48 -130 131 -47 61 -125 156 -173 211 -105 123 -430 447 -552 550 -120 102 -245 196 -261 196 -7 0 -16 -13 -20 -29z"></path></g></symbol>
+<symbol id="f-snapper" viewBox="0 0 1536 474"><g transform="translate(0,474) scale(.1,-.1)"><path d="M8340 4733 c-99 -6 -423 -34 -500 -43 -41 -4 -101 -18 -132 -29 -55 -20 -60 -20 -140 -5 -72 14 -96 15 -178 3 -68 -9 -266 -13 -700 -13 -579 -1 -610 -2 -725 -23 -350 -65 -850 -263 -1071 -426 -144 -106 -472 -448 -538 -559 -78 -133 -104 -306 -67 -441 27 -101 48 -139 110 -208 l50 -56 -82 -6 c-215 -17 -427 -1 -579 44 -100 30 -307 111 -517 203 -111 49 -415 166 -621 239 -69 25 -235 95 -370 157 -660 302 -785 343 -1250 420 -226 37 -260 40 -437 40 l-192 0 -16 -30 c-15 -29 -14 -34 14 -98 40 -91 113 -332 144 -472 53 -238 78 -576 81 -1085 l1 -270 -37 -107 c-112 -326 -200 -531 -330 -770 -242 -446 -279 -541 -245 -612 28 -61 56 -71 182 -70 139 1 222 13 572 80 339 65 587 128 908 229 132 41 267 79 300 84 63 9 1097 359 1345 455 132 52 226 74 360 87 176 17 453 -1 725 -47 133 -22 131 -21 92 -52 -17 -14 -95 -87 -172 -162 -77 -75 -187 -174 -245 -220 -168 -135 -286 -266 -320 -355 -13 -35 8 -72 47 -81 35 -9 675 3 858 16 559 39 991 74 1121 90 39 5 163 14 275 20 365 19 503 29 580 44 278 54 545 58 899 12 107 -14 263 -30 345 -36 83 -6 233 -18 335 -26 102 -8 234 -14 293 -14 59 0 107 -4 107 -8 0 -9 -101 -74 -195 -127 -43 -24 -165 -112 -472 -342 -79 -59 -92 -82 -70 -117 15 -22 22 -23 274 -34 434 -20 600 -16 1063 27 209 20 334 39 530 82 280 60 649 166 829 238 270 108 287 112 531 122 118 4 283 12 365 17 83 5 400 10 705 11 680 1 1432 25 1805 56 462 39 589 59 786 125 351 117 570 312 586 523 8 105 -11 211 -53 296 -50 102 -133 186 -424 431 -187 157 -281 246 -463 436 -254 266 -294 303 -487 444 -74 54 -164 124 -200 157 -159 142 -201 172 -569 419 -262 175 -381 243 -741 422 -361 181 -500 237 -1120 454 -511 178 -764 243 -1315 337 -99 17 -202 36 -230 41 -117 23 -608 70 -830 80 -225 9 -458 11 -585 3z"></path></g></symbol>
+<symbol id="f-snapper2" viewBox="0 0 690 335"><g transform="translate(0,335) scale(.1,-.1)"><path d="M2592 3235 c-35 -58 -64 -105 -66 -105 -1 0 -17 21 -33 48 -17 26 -42 57 -56 70 l-24 22 -31 -67 c-17 -38 -39 -99 -48 -138 -28 -118 -24 -114 -72 -70 -28 25 -46 52 -55 83 l-13 45 -24 -54 c-12 -30 -34 -101 -48 -159 -14 -58 -27 -107 -29 -109 -1 -2 -19 9 -39 24 l-36 27 7 -111 8 -111 -30 0 c-59 0 -206 -31 -313 -65 -248 -81 -514 -252 -870 -559 -58 -50 -226 -197 -375 -326 -149 -129 -292 -253 -318 -274 -27 -22 -55 -53 -64 -70 -8 -17 -25 -41 -36 -54 -18 -20 -19 -24 -7 -32 8 -5 22 -10 30 -10 8 0 29 -8 45 -18 17 -10 68 -31 115 -47 91 -30 175 -68 185 -85 8 -13 11 -13 -76 5 -93 19 -250 34 -284 28 -28 -6 -32 -27 -13 -68 23 -51 285 -159 478 -199 82 -16 457 -46 640 -51 63 -1 149 -7 190 -13 41 -6 224 -18 405 -27 182 -9 343 -19 358 -23 23 -6 34 -20 59 -77 81 -184 200 -360 337 -496 175 -174 259 -201 310 -101 11 21 24 65 30 98 15 87 54 465 48 470 -3 3 -60 20 -127 39 -67 19 -124 36 -126 38 -2 2 191 9 429 15 237 7 533 17 657 23 269 14 276 12 334 -75 20 -31 39 -56 42 -56 2 0 13 5 23 12 21 13 35 3 172 -112 30 -25 48 -37 41 -28 -13 16 -11 16 20 7 80 -23 224 -39 358 -39 160 0 232 9 331 40 224 72 282 280 125 448 -71 76 -190 120 -336 123 -42 1 -38 3 70 39 160 53 246 70 385 77 152 6 237 -11 361 -72 116 -58 191 -109 350 -237 188 -152 362 -262 539 -341 89 -40 270 -102 327 -112 l37 -7 -30 88 c-108 319 -160 664 -160 1064 0 389 51 761 157 1129 19 68 33 125 31 128 -14 14 -367 -163 -530 -265 -166 -104 -301 -209 -461 -357 -169 -157 -239 -205 -350 -242 -75 -25 -93 -27 -236 -26 -159 1 -290 21 -245 37 11 5 33 13 49 19 43 16 94 64 118 111 30 57 36 174 13 252 -55 190 -234 372 -448 454 -159 62 -233 74 -437 74 -195 0 -313 -15 -553 -69 -60 -14 -113 -25 -117 -25 -4 0 -25 22 -45 49 l-38 49 -53 -5 c-50 -5 -55 -4 -87 28 -31 31 -39 34 -79 31 -57 -5 -101 17 -118 58 -8 20 -20 30 -34 30 -55 1 -156 77 -156 118 0 27 -21 19 -41 -17 -21 -39 -23 -40 -49 -26 -36 18 -89 80 -107 123 l-15 35 -30 -54 c-17 -30 -33 -56 -35 -59 -9 -9 -80 79 -109 135 -16 30 -31 55 -34 55 -3 0 -33 -47 -68 -105z"></path></g></symbol>
+<symbol id="f-blacktip" viewBox="0 0 1536 749"><g transform="translate(0,749) scale(.1,-.1)"><path d="M8298 7429 c-108 -81 -270 -244 -335 -339 -115 -170 -208 -359 -445 -910 -237 -550 -321 -700 -418 -750 -45 -23 -218 -61 -450 -99 -102 -17 -311 -51 -465 -76 -516 -84 -899 -169 -1269 -281 -518 -157 -1199 -406 -1566 -571 -471 -213 -1172 -484 -1945 -753 -542 -189 -1011 -364 -1160 -434 -195 -92 -271 -198 -235 -327 26 -92 153 -240 264 -307 184 -112 403 -170 1071 -282 402 -68 549 -100 607 -133 29 -16 48 -38 69 -78 120 -240 579 -357 2094 -539 138 -16 311 -34 385 -40 203 -15 303 -41 341 -86 26 -32 15 -145 -39 -379 -67 -291 -82 -377 -88 -520 -13 -256 57 -404 230 -488 179 -88 294 -20 464 275 28 47 69 115 93 150 92 135 378 399 574 530 125 83 388 209 660 316 l230 90 895 18 c1099 21 1873 24 1912 7 38 -17 67 -79 139 -295 70 -212 89 -248 128 -248 39 0 58 16 246 200 184 180 322 295 482 401 185 122 223 133 498 145 176 8 339 -6 418 -36 72 -27 144 -75 302 -200 150 -119 197 -150 224 -150 38 0 42 30 35 228 -8 220 0 277 48 317 54 46 111 28 162 -50 19 -28 106 -190 193 -361 88 -170 181 -345 208 -389 175 -289 345 -511 480 -626 121 -104 390 -277 494 -319 32 -13 35 -12 57 14 51 59 21 250 -86 546 -29 80 -71 186 -92 235 -87 197 -145 421 -155 600 -11 199 37 313 324 765 99 157 232 371 295 475 259 429 604 922 792 1135 152 171 353 535 388 703 20 94 -14 177 -71 177 -27 0 -178 -73 -316 -153 -118 -68 -295 -192 -390 -272 -132 -113 -313 -239 -746 -521 -423 -275 -519 -341 -749 -515 -201 -152 -358 -288 -445 -388 l-70 -80 -340 344 c-187 188 -385 383 -440 432 -399 354 -829 650 -1297 892 -323 168 -613 289 -1088 456 -168 59 -316 113 -330 120 -65 34 -170 178 -240 328 -80 171 -149 412 -195 672 -41 239 -55 384 -85 905 -20 338 -31 444 -50 494 -10 26 -83 86 -106 86 -7 0 -50 -28 -96 -61z"></path></g></symbol>
+<symbol id="f-bonnethead" viewBox="0 0 3953 1584"><g transform="translate(0,1584) scale(.1,-.1)"><path d="M38130 15830 c-171 -21 -315 -43 -475 -75 -93 -19 -494 -91 -890 -160 -396 -69 -776 -136 -845 -150 -69 -14 -483 -90 -920 -169 -849 -155 -855 -156 -1784 -406 -483 -129 -491 -132 -1076 -415 -710 -343 -802 -386 -935 -438 -166 -66 -132 -60 -940 -157 -324 -39 -630 -77 -680 -85 -145 -22 -1209 -204 -1340 -229 -437 -84 -591 -119 -612 -138 l-22 -20 -11 43 c-11 41 -10 77 5 234 6 52 3 67 -19 109 l-25 49 35 45 c25 33 34 56 35 86 4 150 -38 206 -156 206 -174 -1 -347 -79 -775 -354 -429 -276 -526 -351 -933 -730 -88 -81 -169 -153 -180 -161 -12 -8 -215 -59 -452 -115 -637 -149 -771 -186 -1053 -296 -276 -107 -616 -237 -1427 -544 -302 -115 -775 -301 -1050 -413 -275 -113 -822 -336 -1215 -497 -393 -160 -958 -397 -1255 -525 -1373 -593 -1485 -638 -2030 -821 -407 -136 -479 -157 -535 -158 -95 -1 -116 15 -125 97 -13 124 27 510 90 857 19 107 53 296 75 420 22 124 45 279 51 345 10 110 23 172 64 325 8 30 15 90 15 133 0 69 -3 81 -25 102 -21 22 -33 25 -92 25 -142 0 -254 -46 -368 -150 -169 -156 -1186 -1133 -1200 -1153 -5 -8 -120 -138 -255 -288 -387 -432 -629 -709 -671 -771 -21 -31 -192 -308 -380 -615 -383 -625 -425 -692 -448 -711 -94 -76 -633 -414 -824 -517 -118 -63 -929 -387 -940 -376 -5 5 -11 78 -13 162 -5 172 -7 178 -98 333 l-55 94 -88 -19 c-294 -65 -641 -164 -779 -222 -188 -79 -624 -368 -914 -606 -126 -103 -367 -342 -431 -428 -25 -34 -99 -160 -163 -281 -64 -121 -122 -224 -129 -230 -17 -15 -1290 -622 -1593 -760 -62 -28 -224 -90 -360 -138 -137 -48 -673 -239 -1191 -424 l-942 -337 -46 20 -45 20 6 82 c10 123 -33 294 -92 373 -27 34 -129 91 -223 123 -71 25 -178 24 -384 -1 -331 -40 -610 -62 -1137 -90 -245 -13 -425 -33 -500 -56 -110 -33 -400 -189 -874 -472 -334 -200 -389 -247 -552 -470 -275 -375 -340 -455 -461 -564 -159 -143 -254 -243 -288 -303 -15 -27 -52 -90 -81 -140 -59 -102 -75 -163 -94 -365 -23 -230 6 -381 99 -521 150 -228 589 -666 766 -764 60 -33 213 -94 625 -247 619 -231 758 -277 1203 -402 517 -146 545 -152 708 -170 79 -9 224 -26 322 -38 l178 -22 92 23 c51 13 175 33 277 46 503 64 675 99 1135 236 234 69 429 133 470 153 78 39 221 148 252 192 35 51 43 91 37 183 -10 127 -40 173 -169 261 -142 96 -188 163 -188 271 0 94 18 111 134 126 111 14 541 52 974 88 768 63 922 77 1163 110 141 19 356 45 477 59 121 14 319 41 440 61 121 19 353 49 515 65 321 32 350 36 426 52 31 6 85 8 136 4 l85 -8 364 -237 c200 -130 480 -311 622 -401 142 -91 421 -272 620 -403 420 -277 584 -380 682 -429 361 -181 1878 -692 2250 -758 380 -68 1072 -115 1330 -91 171 15 211 29 272 94 65 68 83 105 83 165 0 38 -6 58 -29 88 -61 84 -704 696 -1011 964 -168 146 -360 331 -430 414 -37 45 -178 248 -312 451 -135 204 -271 406 -303 450 -70 96 -137 234 -161 329 -15 60 -16 80 -5 140 27 158 35 568 18 905 l-2 35 390 171 c215 95 593 262 840 372 522 233 891 390 990 423 233 76 1132 516 1819 890 494 268 1240 670 1441 776 l150 79 230 4 c127 2 300 -2 385 -9 153 -12 158 -13 417 -96 507 -162 572 -177 878 -199 404 -29 841 -55 931 -55 157 0 250 27 286 84 27 43 20 132 -20 261 -17 55 -40 152 -52 215 -32 175 -67 294 -121 413 -66 144 -109 275 -109 331 0 26 15 102 34 169 19 67 71 259 115 425 91 342 85 330 219 449 201 181 235 201 812 498 493 253 476 244 980 538 245 143 492 288 550 322 58 33 134 73 170 88 l65 27 435 3 c461 4 591 15 687 57 73 32 102 113 72 199 -6 17 -8 42 -5 54 21 85 514 513 791 687 407 256 589 361 715 413 47 19 222 101 390 182 512 247 542 260 745 318 601 174 1000 282 1231 333 l262 58 218 -98 c1354 -606 1533 -683 1843 -796 199 -72 257 -90 476 -144 116 -28 549 -120 725 -154 42 -8 49 -6 103 30 32 22 55 44 51 49 -12 19 -160 125 -240 171 -169 98 -346 322 -444 562 -22 54 -74 159 -115 235 -74 136 -75 137 -75 211 0 109 13 145 81 218 57 63 82 111 94 183 l5 36 528 228 c960 414 2084 902 2272 985 185 82 406 165 855 320 257 89 374 135 635 250 311 137 835 351 880 361 25 5 146 16 269 24 216 14 227 15 287 45 41 20 82 52 123 95 92 99 92 93 13 166 -117 111 -112 109 -817 274 -259 61 -366 72 -515 55z"></path></g></symbol>
+<symbol id="f-mullet" viewBox="0 0 1536 592"><g transform="translate(0,592) scale(.1,-.1)"><path d="M7037 5902 c-31 -19 -151 -172 -289 -365 -50 -71 -107 -147 -126 -170 -70 -84 -269 -397 -357 -561 -107 -200 -138 -239 -198 -254 -115 -29 -449 -55 -1257 -97 -1271 -66 -1607 -107 -2420 -291 -1390 -315 -2197 -634 -2335 -921 -10 -21 -21 -64 -23 -95 -4 -57 -3 -59 35 -95 22 -21 55 -47 74 -58 63 -37 40 -54 -109 -81 -43 -8 -39 -35 14 -82 101 -92 600 -404 847 -531 186 -95 360 -161 597 -226 113 -31 347 -96 520 -145 813 -229 1308 -330 2070 -425 396 -49 498 -68 514 -94 3 -5 12 -45 20 -89 8 -46 31 -118 54 -169 22 -49 48 -116 57 -149 28 -98 62 -182 134 -332 81 -165 111 -211 201 -308 36 -39 88 -102 115 -140 107 -153 169 -194 296 -194 66 0 81 4 120 28 64 42 319 312 319 339 0 5 36 67 79 137 97 156 131 238 138 331 10 133 -53 235 -212 340 -45 30 -113 68 -151 83 -73 30 -100 56 -74 72 8 5 21 8 28 5 14 -5 308 -27 617 -47 306 -19 918 -17 1160 4 264 23 496 36 860 48 366 12 474 7 531 -26 62 -35 176 -163 261 -293 42 -64 92 -141 112 -171 20 -30 76 -96 126 -146 49 -50 115 -119 146 -155 39 -44 79 -76 130 -105 56 -31 85 -55 118 -100 86 -114 363 -374 399 -374 19 0 88 67 121 117 32 49 83 201 100 298 5 33 15 112 21 175 41 404 205 650 676 1017 214 167 241 189 232 198 -4 4 -82 2 -175 -4 -227 -15 -524 5 -515 35 13 44 769 191 1150 224 183 15 265 3 465 -70 155 -56 251 -86 877 -275 351 -107 658 -212 830 -285 148 -63 579 -211 796 -274 328 -94 424 -88 424 27 0 82 -68 237 -180 406 -34 51 -81 135 -106 185 -51 104 -129 212 -270 374 -230 263 -282 336 -319 449 -16 52 -16 54 8 105 37 81 107 157 282 306 245 208 519 486 595 602 78 119 175 313 167 334 -11 27 -113 51 -217 50 -152 -1 -461 -58 -930 -169 -124 -30 -346 -83 -495 -118 -148 -36 -335 -77 -415 -92 -228 -44 -551 -110 -720 -149 -313 -71 -380 -77 -592 -50 -428 53 -1498 323 -1498 377 0 19 469 -15 595 -43 22 -5 66 -10 98 -10 80 0 76 21 -13 64 -145 72 -231 154 -299 285 -80 157 -98 244 -111 551 -18 396 -31 601 -40 626 -37 97 -326 -101 -1195 -819 l-289 -240 -221 26 c-895 107 -1296 159 -1333 173 -28 10 -47 25 -53 41 -9 24 -6 33 48 176 15 39 16 50 5 65 -29 39 -42 86 -53 179 -21 193 16 352 107 453 19 21 31 40 27 43 -4 2 -39 15 -78 27 -104 34 -198 84 -233 125 -37 41 -42 91 -17 152 34 81 9 89 -101 32 l-85 -43 -32 17 c-43 24 -76 78 -89 145 -20 107 -34 120 -91 84z"></path></g></symbol>
+<symbol id="f-dolphin" viewBox="0 0 1536 497"><g transform="translate(0,497) scale(.1,-.1)"><path d="M14995 4947 c-98 -37 -398 -233 -705 -460 -251 -186 -423 -336 -516 -449 -33 -39 -68 -82 -79 -95 -27 -33 -129 -61 -482 -134 -553 -113 -879 -210 -1280 -378 -104 -44 -205 -83 -226 -86 -21 -4 -42 -15 -48 -26 -41 -77 -539 -261 -944 -349 -192 -41 -302 -52 -612 -57 -460 -8 -660 12 -1038 104 -312 75 -381 96 -515 155 -225 99 -225 100 -224 303 0 134 3 158 27 230 23 71 40 101 110 204 9 14 22 44 28 66 8 32 37 66 138 165 137 135 189 202 198 254 5 29 2 34 -26 46 -40 16 -213 8 -326 -15 -238 -50 -382 -105 -735 -281 -419 -210 -815 -443 -1105 -649 -83 -59 -166 -114 -185 -122 -54 -24 -239 -28 -440 -9 -96 9 -325 35 -509 56 -184 22 -497 56 -695 75 -387 38 -600 63 -1066 125 -591 79 -832 101 -1115 101 -274 1 -370 -12 -670 -91 -205 -53 -409 -120 -605 -197 -299 -118 -430 -196 -592 -352 -154 -147 -223 -246 -322 -460 -19 -43 -72 -85 -173 -140 -216 -118 -256 -171 -257 -338 -1 -109 14 -137 90 -167 45 -18 86 -20 549 -27 538 -7 523 -6 870 -73 317 -61 477 -86 614 -96 152 -12 220 -25 376 -77 213 -70 498 -203 535 -250 11 -14 20 -37 20 -52 0 -44 57 -310 95 -441 43 -151 84 -240 171 -374 90 -137 194 -263 306 -372 104 -102 178 -154 220 -154 24 0 28 4 28 28 0 15 -16 83 -35 151 -19 69 -35 133 -35 143 0 30 31 21 115 -33 164 -104 454 -239 656 -304 170 -55 317 -59 336 -9 9 24 -6 58 -114 264 -163 313 -227 478 -175 454 98 -44 523 -162 874 -243 305 -71 516 -104 863 -135 371 -34 540 -41 1085 -41 551 0 698 6 1000 40 549 63 1063 235 1482 497 200 125 260 149 803 319 773 242 1090 394 1724 827 288 197 461 343 874 738 506 484 587 559 655 611 l73 56 77 -11 c313 -47 556 -35 792 40 156 50 350 156 414 227 27 30 8 26 -93 -19 -49 -22 -99 -40 -112 -40 -22 0 -24 4 -25 53 -1 63 -48 181 -99 247 -102 131 -95 118 -95 191 0 132 56 349 143 559 39 92 67 189 67 230 0 35 -27 70 -53 69 -12 0 -49 -10 -82 -22z"></path></g></symbol>
+<symbol id="f-manatee" viewBox="0 0 1536 999"><g transform="translate(0,999) scale(.1,-.1)"><path d="M3660 9960 c-283 -19 -553 -61 -782 -119 -331 -84 -496 -170 -943 -490 -188 -134 -300 -223 -465 -370 -230 -206 -342 -281 -523 -351 -72 -29 -164 -68 -202 -86 -172 -84 -440 -353 -569 -573 -76 -131 -97 -213 -130 -526 -8 -77 -22 -160 -31 -184 -23 -68 -21 -266 6 -361 74 -269 273 -522 499 -635 178 -90 382 -106 563 -47 l55 19 43 -50 c82 -96 245 -181 445 -231 364 -92 827 -83 1024 18 36 19 101 52 145 75 132 68 220 54 331 -51 31 -29 85 -92 120 -140 35 -48 84 -108 109 -133 39 -40 50 -62 80 -156 94 -299 126 -578 145 -1259 18 -666 40 -888 115 -1177 19 -72 48 -167 66 -210 86 -218 285 -551 409 -685 55 -61 75 -74 193 -131 87 -42 154 -82 196 -118 120 -101 146 -118 224 -145 162 -54 349 -68 508 -38 126 24 119 14 119 162 0 193 -22 342 -80 543 -57 197 -105 313 -370 884 -137 295 -202 451 -261 626 -99 292 -125 475 -95 672 19 128 20 219 4 348 -11 93 -11 97 13 145 22 45 27 49 63 52 59 5 304 -34 466 -73 80 -20 273 -71 430 -115 157 -43 304 -84 326 -89 37 -10 44 -17 63 -61 87 -203 138 -430 241 -1075 85 -533 141 -780 227 -1005 82 -216 164 -347 322 -512 302 -316 539 -450 771 -435 103 7 253 44 357 89 68 29 83 41 137 107 43 52 79 84 121 107 33 18 67 44 76 56 56 78 54 190 -6 464 -86 389 -126 533 -270 974 -86 263 -167 531 -162 536 3 3 65 -11 452 -100 522 -120 543 -127 690 -246 50 -39 108 -83 131 -96 69 -41 172 -48 464 -34 188 9 301 9 430 1 496 -30 615 -26 895 30 125 25 188 32 286 33 l126 1 87 -44 c115 -58 223 -158 266 -244 41 -84 46 -155 25 -367 -26 -264 -14 -335 97 -574 78 -170 100 -239 143 -458 43 -221 87 -338 251 -668 189 -383 354 -657 498 -827 241 -285 527 -493 759 -552 357 -92 938 -75 1127 31 163 91 419 336 573 546 164 225 274 646 246 944 -20 212 -66 283 -365 559 -229 211 -369 385 -649 809 -166 251 -342 541 -550 905 -171 301 -193 333 -335 515 -204 262 -230 326 -310 779 -46 259 -63 326 -167 656 -41 132 -110 368 -154 525 -195 694 -291 951 -470 1257 -311 527 -775 986 -1534 1515 -112 78 -734 346 -1078 463 -385 133 -695 187 -1142 201 -282 9 -1394 -13 -1730 -33 -373 -24 -886 -23 -1060 0 -170 23 -376 58 -665 112 -319 60 -451 82 -610 100 -160 19 -666 28 -850 15z"></path></g></symbol>
+<symbol id="f-egret" viewBox="0 0 658 1536"><g transform="translate(0,1536) scale(.1,-.1)"><path d="M2325 15354 c-222 -26 -291 -42 -411 -99 -63 -30 -85 -50 -205 -181 -172 -188 -193 -217 -261 -356 -72 -145 -104 -176 -420 -398 -446 -314 -794 -586 -924 -722 -90 -93 -127 -178 -79 -178 36 0 411 159 675 287 210 102 264 121 372 133 51 6 118 15 148 21 62 12 254 74 285 93 11 7 40 18 65 25 25 7 74 28 110 46 36 18 83 35 105 39 22 4 89 21 149 38 102 29 118 30 221 25 85 -4 122 -10 151 -25 50 -26 103 -81 106 -111 3 -21 -3 -26 -47 -37 -57 -14 -170 -55 -200 -72 -11 -6 -72 -53 -135 -104 -118 -96 -151 -134 -208 -235 -18 -32 -71 -109 -118 -172 -133 -178 -173 -272 -224 -532 -17 -85 -44 -199 -60 -254 -48 -162 -86 -335 -135 -601 -51 -282 -51 -284 -100 -492 -42 -177 -43 -205 -21 -364 12 -84 16 -170 14 -305 -3 -254 15 -702 31 -730 6 -13 25 -30 41 -38 17 -9 30 -24 30 -35 0 -30 100 -340 126 -392 13 -26 35 -80 48 -120 14 -40 34 -98 44 -128 20 -56 57 -347 87 -690 8 -96 22 -222 31 -280 18 -122 87 -472 107 -545 8 -27 35 -129 61 -225 198 -731 222 -807 323 -1025 92 -201 269 -535 374 -711 79 -132 148 -278 225 -479 44 -115 47 -166 15 -238 -27 -62 -27 -122 0 -262 28 -144 22 -275 -25 -610 -19 -137 -40 -329 -46 -425 -6 -96 -17 -211 -25 -255 -8 -44 -19 -129 -25 -190 -23 -232 -132 -1084 -150 -1175 -22 -106 -53 -206 -81 -261 -24 -48 -75 -84 -299 -211 -214 -121 -248 -136 -395 -177 -110 -31 -135 -44 -135 -66 0 -23 -77 -82 -169 -130 -67 -35 -101 -60 -129 -94 -20 -25 -73 -86 -116 -136 -75 -85 -156 -198 -156 -217 0 -19 21 -6 35 22 10 20 23 30 38 30 47 0 68 14 98 63 42 68 163 186 284 277 116 87 184 123 275 143 36 8 104 25 153 38 167 45 162 -1 -31 -285 -231 -340 -224 -327 -287 -540 -53 -182 -107 -338 -154 -444 -18 -41 -30 -76 -28 -79 3 -2 23 5 46 16 52 27 55 26 35 -4 -26 -40 -15 -133 20 -180 15 -20 30 -34 33 -31 3 2 -3 27 -12 55 -9 28 -14 60 -10 71 4 12 32 33 66 50 65 33 65 34 47 122 -9 45 -9 76 0 141 19 133 87 393 111 423 12 15 21 32 21 39 0 22 96 150 170 226 39 41 89 100 111 131 96 140 252 289 355 339 43 20 74 17 74 -7 0 -35 -84 -271 -157 -441 -3 -7 6 -17 21 -23 25 -9 26 -13 26 -80 0 -109 -19 -258 -41 -314 -23 -62 -24 -90 -3 -111 15 -15 18 -15 35 1 25 23 56 125 74 243 17 111 41 209 56 228 6 7 15 70 19 140 5 71 9 129 9 131 1 2 6 0 11 -3 6 -3 10 -53 10 -113 l0 -107 88 86 c48 48 121 112 162 144 41 32 123 105 182 162 65 63 115 103 127 103 12 0 21 -3 21 -7 0 -48 -160 -374 -285 -582 l-65 -108 -11 -139 c-6 -89 -17 -157 -30 -191 -10 -29 -29 -79 -40 -110 -12 -32 -24 -89 -26 -128 -4 -64 -2 -74 27 -122 42 -72 54 -69 46 11 l-6 65 46 32 c45 31 46 32 40 73 -19 117 -18 211 2 271 58 172 107 295 159 397 32 62 66 135 77 161 23 61 112 175 162 209 22 15 58 31 80 37 23 6 48 18 55 27 38 46 378 178 410 159 15 -10 -12 -37 -121 -120 -53 -40 -110 -88 -127 -108 -37 -42 -57 -119 -74 -287 -12 -125 -7 -206 16 -251 23 -44 75 -99 94 -99 9 0 39 -11 66 -25 87 -42 95 -34 33 35 -24 25 -55 60 -69 76 -15 16 -41 41 -59 56 l-32 27 4 138 c4 136 4 139 41 210 21 41 51 82 69 96 52 39 175 102 273 142 50 19 115 51 145 69 121 74 132 76 260 52 41 -8 113 -17 160 -21 97 -9 121 -16 162 -50 23 -19 34 -23 48 -15 10 6 32 10 49 10 72 0 11 47 -109 85 -128 40 -188 65 -260 105 -36 21 -107 59 -158 84 -112 56 -117 65 -132 228 -24 277 6 1554 39 1641 6 16 18 27 28 27 10 0 35 9 56 20 20 11 45 20 56 20 10 0 42 8 71 17 53 17 53 17 68 -5 19 -28 36 -28 49 1 6 12 38 110 73 217 61 190 109 304 155 365 27 35 106 227 125 300 7 28 15 125 19 217 4 103 10 171 17 178 20 20 58 7 73 -25 8 -17 17 -82 22 -152 6 -117 19 -161 40 -147 5 3 9 54 9 114 0 60 4 111 9 114 11 7 21 -28 21 -79 0 -49 92 -421 115 -465 14 -28 20 -31 43 -25 84 20 80 22 106 -36 24 -55 66 -208 66 -240 0 -36 23 -67 60 -82 26 -10 47 -29 65 -58 15 -24 40 -57 56 -72 15 -16 35 -50 44 -78 9 -27 25 -54 36 -59 10 -6 28 -28 39 -49 15 -30 29 -42 62 -53 l42 -14 12 -75 c7 -41 26 -112 41 -159 26 -77 32 -87 66 -104 21 -10 45 -29 53 -41 9 -13 59 -133 113 -267 116 -289 208 -490 298 -653 119 -216 190 -309 247 -321 17 -3 45 -15 63 -25 41 -26 49 -11 23 45 -11 25 -20 57 -20 72 0 16 -24 64 -59 118 -60 93 -215 378 -258 476 -33 74 -32 174 3 225 18 25 18 45 0 45 -20 0 -27 26 -14 58 l11 27 10 -27 c16 -43 34 -33 52 27 15 52 17 55 48 55 18 0 37 -4 43 -8 18 -12 34 -49 34 -78 0 -15 13 -41 31 -62 18 -20 40 -54 49 -76 l18 -39 8 49 c11 64 8 167 -5 224 -17 74 -13 184 9 247 11 32 20 66 20 78 0 24 -31 88 -65 134 -31 42 -32 71 -4 78 34 9 20 72 -54 234 -36 79 -78 185 -92 234 -38 133 -153 593 -245 985 -45 190 -105 442 -135 560 -70 279 -123 530 -140 655 -7 55 -29 155 -49 222 -20 67 -65 242 -100 390 -36 147 -94 378 -130 513 -36 135 -94 354 -130 487 -82 307 -133 549 -146 700 -19 208 -30 292 -65 482 -78 425 -172 799 -317 1261 -115 367 -121 390 -114 440 5 39 2 48 -18 68 -14 12 -27 37 -31 55 -26 138 -39 179 -75 241 -72 123 -268 401 -351 497 -45 52 -86 107 -91 122 -6 16 -27 38 -47 51 -49 30 -264 125 -386 171 -123 46 -141 55 -192 98 l-41 34 -143 6 c-115 6 -150 11 -181 27 -46 24 -87 25 -154 5 -59 -17 -232 -105 -406 -204 -73 -41 -132 -70 -139 -65 -29 18 11 412 59 583 l18 62 104 3 c185 5 221 29 579 384 213 212 235 245 272 412 26 115 30 296 12 535 -24 306 -61 426 -210 673 -244 407 -445 573 -801 663 -108 28 -137 31 -207 23z m772 -10645 c188 -299 334 -502 408 -567 69 -61 198 -124 299 -147 l29 -6 -6 -362 c-10 -553 -35 -1131 -58 -1317 -29 -246 -115 -418 -227 -454 -80 -26 -227 -38 -477 -40 -218 -1 -243 1 -269 17 -31 21 -71 102 -87 179 -23 106 28 864 96 1432 105 871 140 1116 175 1208 24 63 56 118 69 118 5 0 27 -27 48 -61z m-231 -3052 c-117 -89 -289 -211 -330 -233 l-49 -27 22 29 c11 16 45 74 73 129 34 64 62 104 78 112 15 8 66 13 130 13 l105 -1 -29 -22z"></path></g></symbol>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<symbol id="f-frigate" viewBox="0 0 873 1536"><g transform="translate(0,1536) scale(.1,-.1)"><path d="M1326 15316 c-48 -50 -96 -123 -182 -276 -32 -58 -71 -125 -86 -150 -16 -25 -38 -76 -49 -115 -11 -38 -31 -88 -44 -110 -13 -22 -31 -67 -40 -100 -10 -33 -30 -83 -45 -110 -20 -34 -34 -83 -46 -150 -10 -63 -27 -122 -46 -158 -23 -47 -33 -88 -48 -204 -14 -106 -26 -160 -46 -201 -22 -49 -27 -77 -35 -202 -9 -159 -18 -218 -48 -306 -11 -36 -25 -129 -36 -239 -13 -145 -21 -191 -42 -240 -43 -101 -47 -156 -34 -420 8 -168 9 -270 2 -340 -6 -55 -11 -142 -11 -193 0 -81 3 -97 24 -130 14 -20 32 -67 41 -103 24 -95 93 -181 239 -297 39 -31 96 -82 126 -112 30 -30 78 -76 105 -101 66 -60 300 -307 322 -339 9 -14 48 -59 86 -100 39 -41 80 -92 93 -112 13 -20 32 -42 43 -47 11 -6 29 -28 42 -48 12 -21 35 -51 51 -68 40 -41 109 -148 142 -220 15 -33 38 -72 52 -86 19 -20 28 -45 36 -100 14 -91 13 -697 0 -936 -10 -167 -11 -173 -46 -244 -25 -51 -36 -87 -36 -118 -1 -75 -17 -123 -71 -215 -54 -92 -68 -104 -178 -157 -54 -26 -87 -33 -200 -45 -75 -7 -149 -18 -166 -23 -89 -29 -163 -66 -250 -127 -27 -19 -79 -45 -115 -59 -65 -25 -66 -25 -426 -25 l-361 0 -23 -24 c-27 -30 -21 -51 17 -59 15 -4 141 -11 278 -17 299 -12 407 -24 459 -51 21 -11 68 -27 105 -35 167 -38 221 -62 310 -136 104 -86 123 -105 148 -143 40 -61 133 -162 178 -193 74 -52 176 -91 280 -107 55 -9 126 -20 159 -26 32 -6 96 -14 141 -19 90 -9 125 -23 180 -71 30 -27 35 -37 35 -75 0 -30 -8 -57 -24 -82 -13 -20 -32 -61 -41 -91 -20 -62 -41 -101 -101 -186 -23 -33 -58 -94 -78 -135 -67 -142 -122 -238 -187 -326 -36 -49 -82 -114 -101 -144 -19 -30 -57 -89 -83 -130 -61 -95 -111 -161 -220 -286 -47 -54 -96 -117 -107 -138 -11 -22 -35 -63 -53 -90 -22 -34 -37 -73 -44 -117 -6 -36 -20 -92 -31 -124 -25 -74 -25 -126 1 -220 11 -41 26 -131 33 -200 12 -112 16 -130 45 -177 29 -46 35 -68 47 -173 10 -89 19 -127 34 -147 37 -51 43 -82 50 -291 l7 -207 37 -72 c28 -54 38 -87 42 -137 8 -108 13 -126 45 -174 18 -27 34 -69 40 -106 6 -34 22 -76 35 -94 13 -17 31 -42 39 -54 9 -12 20 -48 25 -80 5 -37 19 -77 39 -108 20 -32 35 -74 42 -115 6 -37 27 -99 49 -145 34 -68 41 -95 48 -178 7 -76 14 -103 29 -120 35 -38 44 -65 54 -160 7 -66 15 -99 29 -117 38 -48 51 -82 59 -150 5 -49 14 -79 34 -107 30 -43 41 -73 57 -155 7 -35 22 -71 40 -93 16 -20 33 -58 39 -86 11 -51 44 -123 60 -133 10 -6 22 -40 40 -112 6 -23 24 -58 40 -78 17 -21 34 -60 41 -89 6 -29 24 -70 40 -93 16 -22 37 -60 46 -85 9 -24 28 -59 41 -77 14 -18 36 -61 49 -95 13 -33 35 -77 47 -97 13 -19 47 -70 75 -113 29 -44 52 -87 52 -97 0 -10 17 -39 38 -64 35 -42 51 -65 127 -185 53 -83 136 -189 152 -195 22 -9 66 35 104 101 l30 53 9 522 c10 538 28 877 56 1002 20 93 28 315 16 441 l-10 100 28 45 c16 25 36 62 45 82 26 63 19 199 -21 396 -6 28 -4 32 14 32 41 0 47 23 48 203 0 118 4 172 12 175 6 2 21 19 33 38 25 41 22 91 -11 248 l-20 89 25 23 c19 17 25 33 25 63 0 51 -31 185 -64 277 -14 39 -26 76 -26 83 0 7 17 10 47 8 l47 -2 8 45 c11 58 -6 196 -29 244 -17 37 -17 38 5 55 26 19 62 124 62 180 0 24 9 49 25 71 13 18 36 68 50 111 21 63 24 82 15 100 -11 19 -8 25 23 50 20 16 38 42 42 58 3 16 20 50 37 75 25 39 29 52 23 84 -4 24 -1 53 8 78 8 21 25 73 37 114 12 41 30 97 41 124 10 27 19 54 19 60 0 6 23 58 50 116 28 58 50 111 50 119 0 8 15 42 34 75 19 34 39 88 46 121 7 33 25 93 41 134 25 63 31 95 39 225 6 83 18 219 26 301 14 130 15 171 4 305 -17 213 -11 351 19 409 27 52 173 196 251 249 30 20 69 48 85 62 17 15 40 33 51 41 12 8 49 37 82 66 l61 51 708 5 c419 3 735 9 773 16 90 14 361 38 645 56 233 15 345 26 470 45 33 5 119 14 190 20 313 27 626 62 874 99 146 22 292 42 323 46 45 5 58 11 63 26 12 37 -11 49 -95 49 -43 0 -100 -4 -127 -9 -307 -61 -396 -66 -1078 -65 -609 0 -1019 15 -1121 39 -33 8 -102 15 -152 15 l-92 0 -20 33 c-26 41 -25 53 3 71 44 29 174 49 457 71 351 28 386 31 399 39 7 5 102 12 210 16 199 8 407 22 606 41 187 17 500 22 630 9 66 -7 174 -14 239 -17 126 -4 136 -2 136 43 1 92 -268 117 -1250 116 -493 0 -690 -3 -730 -12 -30 -7 -174 -16 -320 -20 -199 -5 -282 -12 -335 -25 -101 -25 -167 -33 -277 -34 -53 -1 -132 -8 -175 -16 -43 -8 -102 -15 -130 -15 -54 0 -335 -33 -425 -50 -28 -6 -143 -10 -256 -10 -191 0 -208 1 -249 22 -67 34 -154 108 -190 163 -18 27 -84 101 -146 164 -131 134 -200 220 -217 273 -6 21 -16 40 -21 43 -28 18 -60 98 -69 174 -6 51 -20 106 -40 150 -27 63 -32 88 -45 255 -8 102 -23 223 -34 268 -25 106 -29 135 -46 357 -14 183 -14 184 -50 242 -20 33 -40 80 -44 106 -4 28 -25 77 -49 117 -23 39 -42 77 -42 86 0 15 -98 169 -154 243 -21 28 -91 110 -305 356 -113 130 -186 224 -245 312 -17 26 -61 88 -99 139 -38 53 -74 115 -82 142 -7 26 -29 68 -48 92 l-34 45 -7 253 -8 253 -33 37 c-37 41 -42 59 -49 200 -4 89 -7 101 -36 141 -33 47 -60 122 -60 170 0 17 -15 58 -34 91 -18 34 -36 74 -40 89 -4 17 -20 36 -39 47 -18 11 -41 34 -52 52 -32 53 -95 192 -95 209 0 8 -14 37 -32 65 -38 60 -138 279 -138 303 0 10 -20 49 -45 87 -25 37 -45 73 -45 79 0 5 -20 51 -44 100 -24 50 -51 106 -60 125 -9 19 -27 50 -40 68 -14 18 -30 56 -36 85 -6 28 -24 76 -41 106 -19 32 -36 85 -46 135 -9 50 -27 102 -46 136 -29 52 -31 64 -38 190 -6 119 -10 142 -33 185 -30 59 -43 75 -76 98 -40 28 -67 21 -114 -27z"/></g></symbol>
+<symbol id="f-gull" viewBox="0 0 1536 1347"><g transform="translate(0,1347) scale(.1,-.1)"><path d="M2313 13459 c-52 -15 -45 -27 48 -80 30 -17 46 -28 36 -25 -58 18 -200 28 -274 18 -81 -11 -193 -47 -193 -61 0 -22 51 -80 99 -111 l53 -35 -39 -11 c-28 -8 -43 -19 -55 -45 -10 -19 -18 -39 -18 -45 0 -6 35 -17 78 -24 102 -16 171 -36 205 -58 l27 -19 -102 -16 c-63 -11 -127 -29 -166 -47 -58 -27 -63 -32 -51 -47 21 -25 142 -78 254 -111 l99 -29 -56 -17 c-63 -18 -153 -74 -153 -95 0 -8 13 -23 28 -35 25 -18 42 -21 141 -21 l112 0 -20 -35 c-26 -49 -16 -96 30 -141 l35 -34 142 3 142 2 -45 -38 c-38 -33 -44 -44 -44 -77 0 -80 133 -158 274 -159 l76 -1 -28 -23 c-15 -13 -28 -27 -28 -31 0 -4 25 -25 55 -47 30 -21 55 -42 55 -45 0 -4 -18 -19 -41 -34 l-40 -28 28 -23 c49 -40 118 -73 184 -89 84 -19 277 -19 458 1 78 8 156 14 173 12 l31 -3 -49 -35 c-76 -54 -133 -110 -161 -157 -33 -57 -26 -88 27 -112 l40 -18 -30 -41 c-16 -23 -30 -46 -30 -51 0 -12 98 -61 121 -61 10 0 25 -3 34 -6 14 -6 13 -8 -6 -22 -27 -19 -75 -120 -90 -190 -6 -30 -9 -89 -7 -131 5 -95 28 -148 75 -167 38 -16 37 -12 22 -87 -24 -117 18 -207 94 -207 l35 0 -21 -67 c-19 -57 -22 -90 -21 -208 1 -77 7 -159 13 -183 19 -68 124 -213 158 -217 1 0 -2 -20 -8 -43 -19 -86 29 -173 104 -187 l35 -7 -5 -52 c-6 -60 -1 -72 67 -166 62 -85 73 -121 60 -191 -14 -72 -5 -104 41 -154 75 -82 93 -181 64 -354 -26 -154 -19 -237 28 -335 21 -44 53 -96 71 -116 18 -20 36 -52 40 -71 6 -33 8 -35 41 -31 l35 4 -16 -38 c-33 -79 12 -217 100 -303 l45 -44 -48 -22 c-153 -71 -187 -302 -60 -410 41 -33 70 -45 134 -54 l50 -6 -65 -53 c-36 -28 -107 -84 -158 -123 -54 -41 -90 -75 -85 -80 20 -20 171 -49 256 -50 l89 -1 -53 -35 c-68 -45 -133 -100 -280 -234 -196 -179 -284 -239 -504 -345 -662 -319 -1735 -497 -3230 -534 -453 -11 -510 -18 -610 -74 -131 -72 -190 -224 -155 -396 5 -25 14 -126 20 -225 5 -99 14 -205 20 -235 14 -77 64 -174 109 -212 l38 -32 -14 -35 c-8 -20 -24 -46 -35 -57 -26 -29 -44 -145 -32 -199 l10 -40 79 0 c44 0 98 4 120 8 38 8 39 8 23 -10 -29 -32 -58 -106 -58 -150 0 -78 62 -210 138 -295 68 -76 109 -82 262 -43 52 14 101 25 109 25 7 0 -25 -37 -72 -83 -156 -152 -175 -254 -60 -327 99 -63 364 -190 446 -214 244 -71 530 -56 827 43 109 37 840 346 1055 446 55 26 172 78 259 116 193 84 298 146 378 220 58 54 64 57 127 64 36 3 122 18 191 31 107 21 329 43 895 89 39 3 196 10 350 15 293 9 361 18 585 72 341 81 323 79 800 88 524 10 517 8 798 134 157 71 188 76 527 86 467 15 653 32 835 76 l105 26 45 -45 c39 -38 55 -47 117 -61 40 -9 116 -16 170 -17 75 0 93 -3 76 -11 -29 -14 -47 -84 -38 -145 9 -64 75 -130 160 -164 51 -20 77 -23 180 -23 86 0 132 5 161 16 l41 16 6 -76 c3 -43 13 -98 22 -123 17 -50 31 -59 93 -59 19 0 32 -3 30 -7 -136 -267 -190 -500 -157 -678 6 -32 20 -78 31 -102 l20 -42 45 6 c45 6 46 5 40 -18 -39 -159 14 -386 103 -447 50 -34 124 -27 187 17 34 24 44 28 38 14 -14 -36 -18 -270 -5 -335 16 -83 53 -154 93 -178 43 -26 127 -26 186 0 24 11 45 20 47 20 2 0 4 -21 4 -47 0 -135 39 -331 86 -430 60 -126 140 -178 263 -171 l69 4 22 -106 c68 -333 122 -419 266 -428 l64 -4 0 -47 c1 -188 140 -372 293 -388 51 -5 75 1 160 45 4 2 7 -6 7 -18 0 -48 43 -228 66 -280 30 -66 58 -98 101 -116 105 -45 290 29 414 164 29 31 106 128 172 216 87 116 122 155 128 145 19 -31 9 -145 -27 -288 -33 -130 -36 -154 -32 -250 5 -122 26 -178 81 -211 63 -39 103 -26 237 79 188 146 274 257 435 561 48 91 123 229 166 306 137 249 226 463 332 804 61 195 75 253 112 455 14 77 41 223 60 325 45 234 53 402 35 780 -13 296 -9 388 30 592 35 182 45 316 32 418 -13 91 -27 141 -101 350 -22 63 -59 200 -81 303 -23 104 -59 248 -80 320 -55 186 -74 273 -125 570 -64 376 -79 435 -141 558 -62 125 -193 233 -306 254 -51 10 -40 21 26 29 29 3 123 26 208 51 257 74 378 88 511 60 37 -8 190 -54 340 -104 424 -139 422 -139 597 -150 85 -5 172 -15 193 -21 42 -12 107 -65 107 -86 0 -20 14 -17 37 9 114 124 60 355 -114 487 -125 94 -395 212 -625 274 -161 42 -372 162 -487 275 -32 31 -105 128 -163 216 -123 187 -161 232 -271 321 -294 236 -691 386 -1182 448 -259 32 -477 40 -797 28 -334 -13 -432 -9 -764 33 -323 40 -506 55 -676 55 -117 0 -166 4 -186 14 -35 18 -184 172 -247 255 -27 35 -96 141 -153 235 -58 94 -127 207 -154 251 -191 309 -324 712 -418 1261 -54 316 -8 584 181 1057 34 83 70 187 81 231 54 213 -20 397 -208 516 -35 22 -119 65 -186 95 -68 30 -193 89 -278 133 -181 92 -322 149 -489 197 -287 82 -731 153 -1151 184 -280 21 -423 24 -1085 26 -666 1 -685 2 -920 28 -567 64 -682 73 -1070 87 -368 14 -734 73 -1032 166 -252 80 -360 105 -463 110 -52 2 -110 -1 -127 -7z"/></g></symbol>
+<symbol id="f-crab" viewBox="0 0 1536 1096"><g transform="translate(0,1096) scale(.1,-.1)"><path d="M9060 10951 c-116 -36 -193 -141 -226 -308 -12 -61 -15 -139 -13 -355 l3 -277 -58 -98 c-31 -54 -103 -161 -158 -239 l-101 -140 -231 -18 c-182 -13 -586 -50 -766 -68 -22 -3 -37 15 -125 146 l-101 149 15 66 c11 50 15 135 15 351 1 243 -2 295 -17 350 -35 131 -89 209 -171 253 -59 31 -193 31 -252 0 -111 -59 -169 -191 -181 -414 -14 -262 64 -503 216 -674 82 -91 197 -283 180 -299 -2 -2 -89 -11 -194 -20 -416 -35 -701 -69 -820 -98 -48 -11 -49 -12 -20 -18 17 -3 -73 -10 -200 -14 -126 -4 -240 -10 -252 -13 l-22 -5 21 -28 c14 -19 19 -36 15 -52 -16 -64 -131 -174 -171 -164 -47 12 -229 -106 -330 -215 l-66 -71 -1 -62 c0 -83 -116 -2279 -118 -2241 l-1 31 -185 -1 c-102 0 -185 -1 -185 -2 0 -2 17 -27 37 -55 90 -130 -10 -1 -177 227 -526 718 -886 1123 -1270 1430 -284 227 -582 376 -843 421 -116 20 -321 15 -423 -11 l-70 -17 -12 -79 c-6 -43 -36 -154 -66 -246 -91 -277 -101 -343 -67 -440 l17 -52 -44 -11 c-24 -6 -46 -10 -47 -8 -2 2 30 178 70 393 41 214 72 391 71 392 -1 2 -29 -4 -62 -13 -392 -102 -921 -834 -1284 -1779 -212 -554 -343 -1112 -381 -1630 -13 -173 -7 -493 12 -610 7 -51 7 -134 -2 -306 -14 -279 -7 -663 16 -829 27 -196 74 -344 133 -418 16 -21 28 -24 103 -26 74 -2 106 -10 263 -64 99 -34 181 -62 183 -62 10 0 73 315 108 542 13 90 49 357 79 593 85 657 106 792 231 1454 l115 613 42 37 42 37 -13 118 -13 119 47 251 c26 138 51 255 55 259 4 4 104 -79 222 -185 118 -106 250 -224 294 -262 43 -38 85 -75 93 -82 12 -11 8 -21 -31 -62 -62 -66 -156 -194 -218 -297 -75 -123 -128 -244 -210 -470 -39 -110 -86 -230 -104 -267 l-32 -67 46 -10 c25 -5 66 -12 93 -16 26 -4 47 -9 47 -11 0 -3 -16 -37 -36 -76 -128 -254 -201 -674 -164 -942 20 -143 90 -295 158 -345 26 -18 26 -18 55 3 25 18 42 21 140 21 62 0 128 -3 148 -7 l37 -6 8 316 c10 327 10 328 33 37 13 -166 51 -361 101 -517 21 -67 38 -124 36 -126 -6 -6 -129 142 -164 198 -19 30 -36 56 -37 58 -1 2 -55 7 -120 12 -122 10 -163 3 -173 -29 -6 -18 231 -250 358 -352 91 -72 184 -139 193 -139 3 0 8 20 11 45 4 25 12 45 18 45 5 0 8 -7 4 -15 -3 -8 -13 -65 -23 -127 -26 -162 -25 -729 1 -938 56 -456 152 -765 280 -907 l41 -45 37 21 c47 28 149 37 247 22 40 -6 76 -10 78 -7 20 20 96 440 114 629 16 179 6 574 -20 792 -21 172 -99 656 -106 664 -2 2 -42 -12 -87 -32 -104 -44 -172 -64 -246 -72 -75 -9 -247 17 -273 41 -10 9 -18 18 -16 20 1 1 45 -4 97 -12 226 -34 352 -12 483 83 l47 35 0 108 c0 59 7 172 16 251 34 301 3 551 -142 1164 -62 263 -90 336 -157 405 -42 43 -220 180 -234 180 -15 -1 -108 -130 -159 -219 l-51 -91 -6 68 c-24 247 11 509 88 666 57 117 50 113 140 65 106 -57 136 -57 251 2 49 25 163 84 254 131 143 73 378 169 413 168 7 -1 -49 -23 -123 -50 -262 -96 -560 -265 -762 -432 -86 -70 -84 -65 -40 -158 20 -42 65 -94 192 -220 198 -196 225 -238 225 -357 l0 -72 85 -7 c136 -11 820 -8 1000 5 457 33 804 94 1134 198 144 46 149 48 164 83 9 19 18 37 19 39 1 2 20 -8 40 -22 61 -42 108 -57 178 -57 74 0 162 26 243 72 60 34 54 40 77 -82 50 -259 62 -295 170 -500 425 -806 1012 -2174 1371 -3193 18 -54 30 -74 35 -65 16 29 91 246 125 362 121 416 130 855 34 1703 -28 244 -31 225 42 278 33 25 134 89 222 142 211 127 276 173 367 263 118 117 192 236 264 425 36 94 54 128 87 162 53 54 153 103 293 144 61 18 114 37 118 43 14 19 -3 89 -38 164 -45 96 -116 204 -253 385 -62 82 -110 152 -107 156 2 5 33 11 67 14 146 14 537 131 761 227 77 33 105 41 130 36 53 -11 451 -30 612 -29 128 0 165 4 248 26 167 44 312 127 352 201 l18 33 266 -5 c274 -5 448 5 570 34 35 8 66 13 68 11 2 -3 -1 -16 -7 -31 -29 -78 -72 -367 -91 -623 -11 -149 -7 -595 6 -658 9 -47 -53 -140 -189 -282 -271 -283 -667 -569 -923 -668 -36 -15 -33 -15 77 -11 86 3 138 11 205 31 169 50 385 172 585 331 92 73 440 414 440 431 0 6 -16 31 -35 56 -19 25 -35 48 -35 51 0 3 29 -6 65 -19 87 -33 139 -33 161 -1 25 40 120 322 144 431 12 55 28 147 36 205 18 124 30 578 17 635 -16 73 -102 109 -307 130 -81 8 -115 15 -102 20 34 15 214 -13 320 -50 55 -18 101 -33 102 -32 11 10 44 171 43 206 -2 99 10 98 -198 20 -101 -38 -186 -67 -188 -65 -12 12 483 188 610 216 42 10 56 17 53 27 -42 110 -67 267 -73 468 -8 287 17 404 120 565 20 30 34 56 32 58 -4 4 -185 -47 -209 -60 -17 -9 -768 -499 -981 -641 -121 -80 -20 -2 390 303 231 172 434 325 450 340 88 82 420 139 585 100 127 -29 240 -106 308 -211 l40 -60 11 32 c6 18 11 42 11 55 0 13 5 26 12 30 8 5 10 -18 5 -92 -8 -139 -13 -148 -48 -73 -39 81 -143 185 -229 229 -121 61 -256 52 -327 -23 -78 -80 -102 -171 -110 -397 -9 -285 26 -538 106 -772 39 -113 135 -323 152 -334 5 -3 30 13 57 34 135 113 318 150 527 108 72 -15 84 -21 119 -59 49 -53 121 -160 174 -257 137 -252 274 -680 396 -1235 29 -133 144 -690 147 -713 2 -14 30 97 53 213 61 299 80 550 73 963 -7 421 -37 674 -127 1052 -22 91 -47 223 -56 294 -26 208 -92 455 -171 639 -18 43 -33 79 -33 80 0 1 44 2 98 3 65 0 142 9 235 29 75 15 140 26 143 23 2 -3 -1 -48 -8 -99 -17 -124 -16 -633 0 -804 51 -512 125 -938 303 -1748 l81 -368 -22 -62 c-76 -210 -241 -578 -341 -760 -139 -252 -287 -443 -384 -496 l-40 -22 75 4 c248 14 528 297 775 785 36 70 65 124 65 120 0 -18 -173 -417 -255 -585 -174 -358 -303 -552 -418 -626 -57 -37 -46 -45 38 -27 237 49 499 348 760 870 75 150 163 352 216 495 17 43 34 84 39 90 26 32 107 213 140 313 238 728 135 1854 -238 2597 l-45 90 2 135 c7 506 -217 1039 -546 1301 -72 57 -301 180 -415 223 l-61 23 -32 79 c-254 626 -911 1187 -1598 1363 -153 40 -306 61 -467 64 -119 3 -143 0 -204 -20 -264 -88 -525 -329 -758 -701 -192 -304 -356 -668 -565 -1252 -61 -170 -82 -221 -78 -185 44 389 12 770 -97 1150 -24 86 -37 115 -59 133 -40 33 -43 65 -14 162 52 173 67 242 57 252 -12 12 -550 -6 -622 -21 -25 -5 -124 -17 -220 -25 -96 -9 -195 -19 -219 -22 l-43 -6 41 59 c23 32 86 110 142 173 112 128 153 195 197 320 44 128 57 210 56 355 -3 265 -78 429 -215 469 -55 17 -127 19 -169 7z m2859 -926 c75 -40 139 -96 176 -156 14 -21 45 -96 68 -167 24 -70 50 -139 58 -153 42 -76 656 -979 669 -983 8 -2 3 -4 -11 -5 -41 -2 -138 -38 -189 -71 -26 -17 -83 -62 -126 -100 -44 -39 -105 -83 -136 -98 l-58 -28 81 -33 c84 -35 104 -52 28 -26 -71 26 -215 39 -291 28 l-67 -9 -43 34 c-24 19 -59 42 -78 52 -48 24 -166 60 -200 60 -22 0 -157 -119 -746 -661 -396 -364 -721 -663 -723 -665 -5 -4 53 -107 96 -169 l34 -50 -41 44 c-36 40 -90 135 -104 187 -5 17 99 114 649 604 l654 583 30 91 c17 50 111 340 210 644 136 415 187 562 207 585 124 147 60 322 -167 459 -79 48 -68 49 20 3z m-2534 -451 c-24 -19 -111 -64 -122 -64 -8 0 128 79 137 79 3 0 -4 -7 -15 -15z m-145 -74 c-8 -5 -22 -9 -30 -9 -10 0 -8 3 5 9 27 12 43 12 25 0z m-1503 -278 c85 -64 241 -224 223 -230 -6 -2 -19 6 -27 18 -49 70 -171 169 -191 156 -11 -6 -31 -97 -42 -184 -6 -48 -7 -26 -3 74 6 157 6 157 -68 195 -21 10 -39 22 -39 24 0 3 15 5 34 5 26 0 53 -14 113 -58z m707 -82 c12 -14 28 -34 36 -45 15 -20 15 -20 -8 0 -13 10 -44 48 -69 84 l-47 65 -13 -35 -13 -34 6 45 c4 25 9 49 11 53 3 5 21 -18 40 -50 19 -32 45 -69 57 -83z m-139 -80 c-8 -35 -52 -61 -102 -59 -25 0 -23 2 15 16 28 10 51 27 65 48 26 40 31 38 22 -5z m218 -97 c-9 -23 -20 -4 -15 24 5 24 6 25 12 8 4 -11 5 -26 3 -32z m-426 31 c-3 -3 -12 -4 -19 -1 -8 3 -5 6 6 6 11 1 17 -2 13 -5z m-2571 -96 c4 -7 -9 1 -29 16 -20 16 -37 30 -37 33 0 7 58 -36 66 -49z m3099 12 c3 -6 -1 -7 -9 -4 -18 7 -21 14 -7 14 6 0 13 -4 16 -10z m1238 3 c-7 -2 -21 -2 -30 0 -10 3 -4 5 12 5 17 0 24 -2 18 -5z m-133 -18 c-47 -7 -121 -16 -165 -19 -71 -4 -67 -3 40 13 66 10 140 18 165 18 32 0 20 -3 -40 -12z m-272 -32 c-16 -2 -40 -2 -55 0 -16 2 -3 4 27 4 30 0 43 -2 28 -4z m-1744 -35 c9 -2 7 -16 -10 -53 l-23 -50 0 61 c-1 57 10 95 17 61 2 -9 9 -17 16 -19z m1609 25 c-7 -2 -21 -2 -30 0 -10 3 -4 5 12 5 17 0 24 -2 18 -5z m-648 -33 c8 -13 -5 -13 -25 0 -13 8 -13 10 2 10 9 0 20 -4 23 -10z m-315 -7 c0 -5 -13 -17 -28 -27 l-27 -19 24 26 c26 28 31 32 31 20z m367 -107 c4 -6 -4 2 -19 19 -15 16 -27 39 -27 50 0 14 6 8 19 -19 11 -21 23 -43 27 -50z m-634 47 c-7 -2 -19 -2 -25 0 -7 3 -2 5 12 5 14 0 19 -2 13 -5z m527 -10 c-8 -3 -34 -14 -57 -24 -24 -10 -43 -16 -43 -13 0 8 83 44 100 43 13 -1 13 -1 0 -6z m-440 -18 c35 -18 36 -21 13 -21 -10 0 -26 9 -35 18 -22 22 -16 23 22 3z m103 -95 c6 -34 6 -34 -7 -11 -8 14 -12 31 -9 38 7 18 9 15 16 -27z m182 -27 c0 -32 4 -69 9 -83 5 -14 5 -21 0 -17 -5 5 -16 36 -26 70 -16 57 -16 63 -1 75 9 6 17 12 17 12 1 0 1 -26 1 -57z m-127 -57 l27 5 -28 -16 -27 -16 29 -37 c64 -80 90 -210 97 -482 6 -232 7 -238 39 -246 48 -12 26 -94 -25 -94 -40 0 -43 -15 -38 -217 6 -195 18 -240 80 -303 51 -50 113 -70 227 -70 l86 -1 -45 -24 c-40 -21 -58 -24 -157 -25 l-113 0 0 -25 c0 -59 68 -142 178 -219 40 -27 43 -28 105 -17 69 12 234 13 282 1 17 -4 -32 -7 -110 -7 -77 0 -167 -6 -200 -13 -57 -12 -64 -17 -142 -99 -44 -47 -96 -94 -115 -104 l-33 -18 30 22 c40 30 115 106 142 145 l23 32 -83 88 c-84 90 -184 164 -221 164 -60 0 -102 -23 -167 -90 -65 -67 -181 -228 -194 -270 -5 -16 0 -30 21 -52 l29 -29 -45 20 c-62 28 -184 28 -274 1 -36 -11 -69 -27 -74 -36 -7 -13 -11 -12 -26 5 -16 18 -16 20 11 39 60 42 97 54 187 60 60 5 101 13 118 24 38 25 111 164 112 212 1 33 -3 42 -24 53 -39 20 -110 16 -145 -8 -16 -11 -64 -38 -106 -58 -43 -21 -92 -47 -110 -59 -43 -25 -132 -52 -177 -52 -28 0 -44 10 -89 55 -35 34 -49 55 -39 55 9 0 16 -5 16 -11 0 -5 26 -22 58 -36 80 -37 136 -36 202 5 28 18 56 32 61 32 19 0 94 43 136 76 29 24 66 41 118 54 161 41 277 129 336 254 43 91 59 193 59 371 0 129 3 155 16 166 14 12 16 31 10 149 -9 188 -25 384 -37 455 -5 33 -14 89 -20 124 -5 35 -12 75 -14 90 l-5 26 11 -27 c9 -23 15 -27 37 -22z m-1305 -3 c-24 -2 -62 -2 -85 0 -24 2 -5 4 42 4 47 0 66 -2 43 -4z m1121 -52 c10 -17 17 -33 15 -34 -2 -1 -26 19 -52 46 -46 46 -47 47 -15 34 18 -7 41 -28 52 -46z m-1444 38 c-137 -8 -201 -20 -270 -50 -28 -12 -38 -13 -26 -4 50 38 179 63 326 62 l95 0 -125 -8z m7536 -326 c9 -58 -28 -133 -97 -200 -87 -84 -119 -103 -53 -31 90 97 109 142 109 257 l0 93 17 -38 c9 -22 20 -58 24 -81z m-5381 5 c-91 -30 -184 -48 -240 -46 -46 1 -45 1 20 9 39 4 111 19 160 32 107 30 145 33 60 5z m-720 -188 c-16 -4 -43 -8 -60 -8 -29 1 -29 1 5 8 19 4 46 7 60 8 22 0 22 -1 -5 -8z m-107 -17 c-10 -2 -28 -2 -40 0 -13 2 -5 4 17 4 22 1 32 -1 23 -4z m-100 -10 c-16 -2 -40 -2 -55 0 -16 2 -3 4 27 4 30 0 43 -2 28 -4z m-211 -10 c-20 -2 -52 -2 -70 0 -17 2 0 4 38 4 39 0 53 -2 32 -4z m810 -125 c-2 -24 -4 -5 -4 42 0 47 2 66 4 43 2 -24 2 -62 0 -85z m5240 86 c-3 -3 -12 -4 -19 -1 -8 3 -5 6 6 6 11 1 17 -2 13 -5z m118 -25 c37 -11 65 -22 63 -24 -1 -2 -39 7 -83 20 -44 13 -73 24 -64 24 9 1 47 -8 84 -20z m320 -154 c163 -96 328 -244 439 -395 26 -36 36 -51 21 -35 -15 17 -61 67 -101 112 -94 104 -230 218 -363 305 -58 37 -101 68 -97 68 4 0 50 -25 101 -55z m-6648 -7 c-3 -7 -5 -2 -5 12 0 14 2 19 5 13 2 -7 2 -19 0 -25z m6586 -116 c85 -93 107 -135 106 -204 -1 -82 -17 -107 -19 -28 -1 85 -21 129 -106 223 -38 42 -80 96 -93 119 l-23 43 33 -40 c19 -22 64 -73 102 -113z m-6596 -44 c-2 -18 -4 -6 -4 27 0 33 2 48 4 33 2 -15 2 -42 0 -60z m5450 40 c-3 -8 -6 -5 -6 6 -1 11 2 17 5 13 3 -3 4 -12 1 -19z m178 -9 c37 -11 65 -22 62 -25 -2 -2 -17 0 -33 7 -16 6 -56 17 -89 24 -33 7 -48 14 -34 14 15 1 57 -8 94 -20z m-4037 -224 c0 -16 -2 -15 -8 5 -11 34 -11 60 0 35 5 -11 8 -29 8 -40z m9 -47 c-3 -8 -6 -5 -6 6 -1 11 2 17 5 13 3 -3 4 -12 1 -19z m690 16 c-3 -3 -12 -4 -19 -1 -8 3 -5 6 6 6 11 1 17 -2 13 -5z m-40 -10 c-3 -3 -12 -4 -19 -1 -8 3 -5 6 6 6 11 1 17 -2 13 -5z m3768 -14 c10 -11 16 -20 13 -20 -3 0 -13 9 -23 20 -10 11 -16 20 -13 20 3 0 13 -9 23 -20z m-3940 -40 c-3 -5 -34 -9 -68 -8 l-62 1 60 7 c33 4 64 7 68 8 5 1 5 -2 2 -8z m3976 -7 c13 -16 12 -17 -3 -4 -10 7 -18 15 -18 17 0 8 8 3 21 -13z m-4158 -10 c-7 -2 -21 -2 -30 0 -10 3 -4 5 12 5 17 0 24 -2 18 -5z m4222 -85 c15 -27 25 -48 22 -48 -3 0 -21 28 -42 63 -20 34 -30 55 -22 47 8 -8 27 -36 42 -62z m-4196 28 c-23 -21 -139 -104 -134 -95 8 12 124 99 133 99 3 0 3 -2 1 -4z m-632 -222 c-3 -3 -12 -4 -19 -1 -8 3 -5 6 6 6 11 1 17 -2 13 -5z m203 -21 l125 -16 50 -51 c28 -28 42 -43 30 -33 -24 21 -173 69 -300 96 -113 24 -69 26 95 4z m-1565 -79 c-38 -15 -106 -31 -97 -22 5 5 25 14 44 18 35 8 70 11 53 4z m3169 -214 c38 -12 41 -17 27 -39 -8 -12 -20 -7 -63 27 -29 22 -71 57 -93 76 -38 34 -37 34 27 -8 36 -24 83 -49 102 -56z m465 9 c30 -62 129 -170 211 -229 97 -70 99 -74 30 -38 -84 43 -205 162 -248 244 -34 65 -37 74 -24 74 4 0 18 -23 31 -51z m-4383 -16 c-1 -2 -34 8 -72 21 -46 16 -62 25 -49 28 18 4 129 -41 121 -49z m2393 38 c39 -39 147 -242 165 -312 3 -13 -5 -1 -18 28 -32 68 -145 258 -169 283 -23 26 -3 26 22 1z m-3681 -242 c-26 -22 -68 -63 -94 -92 l-47 -52 32 47 c17 26 57 68 87 93 69 56 86 60 22 4z m3872 -134 c0 -5 -5 -3 -10 5 -5 8 -10 20 -10 25 0 6 5 3 10 -5 5 -8 10 -19 10 -25z m2161 -12 c-5 -10 -22 -29 -37 -43 -23 -21 -22 -18 7 17 37 46 45 53 30 26z m-6554 -135 c-2 -24 -4 -5 -4 42 0 47 2 66 4 43 2 -24 2 -62 0 -85z m4430 0 c-3 -8 -6 -5 -6 6 -1 11 2 17 5 13 3 -3 4 -12 1 -19z m-5880 -14 c-3 -3 -12 -4 -19 -1 -8 3 -5 6 6 6 11 1 17 -2 13 -5z m-40 -10 c-3 -3 -12 -4 -19 -1 -8 3 -5 6 6 6 11 1 17 -2 13 -5z m-40 -10 c-3 -3 -12 -4 -19 -1 -8 3 -5 6 6 6 11 1 17 -2 13 -5z m5970 -31 c-3 -10 -5 -4 -5 12 0 17 2 24 5 18 2 -7 2 -21 0 -30z m2219 10 c-10 -10 -19 5 -10 18 6 11 8 11 12 0 2 -7 1 -15 -2 -18z m-8241 7 c-11 -5 -27 -9 -35 -9 -9 0 -8 4 5 9 11 5 27 9 35 9 9 0 8 -4 -5 -9z m6032 -192 c-2 -29 -3 -8 -3 47 0 55 1 79 3 53 2 -26 2 -71 0 -100z m-4186 -65 c90 -96 129 -228 110 -368 -12 -82 -50 -206 -87 -280 -27 -55 -26 -53 22 85 89 256 58 426 -110 608 -51 56 -54 61 -21 35 22 -17 61 -53 86 -80z m-3248 -1030 c-52 -22 -87 -23 -162 -6 l-74 18 132 0 c112 0 128 -2 104 -12z m34 -675 c-3 -7 -5 -2 -5 12 0 14 2 19 5 13 2 -7 2 -19 0 -25z"/> <path d="M12872 6056 c-59 -15 -202 -82 -202 -96 0 -4 23 -57 51 -116 265 -565 542 -1340 774 -2173 41 -145 76 -266 79 -268 12 -13 17 359 7 571 -24 510 -98 1045 -223 1620 l-42 195 -116 120 c-67 70 -130 126 -150 135 -54 22 -120 26 -178 12z"/> <path d="M8620 4743 c-83 -30 -153 -115 -254 -308 -49 -93 -108 -200 -132 -236 -55 -84 -162 -185 -238 -225 l-58 -31 30 -35 c18 -20 85 -64 158 -104 110 -59 142 -82 224 -164 88 -87 102 -105 153 -210 166 -340 335 -1082 431 -1890 l23 -195 66 205 c120 374 168 533 222 745 68 269 95 424 102 605 12 303 -38 519 -237 1030 -48 124 -141 361 -206 528 l-119 302 -60 -1 c-33 0 -80 -8 -105 -16z"/> <path d="M177 2698 c-16 -12 -14 -24 18 -162 181 -774 526 -1504 866 -1832 70 -68 205 -164 229 -164 6 0 -7 21 -29 48 -254 301 -600 1315 -601 1762 l-1 105 -77 56 c-42 30 -99 68 -127 84 -27 16 -68 44 -89 62 -59 49 -151 69 -189 41z"/> <path d="M2592 1040 c-35 -8 -72 -36 -72 -55 0 -15 303 -316 415 -411 219 -186 440 -336 650 -439 175 -87 294 -124 420 -131 l90 -6 -77 35 c-159 71 -372 223 -606 431 -207 185 -402 405 -455 513 -24 48 -28 50 -162 58 -55 3 -116 7 -135 9 -19 2 -50 0 -68 -4z"/></g></symbol>
+</defs></svg>
+<main>
+  <!-- TODAY -->
+  <section id="tab-today" class="pane in">
+    <div class="sky-breathe" aria-hidden="true"></div>
+    <div class="clouds" aria-hidden="true">
+      <div class="cloud c1"></div>
+      <div class="cloud c2"></div>
+      <div class="cloud c3"></div>
+      <i class="flash dusk-night"></i>
+    </div>
+    <div class="nightsky" aria-hidden="true"><div class="milky"></div><i style="left:8%;top:12%;animation-delay:-0.0s"></i><i style="left:22%;top:6%;animation-delay:-0.7s"></i><i style="left:35%;top:18%;animation-delay:-1.4s"></i><i style="left:48%;top:9%;animation-delay:-2.1s"></i><i style="left:62%;top:15%;animation-delay:-2.8s"></i><i style="left:76%;top:5%;animation-delay:-3.5s"></i><i style="left:88%;top:20%;animation-delay:-4.2s"></i><i style="left:14%;top:30%;animation-delay:-4.9s"></i><i style="left:40%;top:34%;animation-delay:-5.6s"></i><i style="left:70%;top:28%;animation-delay:-6.3s"></i><i style="left:92%;top:38%;animation-delay:-7.0s"></i><i style="left:28%;top:44%;animation-delay:-7.7s"></i><i style="left:56%;top:40%;animation-delay:-8.4s"></i><i style="left:82%;top:48%;animation-delay:-9.1s"></i></div>
+    <div class="orb" aria-hidden="true"></div>
+    <svg class="bird frigate" viewBox="0 0 873 1536" aria-hidden="true"><use href="#f-frigate"></use></svg>
+    <svg class="bird gull" viewBox="0 0 1536 1347" aria-hidden="true"><use href="#f-gull"></use></svg>
+    <div class="wind" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+    <div class="dock-ui">
+      <button class="dock-sound on" id="dock-sound" type="button" aria-label="Toggle wave sound">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M18.5 5.5a9 9 0 0 1 0 13"></path></svg>
+      </button>
+      <div class="breath" aria-hidden="true"></div>
+      <p class="breath-cue" aria-live="polite"><span id="breath-word">In</span><small>4 · 1 · 7</small></p>
+      <form class="refocus" id="refocus" autocomplete="off">
+        <h2>What is the one thing to do next?</h2>
+        <input type="text" id="refocus-text" placeholder="One thing." maxlength="200" enterkeyhint="done">
+        <button class="btn" type="submit">Keep it</button>
+        <p>It goes in today’s record. Nothing else changes.</p>
+      </form>
+      <p class="dock-hint">Breathe with the water · tap anywhere to come back</p>
+    </div>
+    <div class="waves" aria-hidden="true">
+      <div class="wave-wrap"><div class="swell">
+        <svg class="mangrove far" viewBox="0 0 600 80" preserveAspectRatio="none"><path d="M0,80 L0,56 C40,50 70,38 110,42 C150,46 170,30 220,34 C260,37 290,24 340,30 C390,36 420,26 470,32 C520,38 560,30 600,40 L600,80 Z"></path></svg>
+        <div class="glitter" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <svg class="w1" viewBox="0 0 1200 200" preserveAspectRatio="none"><path class="w1" d="M0,60 C40,48 60,72 100,64 C140,56 160,74 200,62 C240,50 260,70 300,66 C340,62 360,48 400,58 C440,68 460,52 500,60 C540,68 560,50 600,60 C640,70 660,52 700,62 C740,72 760,54 800,58 C840,62 860,72 900,64 C940,56 960,48 1000,60 C1040,72 1060,54 1100,62 C1140,70 1170,50 1200,60 L1200,200 L0,200 Z"></path></svg>
+        <span class="marker red"></span><span class="marker green"></span>
+        <svg class="boat" viewBox="0 0 30 12" aria-hidden="true"><path d="M2 8 L28 8 L25 11.5 L5 11.5 Z"></path><path d="M11 8 L11 4.5 L19 4.5 L19 8 Z"></path><path d="M14 4.5 L14 1.5 L15.2 1.5 L15.2 4.5 Z"></path></svg>
+        <div class="amb dolphins"><svg class="d1" viewBox="0 0 1536 497"><use href="#f-dolphin"></use></svg><svg class="d2" viewBox="0 0 1536 497"><use href="#f-dolphin"></use></svg></div>
+        <svg class="mangrove" viewBox="0 0 600 160" preserveAspectRatio="none"><path d="M0,160 L0,70 C30,66 50,40 90,44 C120,47 130,28 170,30 C210,32 230,52 270,50 C300,48 320,30 360,38 C400,46 430,60 470,62 C500,64 530,90 552,118 C566,136 582,152 600,160 Z"></path></svg>
+        <div class="gust g1"></div>
+        <svg class="w2" viewBox="0 0 1200 200" preserveAspectRatio="none"><path class="w2" d="M0,64 C40,52 60,76 100,66 C140,56 160,76 200,64 C240,52 260,72 300,68 C340,64 360,50 400,60 C440,70 460,54 500,62 C540,70 560,52 600,62 C640,72 660,54 700,64 C740,74 760,56 800,60 C840,64 860,74 900,66 C940,58 960,50 1000,62 C1040,74 1060,56 1100,64 C1140,72 1170,52 1200,62 L1200,200 L0,200 Z"></path></svg>
+        <div class="amb glade night-only"></div>
+        <svg class="amb heron" viewBox="0 0 658 1536"><use href="#f-egret"></use></svg>
+        <svg class="amb manatee dusk-night" viewBox="0 0 1536 999"><use href="#f-manatee"></use></svg>
+        <svg class="amb dragonfly day-only not-dusk" viewBox="-5 -6 16 12"><path d="M0,0 L10,0 M2,-1 L-4,-4 M2,1 L-4,4 M7,-1 L2,-5 M7,1 L2,5"></path></svg>
+        <svg class="dock" viewBox="0 0 210 120" aria-hidden="true">
+          <g class="dock-figure">
+            <path d="M116.5 62H91.5C90.6716 62 90 62.6716 90 63.5V67.5C90 68.3284 90.6716 69 91.5 69H116.5C117.328 69 118 68.3284 118 67.5V63.5C118 62.6716 117.328 62 116.5 62Z"></path>
+            <path d="M146.5 62H121.5C120.672 62 120 62.6716 120 63.5V67.5C120 68.3284 120.672 69 121.5 69H146.5C147.328 69 148 68.3284 148 67.5V63.5C148 62.6716 147.328 62 146.5 62Z"></path>
+            <path d="M176.5 62H151.5C150.672 62 150 62.6716 150 63.5V67.5C150 68.3284 150.672 69 151.5 69H176.5C177.328 69 178 68.3284 178 67.5V63.5C178 62.6716 177.328 62 176.5 62Z"></path>
+            <path d="M208.5 62H181.5C180.672 62 180 62.6716 180 63.5V67.5C180 68.3284 180.672 69 181.5 69H208.5C209.328 69 210 68.3284 210 67.5V63.5C210 62.6716 209.328 62 208.5 62Z"></path>
+            <path d="M116.5 69H114C112.895 69 112 69.8954 112 71V111C112 112.105 112.895 113 114 113H116.5C117.605 113 118.5 112.105 118.5 111V71C118.5 69.8954 117.605 69 116.5 69Z"></path>
+            <path d="M190.5 69H188C186.895 69 186 69.8954 186 71V115C186 116.105 186.895 117 188 117H190.5C191.605 117 192.5 116.105 192.5 115V71C192.5 69.8954 191.605 69 190.5 69Z"></path>
+            <path d="M190.5 84H114.5C113.672 84 113 84.6716 113 85.5C113 86.3284 113.672 87 114.5 87H190.5C191.328 87 192 86.3284 192 85.5C192 84.6716 191.328 84 190.5 84Z"></path>
+            <rect x="183" y="40" width="2.4" height="22" rx="1"></rect>
+            <g class="cat">
+              <path class="cat-tail" d="M139 60.5 C143.5 60 146.5 63.5 145 68.5"></path>
+              <path d="M124 52.5 C123 56 122.8 59 123.6 62 L139.6 62 C140.6 58 139.6 53 135 51 C133 50.2 131 51 130.4 52.4 Z"></path>
+              <circle cx="127.5" cy="49" r="4.1"></circle>
+              <path class="ear ear-l" d="M124 46.6 L123.6 41.8 L127 45.7 Z"></path>
+              <path class="ear ear-r" d="M128.2 45.6 L131.4 42 L131.2 46.7 Z"></path>
+            </g>
+</g><g class="person-wrap"><g class="person" transform="translate(60.3,11.6) scale(.36)"><g class="breathe-fig"><path stroke="none" d="M128 66 C140 70,148 80,148 96 C148 112,150 128,150 140 L90 140 C88 156,84 174,84 188 C84 195,80 199,73 199 L58 202 C52 202,50 196,55 193 L68 190 C66 172,64 156,66 143 C67 128,72 118,84 116 L100 116 C105 112,104 100,108 88 C112 76,116 70,120 67 Z"></path><path stroke="none" d="M118 69 L136 66 L131 54 L115 60 Z"></path><ellipse cx="121" cy="50" rx="15" ry="17" transform="rotate(-8 121 50)" stroke="none"></ellipse><path fill="none" stroke-width="11" d="M138 86 C132 98,124 108,116 113 C108 118,98 121,90 121"></path><circle cx="88" cy="122" r="6.5" stroke="none"></circle><g class="rod-wind"><g class="rod-cast"><g class="rod"><path fill="none" stroke-width="2.4" d="M94 118 L10 86"></path><g class="fishline"><path fill="none" stroke-width="1" stroke-opacity=".7" d="M10 86 C8 120,6 160,6 200"></path></g></g></g></g></g></g></g>
+            <g>          </g>
+          <g class="cast">
+            <circle class="lamp-glow" cx="184.2" cy="40" r="1.9"></circle>
+            <circle class="cast-splash" cx="62.5" cy="84" r="3.5"></circle>
+            <circle class="cast-bobber" cx="62.5" cy="84" r="1.8"></circle>
+          </g>
+        </svg>
+        <div class="glare"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="gust g2"></div>
+          </g>
+        </svg>
+        <div class="fish-wrap fw1"><svg class="fish fish1 far" viewBox="0 0 1536 626"><use href="#f-tarpon"></use></svg></div>
+        <div class="fish-wrap fw2"><svg class="fish fish2" viewBox="0 0 1536 554"><use href="#f-snook"></use></svg></div>
+        <div class="fish-wrap fw4"><svg class="fish fish4" viewBox="0 0 1536 511"><use href="#f-jack"></use></svg></div>
+        <div class="fish-wrap fw5"><svg class="fish fish5 far" viewBox="0 0 1536 902"><use href="#f-cuda"></use></svg></div>
+        <div class="fish-wrap fw6">
+          <svg class="fish pin p1" viewBox="0 0 1536 531"><use href="#f-pinfish"></use></svg>
+          <svg class="fish pin p2" viewBox="0 0 1536 531"><use href="#f-pinfish"></use></svg>
+          <svg class="fish pin p3" viewBox="0 0 1536 531"><use href="#f-pinfish"></use></svg>
+          <svg class="fish pin p4" viewBox="0 0 1536 531"><use href="#f-pinfish"></use></svg>
+          <svg class="fish pin p5" viewBox="0 0 1536 531"><use href="#f-pinfish"></use></svg>
+        </div>
+        <div class="fish-wrap fw7"><svg class="fish fish7 near" viewBox="0 0 1536 708"><use href="#f-grouper"></use></svg></div>
+        <div class="fish-wrap fw8"><svg class="fish fish8" viewBox="0 0 1536 503"><use href="#f-mackerel"></use></svg></div>
+        <div class="fish-wrap fw9">
+          <svg class="fish snap s1 near" viewBox="0 0 1536 474"><use href="#f-snapper"></use></svg>
+          <svg class="fish snap s2 near" viewBox="0 0 690 335"><use href="#f-snapper2"></use></svg>
+          <svg class="fish snap s3 near" viewBox="0 0 1536 474"><use href="#f-snapper"></use></svg>
+          <svg class="fish snap s4 near" viewBox="0 0 1536 474"><g transform="matrix(-1 0 0 1 1536 0)"><use href="#f-snapper"></use></g></svg>
+        </div>
+        <div class="fish-wrap fw10"><svg class="fish blacktip far" viewBox="0 0 1536 749"><use href="#f-blacktip"></use></svg></div>
+        <div class="fish-wrap fw11"><svg class="fish bonnet near" viewBox="0 0 3953 1584"><g transform="matrix(-1 0 0 1 3953 0)"><use href="#f-bonnethead"></use></g></svg></div>
+        <div class="mullet-wrap mu1" aria-hidden="true">
+          <svg class="mullet" viewBox="0 0 1536 592"><use href="#f-mullet"></use></svg>
+          <svg class="splash" viewBox="0 0 28 28"><circle cx="14" cy="14" r="13"></circle></svg>
+        </div>
+        <div class="mullet-wrap mu2" aria-hidden="true">
+          <svg class="mullet" viewBox="0 0 1536 592"><use href="#f-mullet"></use></svg>
+          <svg class="splash" viewBox="0 0 28 28"><circle cx="14" cy="14" r="13"></circle></svg>
+        </div>
+        <div class="mullet-wrap mu3" aria-hidden="true">
+          <svg class="mullet" viewBox="0 0 1536 592"><use href="#f-mullet"></use></svg>
+          <svg class="splash" viewBox="0 0 28 28"><circle cx="14" cy="14" r="13"></circle></svg>
+        </div>
+        <svg class="w3" viewBox="0 0 1200 200" preserveAspectRatio="none"><path class="w3" d="M0,66 C40,54 60,78 100,68 C140,58 160,78 200,66 C240,54 260,74 300,70 C340,66 360,52 400,62 C440,72 460,56 500,64 C540,72 560,54 600,64 C640,74 660,56 700,66 C740,76 760,58 800,62 C840,66 860,76 900,68 C940,60 960,52 1000,64 C1040,76 1060,58 1100,66 C1140,74 1170,54 1200,64 L1200,200 L0,200 Z"></path></svg>
+        <div class="gust g3"></div>
+        <div class="deep"></div>
+      </div>
+      </div>
+    </div>
+    
+    
+
+    <div class="headrow">
+      <div>
+        <h1 id="today-title">Good morning.</h1>
+        <p class="sub" id="today-date">Thursday 17 September</p>
+        <button class="pill" id="backdate" type="button">Yesterday</button>
+      </div>
+      <button id="rain-toggle" aria-label="Toggle rain" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M7 16a4 4 0 0 1 .5-7.97A5 5 0 0 1 17 9a3.5 3.5 0 0 1 .5 6.97"></path>
+          <line x1="8" y1="19" x2="8" y2="21"></line>
+          <line x1="12" y1="19" x2="12" y2="21"></line>
+          <line x1="16" y1="19" x2="16" y2="21"></line>
+        </svg>
+      </button>
+    </div>
+
+    <div class="entry-glass frost">
+      <textarea id="text" class="textview" placeholder="How are you doing?
+Tap the mic and just talk." autocapitalize="sentences"></textarea>
+      <p class="reassure">Nothing you write here is judged. It only has to be true.</p>
+    </div>
+
+    <div class="voice">
+      <div class="mic-wrap">
+        <span class="ring r1" aria-hidden="true"></span>
+        <span class="ring r2" aria-hidden="true"></span>
+        <span class="ring r3" aria-hidden="true"></span>
+        <button class="mic" id="mic" type="button" aria-label="Start writing or dictating">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="2" width="6" height="12" rx="3" fill="currentColor" stroke="none"></rect>
+            <path d="M5 11a7 7 0 0 0 14 0"></path>
+            <path d="M12 18v3"></path>
+          </svg>
+        </button>
+      </div>
+      <p class="voice-cap" id="voice-cap">
+        <svg class="kb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+          <rect x="2" y="6" width="20" height="12" rx="2.5"></rect>
+          <path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M6 13h.01M18 13h.01"></path>
+          <path d="M9 13h6"></path>
+        </svg>
+        <span id="voice-cap-text">or use the keyboard</span>
+      </p>
+    </div>
+
+    <div class="moods" id="moods"><button type="button" data-m="6" aria-label="angry"><svg viewBox="0 0 28 28" width="50" height="50" class="face m6" aria-hidden="true"><circle class="mood-bg" cx="14" cy="14" r="13"></circle><circle class="mood-eye" cx="10" cy="11.5" r="1.5"></circle><circle class="mood-eye" cx="18" cy="11.5" r="1.5"></circle><path class="mood-mouth" d="M9 20 L19 20"></path><path class="mood-brow" d="M8 6.5 L12 8.5"></path><path class="mood-brow" d="M20 6.5 L16 8.5"></path></svg></button><button type="button" data-m="1" aria-label="very bad"><svg viewBox="0 0 28 28" width="50" height="50" class="face m1" aria-hidden="true"><circle class="mood-bg" cx="14" cy="14" r="13"></circle><circle class="mood-eye" cx="10" cy="11.5" r="1.5"></circle><circle class="mood-eye" cx="18" cy="11.5" r="1.5"></circle><path class="mood-mouth" d="M9 21.5 Q14 15.5 19 21.5"></path></svg></button><button type="button" data-m="2" aria-label="bad"><svg viewBox="0 0 28 28" width="50" height="50" class="face m2" aria-hidden="true"><circle class="mood-bg" cx="14" cy="14" r="13"></circle><circle class="mood-eye" cx="10" cy="11.5" r="1.5"></circle><circle class="mood-eye" cx="18" cy="11.5" r="1.5"></circle><path class="mood-mouth" d="M9 20.5 Q14 17 19 20.5"></path></svg></button><button type="button" data-m="3" aria-label="okay"><svg viewBox="0 0 28 28" width="50" height="50" class="face m3" aria-hidden="true"><circle class="mood-bg" cx="14" cy="14" r="13"></circle><circle class="mood-eye" cx="10" cy="11.5" r="1.5"></circle><circle class="mood-eye" cx="18" cy="11.5" r="1.5"></circle><path class="mood-mouth" d="M9.5 19.5 L18.5 19.5"></path></svg></button><button type="button" data-m="4" aria-label="good"><svg viewBox="0 0 28 28" width="50" height="50" class="face m4" aria-hidden="true"><circle class="mood-bg" cx="14" cy="14" r="13"></circle><circle class="mood-eye" cx="10" cy="11.5" r="1.5"></circle><circle class="mood-eye" cx="18" cy="11.5" r="1.5"></circle><path class="mood-mouth" d="M9 18.5 Q14 22 19 18.5"></path></svg></button><button type="button" data-m="5" aria-label="very good"><svg viewBox="0 0 28 28" width="50" height="50" class="face m5" aria-hidden="true"><circle class="mood-bg" cx="14" cy="14" r="13"></circle><circle class="mood-eye" cx="10" cy="11.5" r="1.5"></circle><circle class="mood-eye" cx="18" cy="11.5" r="1.5"></circle><path class="mood-mouth" d="M9 17.5 Q14 23.5 19 17.5"></path></svg></button></div>
+    <div class="saverow solo" id="saverow">
+      <input id="status" type="text" placeholder="A word for the circle…" maxlength="40" autocomplete="off" enterkeyhint="done" aria-label="A few words for your circle">
+      <button class="btn ghost" id="save" disabled="">Save</button>
+    </div>
+    <button id="bottle" type="button" aria-label="A message in a bottle from your circle"><svg viewBox="0 0 24 40" aria-hidden="true"><g><path class="glass" d="M9 1h6v2q0 1 1 1.5v5q6 3 6 10v16q0 4-4 4H6q-4 0-4-4v-16q0-7 6-10v-5q1-.5 1-1.5z"></path><rect class="note" x="7" y="17" width="10" height="14" rx="1.5"></rect></g></svg></button>
+    <div id="bottle-note" role="status"></div>
+    <div class="daylist" id="today-entries"></div>
+  </section>
+
+  <!-- HISTORY -->
+  
+
+  <!-- EXPORT -->
+  
+</main>
+
+<nav>
+  <button data-tab="today" class="on" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6"></path><path d="M18.4 2.6a2 2 0 0 1 2.8 2.8L12.5 14l-3.7 1 1-3.7z"></path></svg>
+    Today
+  </button>
+  <button data-tab="history" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5.2l3.2 2"></path></svg>
+    History
+  </button>
+  <button data-tab="export" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"></path><path d="M8 7l4-4 4 4"></path><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"></path></svg>
+    Export
+  </button>
+</nav>
+
+
+
+
+
+
+
+<div id="handoff-bar"><style>#handoff-bar{position:fixed;top:6px;left:6px;z-index:9999;display:flex;gap:4px;font:11px system-ui}#handoff-bar button{padding:4px 7px;border-radius:8px;border:1px solid #0003;background:#fffc}</style><button onclick="document.documentElement.dataset.sky='morning';document.documentElement.classList.toggle('night','morning'==='night')">morning</button><button onclick="document.documentElement.dataset.sky='day';document.documentElement.classList.toggle('night','day'==='night')">day</button><button onclick="document.documentElement.dataset.sky='evening';document.documentElement.classList.toggle('night','evening'==='night')">evening</button><button onclick="document.documentElement.dataset.sky='night';document.documentElement.classList.toggle('night','night'==='night')">night</button><button onclick="document.body.classList.toggle('dock')">sit mode</button><button onclick="document.body.classList.toggle('late')">late (after 21:00)</button><button onclick="document.body.classList.remove('boatnow');void document.body.offsetWidth;document.body.classList.add('boatnow')">boat + swell now</button></div></body></html>
