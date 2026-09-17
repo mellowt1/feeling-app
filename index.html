@@ -896,36 +896,59 @@
   .campo .campo-wrap { position: absolute; inset: 0; }
   .campo svg.band { position: absolute; left: 0; bottom: 0; width: 100%; height: 100%; }
   .campo .range { fill: var(--scene-back); opacity: 1; }
-  html[data-sky="evening"]:not(.night) .campo .range { fill: color-mix(in srgb, var(--scene-back) 85%, #D39A86); }
-  
   .campo .steppe-mid { fill: var(--scene-mid); opacity: 1; }
   .campo .steppe-front { fill: var(--scene-front); opacity: 1; }
   .campo .road { fill: var(--scene-land); opacity: 1; }
   .campo .dash { fill: var(--bg); opacity: .55; }
-  /* coirón: the wind moves the grass, a gust leans it */
-  .campo svg.tuft { position: absolute; width: 40px; height: 24px; transform-origin: 50% 100%; animation: tuftSway 3.2s ease-in-out infinite alternate; overflow: visible; }
-  .campo .tuft path { fill: none; stroke: var(--silhouette); stroke-opacity: .5; stroke-width: 1.2; stroke-linecap: round; }
-  .campo .tuft.t1 { left: 5%; bottom: 34%; }
-  .campo .tuft.t2 { left: 3%; bottom: 29%; width: 32px; height: 19px; animation-duration: 2.7s; animation-delay: -1.1s; }
-  .campo .tuft.t3 { left: 22%; bottom: 31%; width: 44px; height: 26px; animation-duration: 3.6s; animation-delay: -2s; }
-  .campo .tuft.t4 { left: 91%; bottom: 35%; width: 28px; height: 17px; animation-duration: 2.9s; animation-delay: -.6s; }
-  @keyframes tuftSway { from { transform: skewX(-4deg); } to { transform: skewX(5deg); } }
-  body.gust .campo .tuft { animation: tuftLean 4.4s cubic-bezier(.3,.6,.3,1) 1; }
-  @keyframes tuftLean { 0% { transform: skewX(0); } 30% { transform: skewX(12deg); } 100% { transform: skewX(0); } }
-  /* fence and figure: the rail sits on the front band, the figure has a mate */
+  /* depth: haze at the foot of the range, cloud shadows sliding over the mid band with the clouds (right to left, like everything the wind moves here) */
+  .campo .haze { position: absolute; left: 0; right: 0; bottom: 47%; height: 24%; background: linear-gradient(to top, var(--sky-horizon), transparent); opacity: var(--haze, .45); pointer-events: none; }
+  .campo .shadow { position: absolute; left: 0; bottom: 40%; width: 200px; height: 30px; border-radius: 50%; background: var(--silhouette); opacity: var(--shadow, .1); filter: blur(10px); animation: shadowDrift 90s linear infinite; }
+  .campo .shadow.s2 { bottom: 45%; width: 130px; height: 20px; animation-duration: 120s; animation-delay: -60s; }
+  @keyframes shadowDrift { from { transform: translateX(110vw) scaleX(1); } to { transform: translateX(-240px) scaleX(1.2); } }
+  /* coirón in three depths. One wind for the whole steppe: a wave that travels right to left, each tuft's phase set by its x (--wx) */
+  .campo svg.tuft { position: absolute; transform-origin: 50% 100%; overflow: visible; animation: tuftWave 4.6s ease-in-out infinite; animation-delay: calc(var(--wx, .5) * -4.6s); }
+  .campo .tuft path { fill: none; stroke: var(--silhouette); stroke-linecap: round; stroke-width: 1.2; }
+  .campo .tuft.far path { stroke-opacity: .28; stroke-width: 1.6; }
+  .campo .tuft.mid path { stroke-opacity: .42; stroke-width: 1.3; }
+  .campo .tuft.near path { stroke-opacity: .58; stroke-width: 1.1; }
+  .campo .tuft.far { animation-duration: 6s; animation-delay: calc(var(--wx, .5) * -6s); }
+  /* the wind you can see: a pale run of light crossing the grass right to left, the steppe's cat's-paw */
+  .campo .windrun { position: absolute; left: 0; bottom: 38%; width: 160px; height: 22px; border-radius: 50%; background: #FFFFFF; opacity: var(--windrun, .16); filter: blur(7px); animation: windRun 11s cubic-bezier(.4,0,.6,1) infinite; }
+  .campo .windrun.w2 { bottom: 45%; width: 110px; height: 14px; animation-duration: 14s; animation-delay: -6s; }
+  .campo .windrun.w3 { bottom: 26%; width: 210px; height: 26px; animation-duration: 9s; animation-delay: -3s; }
+  @keyframes windRun { 0% { transform: translateX(110vw) scaleX(.6); opacity: 0; } 15% { opacity: var(--windrun, .16); } 85% { opacity: var(--windrun, .16); } 100% { transform: translateX(-220px) scaleX(1.5); opacity: 0; } }
+  @keyframes tuftWave { 0%, 100% { transform: skewX(-3deg) scaleY(1); } 50% { transform: skewX(-19deg) scaleY(.93); } }
+  /* each blade flutters a little on its own, on top of the wave */
+  .campo .tuft path { transform-box: fill-box; transform-origin: 50% 100%; animation: bladeFlutter 1.7s ease-in-out infinite alternate; }
+  .campo .tuft path:nth-child(2n) { animation-duration: 2.3s; animation-delay: -.8s; }
+  .campo .tuft path:nth-child(3n) { animation-duration: 1.4s; animation-delay: -.4s; }
+  @keyframes bladeFlutter { from { transform: skewX(-2deg); } to { transform: skewX(3deg); } }
+  body.gust .campo .tuft { animation: tuftLean 4.4s cubic-bezier(.3,.6,.3,1) 1; animation-delay: calc((1 - var(--wx, .5)) * .9s); }
+  @keyframes tuftLean { 0% { transform: skewX(-4deg); } 30% { transform: skewX(-20deg); } 100% { transform: skewX(-4deg); } }
+  body.late .campo .tuft { animation-duration: 9s; }
+  /* fence and figure: the rail sits on the front band, the figure has a mate; only the steam moves, bending with the same wind */
   .campo svg.fence { position: absolute; right: 0; left: auto; bottom: 36%; width: 150px; height: 86px; overflow: visible; }
   .campo .fence .fig { fill: var(--silhouette); opacity: .55; }
   .campo .fence .arm { fill: none; stroke: var(--silhouette); stroke-opacity: .55; stroke-linecap: round; }
-  /* guanaco on the mid band: stands and stares, now and then walks a little */
-  .campo .guanaco-wrap { position: absolute; left: 15%; bottom: 50%; width: 22px; height: 24px; animation: guanacoWalk 360s linear infinite; }
+  .campo .fence .steam { transform-box: fill-box; transform-origin: 50% 100%; animation: steamBend 4.6s ease-in-out infinite; animation-delay: -3.1s; }
+  @keyframes steamBend { 0%, 100% { transform: skewX(-8deg) scaleY(1); opacity: 1; } 50% { transform: skewX(-30deg) scaleY(.86); opacity: .5; } }
+  body.gust .campo .fence .steam { animation: steamGust 4.4s cubic-bezier(.3,.6,.3,1) 1; }
+  @keyframes steamGust { 0% { transform: skewX(-6deg); opacity: .9; } 30% { transform: skewX(-34deg) scaleY(.8); opacity: .3; } 100% { transform: skewX(-6deg); opacity: .9; } }
+  /* a row of poplars at an estancia, far off on the mid band */
+  .campo .poplars { width: 40px; height: 14px; }
+  .campo .poplars rect { opacity: .26; }
+  /* guanaco on the mid band: walks a few steps, then turns to the road and stares (the truck comes down it once an hour, in this window) */
+  .campo .guanaco-wrap { position: absolute; left: 15%; bottom: 50%; width: 22px; height: 24px; animation: guanacoWalk 120s linear infinite; animation-delay: -6s; }
+  .campo .guanaco use { transform-box: fill-box; transform-origin: 50% 100%; animation: graze 120s ease-in-out infinite; animation-delay: -6s; }
+  @keyframes graze { 0%, 4% { transform: rotate(0); } 6%, 22% { transform: rotate(9deg); } 24%, 46% { transform: rotate(0); } 48%, 62% { transform: rotate(9deg); } 64%, 100% { transform: rotate(0); } }
   .campo svg.guanaco { width: 100%; height: auto; overflow: visible; fill: var(--silhouette); opacity: .5; }
-  @keyframes guanacoWalk { 0%, 40% { transform: translateX(0) scaleX(1); } 46%, 89.9% { transform: translateX(-36px) scaleX(1); } 90% { transform: translateX(-36px) scaleX(-1); } 96%, 99.9% { transform: translateX(0) scaleX(-1); } 100% { transform: translateX(0) scaleX(1); } }
-  /* condor over the range: circles, tilts, nearer and farther; gone after dark */
+  @keyframes guanacoWalk { 0%, 24% { transform: translateX(0) scaleX(1); } 24.4% { transform: translateX(0) scaleX(-1); } 32% { transform: translateX(-30px) scaleX(-1); } 34% { transform: translateX(-30px) scaleX(-1); } 42% { transform: translateX(-58px) scaleX(-1); } 42.4%, 66% { transform: translateX(-58px) scaleX(1); } 76% { transform: translateX(-20px) scaleX(1); } 78% { transform: translateX(-20px) scaleX(1); } 86%, 100% { transform: translateX(0) scaleX(1); } }
+  /* condor over the range: circles, tilts, nearer and farther; gone after dark, and gone whenever the sky is a night sky (dark mode by day too) */
   .campo .condor-wrap { position: absolute; left: 50%; top: 10%; width: 30px; height: 8px; margin-left: -15px; animation: condorCircle 90s linear infinite; }
   .campo svg.condor { width: 100%; height: auto; overflow: visible; fill: var(--silhouette); opacity: .5; animation: condorTilt 4s ease-in-out infinite alternate; }
   @keyframes condorCircle { 0% { transform: translate(60px, 0) scale(1); } 12.5% { transform: translate(42px, 9px) scale(1.08); } 25% { transform: translate(0, 13px) scale(1.15); } 37.5% { transform: translate(-42px, 9px) scale(1.08); } 50% { transform: translate(-60px, 0) scale(1); } 62.5% { transform: translate(-42px, -9px) scale(.9); } 75% { transform: translate(0, -13px) scale(.8); } 87.5% { transform: translate(42px, -9px) scale(.9); } 100% { transform: translate(60px, 0) scale(1); } }
   @keyframes condorTilt { from { transform: rotate(-6deg); } to { transform: rotate(6deg); } }
-  body.late .campo .condor-wrap { display: none; }
+  body.late .campo .condor-wrap, html.night .campo .condor-wrap { display: none; }
   /* distant truck: once an hour it comes down the road from the vanishing point */
   .campo svg.truck { position: absolute; left: 50%; top: 50%; width: 8px; height: 3.2px; margin-left: -4px; transform-origin: 50% 100%; opacity: 0; animation: truckDown 3600s linear infinite; animation-delay: -3560s; }
   .campo .truck path, .campo .truck circle { fill: var(--silhouette); opacity: .5; }
@@ -938,35 +961,82 @@
   html[data-place="campo"] .waves-faint path:not(.steppe) { display: none; }
   html[data-place="campo"] .waves-faint, html[data-place="campo"] .waves-faint svg { animation: none; width: 100%; }
 
-  /* ---------- Key West: Nick's place. The same water, a beach instead of a dock ---------- */
+  /* ---------- Key West: Nick's place. The shore: light, tide, sand, and what walks on it. Water is three bands, pale near and deep far; one shore clock (240 s) that every animal reads ---------- */
   html[data-place="keywest"] .waves:not(.keywest) { display: none; }
   .waves.keywest { display: none; overflow-x: clip; overflow-y: visible; }
   .waves.keywest .wave-wrap { overflow: hidden; }
   html[data-place="keywest"] .waves.keywest { display: block; }
-  /* a distant key on the horizon, a sailboat now and then behind the back wave */
+  /* the water: long irregular crests, a slow swell under them, turtle-grass patches showing through the pale front band */
+  html[data-place="keywest"] .keywest .swell { position: absolute; inset: 0; animation: kwSwell 23s ease-in-out infinite alternate; animation-delay: 0s; }   /* raised above the dock's shared .waves .swell (boatSwell) rule */
+  @keyframes kwSwell { from { transform: translateY(0); } to { transform: translateY(-3px); } }
+  .keywest svg.grass { height: 78%; top: auto; animation: drift 46s linear infinite reverse; }
+  .keywest .grass ellipse { fill: var(--grass, #3E8F8E); opacity: .32; }
+  .keywest .ruffle { position: absolute; left: 0; right: 0; bottom: 48%; height: 14%; }
+  .keywest .ruffle span { position: absolute; height: 1px; border-radius: 1px; background: var(--silhouette); opacity: 0; }
+  .keywest .ruffle span:nth-child(1) { left: 12%; top: 20%; width: 64px; }
+  .keywest .ruffle span:nth-child(2) { left: 46%; top: 60%; width: 44px; }
+  .keywest .ruffle span:nth-child(3) { left: 70%; top: 35%; width: 78px; }
+  body.gust .keywest .ruffle span { animation: kwRuffle 4.4s ease-out 1; }
+  body.gust .keywest .ruffle span:nth-child(2) { animation-delay: .6s; }
+  body.gust .keywest .ruffle span:nth-child(3) { animation-delay: 1.1s; }
+  @keyframes kwRuffle { 0% { opacity: 0; transform: translateX(0); } 30% { opacity: .16; } 100% { opacity: 0; transform: translateX(36px); } }
+  body.gust .keywest .wave-wrap { animation: bobGust 3.2s ease-in-out infinite alternate; }
+  /* a distant key on the horizon, the lighthouse on it */
   .keywest svg.key { position: absolute; left: 8%; bottom: 62%; width: 120px; height: 24px; }
   .keywest .key path { fill: var(--silhouette); opacity: .18; }
-  .keywest svg.sail { position: absolute; bottom: 62%; top: auto; left: 0; width: 22px; height: 22px; opacity: 0; animation: sailCross 2400s linear infinite; animation-delay: -2300s; }
-  .keywest .sail path { fill: var(--silhouette); opacity: .28; }
-  .keywest .sail .mast { fill: none; stroke: var(--silhouette); stroke-opacity: .28; stroke-width: .9; }
-  @keyframes sailCross { 0% { transform: translateX(-40px); opacity: 0; } 0.3% { opacity: 1; } 9.7% { opacity: 1; } 10% { transform: translateX(110vw); opacity: 0; } 100% { transform: translateX(110vw); opacity: 0; } }
-  /* frigatebird high over the water, gone after dark */
-  .keywest .frigate-wrap { position: absolute; left: 30%; top: 3%; width: 16px; height: 28px; margin-left: -8px; animation: frigateLoop 110s linear infinite; }
+  /* frigatebird high over the water, gone after dark; lower in sit mode so the breathing cue stays quiet */
+  .keywest .frigate-wrap { position: absolute; left: 30%; top: 6%; width: 16px; height: 28px; margin-left: -8px; animation: frigateLoop 100s linear infinite; }
   .keywest svg.frigate { width: 100%; height: auto; overflow: visible; fill: var(--silhouette); opacity: .5; animation: frigateTilt 6s ease-in-out infinite alternate; }
-  @keyframes frigateLoop { 0% { transform: translate(90px, 0) scale(1); } 25% { transform: translate(0, 16px) scale(1.12); } 50% { transform: translate(-90px, 0) scale(1); } 75% { transform: translate(0, -10px) scale(.86); } 100% { transform: translate(90px, 0) scale(1); } }
+  @keyframes frigateLoop { 0% { transform: translate(140px, 0) scale(1); } 25% { transform: translate(20px, 22px) scale(1.14); } 50% { transform: translate(-130px, 4px) scale(1); } 75% { transform: translate(-10px, -14px) scale(.84); } 100% { transform: translate(140px, 0) scale(1); } }
   @keyframes frigateTilt { from { transform: rotate(-5deg); } to { transform: rotate(5deg); } }
+  body.dock .keywest .frigate-wrap { top: 18%; }
   body.late .keywest .frigate-wrap { display: none; }
-  /* sea turtle surfaces between the mid and front wave */
-  .keywest .turtle-wrap { position: absolute; left: 30%; bottom: 36%; width: 24px; height: 22px; animation: turtleMove 260s linear infinite; }
-  .keywest svg.turtle { width: 100%; height: auto; overflow: visible; fill: var(--accent); opacity: .3; animation: turtleSurface 100s ease-in-out infinite; }
-  @keyframes turtleSurface { 0%, 40% { transform: translateY(14px); opacity: 0; } 42% { opacity: 1; } 44%, 48% { transform: translateY(0); opacity: 1; } 50% { transform: translateY(14px); opacity: 0; } 100% { transform: translateY(14px); opacity: 0; } }
-  @keyframes turtleMove { from { transform: translateX(0); } to { transform: translateX(120px); } }
-  /* the beach in front of the front wave; land does not bob with the water */
+  /* a green turtle comes ashore at night, rarely: up the sand, a long rest, back to the water. Hidden unless the clock says otherwise */
+  .keywest .turtle-wrap { position: absolute; left: 26%; bottom: 31%; width: 22px; height: 20px; opacity: 0; animation: turtleNest 1800s linear infinite; }
+  .keywest svg.turtle { width: 100%; height: auto; overflow: visible; fill: var(--silhouette); opacity: .45; transform: rotate(90deg); }
+  @keyframes turtleNest { 0%, 39.8% { opacity: 0; transform: translate(0, 0); } 40.3% { opacity: 1; } 46% { transform: translate(14px, 16px); } 70% { transform: translate(14px, 16px); } 76% { opacity: 1; transform: translate(0, 0); } 76.4%, 100% { opacity: 0; transform: translate(0, 0); } }
+  html:not(.night) .keywest .turtle-wrap { display: none; }
+  /* fish on the flats, seen through the pale front band: a barracuda that hangs still and repositions twice a cycle, a school of three mullet that crosses once a cycle, a bonnethead at dusk and after dark on an 8 min clock */
+  .keywest .cuda-wrap { position: absolute; left: 44%; bottom: 44%; width: 30px; height: 18px; animation: cudaPatrol 240s ease-in-out infinite; }
+  .keywest svg.cuda-kw { width: 100%; height: auto; overflow: visible; fill: var(--fish); opacity: .3; animation: kwFishBob 3.4s ease-in-out infinite alternate; }
+  @keyframes cudaPatrol { 0% { transform: translateX(0) scaleX(1); } 44.9% { transform: translateX(-64px) scaleX(1); } 45.1% { transform: translateX(-64px) scaleX(-1); } 94.9% { transform: translateX(0) scaleX(-1); } 95.1%, 100% { transform: translateX(0) scaleX(1); } }
+  @keyframes kwFishBob { from { transform: translateY(0); } to { transform: translateY(1.5px); } }
+  .keywest .school-wrap { position: absolute; left: 0; bottom: 38%; width: 40px; height: 12px; opacity: 0; transform: translateX(110vw); animation: schoolPass 240s linear infinite; }
+  .keywest svg.mullet-kw { position: absolute; bottom: 0; left: 0; width: 12px; height: auto; overflow: visible; fill: var(--fish); opacity: .32; animation: schoolWiggle 4s ease-in-out infinite alternate; }
+  .keywest svg.mullet-kw.m2 { left: 14px; bottom: 4px; width: 11px; animation-delay: -1.7s; animation-duration: 4.6s; }
+  .keywest svg.mullet-kw.m3 { left: 27px; bottom: 1px; width: 10px; animation-delay: -3.1s; animation-duration: 3.6s; }
+  @keyframes schoolPass { 0%, 9.5% { opacity: 0; transform: translate(110vw, 0); } 11% { opacity: 1; } 18% { transform: translate(78vw, -6px); } 26% { transform: translate(50vw, 4px); } 33% { transform: translate(-50px, -2px); opacity: 1; } 34%, 59.5% { opacity: 0; transform: translate(110vw, 0); } 61% { opacity: 1; } 70% { transform: translate(66vw, 5px); } 78% { transform: translate(30vw, -5px); } 84% { transform: translate(-50px, 0); opacity: 1; } 85.5%, 100% { opacity: 0; transform: translate(110vw, 0); } }
+  @keyframes schoolWiggle { from { transform: translateY(0) rotate(-2deg); } to { transform: translateY(2px) rotate(2deg); } }
+  .keywest .bonnet-wrap { position: absolute; left: 0; bottom: 41%; width: 40px; height: 16px; opacity: 0; transform: translateX(110vw); animation: bonnetPass 240s linear infinite; }
+  .keywest svg.bonnet-kw { width: 100%; height: auto; overflow: visible; fill: var(--fish); opacity: .3; animation: kwFishBob 2.8s ease-in-out infinite alternate; }
+  @keyframes bonnetPass { 0%, 29.5% { opacity: 0; transform: translate(110vw, 0); } 30.5% { opacity: 1; } 40% { transform: translate(50vw, -6px); } 49% { opacity: 1; transform: translate(-60px, 2px); } 50%, 100% { opacity: 0; transform: translate(-60px, 2px); } }
+  /* the beach in front of the front wave; land does not bob with the water. Foam and a second lap line breathe on a 40 s tide, the wet line on a 5 min one */
   .keywest svg.sand { position: absolute; left: 0; bottom: 0; width: 100%; height: 100%; }
   .keywest .sand .beach { fill: var(--scene-land); }
-  .keywest .sand .wet { fill: #FFFFFF; opacity: .35; }
+  .keywest .sand .wet { fill: #FFFFFF; opacity: .35; animation: kwWet 300s ease-in-out infinite alternate; }
+  @keyframes kwWet { from { transform: translateY(1px); } to { transform: translateY(-1.5px); } }
   html.night .keywest .sand .wet { opacity: .08; }
-  /* the palm leans out over the water, the figure sits against it with knees up */
+  .keywest .sand .lap { fill: #FFFFFF; opacity: .16; animation: kwLap 40s ease-in-out -13s infinite; }
+  @keyframes kwLap { 0%, 100% { transform: translateY(2px); opacity: .06; } 50% { transform: translateY(-2px); opacity: .2; } }
+  html.night .keywest .sand .lap { opacity: .04; }
+  /* a sargassum wrack line where the last high tide left it; the Southern Cross low over the water after dark (spring evenings in Key West) */
+  .keywest .sand .wrack { fill: var(--wrack, #7A6A48); opacity: .3; animation: kwWet 300s ease-in-out infinite alternate; }
+  html.night .keywest .sand .wrack { opacity: .18; }
+  .keywest .crux { left: 74%; top: 10%; width: 40px; height: 46px; }
+  .keywest .crux i { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: #FFF; opacity: .55; animation: twinkle 7s ease-in-out infinite; }
+  .keywest .crux i:nth-child(1) { left: 17px; top: 0; }
+  .keywest .crux i:nth-child(2) { left: 21px; top: 42px; width: 2.5px; height: 2.5px; opacity: .75; animation-delay: -2s; }
+  .keywest .crux i:nth-child(3) { left: 0; top: 16px; animation-delay: -4s; }
+  .keywest .crux i:nth-child(4) { left: 36px; top: 12px; animation-delay: -5.5s; }
+  .keywest .crux i:nth-child(5) { left: 28px; top: 25px; width: 1.5px; height: 1.5px; opacity: .3; animation-delay: -1s; }
+  /* Nick's two cats on the spit with him, in the app's cat vocabulary (the dock's ragdoll): the Maine Coon lies at his feet, big and loaf-shaped, bushy tail curled forward, tufted ears; the Somali sits upright on the other side of the trunk, slender, big ears, plumed tail. Tails flick slowly, one ear each twitches now and then */
+  .keywest .palm .cat path, .keywest .palm .cat circle { fill: var(--silhouette); opacity: .55; }
+  .keywest .palm .cat .cat-tail { fill: none; stroke: var(--silhouette); stroke-opacity: .55; stroke-linecap: round; }
+  .keywest .palm .coon .cat-tail { stroke-width: 4.2; transform-origin: 191px 148.5px; animation: catTail 9s ease-in-out infinite alternate; }
+  .keywest .palm .somali .cat-tail { stroke-width: 2.4; transform-origin: 196px 149px; animation: catTail 6s ease-in-out -2.5s infinite alternate; }
+  .keywest .palm .coon .ear-r { transform-origin: 165.8px 136.6px; animation: earTwitch 23s ease-in-out infinite; }
+  .keywest .palm .somali .ear-r { transform-origin: 206.5px 126px; animation: earTwitch 31s ease-in-out -11s infinite; }
+  /* the palm leans out over the water, the figure sits against it with knees up (the figure is final) */
   .keywest svg.palm { position: absolute; right: 0; left: auto; bottom: calc(39% - 10px); width: 210px; height: 160px; overflow: visible; }
   .keywest .palm .fig { fill: var(--silhouette); opacity: .55; }
   .keywest .palm .arm { fill: none; stroke: var(--silhouette); stroke-opacity: .55; stroke-width: 4.6; stroke-linecap: round; }
@@ -977,12 +1047,13 @@
   @keyframes frondSway { from { transform: rotate(-1.2deg); } to { transform: rotate(1.6deg); } }
   body.gust .keywest .palm .crown { animation: crownLean 4.4s cubic-bezier(.3,.6,.3,1) 1; }
   @keyframes crownLean { 0% { transform: rotate(0); } 30% { transform: rotate(-5deg); } 100% { transform: rotate(0); } }
-  /* a Key West rooster walks the sand, stops, pecks twice, walks back */
-  .keywest .rooster-wrap { position: absolute; left: 20%; bottom: 29.5%; width: 16px; height: 18px; animation: roosterWalk 120s linear infinite; }
+  /* the rooster and the hen live on the dry sand (under the tab bar; sit mode is where you meet them). Shore clock: at 38 % he walks left, she follows three seconds later; at 56 % they come back. Roosting after dark */
+  .keywest .rooster-wrap { position: absolute; left: 18%; bottom: 25.5%; width: 16px; height: 18px; animation: roosterWalk 240s linear infinite; }
   .keywest svg.rooster { width: 100%; height: auto; overflow: visible; fill: var(--silhouette); opacity: .5; }
-  .keywest .rooster use { transform-box: fill-box; transform-origin: 45% 100%; animation: peck 120s ease-in-out infinite; }
-  @keyframes roosterWalk { 0% { transform: translateX(0) scaleX(1); } 10%, 20% { transform: translateX(40px) scaleX(1); } 20.1% { transform: translateX(40px) scaleX(-1); } 30% { transform: translateX(0) scaleX(-1); } 30.1%, 100% { transform: translateX(0) scaleX(1); } }
-  @keyframes peck { 0%, 11% { transform: rotate(0); } 12% { transform: rotate(14deg); } 13% { transform: rotate(0); } 15% { transform: rotate(14deg); } 16%, 100% { transform: rotate(0); } }
+  .keywest .rooster use { transform-box: fill-box; transform-origin: 45% 100%; animation: peck 240s ease-in-out infinite; }
+  @keyframes roosterWalk { 0%, 37.9% { transform: translateX(0) scaleX(1); } 38% { transform: translateX(0) scaleX(-1); } 44%, 55.9% { transform: translateX(-34px) scaleX(-1); } 56% { transform: translateX(-34px) scaleX(1); } 62%, 100% { transform: translateX(0) scaleX(1); } }
+  @keyframes peck { 0%, 14.6% { transform: rotate(0); } 15% { transform: rotate(14deg); } 15.4% { transform: rotate(0); } 47.6% { transform: rotate(0); } 48% { transform: rotate(14deg); } 48.4% { transform: rotate(0); } 49.6% { transform: rotate(0); } 50% { transform: rotate(14deg); } 50.4% { transform: rotate(0); } 79.6% { transform: rotate(0); } 80% { transform: rotate(14deg); } 80.4%, 100% { transform: rotate(0); } }
+  html.night .keywest .rooster-wrap, html.night .keywest .hen { display: none; }
 
 
   /* ---------- v4 ambience: the fast things are tiny, the big things are rare ---------- */
@@ -1022,7 +1093,8 @@
   .clouds .flash { position: absolute; left: 30%; top: 130px; width: 160px; height: 50px; border-radius: 50%; background: #FFF; filter: blur(14px); opacity: 0; animation: heatFlash 118s linear infinite; }
   @keyframes heatFlash { 0%, 95.6% { opacity: 0; } 95.8% { opacity: .45; } 96% { opacity: 0; } 96.3% { opacity: .3; } 96.6%, 100% { opacity: 0; } }
   html[data-place="campo"] .clouds .flash, html[data-place="keywest"] .clouds .flash { display: none; }
-  /* El campo: snow and the pink of Fitz Roy at dawn, a lenticular, a windpump, sheep, a ñandú with chicks, a hare, a fox at dusk */
+  /* El campo: snow and the pink of Fitz Roy at dawn, a lenticular, a windpump, sheep, a ñandú with chicks, a hare, a fox at dusk.
+     One shared clock of 420 s (the fox's): the hare bolts just before the fox shows, the sheep lift their heads and the tero scolds while it passes, the caracara leaves its post once a cycle */
   .campo .snow { fill: #F4F2EE; opacity: .85; }
   html.night .campo .snow { opacity: .3; }
   .campo .alpenglow { fill: #F2A48A; opacity: 0; }
@@ -1036,69 +1108,91 @@
   .windpump .blades { transform-box: fill-box; transform-origin: center; animation: spin 14s linear infinite; }
   .windpump .blades path, .windpump .blades circle { opacity: .35; }
   @keyframes spin { to { transform: rotate(360deg); } }
-  /* sheep far off, white against the steppe; a ñandú with two chicks; a hare that sits by the tufts and bolts once in a while; a fox at dusk */
-  .campo .sheep-line { left: 27%; bottom: 49%; width: 40px; height: 9px; }
-  .sheep-line svg { position: absolute; bottom: 0; width: 11px; height: auto; fill: #F4F2EE; opacity: .6; }
+  /* sheep far off, white against the steppe; they lift their heads while the fox passes */
+  .campo .sheep-line { left: 27%; bottom: 49%; width: 40px; height: 9px; animation: sheepDrift 180s ease-in-out infinite alternate; }
+  @keyframes sheepDrift { from { transform: translateX(0); } to { transform: translateX(-34px); } }
+  .sheep-line svg { position: absolute; bottom: 0; width: 11px; height: auto; fill: var(--sheep, #F4F2EE); opacity: .6; }
   .sheep-line .sh2 { left: 14px; bottom: 1px; }
   .sheep-line .sh3 { left: 29px; width: 10px; }
   html.night .sheep-line svg { opacity: .15; }
-  .campo .rhea-wrap { left: 0; bottom: 43%; width: 60px; height: 30px; animation: rheaWalk 240s linear infinite; }
+  .campo .sheep-line use { transform-box: fill-box; transform-origin: 100% 100%; animation: sheepLook 420s ease-in-out infinite; animation-delay: -190s; }
+  .campo .sheep-line .sh2 use { animation-delay: -30s; }
+  .campo .sheep-line .sh3 use { animation-delay: -84s; }
+  @keyframes sheepLook { 0%, 3% { transform: rotate(0); } 4%, 12% { transform: rotate(8deg); } 13%, 20% { transform: rotate(0); } 21%, 30% { transform: rotate(8deg); } 31%, 50.6% { transform: rotate(0); } 51%, 59% { transform: rotate(-7deg); } 59.6%, 70% { transform: rotate(0); } 71%, 80% { transform: rotate(8deg); } 81%, 100% { transform: rotate(0); } }
+  .campo .rhea-wrap { left: 0; bottom: 43%; width: 60px; height: 30px; animation: rheaWalk 150s linear infinite; animation-delay: -50s; }
   .rhea-wrap svg { position: absolute; bottom: 0; left: 0; width: 24px; height: auto; opacity: .45; animation: rheaStep .7s ease-in-out infinite alternate; }
   .rhea-wrap .chick { width: 10px; }
   .rhea-wrap .c1 { left: 28px; animation-delay: -.3s; }
   .rhea-wrap .c2 { left: 42px; bottom: 1px; animation-delay: -.5s; }
-  @keyframes rheaStep { from { transform: translateY(0); } to { transform: translateY(-1px); } }
-  @keyframes rheaWalk { from { transform: translateX(110vw); } to { transform: translateX(-80px); } }
-  .campo .hare { left: auto; right: 30%; bottom: 41%; width: 12px; height: auto; opacity: 0; animation: hare 300s linear infinite; }
-  @keyframes hare { 0%, 70% { opacity: 0; transform: translate(0, 0); } 70.2% { opacity: .55; } 71% { transform: translate(-30px, -6px); } 72% { transform: translate(-60px, 0); } 73% { transform: translate(-90px, -6px); } 74% { opacity: .55; transform: translate(-120px, 0); } 74.2%, 100% { opacity: 0; } }
-  .campo .fox { left: auto; right: 44%; bottom: 31%; width: 30px; height: auto; opacity: 0; animation: fox 420s linear infinite; }
+  @keyframes rheaStep { from { transform: translateY(0) rotate(-1.5deg); } to { transform: translateY(-1.6px) rotate(1.5deg); } }
+  @keyframes rheaWalk { 0% { transform: translateX(110vw); } 38% { transform: translateX(58vw); } 46% { transform: translateX(56vw); } 100% { transform: translateX(-80px); } }
+  /* the hare bolts away to the left a few seconds before the fox comes in from the right */
+  .campo .hare { left: auto; right: 30%; bottom: 41%; width: 12px; height: auto; opacity: 0; animation: hare 420s linear infinite; animation-delay: -190s; }
+  @keyframes hare { 0%, 49.2% { opacity: 0; transform: translate(0, 0); } 49.35% { opacity: .55; } 49.6% { transform: translate(-30px, -6px); } 49.85% { transform: translate(-60px, 0); } 50.1% { transform: translate(-90px, -6px); } 50.35% { opacity: .55; transform: translate(-120px, 0); } 50.5%, 100% { opacity: 0; transform: translate(-120px, 0); } }
+  .campo .fox { left: auto; right: 44%; bottom: 31%; width: 30px; height: auto; opacity: 0; animation: fox 420s linear infinite; animation-delay: -190s; }
   .fox use { animation: trot .4s ease-in-out infinite alternate; }
   @keyframes trot { from { transform: translateY(0); } to { transform: translateY(-3%); } }
   @keyframes fox { 0%, 50% { opacity: 0; transform: translateX(0); } 50.5% { opacity: .5; } 60% { opacity: .5; transform: translateX(-160px); } 60.5%, 100% { opacity: 0; } }
-  /* a tero by the road that runs a few steps and stands; a chimango on the fence post by day, a horned owl there at night; a piche scurrying at dusk */
-  .campo .lapwing { left: 30%; bottom: 33%; width: auto; height: 15px; opacity: .5; animation: lapwingRun 40s linear infinite; }
-  @keyframes lapwingRun { 0%, 40% { transform: translateX(0); } 44%, 84% { transform: translateX(-14px); } 88%, 100% { transform: translateX(0); } }
+  /* a tero by the road: a few steps now and then, and a scolding run away from the fox; a chimango on the fence post by day that leaves once a cycle and comes back; a horned owl there at night; a piche at dusk */
+  .campo .lapwing { left: 30%; bottom: 33%; width: auto; height: 15px; opacity: .5; animation: lapwingRun 60s linear infinite; }
+  .campo .lapwing use { transform-box: fill-box; transform-origin: 50% 100%; animation: peckLook 60s ease-in-out infinite; }
+  @keyframes peckLook { 0%, 20% { transform: rotate(0); } 22% { transform: rotate(12deg); } 24% { transform: rotate(0); } 26% { transform: rotate(12deg); } 28%, 62% { transform: rotate(0); } 64% { transform: rotate(12deg); } 66%, 100% { transform: rotate(0); } }
+  @keyframes lapwingRun { 0%, 8% { transform: translateX(0) scaleX(1); } 11%, 30% { transform: translateX(-22px) scaleX(1); } 33%, 40% { transform: translateX(-34px) scaleX(1); } 40.5% { transform: translateX(-34px) scaleX(-1); } 46%, 70% { transform: translateX(-10px) scaleX(-1); } 73%, 96% { transform: translateX(0) scaleX(-1); } 96.5%, 100% { transform: translateX(0) scaleX(1); } }
   .campo .caracara { left: calc(100% - 150px + 16px); bottom: calc(36% + 45px); width: auto; height: 13px; opacity: .55; }
+  .campo .caracara use { animation: caracaraOff 420s ease-in-out infinite; animation-delay: -190s; }
+  @keyframes caracaraOff { 0%, 30% { transform: translate(0, 0); opacity: 1; } 30.6% { transform: translate(-26px, -22px) scale(1.1); opacity: 0; } 35.4% { transform: translate(-26px, -22px) scale(1.1); opacity: 0; } 36% { transform: translate(0, 0); opacity: 1; } 100% { transform: translate(0, 0); opacity: 1; } }
   .campo .owl { left: calc(100% - 150px + 17px); bottom: calc(36% + 45px); width: auto; height: 12px; opacity: .55; }
-  .campo .piche { left: auto; right: 12%; bottom: 31%; width: 16px; height: auto; opacity: 0; animation: piche 300s linear infinite; }
-  @keyframes piche { 0%, 60% { opacity: 0; transform: translateX(0); } 60.3% { opacity: .5; } 61% { transform: translateX(-16px); } 62% { transform: translateX(-16px); } 63% { transform: translateX(-34px); } 64.5% { transform: translateX(-34px); } 65.5% { opacity: .5; transform: translateX(-56px); } 66%, 100% { opacity: 0; transform: translateX(-56px); } }
-  /* Key West: the sun sets in front of you with a green flash, a pelican dives, an iguana, a hen, a hermit crab, foam, the lighthouse at night */
-  .keywest .setting-sun { left: 16%; bottom: 62%; width: 56px; height: 56px; border-radius: 50%; background: radial-gradient(circle, #F3B98A 55%, rgba(243,185,138,0) 70%); animation: setting 300s linear infinite; }
-  @keyframes setting { from { transform: translateY(-30px); } to { transform: translateY(40px); } }
-  .keywest .green-flash { left: 18%; bottom: 69%; width: 40px; height: 3px; border-radius: 3px; background: #7CE0A0; filter: blur(2px); opacity: 0; animation: greenFlash 300s linear infinite; }
-  @keyframes greenFlash { 0%, 49.6% { opacity: 0; } 49.8% { opacity: .8; } 50.1%, 100% { opacity: 0; } }
+  .campo .piche { left: auto; right: 12%; bottom: 31%; width: 16px; height: auto; opacity: 0; animation: piche 420s linear infinite; animation-delay: -190s; }
+  @keyframes piche { 0%, 80% { opacity: 0; transform: translateX(0); } 80.2% { opacity: .5; } 80.7% { transform: translateX(-16px); } 81.4% { transform: translateX(-16px); } 82.1% { transform: translateX(-34px); } 83.2% { transform: translateX(-34px); } 83.9% { opacity: .5; transform: translateX(-56px); } 84.2%, 100% { opacity: 0; transform: translateX(-56px); } }
+  /* Key West: the sun sets in front of you, once an evening, slowly; a pelican passes twice an hour and dives on one of them; a hen, an egret on the wet line, a gull that dips to the water, a ghost crab after dark, the lighthouse at night */
+  .keywest .setting-sun { left: 16%; bottom: 62%; width: 56px; height: 56px; border-radius: 50%; background: radial-gradient(circle, #F3B98A 55%, rgba(243,185,138,0) 70%); transform: translateY(-34px); animation: setting 3600s linear 1 forwards; }
+  @keyframes setting { from { transform: translateY(-34px); } to { transform: translateY(30px); } }
+  .keywest .sunpath { left: 13%; bottom: 36%; width: 60px; height: 26%; background: linear-gradient(rgba(246,205,150,.34), rgba(246,205,150,0)); filter: blur(3px); opacity: 0; animation: sunpath 3600s linear 1 forwards; }
+  @keyframes sunpath { 0% { opacity: .6; } 80% { opacity: .5; } 95% { opacity: 0; } 100% { opacity: 0; } }
+  .keywest .green-flash { left: 18%; bottom: 69%; width: 40px; height: 3px; border-radius: 3px; background: #7CE0A0; filter: blur(2px); opacity: 0; animation: greenFlash 3600s linear 1 forwards; }
+  @keyframes greenFlash { 0%, 94.94% { opacity: 0; } 95% { opacity: .85; } 95.06%, 100% { opacity: 0; } }
+  /* the sunset sail: one schooner crosses the horizon over the hour of the sunset, passing in front of the sun. Hidden otherwise */
+  .keywest .schooner { left: 0; bottom: 62%; width: 36px; height: 27px; opacity: 0; transform: translateX(110vw); animation: schoonerSail 3600s linear 1 forwards; }
+  .keywest .schooner path { fill: var(--silhouette); opacity: .4; }
+  .keywest .schooner .mast { fill: none; stroke: var(--silhouette); stroke-opacity: .4; stroke-width: .8; }
+  @keyframes schoonerSail { 0% { transform: translateX(110vw); opacity: 0; } 1% { opacity: 1; } 95% { transform: translateX(-50px); opacity: 1; } 96%, 100% { transform: translateX(-50px); opacity: 0; } }
   .keywest .lighthouse { left: calc(8% + 57px); bottom: calc(62% + 12px); width: 6px; height: 22px; }   /* on the key */
-  .lighthouse rect { opacity: .3; }
-  .keywest .beam { left: calc(8% + 60px); bottom: calc(62% + 31px); width: 200px; height: 60px; transform-origin: 0 50%; margin-bottom: -30px; background: linear-gradient(90deg, rgba(246,231,192,.14), rgba(246,231,192,0)); clip-path: polygon(0 45%, 100% 0, 100% 100%, 0 55%); filter: blur(3px); animation: sweep 24s ease-in-out infinite alternate; }
+  .keywest .lighthouse rect { opacity: .3; }
+  .keywest .beam { left: calc(8% + 60px); bottom: calc(62% + 31px); width: 200px; height: 60px; transform-origin: 0 50%; margin-bottom: -30px; background: linear-gradient(90deg, rgba(246,231,192,.14), rgba(246,231,192,0)); clip-path: polygon(0 45%, 100% 0, 100% 100%, 0 55%); filter: blur(3px); animation: sweep 30s ease-in-out infinite alternate; }
   @keyframes sweep { from { transform: rotate(-12deg); } to { transform: rotate(10deg); } }
-  .keywest .pelican { left: 0; bottom: 74%; width: 34px; height: auto; animation: pelican 150s linear infinite; }
-  .pelican svg { display: block; width: 100%; height: auto; overflow: visible; }
-  .pelican use { opacity: .45; }
-  @keyframes pelican { 0% { transform: translate(110vw, 0); } 30% { transform: translate(52vw, 4px); } 33% { transform: translate(46vw, 40px) rotate(60deg); opacity: 1; } 33.4%, 40% { opacity: 0; transform: translate(40vw, 0); } 40.5% { opacity: 1; } 70%, 100% { transform: translate(-60px, -4px); } }
-  .keywest .splash-kw { left: 47%; bottom: 58%; width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(255,255,255,.7); opacity: 0; animation: psplash 150s linear infinite; }
-  @keyframes psplash { 0%, 33.2% { opacity: 0; transform: scale(.4); } 33.6% { opacity: .8; } 35% { opacity: 0; transform: scale(3); } 100% { opacity: 0; } }
-  .keywest .ig-log { left: 2%; bottom: 26%; width: 64px; height: 8px; }
-  .ig-log path { opacity: .3; }
-  .keywest .iguana { left: 7%; bottom: calc(26% + 5px); width: 36px; height: auto; opacity: .5; }
-  .iguana use { transform-origin: 70% 70%; animation: igTail 40s ease-in-out infinite; }
-  @keyframes igTail { 0%, 92% { transform: rotate(0); } 94% { transform: rotate(-2deg); } 97% { transform: rotate(1deg); } 100% { transform: rotate(0); } }
-  .keywest .hen { left: 36%; bottom: 29%; width: auto; height: 14px; opacity: .42; }
-  .hen use { transform-origin: 40% 100%; animation: henPeck 5s ease-in-out infinite; }
-  @keyframes henPeck { 0%, 70% { transform: rotate(0); } 80% { transform: rotate(14deg); } 90%, 100% { transform: rotate(0); } }
-  .keywest .crab { left: 0; bottom: 28.5%; width: 9px; height: auto; opacity: .45; animation: crab 220s linear infinite; }
-  /* a laughing gull crosses high by day; a great egret stands on the wet line and stalks; dolphins roll in the back water at dusk */
-  .keywest .gull { left: 0; bottom: auto; top: 9%; width: 22px; height: auto; opacity: .45; animation: gullCross 100s linear infinite; animation-delay: -20s; }
-  .gull use { transform-origin: 50% 50%; animation: gullTilt 5s ease-in-out infinite alternate; }
-  @keyframes gullCross { 0% { transform: translateX(110vw); } 45% { transform: translateX(-40px); } 100% { transform: translateX(-40px); } }
+  /* pelican: 12 min clock. A low glide at 0–8 %, a second glide at 50 % with the one dive at 56 %. Off screen when idle */
+  .keywest .pelican { left: 0; bottom: 74%; width: 34px; height: auto; transform: translateX(110vw); animation: pelican 360s linear infinite; }
+  .keywest .pelican svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .keywest .pelican use { opacity: .45; }
+  @keyframes pelican { 0% { transform: translate(110vw, 0); opacity: 1; } 8% { transform: translate(-60px, 6px); opacity: 1; } 49.9% { transform: translate(-60px, 6px); opacity: 1; } 50% { transform: translate(110vw, 0); } 55.5% { transform: translate(52vw, 4px); opacity: 1; } 56.1% { transform: translate(46vw, 40px) rotate(60deg); opacity: 1; } 56.2%, 57.3% { opacity: 0; transform: translate(40vw, 0); } 57.5% { opacity: 1; } 64%, 100% { transform: translate(-60px, -4px); opacity: 1; } }
+  .keywest .splash-kw { left: 47%; bottom: 58%; width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(255,255,255,.7); opacity: 0; animation: psplash 360s linear infinite; }
+  @keyframes psplash { 0%, 56.1% { opacity: 0; transform: scale(.4); } 56.2% { opacity: .8; } 56.6% { opacity: 0; transform: scale(3); } 100% { opacity: 0; transform: scale(3); } }
+  /* the hen lives on the spit beside Nick, the Key West way: chickens go where they like. Pecks, wanders a few steps at 38 %, comes back at 56 %. Visible above the tab bar */
+  .keywest .hen { left: 90%; bottom: 42%; width: auto; height: 12px; opacity: .45; display: none; animation: henSpit 240s linear infinite; }   /* the cats have her spot; she comes back if you want her, delete display:none */
+  .keywest .hen use { transform-origin: 40% 100%; animation: henPeck 30s ease-in-out infinite; }
+  @keyframes henSpit { 0%, 37.9% { transform: translateX(0) scaleX(1); } 38% { transform: translateX(0) scaleX(-1); } 44%, 55.9% { transform: translateX(-12px) scaleX(-1); } 56% { transform: translateX(-12px) scaleX(1); } 62%, 100% { transform: translateX(0) scaleX(1); } }
+  @keyframes henPeck { 0%, 70% { transform: rotate(0); } 74% { transform: rotate(14deg); } 78%, 100% { transform: rotate(0); } }
+  /* ghost crab: nocturnal. Hidden in its hole; runs after each wash draws back (the 40 s tide is high at 20, 60, 100 s), skips the middle of the shore where bottles land */
+  .keywest .crab { left: 4%; bottom: 27%; width: 9px; height: auto; opacity: 0; animation: crab 240s linear infinite; }
+  @keyframes crab { 0%, 9% { opacity: 0; transform: translateX(0); } 9.3% { opacity: .45; } 12%, 25.8% { opacity: .45; transform: translateX(18vw); } 29%, 42.5% { opacity: .45; transform: translateX(34vw); } 45.5% { opacity: .45; transform: translateX(88vw); } 46%, 100% { opacity: 0; transform: translateX(88vw); } }
+  html:not(.night) .keywest .crab { display: none; }
+  /* a laughing gull crosses at horizon height, dips once to the water and lifts again; the egret on the wet line steps away as it passes; dolphins roll in the back water at dusk */
+  .keywest .gull { left: 0; bottom: 62%; top: auto; width: 22px; height: auto; opacity: 0; transform: translateX(110vw); animation: gullPass 240s linear infinite; }
+  .keywest .gull use { opacity: .45; transform-origin: 50% 50%; animation: gullTilt 5s ease-in-out infinite alternate; }
+  @keyframes gullPass { 0%, 9.9% { transform: translate(110vw, 0) scaleX(1); opacity: 0; } 10% { opacity: 1; } 26% { transform: translate(66vw, 0) scaleX(1); } 27.5% { transform: translate(60vw, 24px) scaleX(1); } 29% { transform: translate(54vw, 0) scaleX(1); } 45% { transform: translate(-40px, -6px) scaleX(1); opacity: 1; } 45.4%, 54.9% { transform: translate(-40px, -6px) scaleX(-1); opacity: 0; } 55% { opacity: 1; } 71% { transform: translate(60vw, -14px) scaleX(-1); } 72.5% { transform: translate(66vw, 22px) scaleX(-1); } 74% { transform: translate(72vw, -8px) scaleX(-1); } 90% { transform: translate(110vw, -20px) scaleX(-1); opacity: 1; } 90.4%, 100% { transform: translate(110vw, 0) scaleX(1); opacity: 0; } }
   @keyframes gullTilt { from { transform: rotate(-4deg); } to { transform: rotate(4deg); } }
   body.late .keywest .gull, body.late .campo .lapwing { display: none; }
-  .keywest .egret { left: 58%; bottom: 31%; width: auto; height: 34px; opacity: .5; }
-  .egret use { animation: heronStalk 40s ease-in-out infinite; }
+  .keywest .egret { left: 63%; bottom: 34%; width: auto; height: 34px; opacity: .5; }
+  .keywest .egret use { transform-origin: 50% 100%; animation: egretDay 240s ease-in-out infinite; }
+  @keyframes egretDay { 0%, 27% { transform: translate(0, 0) rotate(0); opacity: 1; } 31%, 39% { transform: translate(-4%, 0) rotate(0); opacity: 1; } 41% { transform: translate(-30px, -30px) rotate(-14deg); opacity: 1; } 43% { transform: translate(-90px, -80px) rotate(-10deg); opacity: 0; } 43.1%, 69.9% { transform: translate(90px, -80px) rotate(8deg); opacity: 0; } 70% { opacity: 1; } 72.5% { transform: translate(0, 0) rotate(0); opacity: 1; } 74.6% { transform: translate(0, 0) rotate(0); } 75% { transform: translate(0, 0) rotate(9deg); } 75.5%, 100% { transform: translate(0, 0) rotate(0); opacity: 1; } }
   .keywest .dolphins { left: 24%; bottom: 62%; }
-  @keyframes crab { 0% { transform: translateX(-20px); } 30%, 34% { transform: translateX(22vw); } 70%, 74% { transform: translateX(52vw); } 100% { transform: translateX(110vw); } }
-  .keywest .sand .foam { fill: #FFF; opacity: .3; animation: foam 7s ease-in-out infinite alternate; }
+  .keywest .dolphins svg { animation-name: dolphinKW; animation-duration: 240s; }
+  .keywest .dolphins svg + svg { animation-delay: 3s; }
+  @keyframes dolphinKW { 0%, 28% { opacity: 0; transform: translate(0, 12px) rotate(-16deg); } 29.5% { opacity: 1; transform: translate(-18px, 0) rotate(0); } 31% { opacity: 0; transform: translate(-36px, 12px) rotate(16deg); } 32.5% { opacity: 1; transform: translate(-54px, 0) rotate(0); } 34% { opacity: 0; transform: translate(-72px, 12px) rotate(16deg); } 35.5% { opacity: 1; transform: translate(-90px, 0) rotate(0); } 37%, 77.9% { opacity: 0; transform: translate(-108px, 12px) rotate(16deg); } 78% { opacity: 0; transform: translate(40px, 12px) rotate(-16deg); } 79.5% { opacity: 1; transform: translate(22px, 0) rotate(0); } 81% { opacity: 0; transform: translate(4px, 12px) rotate(16deg); } 82.5% { opacity: 1; transform: translate(-14px, 0) rotate(0); } 84% { opacity: 0; transform: translate(-32px, 12px) rotate(16deg); } 85.5% { opacity: 1; transform: translate(-50px, 0) rotate(0); } 87%, 100% { opacity: 0; transform: translate(-68px, 12px) rotate(16deg); } }
+  /* foam on the wet line breathes with the 40 s tide: up and brighter, down and faint */
+  .keywest .sand .foam { fill: #FFF; opacity: .3; animation: foam 40s ease-in-out infinite; }
   html.night .keywest .sand .foam { opacity: .08; }
-  @keyframes foam { from { transform: translateY(2px); opacity: .15; } to { transform: translateY(-3px); opacity: .4; } }
+  @keyframes foam { 0%, 100% { transform: translateY(3px); opacity: .12; } 50% { transform: translateY(-4px); opacity: .4; } }
   @media (prefers-reduced-motion: reduce) {
     .amb, .amb *, .nightsky i, .mic-wrap::after, .keywest .sand .foam, .clouds .flash, .campo .alpenglow { animation: none !important; }
     .dolphins svg, .manatee use, .hare, .fox, .pelican, .splash-kw, .green-flash, .rhea-wrap, .crab, .piche, .gull { opacity: 0 !important; }
@@ -1120,9 +1214,9 @@
   body.late .voice-cap .kb { display: none; }
 
   @media (prefers-reduced-motion: reduce) {
-    /* the Florida dock keeps all of its life: every motion there is slow and small, and it is the version Paul sees (Reduce Motion is on on his phone).
-       El campo, Key West, clouds and UI motion stop */
-    .waves.campo *, .waves.keywest *, .waves-faint, .waves-faint svg, .sky-breathe, .cloud, .orb, div.rain span, .ripple, .ring, .wind span, .dock-hint, .glitter span, .boat { animation: none !important; }
+    /* the Florida dock keeps all of its life: every motion there is slow and small, so it keeps running under Reduce Motion.
+       In El campo only the come-and-go animals stop; Key West, clouds and UI motion stop */
+    .waves.campo .hare, .waves.campo .fox, .waves.campo .piche, .waves.campo .truck, .waves.campo .rhea-wrap, .waves.campo .rhea-wrap svg, .waves.campo .lapwing, .waves.campo .caracara use, .waves.campo .sheep-line use, .waves.campo .guanaco-wrap, .waves.campo .alpenglow, .waves-faint, .waves-faint svg, .sky-breathe, .cloud, .orb, div.rain span, .ripple, .ring, .wind span, .dock-hint, .glitter span, .boat { animation: none !important; }
     .waves svg.boat, .waves svg.sail { opacity: 0; }
     .glitter span { opacity: .3; }
     .clouds, .dock .rod-cast, .dock .rod-wind, .dock .cast-line, .textview { transition: none !important; }
@@ -1239,9 +1333,9 @@
   @keyframes blinkRed { 0%, 82% { opacity: 0; } 86%, 92% { opacity: .9; } 96%, 100% { opacity: 0; } }
   @keyframes blinkGreen { 0%, 80% { opacity: 0; } 85%, 90% { opacity: .85; } 95%, 100% { opacity: 0; } }
   /* boat wake: the hourly boat passes far off, and a minute later a long slow swell rolls through and lifts the whole water. Also on the "boat + swell now" button */
-  .waves .swell { animation: boatSwell 3600s linear infinite; animation-delay: -3480s; }
+  html[data-place="dock"] .waves .swell { animation: boatSwell 3600s linear infinite; animation-delay: -3480s; }
   @keyframes boatSwell { 0%, 6.5% { transform: translateY(0); } 6.6% { transform: translateY(-4px); } 6.7% { transform: translateY(6px); } 6.8% { transform: translateY(-3px); } 6.9% { transform: translateY(0); } 100% { transform: translateY(0); } }
-  body.boatnow .waves .boat, body.boatnow .waves .swell { animation-delay: 0s; }
+  body.boatnow .waves .boat, html[data-place="dock"] body.boatnow .waves .swell { animation-delay: 0s; }
   /* colour per fish, one fill each */
   .waves svg.fish, .waves svg.fish.near { fill: var(--fish); }
   .waves svg.fish.far { fill: color-mix(in srgb, var(--fish) 62%, var(--scene-mid)); }
@@ -1254,6 +1348,97 @@
   /* Reduce Motion: the dock's wind, glare, gusts, markers, bobber and birds keep running (see the note at the main reduced-motion block) */
   @media (prefers-reduced-motion: reduce) { .bird.gull { opacity: .45 !important; } }
   html:not([data-place="dock"]) .bird { display: none; }
+
+  /* ---------- El campo: palette per time of day and overrides (appended; scoped to the place) ---------- */
+  html[data-place="campo"] { --haze: .45; --shadow: .1; --windrun: .16; --sheep: #F4F2EE; }
+  /* dawn: the range blushes before the ground wakes; the steppe is still cool and grey-gold, the road pale */
+  html[data-sky="morning"][data-place="campo"]:not(.night) { --sky-top: #C9CBDD; --sky-mid: #E6DFE2; --sky-horizon: #F4E8DC; --bg: #F4E8DC; --scene-back: #B7AFC4; --scene-mid: #CFC69E; --scene-front: #B3A778; --scene-land: #A9A08A; --silhouette: #4B4840; --haze: .55; --shadow: .07; --windrun: .14; }
+  /* day: as approved */
+  html[data-sky="day"][data-place="campo"]:not(.night) { --scene-back: #B4B6C4; --scene-mid: #D9C78F; --scene-front: #BFA765; --scene-land: #A79A7A; --silhouette: #4A463C; }
+  /* golden hour: low light from the west, the range violet, the grass warm, long shadows darker */
+  html[data-sky="evening"][data-place="campo"]:not(.night) { --sky-top: #A79BC0; --sky-mid: #EBBF9C; --sky-horizon: #F4E3CE; --bg: #F4E3CE; --scene-back: #9C8FA9; --scene-mid: #D9B47C; --scene-front: #B98E52; --scene-land: #A18A6A; --silhouette: #3F362B; --haze: .5; --shadow: .13; --windrun: .12; --sheep: #F6E4CD; }
+  html[data-sky="evening"][data-place="campo"]:not(.night) .campo .range { fill: color-mix(in srgb, var(--scene-back) 80%, #D39A86); }
+  /* night: the darkest of the three places; the Milky Way, one lamp, the owl */
+  html.night[data-place="campo"] { --sky-top: #0B0E19; --sky-mid: #141A27; --sky-horizon: #232833; --bg: #232833; --scene-back: #2C3143; --scene-mid: #2A281E; --scene-front: #1E1C15; --scene-land: #2B2822; --silhouette: #9A9483; --haze: .3; --shadow: .05; --windrun: .05; --sheep: #C9C4B4; }
+  html.night[data-place="campo"] .campo .haze { background: linear-gradient(to top, var(--sky-horizon), transparent); }
+  /* after 21:00 the wind drops a little */
+  body.late .campo .fence .steam { animation-duration: 9s; }
+  body.late .campo .shadow { animation-duration: 260s; }
+  body.late .campo .windpump .blades { animation-duration: 26s; }
+  /* Reduce Motion: what keeps moving here is slow and small. The wind in the grass, the steam, the windpump, the cloud shadows, the lenticular, the condor's circle */
+  @media (prefers-reduced-motion: reduce) {
+    .campo .windpump .blades { animation: spin 28s linear infinite !important; }
+    .campo .lenticular { animation: lenti 80s ease-in-out infinite alternate !important; }
+    .campo .condor-wrap { animation: condorCircle 180s linear infinite !important; }
+    .campo svg.condor { animation: none !important; }
+    .campo svg.tuft { animation-duration: 9s; }
+    .campo .tuft path { animation: none !important; }
+    .campo .windrun { animation-duration: 22s; }
+    .campo svg.tuft.far { animation-duration: 11s; }
+    .campo .fence .steam { animation-duration: 9s; }
+  }
+  /* =============== Key West: palette per time of day and overrides. Everything below is scoped to html[data-place="keywest"] =============== */
+  /* water reads pale near (sand under it) and deeper far; the turtle grass is a darker teal in the middle band */
+  html[data-place="keywest"]:not(.night) { --scene-back:#63AFC0; --scene-mid:#78CCCB; --scene-front:#B2E3DC; --scene-land:#EEE0BA; --sand:#EEE0BA; --water:#78CCCB; --grass:#3E8F8E; --silhouette:#34474D; --fish:oklch(42% .05 210); --wrack:oklch(48% .05 65); }
+  html[data-place="keywest"][data-sky="morning"]:not(.night) { --sky-top:#D6E6EA; --sky-mid:#EEEBDF; --sky-horizon:#F7ECD8; --bg:#F7ECD8; --scene-back:#8CC4D0; --scene-mid:#9AD6D4; --scene-front:#C6E9E2; --scene-land:#F1E5C5; --sand:#F1E5C5; --grass:#4F9A98; --silhouette:#3B4F55; --fish:oklch(45% .05 210); --wrack:oklch(50% .05 65); }
+  html[data-place="keywest"][data-sky="evening"]:not(.night) { --sky-top:#B07D9C; --sky-mid:#F09A6A; --sky-horizon:#F9D9A8; --bg:#F9D9A8; --scene-back:#E7A97E; --scene-mid:#7FA3A6; --scene-front:#C4CDB8; --scene-land:#E8CFA3; --sand:#E8CFA3; --grass:#587F80; --silhouette:#3A3545; --fish:oklch(40% .05 200); --wrack:oklch(42% .05 55); --orb:#F3B98A; --orb-rgb:243,185,138; }
+  html[data-place="keywest"].night { --scene-back:#223C46; --scene-mid:#1B333B; --scene-front:#2A444A; --scene-land:#3F3B31; --sand:#3F3B31; --water:#1B333B; --grass:#15292F; --silhouette:#93A8AE; --fish:oklch(66% .04 210); --wrack:oklch(30% .02 60); }
+  html[data-place="keywest"] .waves path.w1 { fill: var(--scene-back); }
+  html[data-place="keywest"] .waves path.w3 { opacity: .9; }
+  html[data-place="keywest"][data-sky="evening"]:not(.night) .waves::after { background: linear-gradient(rgba(233,169,124,.18), rgba(233,169,124,0) 60%); }
+  html[data-place="keywest"][data-sky="evening"] .orb { opacity: .4; }
+  /* slow water: 60 / 46 / 38 s, the middle band against the others; a 9 s bob; slower still after 21:00 */
+  html[data-place="keywest"] .waves svg.w1 { animation-duration: 60s; }
+  html[data-place="keywest"] .waves svg.w2 { animation-duration: 46s; animation-direction: reverse; }
+  html[data-place="keywest"] .waves svg.w3 { animation-duration: 38s; }
+  html[data-place="keywest"] .waves .wave-wrap { animation-duration: 9s; }
+  html[data-place="keywest"] body.late .waves svg.w1 { animation-duration: 90s; }
+  html[data-place="keywest"] body.late .waves svg.w2 { animation-duration: 70s; }
+  html[data-place="keywest"] body.late .waves svg.w3 { animation-duration: 56s; }
+  html[data-place="keywest"] body.late .waves .wave-wrap { animation-duration: 12s; }
+  html[data-place="keywest"] body.late .keywest .sand .foam, html[data-place="keywest"] body.late .keywest .sand .lap { animation-duration: 60s; }
+  html[data-place="keywest"] body.late .keywest svg.grass { animation-duration: 70s; }
+  /* moon on the flats: the glitter runs at night too, dim */
+  html[data-place="keywest"].night .glitter { display: block; }
+  /* at night the foam and lap keep their tide but stay faint: the day keyframes carry opacity and would override the night .08 / .04 */
+  html[data-place="keywest"].night .keywest .sand .foam { animation-name: kwFoamNight; }
+  html[data-place="keywest"].night .keywest .sand .lap { animation-name: kwLapNight; }
+  @keyframes kwFoamNight { 0%, 100% { transform: translateY(3px); opacity: .03; } 50% { transform: translateY(-4px); opacity: .1; } }
+  @keyframes kwLapNight { 0%, 100% { transform: translateY(2px); opacity: .015; } 50% { transform: translateY(-2px); opacity: .05; } }
+  /* Reduce Motion: the shore keeps its slow life, the way the dock does. Safe because everything here is slow or tiny; the come-and-go things (pelican, gull, crab, turtle, dolphins, flash, splash, ruffle) rest in a hidden or off-screen base state */
+  @media (prefers-reduced-motion: reduce) {
+    html[data-place="keywest"] .waves svg.w1 { animation: drift 60s linear infinite !important; }
+    html[data-place="keywest"] .waves svg.w2 { animation: drift 46s linear infinite reverse !important; }
+    html[data-place="keywest"] .waves svg.w3 { animation: drift 38s linear infinite !important; }
+    html[data-place="keywest"] .waves svg.grass { animation: drift 46s linear infinite reverse !important; }
+    html[data-place="keywest"] .waves .wave-wrap { animation: bob 9s ease-in-out infinite alternate !important; }
+    html[data-place="keywest"] .keywest .swell { animation: kwSwell 23s ease-in-out infinite alternate !important; }
+    html[data-place="keywest"] .keywest .sand .foam { animation: foam 40s ease-in-out infinite !important; }
+    html[data-place="keywest"] .keywest .sand .lap { animation: kwLap 40s ease-in-out -13s infinite !important; }
+    html[data-place="keywest"] .keywest .sand .wet { animation: kwWet 300s ease-in-out infinite alternate !important; }
+    html[data-place="keywest"] .keywest .sand .wrack { animation: kwWet 300s ease-in-out infinite alternate !important; }
+    html[data-place="keywest"] .keywest .schooner { animation: schoonerSail 3600s linear 1 forwards !important; }
+    html[data-place="keywest"] .keywest .palm .coon .cat-tail { animation: catTail 9s ease-in-out infinite alternate !important; }
+    html[data-place="keywest"] .keywest .palm .somali .cat-tail { animation: catTail 6s ease-in-out -2.5s infinite alternate !important; }
+    html[data-place="keywest"] .keywest .palm .crown { animation: crownSway 4s ease-in-out infinite alternate !important; }
+    html[data-place="keywest"] .keywest .palm .crown path:nth-child(odd) { animation: frondSway 3.4s ease-in-out infinite alternate !important; }
+    html[data-place="keywest"] .keywest .palm .crown path:nth-child(even) { animation: frondSway 4.6s ease-in-out -2s infinite alternate !important; }
+    html[data-place="keywest"] .keywest .frigate-wrap { animation: frigateLoop 100s linear infinite !important; }
+    html[data-place="keywest"] .keywest svg.frigate { animation: frigateTilt 6s ease-in-out infinite alternate !important; }
+    html[data-place="keywest"] .keywest .egret use { animation: egretDay 240s ease-in-out infinite !important; }
+    html[data-place="keywest"] .keywest .rooster-wrap { animation: roosterWalk 240s linear infinite !important; }
+    html[data-place="keywest"] .keywest .rooster use { animation: peck 240s ease-in-out infinite !important; }
+    html[data-place="keywest"] .keywest .hen { animation: henSpit 240s linear infinite !important; }
+    html[data-place="keywest"] .keywest .hen use { animation: henPeck 30s ease-in-out infinite !important; }
+    html[data-place="keywest"] .keywest .setting-sun { animation: setting 3600s linear 1 forwards !important; }
+    html[data-place="keywest"] .keywest .sunpath { animation: sunpath 3600s linear 1 forwards !important; }
+    html[data-place="keywest"] .keywest .beam { animation: sweep 30s ease-in-out infinite alternate !important; }
+    html[data-place="keywest"] .keywest .cuda-wrap { animation: cudaPatrol 240s ease-in-out infinite !important; }
+    html[data-place="keywest"] .keywest .school-wrap, html[data-place="keywest"] .keywest .bonnet-wrap { opacity: 0 !important; }
+    html[data-place="keywest"] .keywest .gull, html[data-place="keywest"] .keywest .pelican, html[data-place="keywest"] .keywest .crab, html[data-place="keywest"] .keywest .turtle-wrap, html[data-place="keywest"] .keywest .dolphins svg, html[data-place="keywest"] .keywest .green-flash, html[data-place="keywest"] .keywest .splash-kw { opacity: 0 !important; }
+    html[data-place="keywest"].night .keywest .sand .foam { animation-name: kwFoamNight !important; }
+    html[data-place="keywest"].night .keywest .sand .lap { animation-name: kwLapNight !important; }
+  }
 </style>
 </head>
 <body>
@@ -1404,70 +1589,106 @@
     </div>
     <div class="waves campo" aria-hidden="true">
       <div class="campo-wrap">
-        <svg class="band" viewBox="0 0 390 240" preserveAspectRatio="none"><path class="range" transform="translate(0,-36)" d="M0,158 L30,154 L58,146 L84,150 L104,136 L118,142 L130,124 L138,110 L143,104 L147,122 L156,116 L162,100 L167,96 L171,114 L180,108 L190,88 L196,80 L202,74 L208,82 L214,78 L222,92 L232,104 L242,96 L254,116 L268,108 L282,124 L300,118 L318,134 L340,138 L366,146 L390,150 L390,240 L0,240 Z"/><path class="alpenglow" transform="translate(0,-36)" d="M0,158 L30,154 L58,146 L84,150 L104,136 L118,142 L130,124 L138,110 L143,104 L147,122 L156,116 L162,100 L167,96 L171,114 L180,108 L190,88 L196,80 L202,74 L208,82 L214,78 L222,92 L232,104 L242,96 L254,116 L268,108 L282,124 L300,118 L318,134 L340,138 L366,146 L390,150 L390,240 L0,240 Z"/><path class="snow" transform="translate(0,-36)" d="M196,80 L202,74 L208,82 L205,85 L201,80 L198,83 Z M186,92 L190,88 L194,94 Z M140,108 L143,104 L146,116 Z M162,100 L167,96 L170,106 Z"/></svg>
+        <svg class="band" viewBox="0 0 390 240" preserveAspectRatio="none"><path class="range" transform="translate(0,-36)" d="M0,158 L30,154 L58,146 L84,150 L104,136 L118,142 L130,124 L138,110 L143,104 L147,122 L156,116 L162,100 L167,96 L171,114 L180,108 L190,88 L196,80 L202,74 L208,82 L214,78 L222,92 L232,104 L242,96 L254,116 L268,108 L282,124 L300,118 L318,134 L340,138 L366,146 L390,150 L390,240 L0,240 Z"></path><path class="alpenglow" transform="translate(0,-36)" d="M0,158 L30,154 L58,146 L84,150 L104,136 L118,142 L130,124 L138,110 L143,104 L147,122 L156,116 L162,100 L167,96 L171,114 L180,108 L190,88 L196,80 L202,74 L208,82 L214,78 L222,92 L232,104 L242,96 L254,116 L268,108 L282,124 L300,118 L318,134 L340,138 L366,146 L390,150 L390,240 L0,240 Z"></path><path class="snow" transform="translate(0,-36)" d="M196,80 L202,74 L208,82 L205,85 L201,80 L198,83 Z M186,92 L190,88 L194,94 Z M140,108 L143,104 L146,116 Z M162,100 L167,96 L170,106 Z"></path></svg>
+        <div class="haze"></div>
         <div class="amb lenticular"></div>
-        <svg class="amb windpump" viewBox="-7 -8 14 40"><path class="legs" d="M-6,32 L-2,0 M6,32 L2,0 M-4,20 L4,20"/><g class="blades"><path d="M0,-7 L1.5,0 L-1.5,0 Z M0,7 L1.5,0 L-1.5,0 Z M-7,0 L0,1.5 L0,-1.5 Z M7,0 L0,1.5 L0,-1.5 Z"/><circle cx="0" cy="0" r="1.2"/></g></svg>
-        <div class="condor-wrap"><svg class="condor" viewBox="0 0 1536 401"><use href="#f-condor"/></svg></div>
-        <svg class="band" viewBox="0 0 390 240" preserveAspectRatio="none"><path class="steppe-mid" transform="translate(0,-58)" d="M0,180 C60,170 120,188 200,178 C280,168 340,184 390,176 L390,300 L0,300 Z"/></svg>
-        <div class="amb sheep-line"><svg class="sh1" viewBox="0 0 1536 1215"><use href="#f-sheep"/></svg><svg class="sh2" viewBox="0 0 1536 1215"><use href="#f-sheep"/></svg><svg class="sh3" viewBox="0 0 1536 1215"><use href="#f-sheep"/></svg></div>
-        <div class="amb rhea-wrap"><svg class="rhea" viewBox="0 0 1238 1536"><use href="#f-rhea"/></svg><svg class="rhea chick c1" viewBox="0 0 1238 1536"><use href="#f-rhea"/></svg><svg class="rhea chick c2" viewBox="0 0 1238 1536"><use href="#f-rhea"/></svg></div>
-        <svg class="amb hare" viewBox="0 0 1342 1536"><use href="#f-hare"/></svg>
-        <div class="guanaco-wrap"><svg class="guanaco" viewBox="0 0 1446 1536"><g transform="matrix(-1 0 0 1 1446 0)"><use href="#f-guanaco"/></g></svg></div>
-        <svg class="band" viewBox="0 0 390 240" preserveAspectRatio="none"><g transform="translate(0,-56)"><path class="steppe-front" d="M0,206 C80,197 150,213 240,205 C310,199 360,211 390,207 L390,300 L0,300 Z"/><path class="road" d="M197,179 L203,179 L431,300 L-102,300 Z"/><g class="dash"><rect x="197.5" y="186" width=".9" height="3"/><rect x="194" y="197" width="1.4" height="5"/><rect x="188.7" y="214" width="2" height="8"/><rect x="183" y="232" width="2.6" height="8"/><rect x="176" y="256" width="3.4" height="12"/><rect x="167" y="286" width="4.4" height="14"/></g></g></svg>
-        <svg class="amb lapwing day-only" viewBox="0 0 1089 1536"><use href="#f-lapwing"/></svg>
-        <svg class="amb piche dusk-night" viewBox="0 0 1692 890"><use href="#f-piche"/></svg>
-        <svg class="truck" viewBox="0 0 30 12"><path d="M1,9 L1,3 L18,3 L18,1 L26,1 L29,6 L29,9 Z"/><circle cx="7" cy="10" r="1.8"/><circle cx="23" cy="10" r="1.8"/><rect class="lights" x="27.5" y="4" width="2" height="2" rx=".6"/></svg>
-        <svg class="amb fox dusk-night" viewBox="0 0 1536 765"><use href="#f-fox"/></svg>
+        <svg class="amb windpump" viewBox="-7 -8 14 40"><path class="legs" d="M-6,32 L-2,0 M6,32 L2,0 M-4,20 L4,20"></path><g class="blades"><path d="M0,-7 L1.5,0 L-1.5,0 Z M0,7 L1.5,0 L-1.5,0 Z M-7,0 L0,1.5 L0,-1.5 Z M7,0 L0,1.5 L0,-1.5 Z"></path><circle cx="0" cy="0" r="1.2"></circle></g></svg>
+        <div class="condor-wrap"><svg class="condor" viewBox="0 0 1536 401"><use href="#f-condor"></use></svg></div>
+        <svg class="band" viewBox="0 0 390 240" preserveAspectRatio="none"><path class="steppe-mid" transform="translate(0,-58)" d="M0,180 C60,170 120,188 200,178 C280,168 340,184 390,176 L390,300 L0,300 Z"></path></svg>
+        <div class="shadow s1"></div><div class="shadow s2"></div>
+        <svg class="amb poplars" style="left:78.0%;bottom:50.6%" viewBox="0 0 40 14"><rect x="0" y="10" width="9" height="4" rx=".4"></rect><rect x="3" y="8.5" width="3" height="1.5"></rect><rect x="12" y="3" width="1.4" height="11" rx=".7"></rect><rect x="15.5" y="1" width="1.6" height="13" rx=".8"></rect><rect x="19.5" y="2" width="1.5" height="12" rx=".75"></rect><rect x="23.5" y="0" width="1.7" height="14" rx=".85"></rect><rect x="27.5" y="2.5" width="1.5" height="11.5" rx=".75"></rect><rect x="31.5" y="1.5" width="1.6" height="12.5" rx=".8"></rect><rect x="35.5" y="4" width="1.3" height="10" rx=".65"></rect></svg>
+        <div class="amb sheep-line"><svg class="sh1" viewBox="0 0 1536 1215"><use href="#f-sheep"></use></svg><svg class="sh2" viewBox="0 0 1536 1215"><use href="#f-sheep"></use></svg><svg class="sh3" viewBox="0 0 1536 1215"><use href="#f-sheep"></use></svg></div>
+        <div class="amb rhea-wrap"><svg class="rhea" viewBox="0 0 1238 1536"><use href="#f-rhea"></use></svg><svg class="rhea chick c1" viewBox="0 0 1238 1536"><use href="#f-rhea"></use></svg><svg class="rhea chick c2" viewBox="0 0 1238 1536"><use href="#f-rhea"></use></svg></div>
+        <svg class="amb hare" viewBox="0 0 1342 1536"><use href="#f-hare"></use></svg>
+        <div class="guanaco-wrap"><svg class="guanaco" viewBox="0 0 1446 1536"><g transform="matrix(-1 0 0 1 1446 0)"><use href="#f-guanaco"></use></g></svg></div>
+        <svg class="band" viewBox="0 0 390 240" preserveAspectRatio="none"><g transform="translate(0,-56)"><path class="steppe-front" d="M0,206 C80,197 150,213 240,205 C310,199 360,211 390,207 L390,300 L0,300 Z"></path><path class="road" d="M197,179 L203,179 L431,300 L-102,300 Z"></path><g class="dash"><rect x="197.5" y="186" width=".9" height="3"></rect><rect x="194" y="197" width="1.4" height="5"></rect><rect x="188.7" y="214" width="2" height="8"></rect><rect x="183" y="232" width="2.6" height="8"></rect><rect x="176" y="256" width="3.4" height="12"></rect><rect x="167" y="286" width="4.4" height="14"></rect></g></g></svg>
+        <div class="windrun w1"></div><div class="windrun w2"></div><div class="windrun w3"></div>
+        <svg class="amb lapwing day-only" viewBox="0 0 1089 1536"><use href="#f-lapwing"></use></svg>
+        <svg class="amb piche dusk-night" viewBox="0 0 1692 890"><use href="#f-piche"></use></svg>
+        <svg class="truck" viewBox="0 0 30 12"><path d="M1,9 L1,3 L18,3 L18,1 L26,1 L29,6 L29,9 Z"></path><circle cx="7" cy="10" r="1.8"></circle><circle cx="23" cy="10" r="1.8"></circle><rect class="lights" x="27.5" y="4" width="2" height="2" rx=".6"></rect></svg>
+        <svg class="amb fox dusk-night" viewBox="0 0 1536 765"><use href="#f-fox"></use></svg>
         <svg class="fence" viewBox="0 0 210 120">
           <g class="fig">
-            <rect x="18" y="62" width="192" height="5" rx="1.5"/><rect x="28" y="58" width="6" height="60" rx="1.5"/><rect x="150" y="58" width="6" height="62" rx="1.5"/><rect x="200" y="58" width="6" height="58" rx="1.5"/><rect x="18" y="82" width="192" height="1.6" rx=".8"/><rect x="18" y="98" width="192" height="1.6" rx=".8"/>
+            <rect x="18" y="62" width="192" height="5" rx="1.5"></rect><rect x="28" y="58" width="6" height="60" rx="1.5"></rect><rect x="150" y="58" width="6" height="62" rx="1.5"></rect><rect x="200" y="58" width="6" height="58" rx="1.5"></rect><rect x="18" y="82" width="192" height="1.6" rx=".8"></rect><rect x="18" y="98" width="192" height="1.6" rx=".8"></rect>
           </g>
-          <circle class="lamp-glow" cx="153" cy="56" r="1.8"/>
-          <g class="person-wrap"><g class="person" transform="translate(64,67.6) scale(.36)"><g class="breathe-fig"><path stroke="none" fill-rule="evenodd" d="M128 64 C141 68,150 80,152 96 C154 112,156 128,156 140 L56 140 C50 140,50 133,56 132 L64 130 C66 118,68 104,72 96 C75 88,84 84,94 88 C100 91,106 98,112 105 C112 96,114 82,118 73 C120 68,124 65,128 64 Z M94 108 C92 118,90 130,88 140 L140 140 C136 128,120 113,94 108 Z"></path><path stroke="none" d="M117 74 L131 67 L129 54 L115 60 Z"></path><ellipse cx="119" cy="52" rx="15" ry="17" transform="rotate(-8 119 52)" stroke="none"></ellipse><path fill="none" stroke-width="11" d="M140 88 C134 98,128 104,120 103 C110 101,98 94,90 87"></path><circle cx="88" cy="86" r="6.5" stroke="none"></circle><rect x="77" y="71" width="17" height="20" rx="4" stroke="none"></rect><path fill="none" stroke-width="1.4" stroke-opacity=".45" d="M82 65 C80 61,84 58,82 53 M89 65 C87 61,91 58,89 53"></path></g></g></g>
+          <circle class="lamp-glow" cx="153" cy="56" r="1.8"></circle>
+          <g class="person-wrap"><g class="person" transform="translate(64,67.6) scale(.36)"><g class="breathe-fig"><path stroke="none" fill-rule="evenodd" d="M128 64 C141 68,150 80,152 96 C154 112,156 128,156 140 L56 140 C50 140,50 133,56 132 L64 130 C66 118,68 104,72 96 C75 88,84 84,94 88 C100 91,106 98,112 105 C112 96,114 82,118 73 C120 68,124 65,128 64 Z M94 108 C92 118,90 130,88 140 L140 140 C136 128,120 113,94 108 Z"></path><path stroke="none" d="M117 74 L131 67 L129 54 L115 60 Z"></path><ellipse cx="119" cy="52" rx="15" ry="17" transform="rotate(-8 119 52)" stroke="none"></ellipse><path fill="none" stroke-width="11" d="M140 88 C134 98,128 104,120 103 C110 101,98 94,90 87"></path><circle cx="88" cy="86" r="6.5" stroke="none"></circle><rect x="77" y="71" width="17" height="20" rx="4" stroke="none"></rect><g class="steam"><path fill="none" stroke-width="1.4" stroke-opacity=".45" d="M82 65 C80 61,84 58,82 53 M89 65 C87 61,91 58,89 53"></path></g></g></g></g>
         </svg>
-        <svg class="amb caracara day-only not-dusk" viewBox="0 0 1247 1536"><use href="#f-caracara"/></svg>
-        <svg class="amb owl night-only" viewBox="0 0 772 1536"><use href="#f-owl"/></svg>
-        <svg class="tuft t1" viewBox="0 0 40 24"><path d="M20,24 C19,16 14,10 8,6"/><path d="M20,24 C20,15 18,8 17,2"/><path d="M20,24 C21,15 25,9 31,5"/><path d="M20,24 C22,17 27,13 34,12"/><path d="M20,24 C18,18 12,14 5,14"/></svg>
-        <svg class="tuft t2" viewBox="0 0 40 24"><path d="M20,24 C19,16 14,10 8,6"/><path d="M20,24 C20,15 18,8 17,2"/><path d="M20,24 C21,15 25,9 31,5"/><path d="M20,24 C22,17 27,13 34,12"/><path d="M20,24 C18,18 12,14 5,14"/></svg>
-        <svg class="tuft t3" viewBox="0 0 40 24"><path d="M20,24 C19,16 14,10 8,6"/><path d="M20,24 C20,15 18,8 17,2"/><path d="M20,24 C21,15 25,9 31,5"/><path d="M20,24 C22,17 27,13 34,12"/><path d="M20,24 C18,18 12,14 5,14"/></svg>
-        <svg class="tuft t4" viewBox="0 0 40 24"><path d="M20,24 C19,16 14,10 8,6"/><path d="M20,24 C20,15 18,8 17,2"/><path d="M20,24 C21,15 25,9 31,5"/><path d="M20,24 C22,17 27,13 34,12"/><path d="M20,24 C18,18 12,14 5,14"/></svg>
+        <svg class="amb caracara day-only not-dusk" viewBox="0 0 1247 1536"><use href="#f-caracara"></use></svg>
+        <svg class="amb owl night-only" viewBox="0 0 772 1536"><use href="#f-owl"></use></svg>
+        <svg class="tuft far" style="left:3.0%;bottom:49.2%;width:12px;height:7px;--wx:0.03" viewBox="0 0 40 24"><path d="M20,24 C19,16 14,10 8,6"></path><path d="M20,24 C20,15 18,8 17,2"></path><path d="M20,24 C21,15 25,9 31,5"></path><path d="M20,24 C22,17 27,13 34,12"></path><path d="M20,24 C18,18 12,14 5,14"></path></svg>
+        <svg class="tuft far" style="left:11.5%;bottom:49.8%;width:10px;height:6px;--wx:0.12" viewBox="0 0 40 24"><path d="M20,24 C19,16 14,10 8,6"></path><path d="M20,24 C20,15 18,8 17,2"></path><path d="M20,24 C21,15 25,9 31,5"></path><path d="M20,24 C22,17 27,13 34,12"></path><path d="M20,24 C18,18 12,14 5,14"></path></svg>
+        <svg class="tuft far" style="left:20.0%;bottom:49.3%;width:13px;height:8px;--wx:0.20" viewBox="0 0 40 24"><path d="M20,24 C19,16 14,10 8,6"></path><path d="M20,24 C20,15 18,8 17,2"></path><path d="M20,24 C21,15 25,9 31,5"></path><path d="M20,24 C22,17 27,13 34,12"></path><path d="M20,24 C18,18 12,14 5,14"></path></svg>
+        <svg class="tuft far" style="left:44.0%;bottom:48.3%;width:11px;height:7px;--wx:0.44" viewBox="0 0 40 24"><path d="M20,24 C19,16 14,10 8,6"></path><path d="M20,24 C20,15 18,8 17,2"></path><path d="M20,24 C21,15 25,9 31,5"></path><path d="M20,24 C22,17 27,13 34,12"></path><path d="M20,24 C18,18 12,14 5,14"></path></svg>
+        <svg class="tuft far" style="left:53.0%;bottom:49.7%;width:12px;height:7px;--wx:0.53" viewBox="0 0 40 24"><path d="M20,24 C19,16 14,10 8,6"></path><path d="M20,24 C20,15 18,8 17,2"></path><path d="M20,24 C21,15 25,9 31,5"></path><path d="M20,24 C22,17 27,13 34,12"></path><path d="M20,24 C18,18 12,14 5,14"></path></svg>
+        <svg class="tuft far" style="left:61.0%;bottom:50.6%;width:10px;height:6px;--wx:0.61" viewBox="0 0 40 24"><path d="M20,24 C19,16 14,10 8,6"></path><path d="M20,24 C20,15 18,8 17,2"></path><path d="M20,24 C21,15 25,9 31,5"></path><path d="M20,24 C22,17 27,13 34,12"></path><path d="M20,24 C18,18 12,14 5,14"></path></svg>
+        <svg class="tuft far" style="left:70.0%;bottom:50.7%;width:13px;height:8px;--wx:0.70" viewBox="0 0 40 24"><path d="M20,24 C19,16 14,10 8,6"></path><path d="M20,24 C20,15 18,8 17,2"></path><path d="M20,24 C21,15 25,9 31,5"></path><path d="M20,24 C22,17 27,13 34,12"></path><path d="M20,24 C18,18 12,14 5,14"></path></svg>
+        <svg class="tuft far" style="left:86.0%;bottom:49.5%;width:11px;height:7px;--wx:0.86" viewBox="0 0 40 24"><path d="M20,24 C19,16 14,10 8,6"></path><path d="M20,24 C20,15 18,8 17,2"></path><path d="M20,24 C21,15 25,9 31,5"></path><path d="M20,24 C22,17 27,13 34,12"></path><path d="M20,24 C18,18 12,14 5,14"></path></svg>
+        <svg class="tuft far" style="left:95.0%;bottom:49.4%;width:12px;height:7px;--wx:0.95" viewBox="0 0 40 24"><path d="M20,24 C19,16 14,10 8,6"></path><path d="M20,24 C20,15 18,8 17,2"></path><path d="M20,24 C21,15 25,9 31,5"></path><path d="M20,24 C22,17 27,13 34,12"></path><path d="M20,24 C18,18 12,14 5,14"></path></svg>
+        <svg class="tuft mid" style="left:2.0%;bottom:37.0%;width:22px;height:13px;--wx:0.02" viewBox="0 0 40 24"><path d="M20,24 C19,16 14,10 8,6"></path><path d="M20,24 C20,15 18,8 17,2"></path><path d="M20,24 C21,15 25,9 31,5"></path><path d="M20,24 C22,17 27,13 34,12"></path><path d="M20,24 C18,18 12,14 5,14"></path></svg>
+        <svg class="tuft mid" style="left:9.0%;bottom:37.7%;width:26px;height:16px;--wx:0.09" viewBox="0 0 40 24"><path d="M20,24 C19,16 14,10 8,6"></path><path d="M20,24 C20,15 18,8 17,2"></path><path d="M20,24 C21,15 25,9 31,5"></path><path d="M20,24 C22,17 27,13 34,12"></path><path d="M20,24 C18,18 12,14 5,14"></path></svg>
+        <svg class="tuft mid" style="left:16.0%;bottom:37.8%;width:20px;height:12px;--wx:0.16" viewBox="0 0 40 24"><path d="M20,24 C19,16 14,10 8,6"></path><path d="M20,24 C20,15 18,8 17,2"></path><path d="M20,24 C21,15 25,9 31,5"></path><path d="M20,24 C22,17 27,13 34,12"></path><path d="M20,24 C18,18 12,14 5,14"></path></svg>
+        <svg class="tuft mid" style="left:25.0%;bottom:37.4%;width:24px;height:14px;--wx:0.25" viewBox="0 0 40 24"><path d="M20,24 C19,16 14,10 8,6"></path><path d="M20,24 C20,15 18,8 17,2"></path><path d="M20,24 C21,15 25,9 31,5"></path><path d="M20,24 C22,17 27,13 34,12"></path><path d="M20,24 C18,18 12,14 5,14"></path></svg>
+        <svg class="tuft mid" style="left:30.0%;bottom:37.0%;width:18px;height:11px;--wx:0.30" viewBox="0 0 40 24"><path d="M20,24 C19,16 14,10 8,6"></path><path d="M20,24 C20,15 18,8 17,2"></path><path d="M20,24 C21,15 25,9 31,5"></path><path d="M20,24 C22,17 27,13 34,12"></path><path d="M20,24 C18,18 12,14 5,14"></path></svg>
+        <svg class="tuft mid" style="left:68.0%;bottom:37.7%;width:20px;height:12px;--wx:0.68" viewBox="0 0 40 24"><path d="M20,24 C19,16 14,10 8,6"></path><path d="M20,24 C20,15 18,8 17,2"></path><path d="M20,24 C21,15 25,9 31,5"></path><path d="M20,24 C22,17 27,13 34,12"></path><path d="M20,24 C18,18 12,14 5,14"></path></svg>
+        <svg class="tuft mid" style="left:75.0%;bottom:37.7%;width:24px;height:14px;--wx:0.75" viewBox="0 0 40 24"><path d="M20,24 C19,16 14,10 8,6"></path><path d="M20,24 C20,15 18,8 17,2"></path><path d="M20,24 C21,15 25,9 31,5"></path><path d="M20,24 C22,17 27,13 34,12"></path><path d="M20,24 C18,18 12,14 5,14"></path></svg>
+        <svg class="tuft mid" style="left:83.0%;bottom:37.2%;width:20px;height:12px;--wx:0.83" viewBox="0 0 40 24"><path d="M20,24 C19,16 14,10 8,6"></path><path d="M20,24 C20,15 18,8 17,2"></path><path d="M20,24 C21,15 25,9 31,5"></path><path d="M20,24 C22,17 27,13 34,12"></path><path d="M20,24 C18,18 12,14 5,14"></path></svg>
+        <svg class="tuft mid" style="left:90.0%;bottom:36.3%;width:26px;height:16px;--wx:0.90" viewBox="0 0 40 24"><path d="M20,24 C19,16 14,10 8,6"></path><path d="M20,24 C20,15 18,8 17,2"></path><path d="M20,24 C21,15 25,9 31,5"></path><path d="M20,24 C22,17 27,13 34,12"></path><path d="M20,24 C18,18 12,14 5,14"></path></svg>
+        <svg class="tuft mid" style="left:97.0%;bottom:35.9%;width:22px;height:13px;--wx:0.97" viewBox="0 0 40 24"><path d="M20,24 C19,16 14,10 8,6"></path><path d="M20,24 C20,15 18,8 17,2"></path><path d="M20,24 C21,15 25,9 31,5"></path><path d="M20,24 C22,17 27,13 34,12"></path><path d="M20,24 C18,18 12,14 5,14"></path></svg>
+        <svg class="tuft near" style="left:1.5%;bottom:30%;width:40px;height:24px;--wx:0.01" viewBox="0 0 40 24"><path d="M20,24 C19,16 14,10 8,6"></path><path d="M20,24 C20,15 18,8 17,2"></path><path d="M20,24 C21,15 25,9 31,5"></path><path d="M20,24 C22,17 27,13 34,12"></path><path d="M20,24 C18,18 12,14 5,14"></path></svg>
+        <svg class="tuft near" style="left:6.0%;bottom:24%;width:46px;height:28px;--wx:0.06" viewBox="0 0 40 24"><path d="M20,24 C19,16 14,10 8,6"></path><path d="M20,24 C20,15 18,8 17,2"></path><path d="M20,24 C21,15 25,9 31,5"></path><path d="M20,24 C22,17 27,13 34,12"></path><path d="M20,24 C18,18 12,14 5,14"></path></svg>
+        <svg class="tuft near" style="left:14.0%;bottom:27%;width:36px;height:22px;--wx:0.14" viewBox="0 0 40 24"><path d="M20,24 C19,16 14,10 8,6"></path><path d="M20,24 C20,15 18,8 17,2"></path><path d="M20,24 C21,15 25,9 31,5"></path><path d="M20,24 C22,17 27,13 34,12"></path><path d="M20,24 C18,18 12,14 5,14"></path></svg>
+        <svg class="tuft near" style="left:20.0%;bottom:21%;width:44px;height:26px;--wx:0.20" viewBox="0 0 40 24"><path d="M20,24 C19,16 14,10 8,6"></path><path d="M20,24 C20,15 18,8 17,2"></path><path d="M20,24 C21,15 25,9 31,5"></path><path d="M20,24 C22,17 27,13 34,12"></path><path d="M20,24 C18,18 12,14 5,14"></path></svg>
+        <svg class="tuft near" style="left:79.0%;bottom:29%;width:34px;height:20px;--wx:0.79" viewBox="0 0 40 24"><path d="M20,24 C19,16 14,10 8,6"></path><path d="M20,24 C20,15 18,8 17,2"></path><path d="M20,24 C21,15 25,9 31,5"></path><path d="M20,24 C22,17 27,13 34,12"></path><path d="M20,24 C18,18 12,14 5,14"></path></svg>
+        <svg class="tuft near" style="left:86.0%;bottom:23%;width:44px;height:26px;--wx:0.86" viewBox="0 0 40 24"><path d="M20,24 C19,16 14,10 8,6"></path><path d="M20,24 C20,15 18,8 17,2"></path><path d="M20,24 C21,15 25,9 31,5"></path><path d="M20,24 C22,17 27,13 34,12"></path><path d="M20,24 C18,18 12,14 5,14"></path></svg>
+        <svg class="tuft near" style="left:93.0%;bottom:27%;width:40px;height:24px;--wx:0.93" viewBox="0 0 40 24"><path d="M20,24 C19,16 14,10 8,6"></path><path d="M20,24 C20,15 18,8 17,2"></path><path d="M20,24 C21,15 25,9 31,5"></path><path d="M20,24 C22,17 27,13 34,12"></path><path d="M20,24 C18,18 12,14 5,14"></path></svg>
+        <svg class="tuft near" style="left:98.5%;bottom:31%;width:36px;height:22px;--wx:0.98" viewBox="0 0 40 24"><path d="M20,24 C19,16 14,10 8,6"></path><path d="M20,24 C20,15 18,8 17,2"></path><path d="M20,24 C21,15 25,9 31,5"></path><path d="M20,24 C22,17 27,13 34,12"></path><path d="M20,24 C18,18 12,14 5,14"></path></svg>
       </div>
     </div>
     <div class="waves keywest" aria-hidden="true">
-      <div class="wave-wrap">
+      <div class="wave-wrap"><div class="swell">
         <div class="amb setting-sun dusk-only"></div>
+        <div class="amb sunpath dusk-only"></div>
         <div class="glitter" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-        <svg class="w1" viewBox="0 0 1200 200" preserveAspectRatio="none"><path class="w1" d="M0,60 C150,42 150,78 300,60 C450,42 450,78 600,60 C750,42 750,78 900,60 C1050,42 1050,78 1200,60 L1200,200 L0,200 Z"/></svg>
-        <svg class="key" viewBox="0 0 120 24"><path d="M0,24 C10,18 22,12 40,10 C50,8 58,13 66,12 C68,8 72,7 74,10 C86,9 100,16 120,24 Z"/></svg>
-        <svg class="amb lighthouse" viewBox="0 0 8 30"><rect x="2" y="6" width="4" height="24"/><rect x="0.5" y="3" width="7" height="4"/></svg>
+        <svg class="w1" viewBox="0 0 1200 200" preserveAspectRatio="none"><path class="w1" d="M0,60 C40,52 90,50 150,56 C210,62 250,70 320,66 C390,62 430,50 500,54 C550,58 560,68 600,60 C640,52 690,50 750,56 C810,62 850,70 920,66 C990,62 1030,50 1100,54 C1150,58 1160,68 1200,60 L1200,200 L0,200 Z"></path></svg>
+        <svg class="key" viewBox="0 0 120 24"><path d="M0,24 C10,18 22,12 40,10 C50,8 58,13 66,12 C68,8 72,7 74,10 C86,9 100,16 120,24 Z"></path></svg>
+        <svg class="amb lighthouse" viewBox="0 0 8 30"><rect x="2" y="6" width="4" height="24"></rect><rect x="0.5" y="3" width="7" height="4"></rect></svg>
         <div class="amb beam night-only"></div>
-        <svg class="sail" viewBox="0 0 30 30"><path d="M3,24 L27,24 L24,28 L6,28 Z"/><path d="M14.4,4 L14.4,22 L5,22 Z"/><path d="M15.6,6 L26,22 L15.6,22 Z"/><path class="mast" d="M15,2 L15,24"/></svg>
-        <svg class="w2" viewBox="0 0 1200 200" preserveAspectRatio="none"><path class="w2" d="M0,60 C150,42 150,78 300,60 C450,42 450,78 600,60 C750,42 750,78 900,60 C1050,42 1050,78 1200,60 L1200,200 L0,200 Z"/></svg>
-        <div class="amb green-flash dusk-only"></div>
-        <svg class="amb gull day-only" viewBox="0 0 1536 1347"><use href="#f-gull"/></svg>
-        <div class="amb dolphins dusk-only"><svg class="d1" viewBox="0 0 1536 497"><use href="#f-dolphin"/></svg><svg class="d2" viewBox="0 0 1536 497"><use href="#f-dolphin"/></svg></div>
-        <div class="amb pelican day-only"><svg class="pel" viewBox="0 0 1536 787"><use href="#f-pelican"/></svg></div>
+        <svg class="amb gull day-only" viewBox="0 0 1536 1347"><use href="#f-gull"></use></svg>
+        <div class="amb dolphins dusk-only"><svg class="d1" viewBox="0 0 1536 497"><use href="#f-dolphin"></use></svg><svg class="d2" viewBox="0 0 1536 497"><use href="#f-dolphin"></use></svg></div>
+        <div class="amb pelican day-only"><svg class="pel" viewBox="0 0 1536 787"><use href="#f-pelican"></use></svg></div>
         <div class="amb splash-kw day-only"></div>
-        <div class="frigate-wrap"><svg class="frigate" viewBox="0 0 873 1536"><use href="#f-frigate"/></svg></div>
-        <div class="turtle-wrap"><svg class="turtle" viewBox="0 0 1536 1410"><use href="#f-turtle"/></svg></div>
-        <svg class="w3" viewBox="0 0 1200 200" preserveAspectRatio="none"><path class="w3" d="M0,60 C150,42 150,78 300,60 C450,42 450,78 600,60 C750,42 750,78 900,60 C1050,42 1050,78 1200,60 L1200,200 L0,200 Z"/></svg>
-      </div>
-      <svg class="sand" viewBox="0 0 390 240" preserveAspectRatio="none"><path class="beach" d="M0,168 C70,160 140,174 200,168 C236,164 252,150 280,145 C320,139 360,139 390,139 L390,240 L0,240 Z"/><path class="wet" d="M0,168 C70,160 140,174 200,168 C236,164 252,150 280,145 C320,139 360,139 390,139 L390,143 C360,143 320,143 280,149 C252,154 236,168 200,172 C140,178 70,164 0,172 Z"/><path class="foam" d="M0,165 C70,157 140,171 200,165 C236,161 252,147 280,142 C320,136 360,136 390,136 L390,139 C360,139 320,139 280,145 C252,150 236,164 200,168 C140,174 70,160 0,168 Z"/></svg>
-      <svg class="amb ig-log" viewBox="0 0 66 8"><path d="M0,4 L60,0 L62,4 L2,8 Z"/></svg>
-      <svg class="amb iguana" viewBox="0 0 1536 1056"><use href="#f-iguana"/></svg>
-      <svg class="amb hen" viewBox="0 0 1080 1536"><use href="#f-hen"/></svg>
-      <svg class="amb crab" viewBox="0 0 1536 1096"><use href="#f-crab"/></svg>
-      <svg class="amb egret day-only" viewBox="0 0 658 1536"><use href="#f-egret"/></svg>
-      <div class="rooster-wrap"><svg class="rooster" viewBox="0 0 1391 1536"><use href="#f-rooster"/></svg></div>
+        <svg class="w2" viewBox="0 0 1200 200" preserveAspectRatio="none"><path class="w2" d="M0,60 C40,52 70,48 130,54 C190,60 220,74 300,68 C380,62 400,50 470,52 C520,54 560,68 600,60 C640,52 670,48 730,54 C790,60 820,74 900,68 C980,62 1000,50 1070,52 C1120,54 1160,68 1200,60 L1200,200 L0,200 Z"></path></svg>
+        <div class="amb green-flash dusk-only"></div>
+        <svg class="amb schooner dusk-only" viewBox="0 0 40 30"><path d="M4,24 L36,24 L33,28 L7,28 Z"></path><path d="M13.4,7 L13.4,22 L5,22 Z"></path><path d="M14.6,4 L14.6,22 L24,22 Z"></path><path d="M26.6,6.5 L26.6,22 L35,22 Z"></path><path class="mast" d="M14,3 L14,24 M26,5.5 L26,24"></path></svg>
+        <div class="ruffle"><span></span><span></span><span></span></div>
+        <svg class="grass" viewBox="0 0 1200 200" preserveAspectRatio="none"><ellipse cx="140" cy="128" rx="70" ry="9"></ellipse><ellipse cx="420" cy="152" rx="95" ry="11"></ellipse><ellipse cx="740" cy="128" rx="70" ry="9"></ellipse><ellipse cx="1020" cy="152" rx="95" ry="11"></ellipse></svg>
+        <div class="frigate-wrap"><svg class="frigate" viewBox="0 0 873 1536"><use href="#f-frigate"></use></svg></div>
+        <svg class="w3" viewBox="0 0 1200 200" preserveAspectRatio="none"><path class="w3" d="M0,60 C40,52 80,54 140,58 C200,62 260,66 330,64 C400,62 440,54 510,56 C550,57 560,68 600,60 C640,52 680,54 740,58 C800,62 860,66 930,64 C1000,62 1040,54 1110,56 C1150,57 1160,68 1200,60 L1200,200 L0,200 Z"></path></svg>
+        <div class="cuda-wrap"><svg class="cuda-kw" viewBox="0 0 1536 902"><use href="#f-cuda"></use></svg></div>
+        <div class="school-wrap"><svg class="mullet-kw m1" viewBox="0 0 1536 592"><use href="#f-mullet"></use></svg><svg class="mullet-kw m2" viewBox="0 0 1536 592"><use href="#f-mullet"></use></svg><svg class="mullet-kw m3" viewBox="0 0 1536 592"><use href="#f-mullet"></use></svg></div>
+        <div class="bonnet-wrap dusk-night"><svg class="bonnet-kw" viewBox="0 0 3953 1584"><use href="#f-bonnethead"></use></svg></div>
+      </div></div>
+      <div class="amb crux night-only"><i></i><i></i><i></i><i></i><i></i></div>
+      <svg class="sand" viewBox="0 0 390 240" preserveAspectRatio="none"><path class="lap" d="M0,161 C70,153 140,167 200,161 C236,157 252,143 280,138 C320,132 360,132 390,132 L390,134 C360,134 320,134 280,140 C252,145 236,159 200,163 C140,169 70,155 0,163 Z"></path><path class="beach" d="M0,168 C70,160 140,174 200,168 C236,164 252,150 280,145 C320,139 360,139 390,139 L390,240 L0,240 Z"></path><path class="wet" d="M0,168 C70,160 140,174 200,168 C236,164 252,150 280,145 C320,139 360,139 390,139 L390,143 C360,143 320,143 280,149 C252,154 236,168 200,172 C140,178 70,164 0,172 Z"></path><path class="wrack" d="M0,172 C40,166 90,176 140,178 C170,179 190,175 200,172 C236,168 252,154 280,149 C320,143 360,143 390,143 L390,145.5 C360,145.5 320,145.5 280,151.5 C252,156.5 236,170.5 200,174.5 C188,176 168,181 140,181 C90,180 40,169 0,174.5 Z"></path><path class="foam" d="M0,165 C70,157 140,171 200,165 C236,161 252,147 280,142 C320,136 360,136 390,136 L390,139 C360,139 320,139 280,145 C252,150 236,164 200,168 C140,174 70,160 0,168 Z"></path></svg>
+      <div class="turtle-wrap night-only"><svg class="turtle" viewBox="0 0 1536 1410"><use href="#f-turtle"></use></svg></div>
+      <svg class="amb hen" viewBox="0 0 1080 1536"><use href="#f-hen"></use></svg>
+      <svg class="amb crab night-only" viewBox="0 0 1536 1096"><use href="#f-crab"></use></svg>
+      <svg class="amb egret day-only" viewBox="0 0 658 1536"><use href="#f-egret"></use></svg>
+      <div class="rooster-wrap"><svg class="rooster" viewBox="0 0 1391 1536"><use href="#f-rooster"></use></svg></div>
       <svg class="palm" viewBox="0 0 210 160">
         <g class="fig">
-          <path d="M142,150 C138,112 120,72 104,34 L110,30 C126,68 146,110 154,150 Z"/>
+          <path d="M142,150 C138,112 120,72 104,34 L110,30 C126,68 146,110 154,150 Z"></path>
           <g class="crown">
-            <path d="M106,32 C86,28 66,36 52,56 C68,46 86,42 106,32 Z"/><path d="M106,32 C92,18 74,12 56,16 C74,18 90,24 106,32 Z"/><path d="M106,32 C104,16 110,4 122,-2 C112,10 110,20 106,32 Z"/><path d="M106,32 C120,16 138,12 158,18 C140,20 122,26 106,32 Z"/><path d="M106,32 C126,30 146,40 156,60 C142,46 124,40 106,32 Z"/><path d="M106,32 C96,44 84,58 80,74 C90,60 98,46 106,32 Z"/>
-            <circle cx="104" cy="36" r="3"/><circle cx="110" cy="37" r="3"/>
+            <path d="M106,32 C86,28 66,36 52,56 C68,46 86,42 106,32 Z"></path><path d="M106,32 C92,18 74,12 56,16 C74,18 90,24 106,32 Z"></path><path d="M106,32 C104,16 110,4 122,-2 C112,10 110,20 106,32 Z"></path><path d="M106,32 C120,16 138,12 158,18 C140,20 122,26 106,32 Z"></path><path d="M106,32 C126,30 146,40 156,60 C142,46 124,40 106,32 Z"></path><path d="M106,32 C96,44 84,58 80,74 C90,60 98,46 106,32 Z"></path>
+            <circle cx="104" cy="36" r="3"></circle><circle cx="110" cy="37" r="3"></circle>
           </g>
         </g>
         <g class="person-wrap"><g class="person" transform="translate(82.4,108) scale(.3)"><g class="breathe-fig"><path stroke="none" d="M150 74 C162 78,168 90,166 106 C164 120,162 130,162 140 L44 140 C34 140,28 134,27 124 C26 116,24 106,29 102 C34 99,39 104,40 112 C42 118,50 114,60 110 C66 107,70 104,74 102 C92 98,108 108,120 114 C124 106,130 92,136 82 C140 76,144 74,150 74 Z"></path><path stroke="none" d="M137 81 L153 75 L153 60 L140 66 Z"></path><ellipse cx="146" cy="60" rx="15" ry="17" transform="rotate(6 146 60)" stroke="none"></ellipse><path fill="none" stroke-width="11" d="M160 90 C170 106,182 122,190 136"></path><circle cx="192" cy="137" r="6" stroke="none"></circle></g></g></g>
+        <g class="cats">
+          <g class="cat coon"><path class="cat-tail" d="M191,148.5 C199,148.5 203.5,144 200,139.5"></path><path d="M162,150 C161,144 165.5,139.6 172,139.6 L182,139.6 C189,139.6 191.5,144 190.5,150 Z"></path><circle cx="163.8" cy="140.6" r="4.6"></circle><path class="ear ear-l" d="M159.4,137.8 L159.2,131.8 L162.8,136.2 Z"></path><path class="ear ear-r" d="M164.2,136.4 L168.2,132 L167.4,138 Z"></path></g>
+          <g class="cat somali"><path class="cat-tail" d="M196,149 C202.5,149 205.5,143.5 202,138.5"></path><path d="M197,150 C195,142 197.8,134 203,132 C207.4,130.8 210.4,136 210.4,142 L210.4,150 Z"></path><circle cx="203.8" cy="129.4" r="3.9"></circle><path class="ear ear-l" d="M200.8,127 L199.6,121.4 L203.6,125.2 Z"></path><path class="ear ear-r" d="M205,125 L208.6,121 L208,126.8 Z"></path></g>
+        </g>
       </svg>
     </div>
 
@@ -1617,7 +1838,7 @@
     <p class="foot lone" id="last-export"></p>
     <span id="range-value" hidden></span>
 
-    <p class="closing">Feeling 49 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
+    <p class="closing">Feeling 50 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
   </section>
 </main>
 
