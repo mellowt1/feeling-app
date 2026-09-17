@@ -125,6 +125,8 @@
   #strip .chip { flex: none; display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px 3px 4px; border-radius: 14px; background: var(--glass); border: 1px solid var(--glass-line); font-size: 13px; font-weight: 500; color: var(--ink); white-space: nowrap; }
   #strip .chip svg { width: 20px; height: 20px; flex: none; }
   #strip .chip.old svg { opacity: .45; }
+  #strip .chip.ask { font: inherit; font-size: 13px; font-weight: 500; color: var(--accent); padding-left: 9px; -webkit-tap-highlight-color: transparent; }
+  #strip .chip.ask svg { width: 16px; height: 16px; }
   #strip .chip em { font-family: var(--serif); font-weight: 300; color: var(--muted); }
   /* message in a bottle: a friend's words live in the scene, not in a feed. Only there when someone wrote something today. */
   #bottle { --tilt: -28deg; position: fixed; left: 9%; bottom: 112px; width: 14px; height: 24px; padding: 10px; margin: -10px; box-sizing: content-box; border: 0; background: none; z-index: 1; display: none; transform: rotate(var(--tilt)); animation: bottleBob 3.4s ease-in-out infinite alternate; cursor: pointer; -webkit-tap-highlight-color: transparent; }
@@ -1580,7 +1582,7 @@
       <p class="foot" id="checkin-note"></p>
     </div>
 
-    <p class="closing">Feeling 42 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
+    <p class="closing">Feeling 43 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
   </section>
 </main>
 
@@ -1663,7 +1665,7 @@
   const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
   const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
   const SVGNS = 'http://www.w3.org/2000/svg';
-  let toastT; function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 1800); }
+  let toastT; function toast(msg, ms) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), ms || 1800); }
   function groupByDay(entries) {
     const map = new Map();
     for (const e of entries) { if (!map.has(e.day)) map.set(e.day, []); map.get(e.day).push(e); }
@@ -2191,6 +2193,7 @@
     const box = $('#strip'); box.innerHTML = '';
     const c = db.circle; if (!c || !c.code) return;
     const today = todayKey();
+    try { const ask = askChip(); if (ask) box.appendChild(ask); } catch (e) {}   // push setup lives further down
     for (const m of c.members || []) {
       const last = Object.keys(m.days || {}).sort().pop();
       const word = m.status && m.statusDay === today ? m.status : '';
@@ -2273,6 +2276,25 @@
       method: 'DELETE', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id: c.id }),
     }).catch(() => {});
+  }
+  // The switch is tucked away in Export, so Today asks once, in the circle strip. The permission prompt needs a tap,
+  // which is why this is a chip and not something that happens on open.
+  function askChip() {
+    const c = db.circle; if (!c || !c.code || !pushable || checkinsOn()) return null;
+    const needsHome = iOS && !standalone;
+    if (!needsHome && Notification.permission !== 'default') return null;
+    if (needsHome && c.askedHome && Date.now() - c.askedHome < 3 * 864e5) return null;
+    const chip = el('button', 'chip ask'); chip.type = 'button';
+    chip.innerHTML = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11V7a4 4 0 0 1 8 0v4l1 2H3zM6.5 14.5a1.5 1.5 0 0 0 3 0"/></svg>';
+    chip.appendChild(document.createTextNode('Get check-ins'));
+    chip.addEventListener('click', async () => {
+      if (needsHome) { c.askedHome = Date.now(); save(); toast('First add Feeling to the Home Screen: Share, then Add to Home Screen', 5000); renderStrip(); return; }
+      chip.disabled = true;
+      try { if (await checkinSubscribe()) { c.checkins = { on: true }; save(); toast('Check-ins on'); } }
+      catch (e) { toast('Could not reach the circle'); }
+      renderStrip(); renderCheckins();
+    });
+    return chip;
   }
   checkinSwitch.addEventListener('click', async () => {
     const c = db.circle; if (!c || !c.code || checkinSwitch.disabled) return;
