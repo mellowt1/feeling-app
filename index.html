@@ -780,7 +780,7 @@
   body.dock .sky-breathe { animation-duration: 16s; }
   .dock-ui { position: fixed; inset: 0; pointer-events: none; z-index: 5; opacity: 0; visibility: hidden; transition: opacity 1s, visibility 0s 1s; }
   body.dock .dock-ui { opacity: 1; visibility: visible; transition: opacity 1s, visibility 0s; }
-  .dock-hint { position: absolute; left: 0; right: 0; bottom: calc(24px + env(safe-area-inset-bottom)); margin: 0; text-align: center; font-size: 13px; color: var(--muted); opacity: 0; }
+  .dock-hint { position: absolute; left: 0; right: 0; bottom: calc(24px + env(safe-area-inset-bottom)); margin: 0; text-align: center; font-size: 13px; color: #fff; text-shadow: 0 1px 8px rgba(12,40,48,.6); opacity: 0; }
   body.dock .dock-hint { animation: hintFade 7s ease 1.5s 1; }
   @keyframes hintFade { 0% { opacity: 0; } 20% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; } }
   .dock-sound { position: absolute; top: calc(14px + env(safe-area-inset-top)); right: 20px; width: 40px; height: 40px; border-radius: 20px; border: 1px solid var(--line); background: var(--card-a); color: var(--muted); display: flex; align-items: center; justify-content: center; padding: 0; opacity: .7; }
@@ -1111,7 +1111,7 @@
   .waves svg.mangrove.far { left: 46%; width: 60%; height: 12%; bottom: 62%; opacity: .32; animation-delay: -1.5s; }
   html[data-place="dock"][data-sky="evening"]:not(.night) .waves svg.mangrove { opacity: .9; }
   /* glare: the sun overhead whites out the far water and throws glints across the whole surface */
-  .waves .glare { position: absolute; left: 0; right: 0; top: 0; height: 100%; pointer-events: none; background: linear-gradient(color-mix(in srgb, var(--glare) calc(var(--glare-a) * 100%), transparent), color-mix(in srgb, var(--glare) calc(var(--glare-a) * 37%), transparent) 22%, transparent 50%); }
+  .waves .glare { position: absolute; left: 0; right: 0; top: 0; height: 100%; pointer-events: none; background: linear-gradient(transparent, color-mix(in srgb, var(--glare) calc(var(--glare-a) * 100%), transparent) 12%, color-mix(in srgb, var(--glare) calc(var(--glare-a) * 37%), transparent) 28%, transparent 52%); }
   .glare span { position: absolute; width: 4px; height: 2px; border-radius: 2px; background: var(--glare); opacity: 0; animation: glareGlint 3s ease-in-out infinite; }
   @keyframes glareGlint { 0%, 100% { opacity: 0; } 50% { opacity: .75; } }
   html.night .glare span { display: none; }
@@ -1143,10 +1143,11 @@
   .glare span:nth-child(26) { left: 66%; top: 75%; animation-duration: 7.8s; animation-delay: -0.5s; }
 
   /* wind on the water: cat's-paws, dark gusts that slide downwind. g1 rides the shared wind clock and crosses during the gust; g2 and g3 wander on their own */
-  .gust { position: absolute; left: 0; width: 70%; height: 10%; opacity: var(--gust-a); background: linear-gradient(90deg, transparent, rgba(30,70,80,.16) 30%, rgba(30,70,80,.16) 70%, transparent); transform: translateX(-80%) skewX(-30deg); animation: gustRun linear infinite; transition: opacity 3s; }
-  .gust.g1 { top: 30%; animation: gustClock 90s linear infinite; }
-  .gust.g2 { top: 52%; height: 8%; animation-duration: 42s; animation-delay: -18s; }
-  .gust.g3 { top: 72%; height: 12%; animation-duration: 50s; animation-delay: -32s; opacity: calc(var(--gust-a) * .7); }
+  /* scoped to .waves: body also takes the class "gust" during a gust, and must never match this rule */
+  .waves .gust { position: absolute; left: 0; width: 70%; height: 10%; opacity: var(--gust-a); background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(30,70,80,.2), rgba(30,70,80,.1) 55%, transparent 100%); transform: translateX(-80%) skewX(-30deg); animation: gustRun linear infinite; transition: opacity 3s; }
+  .waves .gust.g1 { top: 30%; animation: gustClock 90s linear infinite; }
+  .waves .gust.g2 { top: 52%; height: 8%; animation-duration: 42s; animation-delay: -18s; }
+  .waves .gust.g3 { top: 72%; height: 12%; animation-duration: 50s; animation-delay: -32s; opacity: calc(var(--gust-a) * .7); }
   @keyframes gustRun { from { transform: translateX(-80%) skewX(-30deg); } to { transform: translateX(170%) skewX(-30deg); } }
   @keyframes gustClock { 0%, 30% { transform: translateX(-80%) skewX(-30deg); } 48% { transform: translateX(170%) skewX(-30deg); } 100% { transform: translateX(170%) skewX(-30deg); } }
   /* the shared wind clock: 90 s. Calm, then at 32 % a gust arrives, builds to 40 %, eases off by 52 %. Canopy, rod, line, cat's tail and the cat's-paw all answer it */
@@ -1582,7 +1583,7 @@
       <p class="foot" id="checkin-note"></p>
     </div>
 
-    <p class="closing">Feeling 43 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
+    <p class="closing">Feeling 44 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
   </section>
 </main>
 
