@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Feeling · sound lab</title>
+<style>
+  :root { --bg: #eef3f4; --ink: #2c3b40; --soft: #66777c; --card: rgba(255,255,255,.66); --line: rgba(44,59,64,.12); --accent: #3f7f8c; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #10191d; --ink: #e4ecee; --soft: #93a5aa; --card: rgba(255,255,255,.06); --line: rgba(255,255,255,.1); --accent: #7fc1cd; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.45 Inter, -apple-system, system-ui, sans-serif; padding: 28px 18px calc(120px + env(safe-area-inset-bottom)); max-width: 560px; margin-inline: auto; }
+  h1 { font: 300 30px/1.15 Fraunces, Georgia, serif; margin: 0 0 6px; }
+  h2 { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--soft); margin: 30px 0 4px; font-weight: 600; }
+  p { margin: 0; color: var(--soft); }
+  .same { margin-bottom: 12px; font-size: 14px; }
+  button.v { display: block; width: 100%; text-align: left; background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 14px 16px; margin-top: 10px; color: inherit; font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  button.v b { display: block; font-weight: 600; }
+  button.v span { font-size: 14px; color: var(--soft); }
+  button.v.on { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
+  button.v.on b::after { content: ' · playing'; color: var(--accent); font-weight: 500; }
+  .bar { position: fixed; left: 0; right: 0; bottom: 0; padding: 14px 18px calc(14px + env(safe-area-inset-bottom)); background: var(--bg); border-top: 1px solid var(--line); display: flex; align-items: center; gap: 14px; justify-content: center; }
+  .ring { width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--accent); transform: scale(.7); transition: transform 4s ease-in-out; flex: none; }
+  .word { min-width: 150px; }
+  .word b { display: block; font-weight: 600; }
+  .word small { color: var(--soft); }
+  #stop { background: none; border: 1px solid var(--line); color: inherit; font: inherit; border-radius: 999px; padding: 8px 16px; }
+</style>
+</head>
+<body>
+<h1>Sound lab</h1>
+<p>Three takes per place. Tap one, breathe a few rounds (4 in · 1 hold · 7 out), tap another. iPhone: the ring/silent switch has to be on ring.</p>
+
+<h2>Florida dock</h2>
+<p class="same">All three are the same thing: sitting on a wooden dock with water moving under you.</p>
+<button class="v" data-v="dockA"><b>A · Under the planks</b><span>Close and woody. Water glupping against the pilings, a low round wave on the out-breath, the dock creaking now and then.</span></button>
+<button class="v" data-v="dockB"><b>B · Open bay</b><span>Wide and slow. A long deep swell that washes through the pilings without breaking, a boat nudging the dock, a bell buoy far out.</span></button>
+<button class="v" data-v="dockC"><b>C · Glassy morning</b><span>Almost still. Tiny ripples trickling around the posts, soft laps, the out-breath is a gentle surge that lifts and settles.</span></button>
+
+<h2>Key West</h2>
+<p class="same">All three are the same thing: small waves on sand, a palm overhead, boats somewhere behind you.</p>
+<button class="v" data-v="kwA"><b>A · Shore break</b><span>The water leads. A small bright wave on the out-breath that leaves crackling foam, backwash on the in-breath, palm and rigging behind.</span></button>
+<button class="v" data-v="kwB"><b>B · Trade wind</b><span>The palm leads. Fronds rustle and clatter up with every out-breath, halyards answer, the waves are further off and softer.</span></button>
+<button class="v" data-v="kwC"><b>C · Lagoon</b><span>The calmest. Thin wavelets sliding up the sand every few seconds, a long soft wash on the out-breath, a tern far off.</span></button>
+
+<div class="bar"><div class="ring" id="ring"></div><div class="word"><b id="word">Nothing playing</b><small id="sub">tap a version</small></div><button id="stop">Stop</button></div>
+
+<script>
+(() => {
+  let A = null, timers = [], current = null;
+  const later = (fn, ms) => { const t = setTimeout(fn, ms); timers.push(t); return t; };
+  const rnd = (a, b) => a + Math.random() * (b - a);
+
+  function build() {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const master = ctx.createGain(); master.gain.value = 0; master.connect(ctx.destination);
+    const noise = (len, k, amp) => { const b = ctx.createBuffer(1, ctx.sampleRate * len, ctx.sampleRate), d = b.getChannelData(0); let l = 0; for (let i = 0; i < d.length; i++) { const w = Math.random() * 2 - 1; l = (l + k * w) / (1 + k); d[i] = l * amp; } return b; };
+    const loop = (b) => { const n = ctx.createBufferSource(); n.buffer = b; n.loop = true; n.start(); return n; };
+    const brown = noise(4, 0.02, 3.5), mid = noise(3, 0.5, 1.8), hiss = noise(2, 1, 0.5);
+    const panned = (v) => { const p = ctx.createStereoPanner ? ctx.createStereoPanner() : ctx.createGain(); if (p.pan) p.pan.value = v; p.connect(master); return p; };
+    const shiver = (hz, depth) => { const m = ctx.createGain(), o = ctx.createOscillator(), og = ctx.createGain(); o.frequency.value = hz; og.gain.value = depth; o.connect(og); og.connect(m.gain); o.start(); m.osc = o; return m; };
+    const filt = (type, hz, q) => { const f = ctx.createBiquadFilter(); f.type = type; f.frequency.value = hz; if (q) f.Q.value = q; return f; };
+    const gain = (v) => { const g = ctx.createGain(); g.gain.value = v; return g; };
+    const env = (p, pts) => { const t = ctx.currentTime; p.cancelScheduledValues(t); p.setValueAtTime(Math.max(p.value, 0.0005), t); pts.forEach(([v, at, exp]) => exp ? p.exponentialRampToValueAtTime(Math.max(v, 0.0005), t + at) : p.linearRampToValueAtTime(v, t + at)); };
+
+    // swell bed
+    const bedLp = filt('lowpass', 420, 0.5), bed = gain(0), bedMod = shiver(1 / 12, 0.6);
+    loop(brown).connect(bedLp); bedLp.connect(bedMod); bedMod.connect(bed); bed.connect(master);
+    // the wave
+    const waveBp = filt('bandpass', 900, 0.6), wave = gain(0);
+    loop(mid).connect(waveBp); waveBp.connect(wave); wave.connect(master);
+    // foam
+    const fizzHp = filt('highpass', 3500), fizz = gain(0), fizzMod = shiver(11, 0.35);
+    loop(hiss).connect(fizzHp); fizzHp.connect(fizzMod); fizzMod.connect(fizz); fizz.connect(master);
+    // palm
+    const frondBp = filt('bandpass', 1800, 0.8), frond = gain(0), frondMod = shiver(7, 0.3), frondSlow = shiver(0.13, 0.35);
+    loop(noise(2, 0.6, 0.6)).connect(frondBp); frondBp.connect(frondMod); frondMod.connect(frondSlow); frondSlow.connect(frond); frond.connect(master);
+
+    const S = { ctx, master, env, _frond: frond.gain };
+    S.setBed = (level, lp) => { env(bed.gain, [[level, 3]]); bedLp.frequency.value = lp; };
+    S.bedBreath = (up, s) => env(bedLp.frequency, [[up, s]]);           // the bed opens and closes with the breath
+    S.setFrond = (level) => env(frond.gain, [[level, 3]]);
+    S.frondGust = (peak, base, rise = 1.4, fall = 5) => env(frond.gain, [[peak, rise], [base, fall, true]]);
+    S.breakWave = ({ size = 1, bright = 1, gather = 1.6, brk = 0.8, tail = 3.2, peak = 0.55 }) => {
+      const at = gather + brk;
+      env(wave.gain, [[0.04 * size, gather], [peak * size, at, true], [0.001, at + tail * size, true]]);
+      const f = waveBp.frequency, t = ctx.currentTime; f.cancelScheduledValues(t); f.setValueAtTime(700 * bright, t); f.linearRampToValueAtTime((1500 + 600 * size) * bright, t + at); f.exponentialRampToValueAtTime(500 * bright, t + at + tail * size);
+      return at;
+    };
+    S.surge = ({ peak = 0.3, bright = 0.6, rise = 3, fall = 4 }) => {   // a wave that lifts and settles and never breaks
+      env(wave.gain, [[peak, rise], [0.001, rise + fall, true]]);
+      const f = waveBp.frequency, t = ctx.currentTime; f.cancelScheduledValues(t); f.setValueAtTime(500 * bright, t); f.linearRampToValueAtTime(1100 * bright, t + rise); f.exponentialRampToValueAtTime(450 * bright, t + rise + fall);
+    };
+    S.foam = (peak, when, tail = 4, hp = 3500) => { const t = ctx.currentTime, g = fizz.gain; g.cancelScheduledValues(t); g.setValueAtTime(0.001, t); g.setValueAtTime(0.001, t + Math.max(when - 0.3, 0)); g.exponentialRampToValueAtTime(peak, t + when + 0.2); g.exponentialRampToValueAtTime(0.001, t + when + tail); fizzHp.frequency.cancelScheduledValues(t); fizzHp.frequency.setValueAtTime(hp, t); };
+    S.backwash = (peak, s) => { const t = ctx.currentTime, g = fizz.gain, f = fizzHp.frequency; g.cancelScheduledValues(t); f.cancelScheduledValues(t); g.setValueAtTime(0.001, t); g.exponentialRampToValueAtTime(peak, t + 0.8); g.exponentialRampToValueAtTime(0.001, t + s); f.setValueAtTime(4500, t); f.exponentialRampToValueAtTime(2000, t + s); };
+
+    S.lap = (when = 0, level = 1, pitch = 1) => {
+      const t0 = ctx.currentTime + when, k = pitch * rnd(0.8, 1.25), out = panned(rnd(-0.6, 0.6));
+      const n = ctx.createBufferSource(); n.buffer = hiss; const bp = filt('bandpass', 260 * k, 6); bp.frequency.setValueAtTime(260 * k, t0); bp.frequency.exponentialRampToValueAtTime(420 * k, t0 + 0.18);
+      const g = gain(0); g.gain.setValueAtTime(0, t0); g.gain.linearRampToValueAtTime(level, t0 + 0.03); g.gain.exponentialRampToValueAtTime(0.001, t0 + 0.28);
+      n.connect(bp); bp.connect(g); g.connect(out); n.start(t0, rnd(0, 1.5)); n.stop(t0 + 0.3);
+      const o = ctx.createOscillator(); o.frequency.setValueAtTime(170 * k, t0); o.frequency.exponentialRampToValueAtTime(300 * k, t0 + 0.16);
+      const og = gain(0); og.gain.setValueAtTime(0, t0); og.gain.linearRampToValueAtTime(0.12 * level, t0 + 0.02); og.gain.exponentialRampToValueAtTime(0.001, t0 + 0.2);
+      o.connect(og); og.connect(out); o.start(t0); o.stop(t0 + 0.22);
+    };
+    S.laps = (level, pitch) => { const n = 1 + Math.floor(Math.random() * 3); for (let k = 0; k < n; k++) S.lap(k * rnd(0.22, 0.47), level, pitch); };
+    S.creak = () => {
+      const t0 = ctx.currentTime, lp = filt('lowpass', 500); lp.connect(master);
+      const o = ctx.createOscillator(); o.type = 'triangle'; o.frequency.setValueAtTime(110, t0); o.frequency.exponentialRampToValueAtTime(85, t0 + 0.7);
+      const g = gain(0); g.gain.setValueAtTime(0, t0); g.gain.linearRampToValueAtTime(0.05, t0 + 0.12); g.gain.linearRampToValueAtTime(0.001, t0 + 0.75); o.connect(g); g.connect(lp); o.start(t0); o.stop(t0 + 0.8);
+    };
+    S.knock = () => {                                              // a boat nudging the dock: a soft hollow thud, sometimes two
+      const n = Math.random() < 0.4 ? 2 : 1, out = panned(0.45);
+      for (let i = 0; i < n; i++) {
+        const t0 = ctx.currentTime + i * rnd(0.5, 0.8), o = ctx.createOscillator(), g = gain(0);
+        o.frequency.setValueAtTime(130, t0); o.frequency.exponentialRampToValueAtTime(72, t0 + 0.25);
+        g.gain.setValueAtTime(0, t0); g.gain.linearRampToValueAtTime(0.11 * (i ? 0.6 : 1), t0 + 0.012); g.gain.exponentialRampToValueAtTime(0.001, t0 + 0.45);
+        o.connect(g); g.connect(out); o.start(t0); o.stop(t0 + 0.5);
+      }
+    };
+    S.bell = () => {                                               // a bell buoy far out, one or two slow strokes
+      const out = panned(-0.5), n = Math.random() < 0.5 ? 2 : 1;
+      for (let i = 0; i < n; i++) {
+        const t0 = ctx.currentTime + i * rnd(1.6, 2.4), g = gain(0); g.connect(out);
+        g.gain.setValueAtTime(0, t0); g.gain.linearRampToValueAtTime(0.02 * (i ? 0.7 : 1), t0 + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t0 + 3.2);
+        [[523, 1], [523 * 2.76, 0.45], [523 * 5.4, 0.12]].forEach(([hz, a]) => { const o = ctx.createOscillator(), og = gain(a); o.frequency.value = hz; o.connect(og); og.connect(g); o.start(t0); o.stop(t0 + 3.3); });
+      }
+    };
+    S.trickle = (level, lo = 700, hi = 2200) => {                  // one second of tiny ripples around the posts
+      const count = 5 + Math.floor(Math.random() * 6);
+      for (let i = 0; i < count; i++) {
+        const t0 = ctx.currentTime + rnd(0, 1), f = rnd(lo, hi), o = ctx.createOscillator(), g = gain(0), out = panned(rnd(-0.8, 0.8));
+        o.frequency.setValueAtTime(f, t0); o.frequency.exponentialRampToValueAtTime(f * rnd(1.2, 1.6), t0 + 0.05);
+        g.gain.setValueAtTime(0, t0); g.gain.linearRampToValueAtTime(level * rnd(0.4, 1), t0 + 0.008); g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.07);
+        o.connect(g); g.connect(out); o.start(t0); o.stop(t0 + 0.08);
+      }
+    };
+    S.wavelet = (level) => {                                       // a thin sheet of water sliding up the sand and sinking in
+      const t0 = ctx.currentTime, n = ctx.createBufferSource(); n.buffer = hiss; n.loop = true;
+      const bp = filt('bandpass', 1800, 0.7), g = gain(0), out = panned(rnd(-0.4, 0.4)), k = rnd(0.7, 1);
+      bp.frequency.setValueAtTime(1500, t0); bp.frequency.linearRampToValueAtTime(3200, t0 + 0.9); bp.frequency.exponentialRampToValueAtTime(2200, t0 + 2.6);
+      g.gain.setValueAtTime(0.0005, t0); g.gain.exponentialRampToValueAtTime(level * k, t0 + 0.8); g.gain.exponentialRampToValueAtTime(0.0005, t0 + 2.6);
+      n.connect(bp); bp.connect(g); g.connect(out); n.start(t0, rnd(0, 1)); n.stop(t0 + 2.7);
+    };
+    S.halyards = (when = 0, level = 0.018) => {
+      const out = panned(0.6), k = rnd(0.97, 1.03), n = 2 + Math.floor(Math.random() * 4); let a = ctx.currentTime + when;
+      for (let i = 0; i < n; i++) {
+        const g = gain(0); g.gain.setValueAtTime(0, a); g.gain.linearRampToValueAtTime(level * rnd(0.6, 1), a + 0.004); g.gain.exponentialRampToValueAtTime(0.0001, a + 0.3); g.connect(out);
+        [[2630, 1], [4170, 0.6], [5900, 0.3]].forEach(([hz, amp]) => { const o = ctx.createOscillator(), og = gain(amp); o.frequency.value = hz * k; o.connect(og); og.connect(g); o.start(a); o.stop(a + 0.32); });
+        a += rnd(0.25, 0.6);
+      }
+    };
+    S.tern = (level = 0.012) => {
+      const t0 = ctx.currentTime + 0.05, out = panned(0.3);
+      for (let k = 0; k < 2; k++) { const a = t0 + k * 0.42, o = ctx.createOscillator(), g = gain(0); o.frequency.setValueAtTime(k ? 2200 : 2400, a); o.frequency.exponentialRampToValueAtTime(k ? 1600 : 1800, a + 0.35); g.gain.setValueAtTime(0, a); g.gain.linearRampToValueAtTime(level, a + 0.05); g.gain.linearRampToValueAtTime(0.001, a + 0.35); o.connect(g); g.connect(out); o.start(a); o.stop(a + 0.4); }
+    };
+    return S;
+  }
+
+  // each version: how it starts, what the in-breath and out-breath do, and what comes round at random
+  const every = (fn, min, max, first) => { const tick = () => { fn(); later(tick, rnd(min, max)); }; later(tick, first); };
+  const V = {
+    dockA: { start: (S) => { S.setBed(0.5, 420); every(() => S.laps(1, 1), 2500, 6000, 1500); every(S.creak, 25000, 50000, 9000); },
+             inB: (S, s) => S.bedBreath(330, s),
+             outB: (S) => { S.bedBreath(480, 3); S.breakWave({ bright: 0.7 }); S.lap(2.7); S.lap(3.4); } },
+    dockB: { start: (S) => { S.setBed(0.7, 260); every(() => S.laps(0.6, 0.75), 6000, 12000, 4000); every(S.knock, 14000, 30000, 7000); every(S.bell, 35000, 70000, 16000); },
+             inB: (S, s) => S.bedBreath(190, s),
+             outB: (S) => { S.bedBreath(420, 3.5); S.surge({ peak: 0.38, bright: 0.55, rise: 3.2, fall: 4.2 }); S.lap(3.4, 0.7, 0.75); S.lap(4.3, 0.5, 0.75); } },
+    dockC: { start: (S) => { S.setBed(0.22, 330); every(() => S.trickle(0.012), 1000, 1000, 600); every(() => S.lap(0, 0.55, 1.25), 4000, 9000, 2500); every(S.creak, 40000, 70000, 20000); },
+             inB: (S, s) => S.bedBreath(280, s),
+             outB: (S) => { S.bedBreath(400, 3); S.surge({ peak: 0.14, bright: 0.8, rise: 2.6, fall: 4 }); later(() => { S.trickle(0.02, 900, 2600); }, 2400); later(() => S.trickle(0.016, 900, 2600), 3400); } },
+    kwA:   { start: (S) => { S.setBed(0.3, 420); S.setFrond(0.06); every(() => S.halyards(), 12000, 30000, 6000); every(() => S.tern(), 25000, 60000, 12000); },
+             inB: (S, s) => S.backwash(0.03, s),
+             outB: (S) => { const at = S.breakWave({ size: 0.4, bright: 1.4 }); S.foam(0.14, at); S.frondGust(0.2, 0.06); S.halyards(1.2); } },
+    kwB:   { start: (S) => { S.setBed(0.18, 380); S.setFrond(0.11); every(() => S.halyards(0, 0.022), 7000, 16000, 3000); },
+             inB: (S, s) => { S.env(S._frond, [[0.06, s]]); },
+             outB: (S) => { S.frondGust(0.34, 0.11, 1.8, 6.5); S.breakWave({ size: 0.25, bright: 1.1, peak: 0.4 }); S.halyards(1.4, 0.024); S.halyards(3.6, 0.018); } },
+    kwC:   { start: (S) => { S.setBed(0.2, 300); S.setFrond(0.03); every(() => S.wavelet(0.07), 3200, 5200, 1500); every(() => S.tern(0.008), 30000, 60000, 14000); every(() => S.halyards(0, 0.008), 25000, 50000, 18000); },
+             inB: (S, s) => S.backwash(0.018, s),
+             outB: (S) => { S.surge({ peak: 0.16, bright: 1.5, rise: 2.2, fall: 5 }); S.foam(0.06, 2.2, 5.5, 3000); S.frondGust(0.07, 0.03, 2, 5); } },
+  };
+
+  const ring = document.getElementById('ring'), word = document.getElementById('word'), sub = document.getElementById('sub');
+  function breath() {
+    const v = V[current]; if (!v) return;
+    word.textContent = 'In'; ring.style.transitionDuration = '4s'; ring.style.transform = 'scale(1)';
+    if (v.inB) v.inB(A, 4);
+    later(() => { word.textContent = 'Hold'; }, 4000);
+    later(() => { word.textContent = 'Out'; ring.style.transitionDuration = '7s'; ring.style.transform = 'scale(.7)'; v.outB(A); }, 5000);
+    later(breath, 12000);
+  }
+  function stop() {
+    timers.forEach(clearTimeout); timers = []; current = null;
+    document.querySelectorAll('button.v').forEach((b) => b.classList.remove('on'));
+    word.textContent = 'Nothing playing'; sub.textContent = 'tap a version'; ring.style.transitionDuration = '.6s'; ring.style.transform = 'scale(.7)';
+    if (A) { const old = A; A = null; const g = old.master.gain, t = old.ctx.currentTime; g.cancelScheduledValues(t); g.setValueAtTime(g.value, t); g.linearRampToValueAtTime(0, t + 0.5); setTimeout(() => old.ctx.close(), 700); }
+  }
+  function play(key, btn) {
+    const same = current === key; stop(); if (same) return;
+    A = build(); current = key; btn.classList.add('on'); sub.textContent = btn.querySelector('b').textContent;
+    A.ctx.resume(); A.master.gain.linearRampToValueAtTime(0.22, A.ctx.currentTime + 2.5);
+    V[key].start(A);
+    later(breath, 1500);
+  }
+  document.querySelectorAll('button.v').forEach((b) => b.addEventListener('click', () => play(b.dataset.v, b)));
+  document.getElementById('stop').addEventListener('click', stop);
+  document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); });
+  window.__lab = { V, get A() { return A; } };
+})();
+</script>
+</body>
+</html>
