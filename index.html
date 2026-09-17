@@ -1617,7 +1617,7 @@
     <p class="foot lone" id="last-export"></p>
     <span id="range-value" hidden></span>
 
-    <p class="closing">Feeling 47 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
+    <p class="closing">Feeling 48 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
   </section>
 </main>
 
@@ -2667,6 +2667,13 @@
         // ---- Florida layers: wind in the sea grass, rain on the water, crickets after dark, the dock creaking
         const noise = (len, k, amp) => { const b = ctx.createBuffer(1, ctx.sampleRate * len, ctx.sampleRate); const dd = b.getChannelData(0); let l = 0; for (let i = 0; i < dd.length; i++) { const w = Math.random() * 2 - 1; l = (l + k * w) / (1 + k); dd[i] = l * amp; } return b; };
         const loop = (b) => { const n = ctx.createBufferSource(); n.buffer = b; n.loop = true; n.start(); return n; };
+        const hiss = noise(2, 1, 0.5);
+        const panned = (v) => { const p = ctx.createStereoPanner ? ctx.createStereoPanner() : ctx.createGain(); if (p.pan) p.pan.value = v; p.connect(master); return p; };
+        const shiver = (hz, depth) => { const m = ctx.createGain(), o = ctx.createOscillator(), og = ctx.createGain(); o.frequency.value = hz; og.gain.value = depth; o.connect(og); og.connect(m.gain); o.start(); m.osc = o; return m; };   // a gain of 1 ± depth
+        const every = (key, min, max, first, fn) => (on) => {       // a layer that comes round at random while it is on
+          if (on && !audio[key]) { audio[key] = true; const tick = () => { if (!audio || !audio[key]) return; fn(); audio[key + 'T'] = setTimeout(tick, min + Math.random() * (max - min)); }; audio[key + 'T'] = setTimeout(tick, first); }
+          if (!on) { audio[key] = false; clearTimeout(audio[key + 'T']); }
+        };
         // wind
         const windBp = ctx.createBiquadFilter(); windBp.type = 'bandpass'; windBp.frequency.value = 350; windBp.Q.value = 0.7;
         const windGain = ctx.createGain(); windGain.gain.value = 0;
@@ -2680,10 +2687,10 @@
         // rain
         const rainHp = ctx.createBiquadFilter(); rainHp.type = 'highpass'; rainHp.frequency.value = 2500;
         const rainGain = ctx.createGain(); rainGain.gain.value = 0;
-        const flutter = ctx.createOscillator(); flutter.frequency.value = 0.4; const flutterG = ctx.createGain(); flutterG.gain.value = 0.015;
+        const flutter = ctx.createOscillator(); flutter.frequency.value = 0.4; const flutterG = ctx.createGain(); flutterG.gain.value = 0;
         flutter.connect(flutterG); flutterG.connect(rainGain.gain); flutter.start();
-        loop(noise(2, 1, 0.5)).connect(rainHp); rainHp.connect(rainGain); rainGain.connect(master);
-        audio.setRain = (on) => { const t0 = ctx.currentTime, g = rainGain.gain; g.cancelScheduledValues(t0); g.setValueAtTime(g.value, t0); g.linearRampToValueAtTime(on ? 0.05 : 0, t0 + (on ? 3 : 2)); };
+        loop(hiss).connect(rainHp); rainHp.connect(rainGain); rainGain.connect(master);
+        audio.setRain = (on) => { ramp(rainGain.gain, on ? 0.05 : 0, on ? 3 : 2); ramp(flutterG.gain, on ? 0.015 : 0, on ? 3 : 2); };   // the flutter goes with the rain, or it leaks a hiss into every place
         // crickets
         const cricketGain = ctx.createGain(); cricketGain.gain.value = 0; cricketGain.connect(master);
         const voices = [[4300, 38, -0.4], [3900, 33, 0.4]].map(([hz, am, pan]) => {
@@ -2719,6 +2726,28 @@
           const n = ctx.createBufferSource(); n.buffer = noise(1, 0.3, 0.4); const ng = ctx.createGain(); ng.gain.setValueAtTime(0, t0); ng.gain.linearRampToValueAtTime(0.02, t0 + 0.1); ng.gain.linearRampToValueAtTime(0.001, t0 + 0.6);
           n.connect(ng); ng.connect(creakLp); n.start(t0); n.stop(t0 + 0.7);
         };
+        // water lapping the pilings: a narrow band of noise and a low bloop, both sliding up like a bubble
+        audio.lap = (when = 0) => {
+          const t0 = ctx.currentTime + when, k = 0.8 + Math.random() * 0.45, out = panned(Math.random() * 1.2 - 0.6);
+          const n = ctx.createBufferSource(); n.buffer = hiss;
+          const bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.Q.value = 6; bp.frequency.setValueAtTime(260 * k, t0); bp.frequency.exponentialRampToValueAtTime(420 * k, t0 + 0.18);
+          const g = ctx.createGain(); g.gain.setValueAtTime(0, t0); g.gain.linearRampToValueAtTime(1, t0 + 0.03); g.gain.exponentialRampToValueAtTime(0.001, t0 + 0.28);
+          n.connect(bp); bp.connect(g); g.connect(out); n.start(t0, Math.random() * 1.5); n.stop(t0 + 0.3);
+          const o = ctx.createOscillator(); o.frequency.setValueAtTime(170 * k, t0); o.frequency.exponentialRampToValueAtTime(300 * k, t0 + 0.16);
+          const og = ctx.createGain(); og.gain.setValueAtTime(0, t0); og.gain.linearRampToValueAtTime(0.12, t0 + 0.02); og.gain.exponentialRampToValueAtTime(0.001, t0 + 0.2);
+          o.connect(og); og.connect(out); o.start(t0); o.stop(t0 + 0.22);
+        };
+        audio.setLaps = every('laps', 2500, 6000, 1500, () => { const n = 1 + Math.floor(Math.random() * 3); for (let k = 0; k < n; k++) audio.lap(k * (0.22 + Math.random() * 0.25)); });
+        // green tree frogs after dark: one calls, sometimes another answers from the other side
+        const frog = (hz, pan, when) => {
+          const out = panned(pan), bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = hz; bp.Q.value = 4;
+          const o = ctx.createOscillator(); o.type = 'square'; o.frequency.value = hz / 3;
+          const g = ctx.createGain(); g.gain.value = 0; o.connect(bp); bp.connect(g); g.connect(out);
+          const t0 = ctx.currentTime + when, n = 5 + Math.floor(Math.random() * 5);
+          for (let k = 0; k < n; k++) { const a = t0 + k * 0.5; g.gain.setValueAtTime(0, a); g.gain.linearRampToValueAtTime(0.07, a + 0.02); g.gain.linearRampToValueAtTime(0, a + 0.13); }
+          o.start(t0); o.stop(t0 + n * 0.5);
+        };
+        audio.setFrogs = every('frogs', 9000, 16000, 5000, () => { frog(950, -0.6, 0); if (Math.random() < 0.5) frog(820, 0.5, 1.3); });
         // ---- El campo layers: a wind bed instead of the sea, the fence wire humming, rain on gravel
         const campoBp = ctx.createBiquadFilter(); campoBp.type = 'bandpass'; campoBp.frequency.value = 380; campoBp.Q.value = 0.5;
         const campoGain = ctx.createGain(); campoGain.gain.value = 0;
@@ -2727,9 +2756,23 @@
         const campoSweep = ctx.createOscillator(); campoSweep.frequency.value = 0.05; const campoSweepG = ctx.createGain(); campoSweepG.gain.value = 160;
         campoSweep.connect(campoSweepG); campoSweepG.connect(campoBp.frequency); campoSweep.start();
         loop(buf).connect(campoBp); campoBp.connect(campoGain); campoGain.connect(master);
-        const hum = ctx.createOscillator(); hum.type = 'triangle'; hum.frequency.value = 110;
         const humLp = ctx.createBiquadFilter(); humLp.type = 'lowpass'; humLp.frequency.value = 600;
-        const humGain = ctx.createGain(); humGain.gain.value = 0; hum.connect(humLp); humLp.connect(humGain); humGain.connect(master); hum.start();
+        const humGain = ctx.createGain(); humGain.gain.value = 0; humLp.connect(humGain); humGain.connect(master);
+        const wires = [[110, 'triangle', 0.5], [110.7, 'triangle', 0.5], [165, 'sine', 0.2]].map(([hz, type, amp]) => {   // two strings a hair apart, and a fifth
+          const o = ctx.createOscillator(); o.type = type; o.frequency.value = hz; const g = ctx.createGain(); g.gain.value = amp; o.connect(g); g.connect(humLp); o.start(); return [o.frequency, hz];
+        });
+        const grassBp = ctx.createBiquadFilter(); grassBp.type = 'bandpass'; grassBp.frequency.value = 4200; grassBp.Q.value = 0.7;
+        const grassGain = ctx.createGain(); grassGain.gain.value = 0; const grassMod = shiver(5, 0.3);
+        loop(hiss).connect(grassBp); grassBp.connect(grassMod); grassMod.connect(grassGain); grassGain.connect(master);
+        const bleat = () => {                                      // a sheep, far off to the left
+          const t0 = ctx.currentTime + 0.05, k = 0.92 + Math.random() * 0.16, out = panned(-0.5);
+          const o = ctx.createOscillator(); o.type = 'sawtooth'; o.frequency.setValueAtTime(420 * k, t0); o.frequency.linearRampToValueAtTime(380 * k, t0 + 0.8);
+          const bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 1100; bp.Q.value = 2;
+          const tremble = shiver(9, 0.45);
+          const g = ctx.createGain(); g.gain.setValueAtTime(0, t0); g.gain.linearRampToValueAtTime(0.14, t0 + 0.12); g.gain.setValueAtTime(0.14, t0 + 0.5); g.gain.linearRampToValueAtTime(0, t0 + 0.8);
+          o.connect(bp); bp.connect(tremble); tremble.connect(g); g.connect(out); o.start(t0); o.stop(t0 + 0.85); tremble.osc.stop(t0 + 0.9);
+        };
+        audio.setSheep = every('sheep', 45000, 100000, 12000, bleat);
         const gravelHp = ctx.createBiquadFilter(); gravelHp.type = 'highpass'; gravelHp.frequency.value = 1200;
         const gravelGain = ctx.createGain(); gravelGain.gain.value = 0;
         loop(noise(2, 1, 0.5)).connect(gravelHp); gravelHp.connect(gravelGain); gravelGain.connect(master);
@@ -2740,19 +2783,64 @@
         const frondGain = ctx.createGain(); frondGain.gain.value = 0;
         const frondLfo = ctx.createOscillator(); frondLfo.frequency.value = 0.13; const frondLfoG = ctx.createGain(); frondLfoG.gain.value = 0;
         frondLfo.connect(frondLfoG); frondLfoG.connect(frondGain.gain); frondLfo.start();
-        loop(noise(2, 0.6, 0.6)).connect(frondBp); frondBp.connect(frondGain); frondGain.connect(master);
+        const frondMod = shiver(7, 0.3);                           // the fronds clatter as well as rustle
+        loop(noise(2, 0.6, 0.6)).connect(frondBp); frondBp.connect(frondMod); frondMod.connect(frondGain); frondGain.connect(master);
+        // foam on the sand: it blooms when the wave breaks, and the backwash draws it down on the in-breath
+        const fizzHp = ctx.createBiquadFilter(); fizzHp.type = 'highpass'; fizzHp.frequency.value = 3500;
+        const fizzGain = ctx.createGain(); fizzGain.gain.value = 0; const fizzMod = shiver(11, 0.35);
+        loop(hiss).connect(fizzHp); fizzHp.connect(fizzMod); fizzMod.connect(fizzGain); fizzGain.connect(master);
+        audio.foam = (size, when) => {
+          const t0 = ctx.currentTime + when, g = fizzGain.gain, f = fizzHp.frequency;
+          g.cancelScheduledValues(ctx.currentTime); f.cancelScheduledValues(ctx.currentTime);
+          g.setValueAtTime(0.001, ctx.currentTime); g.setValueAtTime(0.001, t0 - 0.3); g.exponentialRampToValueAtTime(0.18 * size, t0 + 0.2); g.exponentialRampToValueAtTime(0.001, t0 + 4);
+          f.setValueAtTime(3500, ctx.currentTime);
+        };
+        audio.backwash = (ms) => {
+          const t0 = ctx.currentTime, s = ms / 1000, g = fizzGain.gain, f = fizzHp.frequency;
+          g.cancelScheduledValues(t0); f.cancelScheduledValues(t0);
+          g.setValueAtTime(0.001, t0); g.exponentialRampToValueAtTime(0.03, t0 + 0.8); g.exponentialRampToValueAtTime(0.001, t0 + s);
+          f.setValueAtTime(4500, t0); f.exponentialRampToValueAtTime(2000, t0 + s);
+        };
+        // halyards clinking against a mast, far off to the right
+        audio.halyards = (when = 0) => {
+          const out = panned(0.6), k = 0.97 + Math.random() * 0.06, n = 2 + Math.floor(Math.random() * 4);
+          let a = ctx.currentTime + when;
+          for (let i = 0; i < n; i++) {
+            const g = ctx.createGain(); g.gain.setValueAtTime(0, a); g.gain.linearRampToValueAtTime(0.018 * (0.6 + Math.random() * 0.4), a + 0.004); g.gain.exponentialRampToValueAtTime(0.0001, a + 0.3); g.connect(out);
+            [[2630, 1], [4170, 0.6], [5900, 0.3]].forEach(([hz, amp]) => { const o = ctx.createOscillator(), og = ctx.createGain(); o.frequency.value = hz * k; og.gain.value = amp; o.connect(og); og.connect(g); o.start(a); o.stop(a + 0.32); });
+            a += 0.25 + Math.random() * 0.35;
+          }
+        };
+        audio.setHalyards = every('haly', 12000, 30000, 6000, () => audio.halyards());
+        const crow = () => {                                       // a rooster somewhere behind the houses, to the left
+          const out = panned(-0.6), k = 0.94 + Math.random() * 0.12;
+          const bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 1200; bp.Q.value = 3;
+          const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 2200; bp.connect(lp); lp.connect(out);
+          let a = ctx.currentTime + 0.05;
+          [[0.18, 520, 600], [0.14, 600, 650], [0.16, 640, 700], [0.75, 720, 520]].forEach(([dur, f0, f1]) => {
+            const o = ctx.createOscillator(), g = ctx.createGain(); o.type = 'sawtooth';
+            o.frequency.setValueAtTime(f0 * k, a); o.frequency.linearRampToValueAtTime(f1 * k, a + dur);
+            g.gain.setValueAtTime(0, a); g.gain.linearRampToValueAtTime(0.09, a + 0.03); g.gain.setValueAtTime(0.09, a + dur * 0.6); g.gain.linearRampToValueAtTime(0, a + dur);
+            o.connect(g); g.connect(bp); o.start(a); o.stop(a + dur + 0.02);
+            a += dur + 0.05;
+          });
+        };
+        audio.setRooster = every('rooster', 70000, 150000, 20000, crow);
         audio.setPlace = (p, late) => {
           const campo = p === 'campo', kw = p === 'keywest';
           ramp(swell.gain, campo ? 0 : kw ? 0.3 : 0.5, 3); ramp(lfoGain.gain, campo ? 0 : kw ? 0.2 : 0.35, 3);
-          ramp(campoGain.gain, campo ? (late ? 0.08 : 0.16) : 0, 3); ramp(campoLfoG.gain, campo ? 0.1 : 0, 3);
-          ramp(humGain.gain, campo ? 0.02 : 0, 3);
+          ramp(campoGain.gain, campo ? (late ? 0.1 : 0.2) : 0, 3); ramp(campoLfoG.gain, campo ? 0.1 : 0, 3);
+          ramp(humGain.gain, campo ? 0.02 : 0, 3); ramp(grassGain.gain, campo ? 0.015 : 0, 3);
           ramp(frondGain.gain, kw ? (late ? 0.03 : 0.06) : 0, 3); ramp(frondLfoG.gain, kw ? 0.03 : 0, 3);
+          if (!kw) ramp(fizzGain.gain, 0, 1);
         };
         audio.setGravel = (on) => ramp(gravelGain.gain, on ? 0.04 : 0, on ? 3 : 2);
-        audio.frondGust = () => {                                 // the out-breath moves the palm
+        audio.frondGust = () => {                                 // the out-breath moves the palm, and the rigging answers
           const t0 = ctx.currentTime, g = frondGain.gain, base = document.body.classList.contains('late') ? 0.03 : 0.06;
           g.cancelScheduledValues(t0); g.setValueAtTime(Math.max(g.value, 0.01), t0); g.linearRampToValueAtTime(0.2, t0 + 1.4); g.exponentialRampToValueAtTime(base, t0 + 5);
+          audio.halyards(1.2);
         };
+        audio.lull = (ms) => ramp(campoGain.gain, (document.body.classList.contains('late') ? 0.1 : 0.2) * 0.55, ms / 1000);   // the in-breath: the wind drops, so the gust has somewhere to come from
         const ternCall = () => {                                   // two notes, falling, far off
           if (!audio || !audio.ternOn) return;
           const t0 = ctx.currentTime + 0.05;
@@ -2769,25 +2857,29 @@
           if (!on) { audio.ternOn = false; clearTimeout(audio.ternTimer); }
         };
         audio.windSwell = () => {                                // each out-breath is a gust that gathers and dies
-          const t0 = ctx.currentTime, g = campoGain.gain, f = campoBp.frequency, h = hum.frequency, base = document.body.classList.contains('late') ? 0.08 : 0.16;
+          const t0 = ctx.currentTime, g = campoGain.gain, f = campoBp.frequency, base = document.body.classList.contains('late') ? 0.1 : 0.2;
           g.cancelScheduledValues(t0); g.setValueAtTime(Math.max(g.value, 0.02), t0); g.linearRampToValueAtTime(0.5, t0 + 1.6); g.exponentialRampToValueAtTime(base, t0 + 7.6);
           f.cancelScheduledValues(t0); f.setValueAtTime(380, t0); f.linearRampToValueAtTime(760, t0 + 1.6); f.exponentialRampToValueAtTime(380, t0 + 7.6);
-          h.cancelScheduledValues(t0); h.setValueAtTime(110, t0); h.linearRampToValueAtTime(165, t0 + 1.4); h.exponentialRampToValueAtTime(110, t0 + 6);
+          wires.forEach(([h, hz]) => { h.cancelScheduledValues(t0); h.setValueAtTime(hz, t0); h.linearRampToValueAtTime(hz * 1.5, t0 + 1.4); h.exponentialRampToValueAtTime(hz, t0 + 6); });
+          const hg = humGain.gain; hg.cancelScheduledValues(t0); hg.setValueAtTime(Math.max(hg.value, 0.005), t0); hg.linearRampToValueAtTime(0.05, t0 + 1.6); hg.exponentialRampToValueAtTime(0.02, t0 + 6.5);
+          const gg = grassGain.gain; gg.cancelScheduledValues(t0); gg.setValueAtTime(Math.max(gg.value, 0.005), t0); gg.linearRampToValueAtTime(0.07, t0 + 2); gg.exponentialRampToValueAtTime(0.015, t0 + 7.6);
         };
       }
-      const breakWave = (scale = 1) => {
+      const breakWave = (kw) => {
         if (!audio || !document.body.classList.contains('dock')) return;
         const { ctx, crash, wbp } = audio, t = ctx.currentTime;
-        const size = (0.55 + Math.random() * 0.45) * scale;     // sets vary; Key West gets half-size waves
+        const size = (0.55 + Math.random() * 0.45) * (kw ? 0.5 : 1);     // sets vary; Key West gets half-size waves
+        const bright = kw ? 1.4 : 0.7;                           // bright and fizzing on the sand, round and low under the dock
+        if (kw) audio.foam(size * 2, 2.4); else { audio.lap(2.7); audio.lap(3.3 + Math.random() * 0.3); }
         const g = crash.gain, f = wbp.frequency;
         g.cancelScheduledValues(t); f.cancelScheduledValues(t);
         g.setValueAtTime(Math.max(g.value, 0.001), t);
         g.linearRampToValueAtTime(0.04 * size, t + 1.6);          // the wave gathers
         g.exponentialRampToValueAtTime(0.55 * size, t + 2.4);     // and breaks
         g.exponentialRampToValueAtTime(0.001, t + 2.4 + 3.2 * size); // then washes out up the sand
-        f.setValueAtTime(700, t);
-        f.linearRampToValueAtTime(1500 + 600 * size, t + 2.4);
-        f.exponentialRampToValueAtTime(500, t + 2.4 + 3.2 * size);
+        f.setValueAtTime(700 * bright, t);
+        f.linearRampToValueAtTime((1500 + 600 * size) * bright, t + 2.4);
+        f.exponentialRampToValueAtTime(500 * bright, t + 2.4 + 3.2 * size);
       };
       audio.breakWave = breakWave;                               // the breath ticker calls this on every out-breath
       const creakLoop = () => { if (!audio || !document.body.classList.contains('dock')) return; if (place() === 'dock') audio.creak(); audio.creakTimer = setTimeout(creakLoop, 25000 + Math.random() * 30000); };
@@ -2807,11 +2899,15 @@
     audio.setRain(rain && !campo); audio.setGravel(rain && campo);
     audio.setCrickets(late && !campo);
     audio.setTern(!late && p === 'keywest');
+    audio.setLaps(p === 'dock'); audio.setFrogs(late && p === 'dock');
+    audio.setSheep(!late && campo);
+    audio.setHalyards(p === 'keywest'); audio.setRooster(!late && p === 'keywest');
   }
   function stopSea() {
     if (!audio) return;
     clearTimeout(audio.timer); audio.timer = null;
     clearTimeout(audio.creakTimer); audio.setCrickets(false); audio.setTern(false);
+    [audio.setLaps, audio.setFrogs, audio.setSheep, audio.setHalyards, audio.setRooster].forEach((set) => set(false));
     const g = audio.master.gain, t = audio.ctx.currentTime;
     g.cancelScheduledValues(t); g.setValueAtTime(g.value, t); g.linearRampToValueAtTime(0, t + 1.5);
     setTimeout(() => { if (audio && !document.body.classList.contains('dock')) audio.ctx.suspend(); }, 1700);
@@ -2829,8 +2925,9 @@
     breathWord.textContent = 'In';
     if (document.body.classList.contains('slow')) setSlow(true);
     updateLayers();                                            // crickets follow the clock, rain follows the toggle
+    if (audio && soundOn && audio.breakWave && breaths > 1) { const p = place(); if (p === 'campo') audio.lull(IN_MS); else if (p === 'keywest') audio.backwash(IN_MS); }
     breathTimers.push(setTimeout(() => { breathWord.textContent = 'Hold'; }, IN_MS));
-    breathTimers.push(setTimeout(() => { breathWord.textContent = 'Out'; if (audio && soundOn && audio.breakWave) { const p = place(); if (p === 'campo') audio.windSwell(); else if (p === 'keywest') { audio.breakWave(0.5); audio.frondGust(); } else audio.breakWave(); } }, IN_MS + HOLD_MS));
+    breathTimers.push(setTimeout(() => { breathWord.textContent = 'Out'; if (audio && soundOn && audio.breakWave) { const p = place(); if (p === 'campo') audio.windSwell(); else if (p === 'keywest') { audio.breakWave(true); audio.frondGust(); } else audio.breakWave(); } }, IN_MS + HOLD_MS));
     if (breaths >= BREATHS) breathTimers.push(setTimeout(showRefocus, CYCLE));
     else breathTimers.push(setTimeout(breathTick, CYCLE));
   }
