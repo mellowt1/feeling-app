@@ -128,6 +128,10 @@
   .headrow > div:first-child { min-width: 0; flex: 1; }
   .pillrow { display: flex; align-items: center; gap: 8px; margin: 8px -52px 0 0; }   /* runs on under the rain toggle, which sits higher */
   .pillrow .pill { margin-top: 0; flex: none; }
+  /* earlier today: one chip that opens the day sheet, so saved entries never sit on the scene */
+  #earlier { gap: 6px; padding: 5px 12px 5px 6px; background: var(--glass); -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px); box-shadow: inset 0 0 0 1px var(--glass-line); font-weight: 500; }
+  #earlier.plain { padding-left: 12px; }
+  #earlier .face { flex: none; }
   #strip { display: flex; gap: 6px; min-width: 0; flex: 1; overflow-x: auto; scrollbar-width: none; padding: 6px 14px 6px 0; margin: -6px 0; -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 18px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 18px), transparent); }
   #strip::-webkit-scrollbar { display: none; }
   #strip:empty { display: none; }
@@ -1473,6 +1477,7 @@
         <p class="sub" id="today-date"></p>
         <div class="pillrow">
           <button class="pill" id="backdate" type="button">Yesterday</button>
+          <button class="pill hidden" id="earlier" type="button"></button>
           <div id="strip" aria-label="Your circle today"></div>
         </div>
       </div>
@@ -1528,7 +1533,6 @@
       <button class="btn ghost" id="save" disabled>Save</button>
     </div>
     <div id="bottles"></div>
-    <div class="daylist" id="today-entries"></div>
   </section>
 
   <!-- HISTORY -->
@@ -1613,7 +1617,7 @@
     <p class="foot lone" id="last-export"></p>
     <span id="range-value" hidden></span>
 
-    <p class="closing">Feeling 46 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
+    <p class="closing">Feeling 47 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
   </section>
 </main>
 
@@ -1881,12 +1885,17 @@
     syncCircle(true);
   });
   function renderTodayEntries() {
-    const box = $('#today-entries'); box.innerHTML = '';
+    const chip = $('#earlier'); chip.innerHTML = '';
     const list = db.entries.filter((e) => e.day === targetDay()).sort((a, b) => b.ts - a.ts);
+    chip.classList.toggle('hidden', !list.length);
     if (!list.length) return;
-    box.appendChild(el('p', 'lead', `Earlier ${backdated ? 'that day' : 'today'}`));
-    for (const e of list) box.appendChild(entryCard(e, false));
+    const last = list.find((e) => e.mood);
+    chip.classList.toggle('plain', !last);
+    if (last) chip.appendChild(faceSVG(last.mood, 18));
+    chip.appendChild(el('span', null, `Earlier · ${list.length}`));
+    chip.setAttribute('aria-label', `Earlier ${backdated ? 'that day' : 'today'}, ${list.length} ${list.length === 1 ? 'entry' : 'entries'}`);
   }
+  $('#earlier').addEventListener('click', () => openSheet(targetDay()));
 
   // ---------- entry card (shared) ----------
   function entryCard(e, clamped) {
