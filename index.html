@@ -811,8 +811,9 @@
   body.late .voice-cap .kb { display: none; }
 
   @media (prefers-reduced-motion: reduce) {
-    .waves *, .waves-faint, .waves-faint svg, .sky-breathe, .cloud, .orb, div.rain span, .ripple, .ring, .wind span, .dock-hint, .glitter span, .boat { animation: none !important; }
-    .waves svg.boat, .waves svg.sail { opacity: 0; }
+    /* the fish keep their slow glide across the water (no sway, no bob); the jumping mullet and their splash rings go */
+    .waves *:not(.fish-wrap), .waves-faint, .waves-faint svg, .sky-breathe, .cloud, .orb, div.rain span, .ripple, .ring, .wind span, .dock-hint, .glitter span, .boat { animation: none !important; }
+    .waves svg.boat, .waves svg.sail, .waves .mullet-wrap { opacity: 0; }
     .glitter span { opacity: .3; }
     .clouds, .dock .rod-cast, .dock .rod-wind, .dock .cast-line, .textview { transition: none !important; }
     body.dock .dock-hint { opacity: 1; }
@@ -1203,7 +1204,7 @@
       <p class="foot" id="checkin-note"></p>
     </div>
 
-    <p class="closing">Feeling 35 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
+    <p class="closing">Feeling 36 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
   </section>
 </main>
 
