@@ -28,7 +28,7 @@
 
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body { margin: 0; color: var(--ink); font: 17px/1.5 -apple-system, "SF Pro Text", system-ui, sans-serif; -webkit-text-size-adjust: 100%; }
-  html { background: var(--sky-horizon); }
+  html { background: var(--sky-horizon); overflow-x: clip; }
   body { min-height: 100dvh; display: flex; flex-direction: column; background: linear-gradient(var(--sky-top) 0%, var(--sky-mid) 50%, var(--sky-horizon) 78%) top / 100% 100dvh no-repeat, var(--sky-horizon); transition: background-color 1.5s; }
   main { flex: 1; padding: calc(16px + env(safe-area-inset-top)) 24px 142px; max-width: 640px; width: 100%; margin: 0 auto; position: relative; z-index: 1; }
   .hidden { display: none !important; }
@@ -112,7 +112,7 @@
   #word .glass { fill: var(--silhouette); opacity: .62; }
   #word .note { fill: var(--bg); transition: fill .4s; }
   #word.has .note { fill: var(--accent); }
-  #status { flex: 1; min-width: 0; font: inherit; font-size: 15px; color: var(--ink); background: var(--glass); border: 1px solid var(--glass-line); border-radius: 27px; padding: 0 18px; min-height: 54px; outline: none; -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px); box-shadow: 0 10px 30px rgba(20,30,35,.07); transition: border-color .25s, box-shadow .25s; }
+  #status { flex: 1; min-width: 0; font: inherit; font-size: 16px; /* under 16 px iOS zooms in on focus and the page slides left */ color: var(--ink); background: var(--glass); border: 1px solid var(--glass-line); border-radius: 27px; padding: 0 18px; min-height: 54px; outline: none; -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px); box-shadow: 0 10px 30px rgba(20,30,35,.07); transition: border-color .25s, box-shadow .25s; }
   #status::placeholder { color: var(--muted); }
   #status:focus { border-color: var(--accent-40); box-shadow: 0 0 0 3px var(--accent-soft), 0 10px 30px rgba(20,30,35,.07); }
   /* circle strip: each friend's latest face, and today's word if there is one, beside the Yesterday pill. Scrolls sideways. */
@@ -158,7 +158,7 @@
   .entry .text { font-size: 15px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
   .entry.clamped .text { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
   .entry .tools { display: flex; gap: 8px; margin-top: 12px; }
-  .entry textarea { width: 100%; font: inherit; font-size: 15px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; min-height: 96px; margin-top: 6px; outline: none; }
+  .entry textarea { width: 100%; font: inherit; font-size: 16px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; min-height: 96px; margin-top: 6px; outline: none; }
   .entry .moods { margin: 10px 0; justify-content: flex-start; gap: 4px; }
   .entry .moods button { width: 40px; height: 40px; }
   .entry .moods button svg { width: 40px; height: 40px; }
@@ -249,7 +249,7 @@
   .list .sub { padding: 4px 16px 14px; }
   .list .sub .seg { margin-top: 0; }
   label.small { font-size: 13px; color: var(--muted); display: block; margin: 10px 0 4px; }
-  input.field { width: 100%; font: inherit; font-size: 15px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 11px 14px; outline: none; margin-bottom: 8px; }
+  input.field { width: 100%; font: inherit; font-size: 16px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 11px 14px; outline: none; margin-bottom: 8px; }
   input.field:focus { border-color: var(--accent); }
   /* ---------- the switch, iOS-shaped ---------- */
   .switch { flex: 0 0 auto; width: 51px; height: 31px; border-radius: 16px; border: 0; padding: 0; background: var(--track); transition: background .25s ease; position: relative; }
@@ -268,7 +268,7 @@
   .circle .week { display: flex; gap: 6px; }
   .circle .week i { display: block; width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--line); }
   .circle .week svg { display: block; }
-  input[type=date] { width: 100%; font: inherit; font-size: 15px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; outline: none; }
+  input[type=date] { width: 100%; font: inherit; font-size: 16px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; outline: none; }
   .closing { text-align: center; font-size: 13px; color: var(--muted); margin: 18px 0 0; }
 
   /* ---------- day sheet ---------- */
@@ -1580,7 +1580,7 @@
       <p class="foot" id="checkin-note"></p>
     </div>
 
-    <p class="closing">Feeling 41 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
+    <p class="closing">Feeling 42 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
   </section>
 </main>
 
