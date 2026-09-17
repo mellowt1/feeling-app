@@ -102,7 +102,16 @@
   .saverow { display: flex; gap: 8px; margin-top: 18px; align-items: stretch; }
   .saverow #save { flex: 0 0 112px; width: auto; }
   .saverow.solo #save { flex: 1; }
-  .saverow.solo #status { display: none; }
+  .saverow.solo #status, .saverow.solo #word { display: none; }
+  /* closed, the word is a small bottle button so Save stays the main thing; tap it and the field opens */
+  .saverow:not(.open) #status { display: none; }
+  .saverow:not(.open) #save { flex: 1; }
+  .saverow.open #word { display: none; }
+  #word { flex: 0 0 54px; width: 54px; height: 54px; padding: 0; border-radius: 50%; border: 1px solid var(--glass-line); background: var(--glass); -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px); box-shadow: 0 10px 30px rgba(20,30,35,.07); display: inline-flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; }
+  #word svg { width: 13px; height: 22px; display: block; }
+  #word .glass { fill: var(--silhouette); opacity: .62; }
+  #word .note { fill: var(--bg); transition: fill .4s; }
+  #word.has .note { fill: var(--accent); }
   #status { flex: 1; min-width: 0; font: inherit; font-size: 15px; color: var(--ink); background: var(--glass); border: 1px solid var(--glass-line); border-radius: 27px; padding: 0 18px; min-height: 54px; outline: none; -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px); box-shadow: 0 10px 30px rgba(20,30,35,.07); transition: border-color .25s, box-shadow .25s; }
   #status::placeholder { color: var(--muted); }
   #status:focus { border-color: var(--accent-40); box-shadow: 0 0 0 3px var(--accent-soft), 0 10px 30px rgba(20,30,35,.07); }
@@ -1428,6 +1437,7 @@
 
     <div class="moods" id="moods"></div>
     <div class="saverow solo" id="saverow">
+      <button id="word" type="button" aria-label="Write a few words for your circle"><svg viewBox="0 0 24 40" aria-hidden="true"><path class="glass" d="M9 1h6v2q0 1 1 1.5v5q6 3 6 10v16q0 4-4 4H6q-4 0-4-4v-16q0-7 6-10v-5q1-.5 1-1.5z"/><rect class="note" x="7" y="17" width="10" height="14" rx="1.5"/></svg></button>
       <input id="status" type="text" placeholder="A word for the circle…" maxlength="40" autocomplete="off" enterkeyhint="done" aria-label="A few words for your circle">
       <button class="btn ghost" id="save" disabled>Save</button>
     </div>
@@ -1556,7 +1566,7 @@
       <p class="foot" id="checkin-note"></p>
     </div>
 
-    <p class="closing">Feeling 39 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
+    <p class="closing">Feeling 40 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
   </section>
 </main>
 
@@ -1769,16 +1779,21 @@
   // Kept for the day it was written; travels with the faces on every sync.
   const statusEl = $('#status');
   function myStatus() { const s = db.status; return s && s.day === todayKey() ? s.text : ''; }
-  function restoreStatus() { statusEl.value = myStatus(); }
+  const wordBtn = $('#word'), saveRow = $('#saverow');
+  function restoreStatus() { statusEl.value = myStatus(); wordBtn.classList.toggle('has', !!myStatus()); }
+  let wordUnsent = false;   // set when the word changes; syncCircle says so once the Worker has it
   function setStatus() {
     const t = statusEl.value.replace(/\s+/g, ' ').trim().slice(0, 40);
     if (t === myStatus()) return;
     db.status = t ? { day: todayKey(), text: t } : null; save();
+    wordBtn.classList.toggle('has', !!t);
+    wordUnsent = true;
     syncCircle(true);
   }
+  wordBtn.addEventListener('click', () => { saveRow.classList.add('open'); statusEl.focus(); });
   let statusT;
-  statusEl.addEventListener('input', () => { clearTimeout(statusT); statusT = setTimeout(setStatus, 900); });
-  statusEl.addEventListener('blur', () => { clearTimeout(statusT); setStatus(); });
+  // sent when you leave the field (Done, Save, or a tap elsewhere), not while typing, so "Sent" is said once
+  statusEl.addEventListener('blur', () => { clearTimeout(statusT); setStatus(); saveRow.classList.remove('open'); });
   statusEl.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); statusEl.blur(); } });
   restoreStatus();
 
@@ -2141,18 +2156,21 @@
     for (const k in out) out[k] = out[k].mood;
     return out;
   }
-  let syncing = false;
+  let syncing = false, syncAgain = false;
   async function syncCircle(quiet) {
-    const c = db.circle; if (!c || !c.code || syncing) return;
+    const c = db.circle; if (!c || !c.code) return;
+    if (syncing) { syncAgain = true; return; }   // something changed mid-flight: send once more when this one lands
     syncing = true;
     try {
       const res = await fetch(CIRCLE_API + c.code, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: c.id, name: c.name, place: getPlace(), days: myDays(), status: myStatus(), statusDay: todayKey() }) });
       if (!res.ok) throw new Error(res.status);
       const data = await res.json();
       c.members = (data.members || []).filter((m) => m.id !== c.id); c.seen = Date.now(); save();
-    } catch (e) { if (!quiet) toast('Could not reach the circle'); }
+      if (wordUnsent && !syncAgain) { wordUnsent = false; toast(myStatus() ? 'Sent to the circle' : 'Word taken back'); }
+    } catch (e) { if (!quiet || wordUnsent) toast('Could not reach the circle'); }
     syncing = false;
     renderCircle(); renderCircleCard();
+    if (syncAgain) { syncAgain = false; syncCircle(true); }
   }
   function renderCircle() {
     const box = $('#circle'), cap = $('#circle-cap'); box.innerHTML = ''; cap.textContent = '';
