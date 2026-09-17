@@ -138,7 +138,11 @@
   #strip .chip.ask svg { width: 16px; height: 16px; }
   /* messages in bottles: one bottle per friend who wrote a word today. Each drifts across the water with the current; a small bubble rides above it on two tether dots. Bubbles take turns. */
   #bottles { position: fixed; left: 0; right: 0; bottom: 0; height: 260px; z-index: 1; pointer-events: none; overflow-x: clip; overflow-y: visible; transition: opacity 1.2s ease; }
-  body.dock #bottles, body.swap #bottles { opacity: 0; }
+  body.swap #bottles { opacity: 0; }
+  /* breathing mode: the bottles keep drifting on the taller water, but say nothing and take no taps */
+  .bottle { transition: margin-bottom 2.5s ease-in-out; }
+  body.dock .bottle { margin-bottom: calc(9vh - 4px); pointer-events: none; }
+  body.dock .bottle .bubble, body.dock .bottle .dot { opacity: 0 !important; }
   .bottle { position: absolute; left: 0; bottom: 112px; width: 14px; height: 24px; padding: 10px; margin: -10px; box-sizing: content-box; border: 0; background: none; pointer-events: auto; cursor: pointer; -webkit-tap-highlight-color: transparent; animation: bottleDrift 80s linear infinite; }
   .bottle.b1 { bottom: 98px; animation-duration: 96s; }
   .bottle.b2 { bottom: 120px; animation-duration: 110s; }
@@ -831,7 +835,7 @@
   #tab-today { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
   #tab-today textarea, #tab-today .entry .text { -webkit-user-select: text; user-select: text; }
   #tab-today > .headrow, #tab-today > .entry-glass, #tab-today > .voice, #tab-today > .moods, #tab-today > .saverow, #tab-today > .daylist, nav { transition: opacity 1.2s ease; }
-  body.dock #tab-today > :not(.sky-breathe):not(.clouds):not(.orb):not(.waves):not(.rain):not(.wind):not(.dock-ui), body.dock nav { opacity: 0 !important; pointer-events: none; }
+  body.dock #tab-today > :not(.sky-breathe):not(.clouds):not(.orb):not(.waves):not(.rain):not(.wind):not(.dock-ui):not(#bottles), body.dock nav { opacity: 0 !important; pointer-events: none; }
   .waves { transition: transform 2.5s ease-out, height 2.5s ease-in-out, opacity .45s ease; }
   .waves-faint { transition: opacity .45s ease; }
   body.dock .waves { height: calc(44vh + var(--tide, 0px)); }
@@ -1609,7 +1613,7 @@
     <p class="foot lone" id="last-export"></p>
     <span id="range-value" hidden></span>
 
-    <p class="closing">Feeling 45 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
+    <p class="closing">Feeling 46 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
   </section>
 </main>
 
@@ -2219,6 +2223,7 @@
   function hushBottles() { clearTimeout(bottleHush); bottlesBox.querySelectorAll('.say').forEach((b) => b.classList.remove('say')); }
   function sayBottle(b) {
     hushBottles();
+    if (document.body.classList.contains('dock')) return false;   // no words while breathing
     const x = b.getBoundingClientRect().left + 17, vw = window.innerWidth;
     if (x < 8 || x > vw - 8 || getComputedStyle(b).opacity < .9) return false;                       // off stage: skip this turn
     b.classList.toggle('flip', x > vw / 2);
