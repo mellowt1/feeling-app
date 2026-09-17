@@ -1032,13 +1032,13 @@
   body.late .voice-cap .kb { display: none; }
 
   @media (prefers-reduced-motion: reduce) {
-    /* the water keeps its life (slow and small); waves, clouds and UI motion stop */
-    .waves *:not(.fish-wrap):not(.fish-wrap *):not(.mullet-wrap *), .waves-faint, .waves-faint svg, .sky-breathe, .cloud, .orb, div.rain span, .ripple, .ring, .wind span, .dock-hint, .glitter span, .boat { animation: none !important; }
+    /* the Florida dock keeps all of its life: every motion there is slow and small, and it is the version Paul sees (Reduce Motion is on on his phone).
+       El campo, Key West, clouds and UI motion stop */
+    .waves.campo *, .waves.keywest *, .waves-faint, .waves-faint svg, .sky-breathe, .cloud, .orb, div.rain span, .ripple, .ring, .wind span, .dock-hint, .glitter span, .boat { animation: none !important; }
     .waves svg.boat, .waves svg.sail { opacity: 0; }
     .glitter span { opacity: .3; }
     .clouds, .dock .rod-cast, .dock .rod-wind, .dock .cast-line, .textview { transition: none !important; }
     body.dock .dock-hint { opacity: 1; }
-    body.dock .breath { animation: none !important; transform: scale(.85); }
     .sky-breathe { opacity: 0.2; }
     .orb { transform: none; }
     .waves, section.pane, .sheet .panel, .sheet .backdrop, .seg .thumb { transition: none !important; }
@@ -1162,12 +1162,9 @@
   @keyframes tarponFlash { 0%, 23.5% { fill: color-mix(in srgb, var(--fish) 62%, var(--scene-mid)); opacity: .2; } 25% { fill: var(--fish-silver); opacity: .7; } 27% { fill: var(--fish-silver); opacity: .6; } 29%, 100% { fill: color-mix(in srgb, var(--fish) 62%, var(--scene-mid)); opacity: .2; } }
   .mullet use { fill: var(--fish); }
   .splash circle { stroke: var(--fish); }
-  @media (prefers-reduced-motion: reduce) {
-    .bird, .bird use, .waves svg.mangrove, .glare span, .gust, .dock .rod-wind, .dock .fishline, html[data-place="dock"] .dock .cat .cat-tail, .waves .marker, .waves .swell, html[data-place="dock"] .dock .cast-bobber, html[data-place="dock"] .dock .cast-splash { animation: none !important; }
-    .glare span { opacity: .35; } .gust { opacity: 0; } html.night .waves .marker { opacity: .6; } html[data-place="dock"] .dock .cast-splash { opacity: 0; }
-  }
+  /* Reduce Motion: the dock's wind, glare, gusts, markers, bobber and birds keep running (see the note at the main reduced-motion block) */
+  @media (prefers-reduced-motion: reduce) { .bird.gull { opacity: .45 !important; } }
   html:not([data-place="dock"]) .bird { display: none; }
-  @media (prefers-reduced-motion: reduce) { body.dock .breath::after { animation: none !important; } }
 </style>
 </head>
 <body>
@@ -1559,7 +1556,7 @@
       <p class="foot" id="checkin-note"></p>
     </div>
 
-    <p class="closing">Feeling 38 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
+    <p class="closing">Feeling 39 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
   </section>
 </main>
 
