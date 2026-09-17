@@ -29,6 +29,10 @@ Every animal is a real species silhouette from [PhyloPic](https://www.phylopic.o
 
 After 21:00 the sky animals (condor, frigatebird, gull, lapwing) go to sleep, as before.
 
+## Living water (Feeling 37, 2026-09-17)
+
+The dock fish no longer slide across on straight lines. Each `.fish-wrap` animates `translate() scaleX() rotate()` with its origin on the fish: path, turn, pitch. Residents stay (snook by the piling that darts at the pinfish, grouper patrolling the bottom, snappers that bolt when the blacktip passes under them); visitors come and go on their own lines (tarpon climbs to roll, then returns deeper the other way). Pinfish, mackerel and snapper are drawn facing right, the rest left: set `scaleX` so the nose leads. The water keeps moving under Reduce Motion (Paul's phone has it on); only waves, clouds and UI motion stop. The spec is the last block of the "v4 ambience" frame in Figma.
+
 ## Still open
 
 1. Fine-tune the dusk and night skies on a real phone.

@@ -330,32 +330,68 @@
   }
 
   .waves .fish-wrap { position: absolute; inset: 0; pointer-events: none; }
-  .waves .fish-wrap.fw1 { animation: swim 55s linear infinite; animation-delay: -27s; }
-  .waves .fish-wrap.fw2 { animation: swimSnook 68s linear infinite; animation-delay: -46s; }
-  @keyframes swim { from { transform: translateX(110vw); } to { transform: translateX(-90px); } }
-  @keyframes swimSnook {
-    0%   { transform: translateX(110vw); }
-    75%  { transform: translateX(40px); }
-    80%  { transform: translateX(40px); }
-    100% { transform: translateX(-90px); }
-  }
+  /* living water: every wrap carries one fish (or school) along its own path: translate, then a turn (scaleX), then pitch.
+     The origin sits on the fish so turns and pitch happen in place. Nose always leads: pinfish, mackerel and snapper are drawn facing right. */
+  .waves .fish-wrap { animation-timing-function: cubic-bezier(.35,.15,.65,.85); animation-iteration-count: infinite; }
   /* every fish is one silhouette: the body sways from a point behind the head, the whole fish bobs */
   .waves svg.fish { position: absolute; left: 0; height: auto; overflow: visible; pointer-events: none; fill: var(--accent); animation: fishBob 8s ease-in-out infinite alternate; }
   .waves svg.fish use { transform-box: fill-box; transform-origin: 30% 50%; animation: sway 2.4s ease-in-out infinite alternate; }
+  .pin use, .fish8 use, .snap.s1 use, .snap.s3 use, .snap.s4 use { transform-origin: 70% 50%; }
   @keyframes sway { from { transform: rotate(-1.5deg); } to { transform: rotate(1.5deg); } }
-  @keyframes fishBob { from { transform: translateY(-6px); } to { transform: translateY(6px); } }
-  /* tarpon: a straight cruiser that comes up once a pass to roll at the surface */
-  .waves svg.fish.fish1 { width: 66px; bottom: 34%; opacity: .26; animation: tarponRoll 55s ease-in-out infinite; }
+  @keyframes fishBob { from { transform: translateY(-4px); } to { transform: translateY(4px); } }
+  /* tarpon: crosses, climbs to roll at the surface, sinks again; later comes back the other way, deeper */
+  .waves .fish-wrap.fw1 { transform-origin: 33px calc(66% - 13px); animation-name: swimTarpon; animation-duration: 96s; animation-delay: -12s; }
+  @keyframes swimTarpon {
+    0%   { transform: translate(112vw, 0) scaleX(1) rotate(0deg); }
+    18%  { transform: translate(62vw, 4px) scaleX(1) rotate(-2deg); }
+    24%  { transform: translate(50vw, -34px) scaleX(1) rotate(14deg); }
+    26%  { transform: translate(46vw, -40px) scaleX(1) rotate(0deg); }
+    29%  { transform: translate(40vw, -20px) scaleX(1) rotate(-12deg); }
+    34%  { transform: translate(30vw, 6px) scaleX(1) rotate(0deg); }
+    48%  { transform: translate(-25vw, 0) scaleX(1) rotate(0deg); }
+    50%  { transform: translate(-25vw, 30px) scaleX(-1) rotate(0deg); }
+    62%  { transform: translate(-25vw, 30px) scaleX(-1) rotate(0deg); }
+    74%  { transform: translate(40vw, 20px) scaleX(-1) rotate(3deg); }
+    86%  { transform: translate(112vw, 26px) scaleX(-1) rotate(0deg); }
+    100% { transform: translate(112vw, 0) scaleX(1) rotate(0deg); }
+  }
+  .waves svg.fish.fish1 { width: 66px; bottom: 34%; opacity: .26; animation: tarponRoll 96s ease-in-out infinite; animation-delay: -12s; }
   .fish1 use { animation-duration: 3.2s; }
-  @keyframes tarponRoll { 0%, 42% { transform: translateY(0) scaleY(1); } 47% { transform: translateY(-40px) scaleY(.72); } 52% { transform: translateY(0) scaleY(1); } 100% { transform: translateY(0) scaleY(1); } }
-  .waves svg.fish.fish2 { width: 56px; bottom: 40%; opacity: .22; }
-  /* jack crevalle: one fast pass, then a long nothing */
-  .waves .fish-wrap.fw4 { animation: swimJack 140s linear infinite; animation-delay: -20s; }
-  @keyframes swimJack { 0% { transform: translateX(110vw); } 9% { transform: translateX(-70px); } 100% { transform: translateX(-70px); } }
+  @keyframes tarponRoll { 0%, 24% { transform: scaleY(1); } 26% { transform: scaleY(.68); } 28.5%, 100% { transform: scaleY(1); } }
+  /* snook: a resident. Holds by the piling facing the current, darts at the pinfish, coasts, turns, drifts home */
+  .waves .fish-wrap.fw2 { transform-origin: 28px calc(60% - 10px); animation-name: swimSnook; animation-duration: 52s; animation-delay: -8s; }
+  @keyframes swimSnook {
+    0%    { transform: translate(64vw, 0) scaleX(1) rotate(0deg); }
+    15%   { transform: translate(62vw, 4px) scaleX(1) rotate(0deg); }
+    30%   { transform: translate(64vw, 1px) scaleX(1) rotate(0deg); }
+    31.5% { transform: translate(59vw, 0) scaleX(1) rotate(4deg); }
+    34%   { transform: translate(36vw, -9px) scaleX(1) rotate(4deg); }
+    41%   { transform: translate(25vw, -5px) scaleX(1) rotate(0deg); }
+    44%   { transform: translate(23vw, -2px) scaleX(-1) rotate(0deg); }
+    58%   { transform: translate(40vw, 8px) scaleX(-1) rotate(-3deg); }
+    76%   { transform: translate(66vw, 3px) scaleX(-1) rotate(0deg); }
+    80%   { transform: translate(67vw, 2px) scaleX(1) rotate(0deg); }
+    100%  { transform: translate(64vw, 0) scaleX(1) rotate(0deg); }
+  }
+  .waves svg.fish.fish2 { width: 56px; bottom: 40%; opacity: .22; animation-duration: 10s; }
+  /* jack crevalle: one fast dipping pass, a long nothing, then back the other way higher up */
+  .waves .fish-wrap.fw4 { transform-origin: 25px calc(64% - 8px); animation-name: swimJack; animation-duration: 120s; animation-delay: -20s; }
+  @keyframes swimJack {
+    0%   { transform: translate(112vw, 0) scaleX(1) rotate(0deg); }
+    3%   { transform: translate(80vw, 14px) scaleX(1) rotate(-8deg); }
+    6%   { transform: translate(45vw, -6px) scaleX(1) rotate(7deg); }
+    9%   { transform: translate(10vw, 8px) scaleX(1) rotate(-4deg); }
+    11%  { transform: translate(-25vw, 0) scaleX(1) rotate(0deg); }
+    50%  { transform: translate(-25vw, -20px) scaleX(-1) rotate(0deg); }
+    53%  { transform: translate(10vw, -10px) scaleX(-1) rotate(-6deg); }
+    57%  { transform: translate(55vw, -24px) scaleX(-1) rotate(5deg); }
+    61%  { transform: translate(112vw, -14px) scaleX(-1) rotate(0deg); }
+    100% { transform: translate(112vw, 0) scaleX(1) rotate(0deg); }
+  }
   .waves svg.fish.fish4 { width: 50px; bottom: 36%; opacity: .24; animation-duration: 5s; }
   .fish4 use { animation-duration: .9s; transform-origin: 35% 50%; }
   /* barracuda: arrives, hangs dead still, then is gone */
-  .waves .fish-wrap.fw5 { animation: swimCuda 150s linear infinite; animation-delay: -40s; }
+  .waves .fish-wrap.fw5 { animation-name: swimCuda; animation-duration: 150s; animation-delay: -40s; animation-timing-function: linear; }
   @keyframes swimCuda {
     0%   { transform: translateX(110vw); }
     20%  { transform: translateX(62vw); animation-timing-function: ease-out; }
@@ -366,59 +402,110 @@
   }
   .waves svg.fish.fish5 { width: 62px; bottom: 22%; opacity: .2; animation-duration: 11s; }
   .fish5 use { animation-duration: 1.6s; }
-  /* pinfish: a loose school of five, drifting the other way, hesitating once mid-screen */
-  .waves .fish-wrap.fw6 { animation: swimSchool 92s linear infinite; animation-delay: -30s; }
+  /* pinfish: the school wanders. Stops to feed nose-down, flinches, turns as a group; each fish keeps its own small orbit */
+  .waves .fish-wrap.fw6 { transform-origin: 32px 57%; animation-name: swimSchool; animation-duration: 130s; animation-delay: -18s; }
   @keyframes swimSchool {
-    0%   { transform: translateX(-120px); }
-    38%  { transform: translateX(46vw); animation-timing-function: ease-out; }
-    46%  { transform: translateX(45vw); animation-timing-function: ease-in; }
-    100% { transform: translateX(112vw); }
+    0%   { transform: translate(-25vw, 0) scaleX(1); }
+    14%  { transform: translate(22vw, 4px) scaleX(1); }
+    22%  { transform: translate(24vw, 10px) scaleX(1); }
+    30%  { transform: translate(40vw, 0) scaleX(1); }
+    38%  { transform: translate(52vw, -6px) scaleX(1); }
+    40%  { transform: translate(53vw, -6px) scaleX(-1); }
+    54%  { transform: translate(18vw, 6px) scaleX(-1); }
+    56%  { transform: translate(17vw, 6px) scaleX(1); }
+    66%  { transform: translate(30vw, 12px) scaleX(1); }
+    74%  { transform: translate(34vw, 10px) scaleX(1); }
+    100% { transform: translate(115vw, -4px) scaleX(1); }
   }
-  .waves svg.fish.pin { width: 15px; opacity: .2; animation-duration: 6s; }
+  .waves svg.fish.pin { width: 15px; opacity: .2; animation: pinFeed 9s ease-in-out infinite; }
   .waves svg.fish.pin.p1 { bottom: 44%; left: 0;    animation-delay: -1s; }
-  .waves svg.fish.pin.p2 { bottom: 47%; left: 22px; animation-delay: -3s; }
-  .waves svg.fish.pin.p3 { bottom: 42%; left: 26px; animation-delay: -5s; }
-  .waves svg.fish.pin.p4 { bottom: 45%; left: 48px; animation-delay: -2s; }
-  .waves svg.fish.pin.p5 { bottom: 40%; left: 12px; animation-delay: -4s; }
+  .waves svg.fish.pin.p2 { bottom: 47%; left: 22px; animation-name: pinFlinch; animation-duration: 11s; animation-delay: -3s; }
+  .waves svg.fish.pin.p3 { bottom: 42%; left: 26px; animation-duration: 13s; animation-delay: -5s; }
+  .waves svg.fish.pin.p4 { bottom: 45%; left: 48px; animation-name: pinFlinch; animation-duration: 11s; animation-delay: -3.2s; }
+  .waves svg.fish.pin.p5 { bottom: 40%; left: 12px; animation-duration: 7s; animation-delay: -4s; }
   .pin use { animation-duration: .7s; }
-  /* goliath grouper: heavy, low, slow; crosses once and takes forever about it */
-  .waves .fish-wrap.fw7 { animation: swimGrouper 210s linear infinite; animation-delay: -95s; }
+  @keyframes pinFeed {
+    0%   { transform: translate(0, 0) rotate(0deg); }
+    25%  { transform: translate(4px, -3px) rotate(-4deg); }
+    50%  { transform: translate(-3px, 2px) rotate(0deg); }
+    60%  { transform: translate(-2px, 6px) rotate(26deg); }
+    70%  { transform: translate(-1px, 6px) rotate(26deg); }
+    78%  { transform: translate(1px, 3px) rotate(0deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+  }
+  @keyframes pinFlinch {
+    0%   { transform: translate(0, 0); }
+    35%  { transform: translate(-4px, 3px); }
+    70%  { transform: translate(3px, -2px); }
+    80%  { transform: translate(3px, -2px); animation-timing-function: ease-out; }
+    82%  { transform: translate(-8px, -4px); }
+    100% { transform: translate(0, 0); }
+  }
+  /* goliath grouper: a resident of the bottom. Patrols from the piling to mid water and back, hovering for long spells */
+  .waves .fish-wrap.fw7 { transform-origin: 34px calc(93% - 16px); animation-name: swimGrouper; animation-duration: 180s; animation-delay: -30s; animation-timing-function: ease-in-out; }
   @keyframes swimGrouper {
-    0%   { transform: translateX(110vw); }
-    55%  { transform: translateX(-100px); }
-    100% { transform: translateX(-100px); }
+    0%   { transform: translate(62vw, 0) scaleX(1); }
+    20%  { transform: translate(60vw, -3px) scaleX(1); }
+    45%  { transform: translate(24vw, 4px) scaleX(1); }
+    60%  { transform: translate(22vw, 1px) scaleX(1); }
+    63%  { transform: translate(22vw, 1px) scaleX(-1); }
+    88%  { transform: translate(60vw, -2px) scaleX(-1); }
+    96%  { transform: translate(63vw, 0) scaleX(-1); }
+    100% { transform: translate(62vw, 0) scaleX(1); }
   }
   .waves svg.fish.fish7 { width: 68px; bottom: 7%; opacity: .32; animation-duration: 14s; }
   .fish7 use { animation-duration: 4s; transform-origin: 40% 50%; }
   /* spanish mackerel: two quick passes back to back, then a long gap */
-  .waves .fish-wrap.fw8 { animation: swimMack 120s linear infinite; animation-delay: -66s; }
+  .waves .fish-wrap.fw8 { transform-origin: 22px calc(72% - 7px); animation-name: swimMack; animation-duration: 120s; animation-delay: -66s; }
   @keyframes swimMack {
-    0%     { transform: translateX(110vw) scaleX(1); }
-    7%     { transform: translateX(-80px) scaleX(1); }
-    7.01%  { transform: translateX(-80px) scaleX(-1); }
-    16%    { transform: translateX(110vw) scaleX(-1); }
-    16.01% { transform: translateX(110vw) scaleX(1); }
-    100%   { transform: translateX(110vw) scaleX(1); }
+    0%   { transform: translate(112vw, 0) scaleX(-1) rotate(0deg); }
+    3.5% { transform: translate(55vw, -10px) scaleX(-1) rotate(-5deg); }
+    7%   { transform: translate(-25vw, 4px) scaleX(-1) rotate(4deg); }
+    7.5% { transform: translate(-25vw, 14px) scaleX(1) rotate(0deg); }
+    12%  { transform: translate(50vw, 2px) scaleX(1) rotate(-5deg); }
+    16%  { transform: translate(112vw, 12px) scaleX(1) rotate(3deg); }
+    100% { transform: translate(112vw, 0) scaleX(-1) rotate(0deg); }
   }
   .waves svg.fish.fish8 { width: 44px; bottom: 28%; opacity: .22; animation-duration: 4s; }
   .fish8 use { animation-duration: .6s; }
-  /* mangrove snappers: a loose group in the shadow of the dock; they hang, shift, startle once a minute and drift back */
-  .waves .fish-wrap.fw9 { inset: auto; right: 4%; bottom: 18%; width: 130px; height: 60px; animation: snapStartle 90s linear infinite; }
-  @keyframes snapStartle { 0%, 88% { transform: translateX(0); } 88.6% { transform: translateX(-28px); } 100% { transform: translateX(0); } }
+  /* mangrove snappers: a loose group in the shadow of the dock; they hang, shift, one turns now and then, and all bolt when the blacktip passes under them */
+  .waves .fish-wrap.fw9 { inset: auto; right: 4%; bottom: 18%; width: 130px; height: 60px; animation-name: snapStartle; animation-duration: 150s; animation-delay: -100s; animation-timing-function: linear; }
+  @keyframes snapStartle { 0%, 4% { transform: translate(0, 0); } 4.5% { transform: translate(-34px, -10px); } 10%, 55% { transform: translate(0, 0); } 55.4% { transform: translate(-22px, 4px); } 61%, 100% { transform: translate(0, 0); } }
   .waves svg.fish.snap { opacity: .28; animation: snapHover 14s ease-in-out infinite alternate; }
   .waves svg.fish.snap use { animation-duration: 2s; }
   .snap.s1 { width: 36px; left: 0;    bottom: 30px; animation-delay: -3s; }
-  .snap.s2 { width: 30px; left: 44px; bottom: 44px; animation-delay: -9s; animation-duration: 17s; }
+  .waves svg.fish.snap.s2 { width: 30px; left: 44px; bottom: 44px; animation: snapTurn 23s ease-in-out infinite; animation-delay: -9s; }
   .snap.s3 { width: 34px; left: 62px; bottom: 12px; animation-delay: -6s; animation-duration: 12s; }
   .snap.s4 { width: 28px; left: 96px; bottom: 34px; animation-delay: -1s; animation-duration: 19s; }
   @keyframes snapHover { 0% { transform: translate(0, 0); } 40% { transform: translate(-6px, 3px); } 70% { transform: translate(-4px, -4px); } 100% { transform: translate(5px, 2px); } }
-  /* blacktip: a steady, purposeful pass every two and a half minutes; bonnethead: low over the sand, the other way, every four */
-  .waves .fish-wrap.fw10 { animation: swimShark 150s linear infinite; animation-delay: -100s; }
-  @keyframes swimShark { 0% { transform: translateX(110vw); } 28% { transform: translateX(-140px); } 100% { transform: translateX(-140px); } }
+  @keyframes snapTurn {
+    0%   { transform: translate(0, 0) scaleX(1); }
+    38%  { transform: translate(-8px, 3px) scaleX(1); }
+    42%  { transform: translate(-8px, 3px) scaleX(-1); }
+    78%  { transform: translate(7px, -3px) scaleX(-1); }
+    82%  { transform: translate(7px, -3px) scaleX(1); }
+    100% { transform: translate(0, 0) scaleX(1); }
+  }
+  /* blacktip: a steady pass on a slow S every two and a half minutes; bonnethead: low over the sand, the other way, every four */
+  .waves .fish-wrap.fw10 { transform-origin: 42px calc(74% - 20px); animation-name: swimShark; animation-duration: 150s; animation-delay: -100s; animation-timing-function: linear; }
+  @keyframes swimShark {
+    0%   { transform: translate(110vw, 0) rotate(0deg); }
+    7%   { transform: translate(74vw, -10px) rotate(3deg); }
+    14%  { transform: translate(38vw, 8px) rotate(-3deg); }
+    21%  { transform: translate(5vw, -6px) rotate(2deg); }
+    28%  { transform: translate(-40vw, 0) rotate(0deg); }
+    100% { transform: translate(-40vw, 0) rotate(0deg); }
+  }
   .waves svg.fish.blacktip { width: 84px; bottom: 26%; opacity: .22; animation-duration: 9s; }
   .blacktip use { transform-origin: 28% 50%; animation-duration: 1.7s; }
-  .waves .fish-wrap.fw11 { animation: swimBonnet 250s linear infinite; animation-delay: -60s; }
-  @keyframes swimBonnet { 0% { transform: translateX(-120px); } 26% { transform: translateX(110vw); } 100% { transform: translateX(110vw); } }
+  .waves .fish-wrap.fw11 { transform-origin: 37px calc(95% - 15px); animation-name: swimBonnet; animation-duration: 250s; animation-delay: -60s; animation-timing-function: linear; }
+  @keyframes swimBonnet {
+    0%   { transform: translate(-35vw, 0) rotate(0deg); }
+    9%   { transform: translate(15vw, -8px) rotate(-3deg); }
+    18%  { transform: translate(65vw, 4px) rotate(2deg); }
+    26%  { transform: translate(112vw, 0) rotate(0deg); }
+    100% { transform: translate(112vw, 0) rotate(0deg); }
+  }
   .waves svg.fish.bonnet { width: 74px; bottom: 5%; opacity: .2; animation-duration: 12s; }
   .bonnet use { transform-origin: 78% 50%; animation-duration: 1.3s; }
 
@@ -811,9 +898,9 @@
   body.late .voice-cap .kb { display: none; }
 
   @media (prefers-reduced-motion: reduce) {
-    /* the fish keep their slow glide across the water (no sway, no bob); the jumping mullet and their splash rings go */
-    .waves *:not(.fish-wrap), .waves-faint, .waves-faint svg, .sky-breathe, .cloud, .orb, div.rain span, .ripple, .ring, .wind span, .dock-hint, .glitter span, .boat { animation: none !important; }
-    .waves svg.boat, .waves svg.sail, .waves .mullet-wrap { opacity: 0; }
+    /* the water keeps its life (slow and small); waves, clouds and UI motion stop */
+    .waves *:not(.fish-wrap):not(.fish-wrap *):not(.mullet-wrap *), .waves-faint, .waves-faint svg, .sky-breathe, .cloud, .orb, div.rain span, .ripple, .ring, .wind span, .dock-hint, .glitter span, .boat { animation: none !important; }
+    .waves svg.boat, .waves svg.sail { opacity: 0; }
     .glitter span { opacity: .3; }
     .clouds, .dock .rod-cast, .dock .rod-wind, .dock .cast-line, .textview { transition: none !important; }
     body.dock .dock-hint { opacity: 1; }
@@ -1204,7 +1291,7 @@
       <p class="foot" id="checkin-note"></p>
     </div>
 
-    <p class="closing">Feeling 36 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
+    <p class="closing">Feeling 37 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
   </section>
 </main>
 
