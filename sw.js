@@ -1,9 +1,10 @@
 // Offline cache. No network calls are made except to fetch the app's own files.
-const CACHE = 'feeling-v56';
+const CACHE = 'feeling-v57';
 const FILES = ['./', './index.html', './manifest.webmanifest', './icon-180.png', './icon-512.png'];
 
 self.addEventListener('install', (e) => {
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(FILES)).then(() => self.skipWaiting()));
+  // The page is fetched with the cache name as a query so the GitHub Pages CDN (10 min cache) cannot hand back the previous version.
+  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(FILES.map((f) => f.endsWith('.html') || f === './' ? new Request(f + '?' + CACHE, { cache: 'reload' }) : f))).then(() => self.skipWaiting()));
 });
 
 self.addEventListener('activate', (e) => {
