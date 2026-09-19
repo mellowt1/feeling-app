@@ -28,10 +28,11 @@
 
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body { margin: 0; color: var(--ink); font: 17px/1.5 -apple-system, "SF Pro Text", system-ui, sans-serif; -webkit-text-size-adjust: 100%; }
+  :root { --vgap: 0px; }   /* set by the launch-viewport script: screen height minus window height when iOS opens the app short */
   html { height: 100%; background: var(--sky-horizon); overflow-x: clip; }
   body { min-height: 100%; min-height: 100dvh; display: flex; flex-direction: column; background: transparent; }
   /* the sky is a fixed layer, not a body background: on iOS the body can be shorter than the screen at launch (the viewport settles after the first scroll), and a background sized 100dvh left the bottom unpainted */
-  body::before { content: ""; position: fixed; inset: -1px 0; z-index: -1; pointer-events: none; background: linear-gradient(var(--sky-top) 0%, var(--sky-mid) 50%, var(--sky-horizon) 78%); }
+  body::before { content: ""; position: fixed; inset: -1px 0; bottom: calc(-1px - var(--vgap)); z-index: -1; pointer-events: none; background: linear-gradient(var(--sky-top) 0%, var(--sky-mid) 50%, var(--sky-horizon) 78%); }
   main { flex: 1; padding: calc(16px + env(safe-area-inset-top)) 24px 142px; max-width: 640px; width: 100%; margin: 0 auto; position: relative; z-index: 1; }
   .hidden { display: none !important; }
 
@@ -140,7 +141,7 @@
   #strip .chip.ask { font: inherit; font-size: 13px; font-weight: 500; color: var(--accent); padding-left: 9px; -webkit-tap-highlight-color: transparent; }
   #strip .chip.ask svg { width: 16px; height: 16px; }
   /* messages in bottles: one bottle per friend who wrote a word today. Each drifts across the water with the current; a small bubble rides above it on two tether dots. Bubbles take turns. */
-  #bottles { position: fixed; left: 0; right: 0; bottom: 0; height: 260px; z-index: 1; pointer-events: none; overflow-x: clip; overflow-y: visible; transition: opacity 1.2s ease; }
+  #bottles { position: fixed; left: 0; right: 0; bottom: calc(0px - var(--vgap)); height: 260px; z-index: 1; pointer-events: none; overflow-x: clip; overflow-y: visible; transition: opacity 1.2s ease; }
   body.swap #bottles { opacity: 0; }
   /* breathing mode: the bottles keep drifting on the taller water, but say nothing and take no taps */
   .bottle { transition: margin-bottom 2.5s ease-in-out; }
@@ -204,7 +205,7 @@
   .lead { font-size: 13px; color: var(--muted); margin: 0 0 10px 2px; }
 
   /* ---------- tab bar ---------- */
-  nav { position: fixed; left: 50%; bottom: calc(14px + env(safe-area-inset-bottom)); width: 270px; transform: translateX(-50%); z-index: 4; display: flex; justify-content: center; padding: 0; border-radius: 32px; overflow: hidden; background: var(--glass-strong); -webkit-backdrop-filter: blur(24px) saturate(1.2); backdrop-filter: blur(24px) saturate(1.2); border: 1px solid var(--glass-line); box-shadow: 0 10px 30px rgba(20,30,35,.10); }
+  nav { position: fixed; left: 50%; bottom: calc(14px + env(safe-area-inset-bottom) - var(--vgap)); width: 270px; transform: translateX(-50%); z-index: 4; display: flex; justify-content: center; padding: 0; border-radius: 32px; overflow: hidden; background: var(--glass-strong); -webkit-backdrop-filter: blur(24px) saturate(1.2); backdrop-filter: blur(24px) saturate(1.2); border: 1px solid var(--glass-line); box-shadow: 0 10px 30px rgba(20,30,35,.10); }
   nav button { flex: 1; background: none; border: 0; font: inherit; font-size: 11px; font-weight: 500; color: var(--muted); padding: 10px 0 9px; display: flex; flex-direction: column; align-items: center; gap: 3px; min-height: 62px; }
   nav button svg { width: 24px; height: 24px; }
   nav button.on { color: var(--accent); font-weight: 600; }
@@ -338,7 +339,7 @@
   .closing { text-align: center; font-size: 13px; color: var(--muted); margin: 18px 0 0; }
 
   /* ---------- day sheet ---------- */
-  .sheet { position: fixed; inset: 0; z-index: 10; }
+  .sheet { position: fixed; inset: 0; bottom: calc(0px - var(--vgap)); z-index: 10; }
   .sheet .backdrop { position: absolute; inset: 0; background: rgba(20,26,29,0.35); opacity: 0; transition: opacity .4s ease-out; }
   .sheet.in .backdrop { opacity: 1; }
   .sheet .panel { position: absolute; left: 0; right: 0; bottom: 0; max-height: 92dvh; overflow: auto; -webkit-overflow-scrolling: touch; background: var(--card); border-radius: 28px 28px 0 0; padding: 8px 24px calc(24px + env(safe-area-inset-bottom)); transform: translateY(100%); transition: transform .5s ease-out; box-shadow: 0 -8px 30px rgba(0,0,0,.12); }
@@ -353,7 +354,7 @@
   .toast.show { opacity: 1; }
 
   /* ---------- waves and scene (preserved) ---------- */
-  .waves { position: fixed; left: 0; right: 0; bottom: 0; height: calc(28vh + var(--tide, 0px)); pointer-events: none; z-index: 0; overflow: hidden; transition: transform 2.5s ease-out; }
+  .waves { position: fixed; left: 0; right: 0; bottom: calc(0px - var(--vgap)); height: calc(28vh + var(--tide, 0px)); pointer-events: none; z-index: 0; overflow: hidden; transition: transform 2.5s ease-out; }
   body.listening .waves { transform: translateY(-12px); }
   .waves .wave-wrap { position: absolute; inset: 0; animation: bob 3s ease-in-out infinite alternate; }
   .waves svg { position: absolute; bottom: 0; left: 0; width: 200%; height: 100%; }
@@ -755,7 +756,7 @@
   @keyframes earTwitch { 0%, 91% { transform: rotate(0); } 93% { transform: rotate(-16deg); } 95% { transform: rotate(0); } 100% { transform: rotate(0); } }
 
 
-  .waves-faint { position: fixed; left: 0; right: 0; bottom: 0; height: 120px; pointer-events: none; z-index: 0; overflow: hidden; animation: bob 3s ease-in-out infinite alternate; }
+  .waves-faint { position: fixed; left: 0; right: 0; bottom: calc(0px - var(--vgap)); height: 120px; pointer-events: none; z-index: 0; overflow: hidden; animation: bob 3s ease-in-out infinite alternate; }
   .waves-faint svg { position: absolute; bottom: 0; left: 0; width: 200%; height: 100%; animation: drift 14s linear infinite; }
   .waves-faint path { fill: var(--scene-mid); opacity: 0.5; }
 
@@ -789,7 +790,7 @@
   html[data-sky="night"] .orb { opacity: 1; top: 26px; right: 10px; width: 90px; height: 90px; background: radial-gradient(circle, rgba(221,230,234,0.45), transparent 70%); }
   @keyframes orbPulse { from { transform: scale(1); } to { transform: scale(1.05); } }
 
-  div.rain { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  div.rain { position: fixed; inset: 0; bottom: calc(0px - var(--vgap)); pointer-events: none; z-index: 0; overflow: hidden; }
   div.rain span { position: absolute; top: -10vh; width: 2px; height: 18px; border-radius: 2px; background: rgba(var(--accent-rgb),0.25); animation: fall linear infinite; }
   html.night div.rain span { background: rgba(var(--accent-rgb),0.25); }
   @keyframes fall { from { transform: translateY(-10vh); } to { transform: translateY(105vh); } }
@@ -822,7 +823,7 @@
   @keyframes bobGust { from { transform: translateY(1px); } to { transform: translateY(-8px); } }
   .textview { transition: filter 1.6s ease, opacity 1.6s ease, border-color .25s, box-shadow .25s; }
   body.gust:not(.listening) .textview { filter: blur(.7px); opacity: .82; }
-  .wind { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .wind { position: fixed; inset: 0; bottom: calc(0px - var(--vgap)); pointer-events: none; z-index: 0; overflow: hidden; }
   .wind span { position: absolute; left: 0; width: 120px; height: 1px; border-radius: 1px; background: var(--silhouette); opacity: 0; }
   .wind span:nth-child(1) { top: 24%; }
   .wind span:nth-child(2) { top: 31%; }
@@ -843,7 +844,7 @@
   .waves-faint { transition: opacity .45s ease; }
   body.dock .waves { height: calc(44vh + var(--tide, 0px)); }
   body.dock .sky-breathe { animation-duration: 16s; }
-  .dock-ui { position: fixed; inset: 0; pointer-events: none; z-index: 5; opacity: 0; visibility: hidden; transition: opacity 1s, visibility 0s 1s; }
+  .dock-ui { position: fixed; inset: 0; bottom: calc(0px - var(--vgap)); pointer-events: none; z-index: 5; opacity: 0; visibility: hidden; transition: opacity 1s, visibility 0s 1s; }
   body.dock .dock-ui { opacity: 1; visibility: visible; transition: opacity 1s, visibility 0s; }
   .dock-hint { position: absolute; left: 0; right: 0; bottom: calc(24px + env(safe-area-inset-bottom)); margin: 0; text-align: center; font-size: 13px; color: #fff; text-shadow: 0 1px 8px rgba(12,40,48,.6); opacity: 0; }
   body.dock .dock-hint { animation: hintFade 7s ease 1.5s 1; }
@@ -1065,7 +1066,7 @@
   html:not(.night) .day-only { display: block; }
   html[data-sky="evening"] .day-only.not-dusk { display: none; }
   /* stars and the Milky Way, every place, after dark */
-  .nightsky { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0; transition: opacity 3s; }
+  .nightsky { position: fixed; inset: 0; bottom: calc(0px - var(--vgap)); z-index: 0; pointer-events: none; opacity: 0; transition: opacity 3s; }
   html.night .nightsky { opacity: 1; }
   .nightsky i { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: #FFF; opacity: .25; animation: twinkle 6s ease-in-out infinite; }
   @keyframes twinkle { 0%, 100% { opacity: .2; } 50% { opacity: .8; } }
@@ -1635,6 +1636,25 @@
 </style>
 </head>
 <body>
+<script>
+// Launch viewport (Feeling 55): the installed app on iOS sometimes opens with a window shorter than the screen, and stays that way
+// until the first scroll. Fixed layers then stop ~50 px above the bottom and the html colour shows as a bar. Measure the gap and
+// let every bottom-anchored layer reach past the window by that much. The keyboard gap is far larger and is ignored.
+(() => {
+  const standalone = navigator.standalone || (window.matchMedia && matchMedia('(display-mode: standalone)').matches);
+  if (!standalone) return;
+  const fix = () => {
+    const portrait = matchMedia('(orientation: portrait)').matches;
+    const sh = portrait ? Math.max(screen.height, screen.width) : Math.min(screen.height, screen.width);
+    const gap = sh - innerHeight;
+    document.documentElement.style.setProperty('--vgap', (gap > 8 && gap < 160 ? gap : 0) + 'px');
+  };
+  fix();
+  addEventListener('resize', fix); addEventListener('orientationchange', fix); addEventListener('pageshow', fix);
+  if (window.visualViewport) visualViewport.addEventListener('resize', fix);
+  setTimeout(fix, 300); setTimeout(fix, 1500);
+})();
+</script>
 <!-- fauna: PhyloPic silhouettes (CC0 / public domain / CC BY, see design/v4/README.md); the same paths are the "v4 / Fauna" components in Figma -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
 <symbol id="f-tarpon" viewBox="0 0 1536 626"><g transform="translate(0,626) scale(.1,-.1)"><path d="M7528 6236 c-178 -73 -496 -349 -687 -596 -98 -128 -158 -220 -305 -475 -146 -252 -193 -321 -263 -387 -127 -118 -204 -132 -943 -168 -1457 -72 -2177 -149 -2598 -276 -235 -71 -644 -239 -1374 -563 -907 -403 -1234 -582 -1321 -723 -55 -88 -46 -168 31 -288 49 -76 346 -369 467 -461 305 -232 705 -445 1072 -572 133 -47 438 -129 1194 -323 420 -108 646 -129 1224 -119 479 9 802 -9 1205 -66 324 -46 525 -95 597 -148 64 -46 75 -78 148 -423 53 -250 102 -386 163 -452 98 -104 215 -56 458 188 207 209 363 424 371 514 4 42 2 50 -24 74 -15 15 -62 41 -103 58 -82 34 -120 56 -120 69 0 12 68 38 147 56 145 32 612 96 958 132 239 24 606 24 695 0 119 -32 208 -83 290 -167 97 -99 171 -219 338 -550 159 -314 241 -455 303 -523 50 -55 72 -58 89 -12 5 14 21 119 35 233 85 695 229 997 607 1278 132 98 312 207 658 399 496 275 518 301 333 394 -97 48 -90 55 108 99 231 52 344 65 524 59 272 -8 498 -71 1090 -302 679 -265 1046 -399 1520 -555 634 -208 932 -276 943 -216 7 34 -178 198 -540 478 -176 136 -465 342 -843 599 -562 383 -706 506 -746 637 -26 88 4 132 241 347 178 162 256 251 547 625 122 157 326 411 453 565 350 423 430 535 430 600 0 55 -88 53 -258 -6 -182 -64 -339 -153 -682 -388 -718 -490 -1005 -671 -1327 -834 -537 -272 -893 -365 -1258 -328 -168 18 -306 45 -810 161 -721 166 -948 207 -1655 300 -428 56 -482 64 -557 86 -142 40 -19 72 517 134 96 11 219 27 273 35 188 28 159 39 -196 75 -377 38 -453 57 -649 157 -386 199 -700 586 -733 904 -9 89 6 156 71 309 82 194 95 315 37 360 -33 26 -74 25 -145 -4z"/></g></symbol>
@@ -2065,7 +2085,7 @@
     <p class="foot lone" id="last-export"></p>
     <span id="range-value" hidden></span>
 
-    <p class="closing">Feeling 54 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
+    <p class="closing">Feeling 55 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
   </section>
 </main>
 
