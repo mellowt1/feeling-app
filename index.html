@@ -29,11 +29,13 @@
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body { margin: 0; color: var(--ink); font: 17px/1.5 -apple-system, "SF Pro Text", system-ui, sans-serif; -webkit-text-size-adjust: 100%; }
   :root { --vgap: 0px; }   /* set by the launch-viewport script: screen height minus window height when iOS opens the app short */
-  html { height: 100%; background: var(--sky-horizon); overflow-x: clip; }
+  html { height: 100%; background: var(--sky-horizon); }   /* no overflow clip on html: it propagates to the viewport and on iOS clipped every fixed layer at the short launch viewport (Feeling 57) */
+  /* installed on iOS with a translucent status bar, 100% and 100dvh are the screen minus the status bar; 100lvh is the whole screen */
+  @media (display-mode: standalone) { html { height: 100lvh; } body { min-height: 100lvh; } }
   body { min-height: 100%; min-height: 100dvh; display: flex; flex-direction: column; background: transparent; }
   /* the sky is a fixed layer, not a body background: on iOS the body can be shorter than the screen at launch (the viewport settles after the first scroll), and a background sized 100dvh left the bottom unpainted */
   body::before { content: ""; position: fixed; inset: -1px 0; bottom: calc(-1px - var(--vgap)); z-index: -1; pointer-events: none; background: linear-gradient(var(--sky-top) 0%, var(--sky-mid) 50%, var(--sky-horizon) 78%); }
-  main { flex: 1; padding: calc(16px + env(safe-area-inset-top)) 24px 142px; max-width: 640px; width: 100%; margin: 0 auto; position: relative; z-index: 1; }
+  main { flex: 1; padding: calc(16px + env(safe-area-inset-top)) 24px 142px; max-width: 640px; width: 100%; margin: 0 auto; position: relative; z-index: 1; overflow-x: clip; }
   .hidden { display: none !important; }
 
   h1 { font-family: var(--serif); font-size: 36px; line-height: 1.2; margin: 0; font-weight: 300; letter-spacing: -0.01em; }
@@ -2085,7 +2087,7 @@
     <p class="foot lone" id="last-export"></p>
     <span id="range-value" hidden></span>
 
-    <p class="closing">Feeling 56 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
+    <p class="closing">Feeling 57 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
   </section>
 </main>
 
