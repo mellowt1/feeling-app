@@ -1,5 +1,5 @@
 // Offline cache. No network calls are made except to fetch the app's own files.
-const CACHE = 'feeling-v51';
+const CACHE = 'feeling-v52';
 const FILES = ['./', './index.html', './manifest.webmanifest', './icon-180.png', './icon-512.png'];
 
 self.addEventListener('install', (e) => {

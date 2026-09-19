@@ -1,0 +1,5 @@
+
+# Tokyo: source WAVs and reference photos stay local (the traced SVGs and encoded MP3s are committed)
+sounds/*.wav
+design/Godzilla.webp
+design/109-1099332_free-render-for-use-godzilla-final-wars-render.png
