@@ -28,8 +28,10 @@
 
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body { margin: 0; color: var(--ink); font: 17px/1.5 -apple-system, "SF Pro Text", system-ui, sans-serif; -webkit-text-size-adjust: 100%; }
-  html { background: var(--sky-horizon); overflow-x: clip; }
-  body { min-height: 100dvh; display: flex; flex-direction: column; background: linear-gradient(var(--sky-top) 0%, var(--sky-mid) 50%, var(--sky-horizon) 78%) top / 100% 100dvh no-repeat, var(--sky-horizon); transition: background-color 1.5s; }
+  html { height: 100%; background: var(--sky-horizon); overflow-x: clip; }
+  body { min-height: 100%; min-height: 100dvh; display: flex; flex-direction: column; background: transparent; }
+  /* the sky is a fixed layer, not a body background: on iOS the body can be shorter than the screen at launch (the viewport settles after the first scroll), and a background sized 100dvh left the bottom unpainted */
+  body::before { content: ""; position: fixed; inset: -1px 0; z-index: -1; pointer-events: none; background: linear-gradient(var(--sky-top) 0%, var(--sky-mid) 50%, var(--sky-horizon) 78%); }
   main { flex: 1; padding: calc(16px + env(safe-area-inset-top)) 24px 142px; max-width: 640px; width: 100%; margin: 0 auto; position: relative; z-index: 1; }
   .hidden { display: none !important; }
 
@@ -67,7 +69,7 @@
   .textview::placeholder { color: var(--muted); }
   
 
-  .voice { display: flex; flex-direction: column; align-items: center; gap: 18px; margin-top: 20px; }
+  .voice { display: flex; flex-direction: column; align-items: center; margin-top: 16px; }
   .mic-wrap { position: relative; width: 80px; height: 80px; isolation: isolate; }
   .mic-wrap::before, .mic-wrap::after { content: ""; position: absolute; left: 50%; top: 50%; border-radius: 50%; pointer-events: none; }
   .mic-wrap::before { width: 100px; height: 100px; margin: -50px 0 0 -50px; border: 1px solid rgba(var(--accent-rgb),.24); }
@@ -82,11 +84,8 @@
   body.listening .ring.r3 { animation-delay: 2s; }
   @keyframes ringOut { 0% { transform: scale(1); opacity: .45; } 100% { transform: scale(1.6); opacity: 0; } }
 
-  .voice-cap { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 13px; color: var(--muted); height: 20px; }
-  .voice-cap svg { width: 16px; height: 16px; flex: 0 0 auto; }
-  body.listening .voice-cap .kb { display: none; }
 
-  .moods { display: flex; justify-content: space-between; gap: 6px; margin: 20px 0 0; }
+  .moods { display: flex; justify-content: space-between; gap: 6px; margin: 14px 0 0; }
   .moods button { flex: 0 0 auto; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; padding: 0; background: transparent; border: 0; border-radius: 50%; transition: transform .12s; }
   .moods button svg { width: 50px; height: 50px; }
   .moods button.on { transform: scale(1.06); box-shadow: 0 0 0 2px var(--accent); }
@@ -392,7 +391,7 @@
   .waves .mullet-wrap.mu1 { left: 30%; }
   .waves .mullet-wrap.mu2 { left: 44%; }
   .waves .mullet-wrap.mu3 { left: 58%; }
-  .mullet-wrap .mullet { display: block; width: 22px; height: auto; overflow: visible; animation: mulletJump 60s linear infinite; }
+  .mullet-wrap .mullet { display: block; width: 22px; height: auto; overflow: visible; opacity: 0; animation: mulletJump 60s linear infinite; }
   .mullet-wrap.mu1 .mullet { animation-delay: 0s; }
   .mullet-wrap.mu2 .mullet { animation-delay: -20s; }
   .mullet-wrap.mu3 .mullet { animation-delay: -40s; }
@@ -404,7 +403,7 @@
     46.5%     { transform: translateY(0) rotate(20deg); opacity: .5; }
     46.55%, 100% { opacity: 0; }
   }
-  .mullet-wrap .splash { position: absolute; left: -5px; bottom: -2px; width: 28px; height: 28px; animation: splash 60s linear infinite; }
+  .mullet-wrap .splash { position: absolute; left: -5px; bottom: -2px; width: 28px; height: 28px; opacity: 0; transform: scale(.3); animation: splash 60s linear infinite; }
   .mullet-wrap.mu1 .splash { animation-delay: 0s; }
   .mullet-wrap.mu2 .splash { animation-delay: -20s; }
   .mullet-wrap.mu3 .splash { animation-delay: -40s; }
@@ -836,7 +835,7 @@
   @keyframes windStreak { 0% { transform: translateX(110vw) scaleX(.4); opacity: 0; } 15% { opacity: .16; } 85% { opacity: .1; } 100% { transform: translateX(-30vw) scaleX(1.4); opacity: 0; } }
 
   /* ---------- sit on the dock: long press the screen, everything but the water goes away ---------- */
-  #tab-today { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+  #tab-today, nav, body.dock { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
   #tab-today textarea, #tab-today .entry .text { -webkit-user-select: text; user-select: text; }
   #tab-today > .headrow, #tab-today > .entry-glass, #tab-today > .voice, #tab-today > .moods, #tab-today > .saverow, #tab-today > .daylist, nav { transition: opacity 1.2s ease; }
   body.dock #tab-today > :not(.sky-breathe):not(.clouds):not(.orb):not(.waves):not(.rain):not(.wind):not(.dock-ui):not(#bottles), body.dock nav { opacity: 0 !important; pointer-events: none; }
@@ -1211,7 +1210,6 @@
   body.late .dock .rod { animation-duration: 9s; }
   body.late .campo .tuft { animation-duration: 6s; }
   body.late .keywest .palm .crown { animation-duration: 7s; }
-  body.late .voice-cap .kb { display: none; }
 
   @media (prefers-reduced-motion: reduce) {
     /* the Florida dock keeps all of its life: every motion there is slow and small, so it keeps running under Reduce Motion.
@@ -1974,14 +1972,6 @@
           </svg>
         </button>
       </div>
-      <p class="voice-cap" id="voice-cap">
-        <svg class="kb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
-          <rect x="2" y="6" width="20" height="12" rx="2.5"/>
-          <path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M6 13h.01M18 13h.01"/>
-          <path d="M9 13h6"/>
-        </svg>
-        <span id="voice-cap-text">or use the keyboard</span>
-      </p>
     </div>
 
     <div class="moods" id="moods"></div>
@@ -2302,16 +2292,9 @@
     saveBtn.disabled = text.value.trim().length === 0;
   }
   text.addEventListener('input', () => { renderTodayHead(); storeDraft(); });
-  text.addEventListener('focus', () => {
-    document.body.classList.add('listening');
-    $('#voice-cap-text').textContent = 'Listening — take your time';
-  });
-  text.addEventListener('blur', () => {
-    document.body.classList.remove('listening');
-    $('#voice-cap-text').textContent = document.body.classList.contains('late') ? 'or just sit' : 'or use the keyboard';
-  });
+  text.addEventListener('focus', () => { document.body.classList.add('listening'); });
+  text.addEventListener('blur', () => { document.body.classList.remove('listening'); });
   $('#mic').addEventListener('click', () => { text.focus(); });
-  $('#voice-cap').addEventListener('click', () => { text.focus(); });
   backdateBtn.addEventListener('click', () => { backdated = !backdated; renderTodayHead(); renderTodayEntries(); storeDraft(); });
   // ---------- status: a few words for the circle ----------
   // Kept for the day it was written; travels with the faces on every sync.
@@ -3040,8 +3023,6 @@
     const h = new Date().getHours();
     const late = h >= 21 || h < 5;
     document.body.classList.toggle('late', late);
-    const cap = document.getElementById('voice-cap-text');
-    if (cap && !document.body.classList.contains('listening')) cap.textContent = late ? 'or just sit' : 'or use the keyboard';
   }
   applyLate(); setInterval(applyLate, 60000);
 
@@ -3214,6 +3195,7 @@
   function enterDock() {
     if (document.body.classList.contains('dock')) return;
     textEl.blur();
+    try { const sel = window.getSelection(); if (sel) sel.removeAllRanges(); } catch (e) {}   // a long press may have started a text selection; sit mode shows none
     document.body.classList.add('dock');
     dockSince = Date.now();
     breaths = 0; breathWord.textContent = 'In';
