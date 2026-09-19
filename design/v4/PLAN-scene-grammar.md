@@ -29,7 +29,7 @@ Read this whole file before starting a task. Each task names its agent, inputs, 
 1. Three drawing hands in one picture: PhyloPic silhouettes, a blob island with a stick lighthouse, a thick-stroke palm, a smeared sun.
 2. Water is three stacked sine bands with hard edges and equal amplitude. It reads as stripes. Hawaiʻi shows the target: one lagoon plane, one foam line, a real horizon.
 3. Scale contradictions: hen ≈ egret ≈ iguana; frigatebird larger than the island; the man larger than the key he looks at.
-4. Saturation inverted: the water is the most saturated surface in the app while every other place is dusty. Pop comes from one saturated hero on a calm ground, not a saturated ground.
+4. No horizon: Key West and Hawaiʻi share the same w2/w3 water paths; only the back wave differs (27 px peak-to-peak in Key West, 2 px in Hawaiʻi). Corrected by task 1.1: chroma is not the problem (Key West C 0.082 < Hawaiʻi 0.102), value banding behind a broken horizon is.
 5. No motion hierarchy: 152 place rules, about 30 keyframes, every animal on its own clock.
 
 Root cause: each place was a separate handoff with its own brief. Tokens exist for UI colour only. Nothing governs shape, scale or motion. The fix is a grammar, then a re-cut of each place against it.

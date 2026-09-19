@@ -3,3 +3,6 @@
 sounds/*.wav
 design/Godzilla.webp
 design/109-1099332_free-render-for-use-godzilla-final-wars-render.png
+
+# Scene-grammar screenshot rig (design/v4/PLAN-scene-grammar.md, task 0.1)
+design/v4/tools/node_modules/

@@ -1,0 +1,14 @@
+{
+  "name": "feeling-v4-tools",
+  "private": true,
+  "type": "module",
+  "description": "Screenshot rig and scene lint for the Feeling scene-grammar plan (design/v4/PLAN-scene-grammar.md, task 0.1/0.2).",
+  "scripts": {
+    "shoot": "node shoot.mjs",
+    "contact": "node contact.mjs",
+    "lint": "node lint.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}
