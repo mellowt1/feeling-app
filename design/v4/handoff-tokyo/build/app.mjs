@@ -39,7 +39,6 @@ const css = `
   html[data-place="tokyo"] .waves.tokyo { display: block; }
   html[data-place="tokyo"] .waves.tokyo::after { display: none; }
   html[data-place="tokyo"] :is(.clouds, .nightsky, .orb, .bird, .wind) { display: none; }
-  #place-pill button.tk-hide { display: none; }
   .tokyo .tk-scene { position: absolute; left: 0; bottom: 0; width: 390px; height: 420px; transform-origin: 0 100%; transform: scale(var(--tk-k, 1)); }
   .waves.tokyo svg.tk-layer { position: absolute; left: 0; top: 0; bottom: auto; width: 390px; height: 420px; overflow: visible; animation: none; }
   .tokyo .tk-layer { position: absolute; inset: 0; width: 390px; height: 420px; }
@@ -269,7 +268,7 @@ const rep = (a, b) => { if (s.includes(b)) return; once(a, b); };
 { const i = s.indexOf('</style>'); s = s.slice(0, i) + '  /* tokyo:css */\n' + css.replace(/^\n/, '') + '  /* /tokyo:css */\n' + s.slice(i); }
 // 2 scene, after Hawaiʻi
 once('    <div class="headrow">', '    <!-- tokyo:scene -->\n    ' + markup + '\n    <!-- /tokyo:scene -->\n\n    <div class="headrow">');
-// 3 place pill: Tokyo Tower; shown only to Paul (circle name) or while Tokyo is open
+// 3 place pill: Tokyo Tower (for everyone)
 const MARK = 'M8 0 L9.2 5 L10.8 11 L9.6 11 L8.7 7.5 L7.3 7.5 L6.4 11 L5.2 11 L6.8 5 Z M6.2 8.8 H9.8 V9.6 H6.2 Z';
 if (!s.includes('data-p="tokyo"')) once('        <button data-p="dock" type="button"', `        <button data-p="tokyo" type="button" aria-label="Tokyo"><svg viewBox="0 0 16 12" aria-hidden="true"><path d="${MARK}"/></svg></button>\n        <button data-p="dock" type="button"`);
 // 4 head script: accept the place, fixed-dusk theme colour
@@ -279,8 +278,6 @@ rep("hawaii: ['#A9D0E6', '#8E86B0', '#0A1419'] };", "hawaii: ['#A9D0E6', '#8E86B
 // 5 names, marks, pill visibility, hints, sound
 rep("hawaii: 'Hawaiʻi' };", "hawaii: 'Hawaiʻi', tokyo: 'Tokyo' };");
 rep("L14.2 6.2 L16 11 Z' };", `L14.2 6.2 L16 11 Z', tokyo: '${MARK}' };`);
-rep("  function renderPlaceRows() { placePill.querySelectorAll('button').forEach((b) => b.classList.toggle('on', b.dataset.p === getPlace())); }",
-    "  function renderPlaceRows() {\n    placePill.querySelectorAll('button').forEach((b) => b.classList.toggle('on', b.dataset.p === getPlace()));\n    const tk = placePill.querySelector('[data-p=\"tokyo\"]');   // Tokyo is Paul's own place\n    if (tk) tk.classList.toggle('tk-hide', !(/^paul\\b/i.test((db.circle && db.circle.name) || '') || getPlace() === 'tokyo'));\n  }");
 rep("hawaii: 'Breathe with the trade wind · tap anywhere to come back' };", "hawaii: 'Breathe with the trade wind · tap anywhere to come back', tokyo: 'Breathe in the boat · tap anywhere to come back' };");
 rep("return p === 'campo' || p === 'keywest' || p === 'hawaii' ? p : 'dock'; };", "return p === 'campo' || p === 'keywest' || p === 'hawaii' || p === 'tokyo' ? p : 'dock'; };");
 // E major, bowl on E4, the water kept low under Godzilla's own bed

@@ -1582,7 +1582,6 @@
   html[data-place="tokyo"] .waves.tokyo { display: block; }
   html[data-place="tokyo"] .waves.tokyo::after { display: none; }
   html[data-place="tokyo"] :is(.clouds, .nightsky, .orb, .bird, .wind) { display: none; }
-  #place-pill button.tk-hide { display: none; }
   .tokyo .tk-scene { position: absolute; left: 0; bottom: 0; width: 390px; height: 420px; transform-origin: 0 100%; transform: scale(var(--tk-k, 1)); }
   .waves.tokyo svg.tk-layer { position: absolute; left: 0; top: 0; bottom: auto; width: 390px; height: 420px; overflow: visible; animation: none; }
   .tokyo .tk-layer { position: absolute; inset: 0; width: 390px; height: 420px; }
@@ -2657,8 +2656,6 @@
   const placePill = $('#place-pill'); let swapT;
   function renderPlaceRows() {
     placePill.querySelectorAll('button').forEach((b) => b.classList.toggle('on', b.dataset.p === getPlace()));
-    const tk = placePill.querySelector('[data-p="tokyo"]');   // Tokyo is Paul's own place
-    if (tk) tk.classList.toggle('tk-hide', !(/^paul\b/i.test((db.circle && db.circle.name) || '') || getPlace() === 'tokyo'));
   }
   function setPlace(p) {
     if (p === getPlace()) return;
