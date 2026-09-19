@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-place="keywest" data-sky="day">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -3360,5 +3360,6 @@
 })();
 </script>
 <!-- /tokyo:js -->
+<div id="handoff-bar"><style>#handoff-bar{position:fixed;top:6px;left:6px;z-index:9999;display:flex;flex-wrap:wrap;gap:4px;font:11px system-ui}#handoff-bar button{padding:4px 7px;border-radius:8px;border:1px solid #0003;background:#fffc}</style><button onclick="document.documentElement.dataset.place='keywest'">keywest</button><button onclick="document.documentElement.dataset.sky='morning';document.documentElement.classList.toggle('night',false)">morning</button><button onclick="document.documentElement.dataset.sky='day';document.documentElement.classList.toggle('night',false)">day</button><button onclick="document.documentElement.dataset.sky='evening';document.documentElement.classList.toggle('night',false)">evening</button><button onclick="document.documentElement.dataset.sky='night';document.documentElement.classList.toggle('night',true)">night</button><button onclick="document.body.classList.toggle('dock')">sit mode</button><button onclick="document.body.classList.toggle('late')">late (after 21:00)</button><button onclick="document.body.classList.add('gust');setTimeout(()=>document.body.classList.remove('gust'),4500)">gust now</button></div>
 </body>
 </html>
