@@ -5,7 +5,7 @@ Every number below was measured from `index.html` or from a live render at 390 �
 (`body.dock`, `?place=P&sky=day`, Playwright, `deviceScaleFactor` 1). Where the draft in section 3 of
 the plan had a different number, the change and the reason are called out.
 
-Figma: section "v9 — Scene grammar", node id `<filled in by task 1.2>`.
+Figma: section "v9 — Scene grammar", node id `321:3320`.
 
 ## How to read the numbers
 
