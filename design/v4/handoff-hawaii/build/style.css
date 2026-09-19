@@ -1,0 +1,133 @@
+  /* =============== Hawaiʻi: Nick's second place, Kaʻaʻawa on windward Oʻahu. The Koʻolau pali behind turquoise water, coconut palms leaning out over white sand, the trade wind always blowing inland.
+     The shore faces the sunrise: the sun comes up over the sea, and at dusk it goes down behind the cliffs, so evening is backlit ridges under a warm sky. Everything below is scoped to html[data-place="hawaii"] or .hawaii =============== */
+  html[data-place="hawaii"] { --sky-top:#A9D0E6; --sky-mid:#D4E8EE; --sky-horizon:#EEF4EC; --bg:#EEF4EC; --card:#FBFCF7; --glass:rgba(255,255,255,.52); --glass-strong:rgba(255,255,255,.74); --card-a:var(--glass); --glass-line:rgba(255,255,255,.6); --line:rgba(40,44,40,.10); --ink:#20322F; --muted:#63776F; --accent:#2B8577; --accent-rgb:43,133,119; --accent-ink:#FFFFFF; --accent-soft:rgba(43,133,119,.14); --accent-40:rgba(43,133,119,.40); --orb:#F7E3B0; --orb-rgb:247,227,176; --scene-back:#2FA3A6; --scene-mid:#62D1C9; --scene-front:#A8E6DB; --scene-land:#F2EAD8; --water:#62D1C9; --range:#6E9670; --ground:#A8E6DB; --sand:#F2EAD8; --silhouette:#2E463F; --chip:rgba(40,50,55,.06); --track:rgba(120,120,128,.12);
+    --pali:#6F9771; --pali-far:#A3BDAC; --pali-shade:#35593F; --pali-lit:#DCE9C8; --point:#5E8A62; --cap:#FFFFFF; --bush:#34523F; --rock:#3A3B38; }
+  html[data-place="hawaii"][data-sky="morning"]:not(.night) { --sky-top:#C9DCE8; --sky-mid:#F1E6D4; --sky-horizon:#F9E7CB; --bg:#F9E7CB; --scene-back:#6FB9BE; --scene-mid:#95D8CF; --scene-front:#C8EDE2; --scene-land:#F6E7CB; --sand:#F6E7CB; --silhouette:#3A4A44;
+    --pali:#89A773; --pali-far:#BCC9AE; --pali-shade:#4D6B47; --pali-lit:#F4E6BE; --point:#7C9B68; --cap:#FFF4E2; --bush:#465E47; }
+  html[data-place="hawaii"][data-sky="evening"]:not(.night) { --sky-top:#8E86B0; --sky-mid:#E8A487; --sky-horizon:#F2C7A0; --bg:#F2C7A0; --scene-back:#9A98B6; --scene-mid:#98B4BA; --scene-front:#C8D5CD; --scene-land:#E7D3B5; --sand:#E7D3B5; --silhouette:#33323D; --orb:#F3B98A; --orb-rgb:243,185,138;
+    --pali:#3D4E49; --pali-far:#66727C; --pali-shade:#2A3733; --pali-lit:#F2B98E; --point:#44544D; --cap:#F7CFA8; --bush:#2B3431; --rock:#2E2C30; }
+  html.night[data-place="hawaii"] { --sky-top:#0A1419; --sky-mid:#122229; --sky-horizon:#1F3440; --bg:#1F3440; --card:#16232A; --glass:rgba(22,35,42,.55); --glass-strong:rgba(22,35,42,.78); --card-a:var(--glass); --glass-line:rgba(255,255,255,.14); --line:rgba(255,255,255,.09); --ink:#E4EBE8; --muted:#8FA59F; --accent:#86CBBE; --accent-rgb:134,203,190; --accent-ink:#0A1419; --accent-soft:rgba(134,203,190,.14); --accent-40:rgba(134,203,190,.40); --orb:#E0E7E9; --orb-rgb:224,231,233; --scene-back:#1D3A46; --scene-mid:#1A333D; --scene-front:#2A454D; --scene-land:#3D3A32; --water:#1A333D; --sand:#3D3A32; --silhouette:#93A8A6; --chip:rgba(255,255,255,.07); --track:rgba(255,255,255,.08);
+    --pali:#1A2E31; --pali-far:#263D44; --pali-shade:#0E1C1E; --pali-lit:#3A5256; --point:#172A2B; --cap:#34485222; --bush:#101D1D; --rock:#1A1C1C; }
+
+  .waves.hawaii { display: none; overflow-x: clip; overflow-y: visible; }
+  html[data-place="hawaii"] .waves:not(.hawaii) { display: none; }
+  html[data-place="hawaii"] .waves.hawaii { display: block; }
+  html[data-place="hawaii"] .bottle { animation-name: bottleDriftKW; }
+  html[data-place="hawaii"] .clouds .flash { display: none; }
+  html[data-place="hawaii"].night .glitter { display: block; }
+
+  /* the land does not bob; only the two near bands of water do */
+  .waves.hawaii .wave-wrap { animation: none; }
+  .hawaii .swell { position: absolute; inset: 0; }
+  .hawaii .bw { position: absolute; inset: 0; animation: bob 7s ease-in-out infinite alternate; }
+  .hawaii .bw.b3 { animation-duration: 5.5s; animation-delay: -2s; }
+  .hawaii .waves path.w1, .waves.hawaii path.w1 { fill: var(--scene-back); }
+  .waves.hawaii svg.w1 { animation-duration: 70s; }
+  .waves.hawaii svg.w2 { animation-duration: 52s; animation-direction: reverse; }
+  .waves.hawaii svg.w3 { animation-duration: 40s; }
+  .waves.hawaii path.w3 { opacity: .9; }
+  body.late .waves.hawaii svg.w1 { animation-duration: 100s; }
+  body.late .waves.hawaii svg.w2 { animation-duration: 76s; }
+  body.late .waves.hawaii svg.w3 { animation-duration: 58s; }
+
+  /* the Koʻolau: far ridge in haze, near ridge fluted, Kualoa point and Mokoliʻi on the left. Drawn after the back water, base on the horizon */
+  .hawaii svg.pali { position: absolute; left: 0; bottom: 62%; width: 100%; height: 44%; overflow: visible; animation: none; }
+  .hawaii .pali .far { fill: var(--pali-far); }
+  .hawaii .pali .near { fill: var(--pali); }
+  .hawaii .pali .flutes { fill: none; stroke: var(--pali-shade); stroke-width: 2.2; stroke-linecap: round; opacity: .16; }
+  .hawaii .pali .spurs { fill: none; stroke: var(--pali-lit); stroke-width: 1; stroke-linecap: round; opacity: .2; }
+  .hawaii .pali .point { fill: var(--point); }
+  .hawaii .pali .moku { fill: var(--point); opacity: .9; }
+  html.night .hawaii .pali .spurs { opacity: .1; }
+
+  /* cloud caps resting on the crests, drifting a little with the trades */
+  .hawaii .caps { left: 0; right: 0; bottom: 62%; height: 44%; }
+  .hawaii .caps i { position: absolute; border-radius: 50%; background: radial-gradient(closest-side, var(--cap), transparent); opacity: .75; animation: capDrift 90s ease-in-out infinite alternate; }
+  .hawaii .caps i:nth-child(1) { left: 22%; bottom: 72%; width: 120px; height: 34px; }
+  .hawaii .caps i:nth-child(2) { left: 52%; bottom: 40%; width: 110px; height: 28px; animation-duration: 120s; animation-delay: -40s; opacity: .6; }
+  .hawaii .caps i:nth-child(3) { left: 72%; bottom: 66%; width: 130px; height: 32px; animation-duration: 105s; animation-delay: -70s; }
+  html.night .hawaii .caps i { opacity: .25; }
+  @keyframes capDrift { from { transform: translateX(-10px); } to { transform: translateX(14px); } }
+
+  /* a passing trade-wind shower over the ridges, every fifteen minutes; in the morning and by day a faint rainbow stands in it (sun behind you, over the sea) */
+  .hawaii .shower { left: 58%; bottom: 62%; width: 90px; height: 40%; opacity: 0; background: repeating-linear-gradient(100deg, transparent 0 3px, rgba(255,255,255,.55) 3px 4px); -webkit-mask-image: linear-gradient(transparent, #000 30%, #000 70%, transparent); mask-image: linear-gradient(transparent, #000 30%, #000 70%, transparent); filter: blur(1px); animation: shower 900s ease-in-out infinite; animation-delay: -330s; }
+  html.night .hawaii .shower { display: none; }
+  @keyframes shower { 0%, 36% { opacity: 0; transform: translateX(-30px); } 42% { opacity: .5; } 56% { opacity: .45; } 62%, 100% { opacity: 0; transform: translateX(30px); } }
+  .hawaii .rainbow { left: 42%; bottom: 62%; width: 190px; height: 95px; margin-bottom: -2px; border-radius: 95px 95px 0 0; opacity: 0; background: radial-gradient(circle at 50% 100%, transparent 60%, rgba(214,120,150,.8) 61.5%, rgba(240,178,110,.8) 63%, rgba(242,226,128,.8) 64.5%, rgba(140,200,140,.8) 66%, rgba(110,160,220,.8) 67.5%, rgba(150,130,210,.7) 69%, transparent 70.5%); -webkit-mask-image: linear-gradient(90deg, transparent, #000 25%, #000 60%, transparent); mask-image: linear-gradient(90deg, transparent, #000 25%, #000 60%, transparent); filter: blur(1.5px); animation: rainbow 900s ease-in-out infinite; animation-delay: -330s; }
+  @keyframes rainbow { 0%, 44% { opacity: 0; } 49%, 55% { opacity: .3; } 60%, 100% { opacity: 0; } }
+
+  /* koaʻe kea, the white-tailed tropicbird: nests on Mokoliʻi, glides white against the cliffs, once every two and a half minutes */
+  .hawaii .koae-wrap { position: absolute; left: 0; bottom: 80%; width: 30px; height: 14px; opacity: 0; transform: translateX(-40px); animation: koaeGlide 150s linear infinite; animation-delay: -20s; }
+  .hawaii svg.koae { position: absolute; left: 0; bottom: 0; width: 100%; height: auto; overflow: visible; fill: #FFFFFF; opacity: .9; animation: koaeTilt 7s ease-in-out infinite alternate; }
+  html[data-sky="morning"] .hawaii svg.koae { fill: #FFF8EC; }
+  @keyframes koaeGlide { 0% { opacity: 0; transform: translate(-40px, 0); } 2% { opacity: 1; } 18% { transform: translate(120px, -10px); } 30% { transform: translate(240px, 4px); } 42% { opacity: 1; transform: translate(420px, -6px); } 43%, 100% { opacity: 0; transform: translate(420px, -6px); } }
+  @keyframes koaeTilt { from { transform: rotate(-4deg); } to { transform: rotate(3deg); } }
+  body.late .hawaii .koae-wrap, body.late .hawaii .iwa-wrap { display: none; }
+
+  /* ʻiwa, the frigatebird, hanging high over the bay without a wingbeat */
+  .hawaii .iwa-wrap { position: absolute; left: 34%; top: 4%; width: 16px; height: 28px; margin-left: -8px; animation: frigateLoop 120s linear infinite; }
+  .hawaii svg.iwa { width: 100%; height: auto; overflow: visible; fill: var(--silhouette); opacity: .45; animation: frigateTilt 6s ease-in-out infinite alternate; }
+  body.dock .hawaii .iwa-wrap { top: 0; }
+
+  /* koholā, humpback whales, only in whale season (December to April): a blow far out, then the back rolls and goes down. Every four minutes */
+  .hawaii .whale-wrap { position: absolute; left: 30%; bottom: 58%; width: 48px; height: 24px; display: none; }
+  html.whales .hawaii .whale-wrap { display: block; }
+  html.night .hawaii .whale-wrap { display: none; }
+  .hawaii .whale-sea { position: absolute; left: 0; right: 0; bottom: 0; height: 8px; overflow: hidden; }
+  .hawaii svg.whale { position: absolute; left: 0; top: 100%; width: 100%; height: auto; overflow: visible; fill: var(--silhouette); opacity: .4; animation: whaleRoll 240s ease-in-out infinite; }
+  .hawaii .spout { position: absolute; left: 60%; bottom: 6px; width: 10px; height: 16px; border-radius: 50% 50% 40% 40%; background: radial-gradient(closest-side, rgba(255,255,255,.9), rgba(255,255,255,0)); opacity: 0; transform-origin: 50% 100%; animation: spout 240s ease-out infinite; }
+  @keyframes whaleRoll { 0%, 10% { transform: translate(0, 0); } 13% { transform: translate(-4px, -7px); } 17% { transform: translate(-10px, -5px) rotate(6deg); } 21%, 100% { transform: translate(-16px, 0) rotate(10deg); } }
+  @keyframes spout { 0%, 9% { opacity: 0; transform: scale(.3, .2); } 10% { opacity: .9; transform: scale(.8, .9); } 12% { opacity: .5; transform: scale(1.3, 1.1) translateX(3px); } 15%, 100% { opacity: 0; transform: scale(1.6, 1) translateX(6px); } }
+
+  /* honu, a green turtle, grazing the shallows; comes up to breathe now and then */
+  .hawaii .honu-wrap { position: absolute; left: 18%; bottom: 30%; width: 22px; height: 20px; animation: honuSwim 320s ease-in-out infinite; }
+  .hawaii svg.honu { width: 100%; height: auto; overflow: visible; fill: var(--silhouette); opacity: .22; transform: rotate(90deg); animation: honuBreathe 320s ease-in-out infinite; }
+  @keyframes honuSwim { 0% { transform: translate(0, 0); } 25% { transform: translate(60px, 6px); } 50% { transform: translate(130px, 2px); } 75% { transform: translate(70px, 8px); } 100% { transform: translate(0, 0); } }
+  @keyframes honuBreathe { 0%, 22% { opacity: .22; transform: rotate(90deg) scale(1); } 25% { opacity: .5; transform: rotate(90deg) scale(1.08); } 29%, 70% { opacity: .22; transform: rotate(90deg) scale(1); } 73% { opacity: .48; transform: rotate(270deg) scale(1.06); } 76%, 100% { opacity: .22; transform: rotate(270deg) scale(1); } }
+  .hawaii .honu-wrap.not-night { display: block; }
+  html.night .hawaii .honu-wrap { display: none; }
+
+  /* the shore: same sand as Key West, with black lava rock at the water's edge */
+  .hawaii svg.sand { position: absolute; left: 0; bottom: 0; width: 100%; height: 100%; animation: none; }
+  .hawaii .sand .beach { fill: var(--scene-land); }
+  .hawaii .sand .wet { fill: #FFFFFF; opacity: .35; animation: kwWet 300s ease-in-out infinite alternate; }
+  .hawaii .sand .lap { fill: #FFFFFF; opacity: .16; animation: kwLap 36s ease-in-out -9s infinite; }
+  .hawaii .sand .foam { fill: #FFF; opacity: .3; animation: foam 36s ease-in-out infinite; }
+  .hawaii .sand .wrack { fill: var(--rock); opacity: .12; }
+  .hawaii .sand .rock { fill: var(--rock); opacity: .42; }
+  html.night .hawaii .sand .wet { opacity: .08; }
+  html.night .hawaii .sand .lap { animation-name: kwLapNight; }
+  html.night .hawaii .sand .foam { animation-name: kwFoamNight; }
+
+  /* ʻakekeke, ruddy turnstones, here from August to April: two of them working the wet line on the left, clear of the tab bar */
+  .hawaii .akekeke { bottom: 30%; width: 13px; height: auto; fill: var(--silhouette); opacity: .5; display: none; transform-origin: 50% 100%; }
+  html.migrants:not(.night) .hawaii .akekeke { display: block; }
+  .hawaii .akekeke.k1 { left: 3%; animation: turnstone 60s ease-in-out infinite; }
+  .hawaii .akekeke.k2 { left: 10%; bottom: 28.5%; width: 12px; animation: turnstone 60s ease-in-out -23s infinite; }
+  @keyframes turnstone { 0%, 8% { transform: translateX(0) rotate(0); } 10% { transform: translateX(0) rotate(14deg); } 12%, 30% { transform: translateX(0) rotate(0); } 36% { transform: translateX(10px) rotate(0); } 38% { transform: translateX(10px) rotate(16deg); } 40%, 55% { transform: translateX(10px) rotate(0); } 57% { transform: translateX(10px) rotate(12deg); } 59%, 70% { transform: translateX(10px) rotate(0); } 78%, 100% { transform: translateX(0) rotate(0); } }
+
+  /* ʻōhiki, the ghost crab, out after dark */
+  .hawaii .ohiki { left: 6%; bottom: 31%; width: 9px; height: auto; fill: var(--silhouette); opacity: 0; animation: ohiki 200s linear infinite; }
+  @keyframes ohiki { 0%, 20% { opacity: 0; transform: translateX(0); } 21% { opacity: .5; } 30% { transform: translateX(40px); } 44% { transform: translateX(40px); } 52% { opacity: .5; transform: translateX(96px); } 53%, 100% { opacity: 0; transform: translateX(96px); } }
+
+  /* after sunset the sun is behind the pali: warm light rises over the ridges */
+  .hawaii .afterglow { left: 20%; right: -20%; bottom: 60%; height: 60%; background: radial-gradient(ellipse at 60% 80%, rgba(250,196,150,.55), rgba(250,196,150,0) 65%); filter: blur(6px); }
+
+  /* ironwood and naupaka behind the palms, the palms themselves, Nick and his cats */
+  .hawaii svg.bush { position: absolute; right: 0; left: auto; bottom: calc(39% - 10px); width: 210px; height: 160px; overflow: visible; animation: none; }
+  .hawaii .bush path { fill: var(--bush); opacity: .5; }
+  .hawaii .bush .naupaka { opacity: .45; }
+  .hawaii svg.palm { position: absolute; right: 0; left: auto; bottom: calc(39% - 10px); width: 210px; height: 160px; overflow: visible; animation: none; }
+  .hawaii .palm .fig { fill: var(--silhouette); opacity: .6; }
+  .hawaii .palm .crown { animation: crownSway 5s ease-in-out infinite alternate; }
+  .hawaii .palm .crown.p2 { animation-duration: 6.2s; animation-delay: -2s; }
+  .hawaii .palm .crown.p3 { animation-duration: 4.4s; animation-delay: -1s; }
+  .hawaii .palm .crown.p4 { animation-duration: 5.6s; animation-delay: -3s; }
+  body.gust .hawaii .palm .crown { animation: crownLean 4.4s cubic-bezier(.3,.6,.3,1) 1; }
+  body.late .hawaii .palm .crown { animation-duration: 8s; }
+  .hawaii .palm .cat path, .hawaii .palm .cat circle { fill: var(--silhouette); opacity: .6; }
+  .hawaii .palm .cat-tail { fill: none; stroke: var(--silhouette); stroke-opacity: .6; stroke-linecap: round; }
+  .hawaii .palm .coon .cat-tail { stroke-width: 4.2; transform-origin: 191px 148.5px; animation: catTail 9s ease-in-out infinite alternate; }
+  .hawaii .palm .somali .cat-tail { stroke-width: 2.4; transform-origin: 196px 149px; animation: catTail 6s ease-in-out -2.5s infinite alternate; }
+  .hawaii .palm .coon .ear-r { transform-origin: 165.8px 136.6px; animation: earTwitch 23s ease-in-out infinite; }
+  .hawaii .palm .somali .ear-r { transform-origin: 206.5px 126px; animation: earTwitch 31s ease-in-out -11s infinite; }
