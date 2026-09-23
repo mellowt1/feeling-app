@@ -14,6 +14,11 @@
 <link rel="apple-touch-icon" href="icon-180.png">
 <style>
   /* ---------- v4: three places, each with a day and a night. html.night = after 22:00 or a dark phone ---------- */
+  /* registered so the palette crossfades on a place or sky change instead of jumping (Feeling 59, audit M4) */
+  @property --sky-top     { syntax: '<color>'; inherits: true; initial-value: #D9E5E5; }
+  @property --sky-mid     { syntax: '<color>'; inherits: true; initial-value: #E9EEEB; }
+  @property --sky-horizon { syntax: '<color>'; inherits: true; initial-value: #F3F1EA; }
+  @property --bg          { syntax: '<color>'; inherits: true; initial-value: #F3F1EA; }
   :root { --sky-top:#D9E5E5; --sky-mid:#E9EEEB; --sky-horizon:#F3F1EA; --bg:#F3F1EA; --card:#FBF9F4; --glass:rgba(255,255,255,.52); --glass-strong:rgba(255,255,255,.74); --card-a:var(--glass); --glass-line:rgba(255,255,255,.6); --line:rgba(38,49,58,.10); --ink:#26313A; --muted:#6B7780; --accent:#3B6B75; --accent-rgb:59,107,117; --accent-ink:#FFFFFF; --accent-soft:rgba(59,107,117,.14); --accent-40:rgba(59,107,117,.40); --orb:#F2D8A6; --orb-rgb:242,216,166; --scene-back:#A9C3C6; --scene-mid:#86A9AF; --scene-front:#5E8891; --scene-land:#C9CBC3; --water:#86A9AF; --range:#A9C3C6; --ground:#5E8891; --sand:#C9CBC3; --silhouette:#3A4A52; --chip:rgba(40,50,55,.06); --track:rgba(120,120,128,.12); --danger:#B9584F; --m1:#B9584F; --m2:#D3925C; --m3:#B5B0A4; --m4:#7EA46B; --m5:#3E8C6A; --m6:#9E3A33;
     --serif: ui-serif, "New York", "Iowan Old Style", Georgia, "Times New Roman", serif; }
   html[data-place="campo"] { --sky-top:#CFDDEA; --sky-mid:#E4E9EC; --sky-horizon:#F2EEE3; --bg:#F2EEE3; --card:#FCF9F1; --glass:rgba(255,255,255,.52); --glass-strong:rgba(255,255,255,.74); --card-a:var(--glass); --glass-line:rgba(255,255,255,.6); --line:rgba(40,44,40,.10); --ink:#2C2C27; --muted:#746F63; --accent:#6B7749; --accent-rgb:107,119,73; --accent-ink:#FFFFFF; --accent-soft:rgba(107,119,73,.14); --accent-40:rgba(107,119,73,.40); --orb:#F4D8A0; --orb-rgb:244,216,160; --scene-back:#B4B6C4; --scene-mid:#D9C78F; --scene-front:#BFA765; --scene-land:#A79A7A; --water:#D9C78F; --range:#B4B6C4; --ground:#BFA765; --sand:#A79A7A; --silhouette:#4A463C; --chip:rgba(40,50,55,.06); --track:rgba(120,120,128,.12); }
@@ -27,6 +32,9 @@
   html[data-sky="evening"][data-place="keywest"]:not(.night) { --sky-top:#D39C9C; --sky-mid:#F2BE9B; --sky-horizon:#EEE3CE; --bg:#EEE3CE; }
 
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  :root { transition: --sky-top 1.4s ease, --sky-mid 1.4s ease, --sky-horizon 1.4s ease, --bg 1.4s ease; }
+  /* keyboard focus is visible everywhere; text fields keep their own glass ring (their outline: none comes later) (I5) */
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   html, body { margin: 0; color: var(--ink); font: 17px/1.5 -apple-system, "SF Pro Text", system-ui, sans-serif; -webkit-text-size-adjust: 100%; }
   :root { --vgap: 0px; }   /* set by the launch-viewport script: screen height minus window height when iOS opens the app short */
   html { height: 100%; background: var(--sky-horizon); }   /* no overflow clip on html: it propagates to the viewport and on iOS clipped every fixed layer at the short launch viewport (Feeling 57) */
@@ -41,16 +49,19 @@
   h1 { font-family: var(--serif); font-size: 36px; line-height: 1.2; margin: 0; font-weight: 300; letter-spacing: -0.01em; }
   .sub { color: var(--muted); font-size: 13px; margin: 6px 0 0; }
 
-  section.pane { opacity: 0; transition: opacity .4s ease-in-out; }
-  section.pane.in { opacity: 1; }
+  /* tabs: the old pane goes quickly (140 ms), the new one rises 6 px over 260 ms (M2) */
+  section.pane { opacity: 0; transform: translateY(6px); transition: opacity .26s cubic-bezier(.2,.8,.2,1), transform .26s cubic-bezier(.2,.8,.2,1); }
+  section.pane.in { opacity: 1; transform: none; }
+  section.pane.out { opacity: 0; transform: none; transition-duration: .14s; transition-timing-function: ease-in; }
 
   /* ---------- frosted surfaces ---------- */
   .frost { background: var(--glass); -webkit-backdrop-filter: blur(24px) saturate(1.2); backdrop-filter: blur(24px) saturate(1.2); border: 1px solid var(--glass-line); box-shadow: 0 10px 30px rgba(20,30,35,.07); }
 
   /* ---------- Today ---------- */
   .headrow { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
-  .pill { display: inline-flex; align-items: center; font: inherit; font-size: 13px; line-height: 1; padding: 7px 12px; border-radius: 999px; background: var(--chip); color: var(--muted); border: 0; margin-top: 8px; }
+  .pill { position: relative; display: inline-flex; align-items: center; font: inherit; font-size: 13px; line-height: 1; padding: 7px 12px; border-radius: 999px; background: var(--chip); color: var(--muted); border: 0; margin-top: 8px; }
   .pill.on { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+  .pill::after, #strip .chip::after { content: ""; position: absolute; inset: -9px -4px; }   /* 44 px hit area, same look (I6) */
 
   #rain-toggle { flex: 0 0 auto; width: 40px; height: 40px; border-radius: 20px; padding: 0; display: flex; align-items: center; justify-content: center; background: var(--glass); -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px); border: 1px solid var(--glass-line); color: var(--muted); opacity: .75; z-index: 3; position: relative; }
   #rain-toggle svg { width: 22px; height: 22px; }
@@ -61,15 +72,29 @@
   #place-pill button svg { width: 20px; height: 15px; fill: currentColor; flex: 0 0 auto; }
   #place-pill button.on { color: var(--accent); opacity: 1; }
   #place-pill:not(.open) button:not(.on) { width: 0; opacity: 0; pointer-events: none; }
-  #place-pill.open button.on::after { content: ""; position: absolute; left: 50%; bottom: 4px; width: 4px; height: 4px; margin-left: -2px; border-radius: 2px; background: var(--accent); }
+  /* open, it drops down under the button as a labelled list, so it no longer covers the greeting (L3) */
+  #place-pill.open { flex-direction: column; top: 46px; right: 0; width: 188px; height: auto; padding: 4px 0; border-radius: 20px; background: var(--glass-strong); box-shadow: 0 10px 30px rgba(20,30,35,.10); }
+  #place-pill.open button { width: 100%; height: 44px; opacity: 1; justify-content: flex-start; gap: 10px; padding: 0 14px; }
+  #place-pill.open button::before { content: attr(aria-label); order: 2; font-size: 15px; color: var(--ink); }
+  #place-pill.open button.on::before { color: var(--accent); font-weight: 600; }
+  #place-pill.open button.on::after { content: ""; order: 3; margin-left: auto; width: 6px; height: 6px; border-radius: 3px; background: var(--accent); }
+  .headrow h1, #rain-toggle { transition: opacity .25s ease; }
+  .headrow:has(#place-pill.open) h1, #place-pill.open ~ * { opacity: .35; }
   body.swap .waves, body.swap .waves-faint { opacity: 0; }
   #rain-toggle.on { opacity: 1; color: var(--accent); }
 
-  .entry-glass { margin-top: 20px; border-radius: 28px; transition: border-color .25s, box-shadow .25s; }
+  .entry-glass { position: relative; margin-top: 20px; border-radius: 28px; transition: border-color .25s, box-shadow .25s; }
   .entry-glass:focus-within { border-color: var(--accent-40); box-shadow: 0 0 0 3px var(--accent-soft), 0 10px 30px rgba(20,30,35,.07); }
   .textview { width: 100%; display: block; font: inherit; font-size: 17px; line-height: 1.5; color: var(--ink); background: transparent; border: 0; border-radius: 28px; padding: 18px 20px 6px; min-height: 112px; resize: none; outline: none; }
-  .entry-glass .reassure { margin: 0; padding: 0 20px 14px; text-align: left; font-size: 12px; line-height: 1.5; opacity: .8; }
+  .entry-glass .reassure { margin: 0; padding: 0 20px 14px; text-align: left; font-size: 13px; line-height: 1.5; }   /* full strength: 12 px at 80% was about 3.3:1 on glass (I6) */
   .textview::placeholder { color: var(--muted); }
+  /* saving: the words you wrote rise 8 px and fade, a ring spreads on the water, the Earlier chip slides in (M6) */
+  .sent-ghost { position: absolute; left: 0; right: 0; top: 0; padding: 18px 20px 6px; font-size: 17px; line-height: 1.5; color: var(--ink); white-space: pre-wrap; overflow: hidden; overflow-wrap: anywhere; pointer-events: none; animation: sentUp .45s ease-in 1 both; }
+  @keyframes sentUp { to { opacity: 0; transform: translateY(-8px); } }
+  @keyframes fadeOut { to { opacity: 0; } }
+  .save-ring { position: fixed; left: 50%; bottom: calc(18vh - var(--vgap)); width: 60px; height: 14px; margin-left: -30px; border: 1px solid var(--glare, #fff); border-radius: 50%; animation: bottleRing 1.2s ease-out 1 both; pointer-events: none; z-index: 1; }
+  #earlier.pop { animation: chipIn .4s cubic-bezier(.34,1.56,.64,1) 1; }
+  @keyframes chipIn { from { opacity: 0; transform: translateX(-6px) scale(.9); } }
   
 
   .voice { display: flex; flex-direction: column; align-items: center; margin-top: 16px; }
@@ -85,13 +110,20 @@
   body.listening .ring { animation: ringOut 3s ease-out infinite; }
   body.listening .ring.r2 { animation-delay: 1s; }
   body.listening .ring.r3 { animation-delay: 2s; }
+  body.listening:not(.dictating) .mic-wrap .ring { animation: none; }   /* typing is not recording: rings only when you tapped the mic (I2) */
   @keyframes ringOut { 0% { transform: scale(1); opacity: .45; } 100% { transform: scale(1.6); opacity: 0; } }
 
 
   .moods { display: flex; justify-content: space-between; gap: 6px; margin: 14px 0 0; }
-  .moods button { flex: 0 0 auto; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; padding: 0; background: transparent; border: 0; border-radius: 50%; transition: transform .12s; }
+  .moods button { flex: 0 0 auto; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; padding: 0; background: transparent; border: 0; border-radius: 50%; transition: transform .36s cubic-bezier(.34,1.56,.64,1), opacity .25s ease, box-shadow .2s ease; }
   .moods button svg { width: 50px; height: 50px; }
-  .moods button.on { transform: scale(1.06); box-shadow: 0 0 0 2px var(--accent); }
+  .moods button:active { transform: scale(.92); }
+  .moods button.on { transform: scale(1.08); box-shadow: 0 0 0 2px var(--accent); }
+  .moods:has(.on) button:not(.on) { opacity: .5; }   /* the picked face stands out without more colour (M3) */
+  .moods button:focus-visible, nav button:focus-visible { outline-offset: -2px; }
+  /* Today's row is one scale at any width: six equal columns, faces shrink on narrow phones (L2) */
+  #moods { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); justify-items: center; gap: 0; max-width: 400px; margin-inline: auto; }
+  #moods button, #moods button svg { width: clamp(40px, 12.5vw, 50px); height: clamp(40px, 12.5vw, 50px); }
 
   .face.m1 { color: var(--m1); } .face.m2 { color: var(--m2); } .face.m3 { color: var(--m3); }
   .face.m4 { color: var(--m4); } .face.m5 { color: var(--m5); } .face.m6 { color: var(--m6); }
@@ -99,6 +131,8 @@
   .face .mood-eye { fill: currentColor; }
   .face .mood-mouth { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
   .face .mood-brow { fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; }
+  .face .mood-bg { transition: fill-opacity .2s ease; }
+  .face .mood-eye, .face .mood-mouth, .face .mood-brow { transition: fill .2s ease, stroke .2s ease; }
   .moods button.on .mood-bg { fill-opacity: 1; }
   .moods button.on .mood-eye { fill: var(--card); }
   .moods button.on .mood-mouth { stroke: var(--card); }
@@ -137,7 +171,7 @@
   #strip { display: flex; gap: 6px; min-width: 0; flex: 1; overflow-x: auto; scrollbar-width: none; padding: 6px 14px 6px 0; margin: -6px 0; -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 18px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 18px), transparent); }
   #strip::-webkit-scrollbar { display: none; }
   #strip:empty { display: none; }
-  #strip .chip { flex: none; display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px 3px 4px; border-radius: 14px; background: var(--glass); border: 1px solid var(--glass-line); font-size: 13px; font-weight: 500; color: var(--ink); white-space: nowrap; }
+  #strip .chip { position: relative; flex: none; display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px 3px 4px; border-radius: 14px; background: var(--glass); border: 1px solid var(--glass-line); font-size: 13px; font-weight: 500; color: var(--ink); white-space: nowrap; }
   #strip .chip svg { width: 20px; height: 20px; flex: none; }
   #strip .chip.old svg { opacity: .45; }
   #strip .chip.ask { font: inherit; font-size: 13px; font-weight: 500; color: var(--accent); padding-left: 9px; -webkit-tap-highlight-color: transparent; }
@@ -198,6 +232,8 @@
   .entry .meta { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; font-size: 13px; color: var(--muted); font-weight: 500; }
   .entry .meta .face { flex: 0 0 auto; }
   .entry .text { font-size: 15px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .entry .text:empty { display: none; }   /* a face-only check-in (I1) */
+  .entry .meta:has(+ .text:empty) { margin-bottom: 0; }
   .entry.clamped .text { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
   .entry .tools { display: flex; gap: 8px; margin-top: 12px; }
   .entry textarea { width: 100%; font: inherit; font-size: 16px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; min-height: 96px; margin-top: 6px; outline: none; }
@@ -205,6 +241,21 @@
   .entry .moods button { width: 40px; height: 40px; }
   .entry .moods button svg { width: 40px; height: 40px; }
   .lead { font-size: 13px; color: var(--muted); margin: 0 0 10px 2px; }
+
+  /* short screens (iPhone SE and mini, Safari with toolbars): compress Today so the faces clear the horizon and Save clears the nav (L1) */
+  @media (max-height: 760px) {
+    .entry-glass { margin-top: 14px; }
+    .textview { min-height: 76px; padding-top: 14px; }
+    .sent-ghost { padding-top: 14px; }
+    .voice { margin-top: 10px; }
+    .mic-wrap, .mic { width: 64px; height: 64px; }
+    .ring { width: 64px; height: 64px; margin: -32px 0 0 -32px; }
+    .mic-wrap::before { width: 82px; height: 82px; margin: -41px 0 0 -41px; }
+    .mic-wrap::after { width: 100px; height: 100px; margin: -50px 0 0 -50px; }
+    .moods { margin-top: 10px; }
+    .saverow { margin-top: 12px; }
+    body .waves { height: calc(22vh + var(--tide, 0px)); }   /* body: outranks the base .waves rule further down; body.dock .waves still wins */
+  }
 
   /* ---------- tab bar ---------- */
   nav { position: fixed; left: 50%; bottom: calc(14px + env(safe-area-inset-bottom) - var(--vgap)); width: 270px; transform: translateX(-50%); z-index: 4; display: flex; justify-content: center; padding: 0; border-radius: 32px; overflow: hidden; background: var(--glass-strong); -webkit-backdrop-filter: blur(24px) saturate(1.2); backdrop-filter: blur(24px) saturate(1.2); border: 1px solid var(--glass-line); box-shadow: 0 10px 30px rgba(20,30,35,.10); }
@@ -241,6 +292,7 @@
   .search svg { position: absolute; left: 15px; top: 50%; margin-top: -9px; width: 18px; height: 18px; color: var(--muted); }
   .search input { width: 100%; font: inherit; font-size: 17px; color: var(--ink); background: var(--track); border: 0; border-radius: 16px; padding: 14px 14px 14px 42px; outline: none; min-height: 52px; }
   .search input::placeholder { color: var(--muted); }
+  .search input:focus-visible { box-shadow: 0 0 0 2px var(--accent); }
 
   .seg { position: relative; display: flex; background: var(--track); border-radius: 12px; padding: 2px; margin-top: 14px; }
   .seg .thumb { position: absolute; top: 2px; bottom: 2px; left: 2px; border-radius: 10px; background: var(--glass-strong); box-shadow: 0 1px 3px rgba(0,0,0,.10); transition: transform .25s ease, width .25s ease; }
@@ -264,7 +316,7 @@
   .me b { display: block; font-family: var(--serif); font-size: 20px; font-weight: 400; }
   .me .sub { margin: 1px 0 0; }
   .summary { border-radius: 26px; padding: 16px 18px 18px; margin: 12px 0 12px; }
-  .summary h2 { font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 0; }
+  .summary h2 { font-size: 13px; font-weight: 500; color: var(--muted); margin: 0; }   /* sentence case: titles are serif, labels are one muted style (L6) */
   .summary .ttl { font-family: var(--serif); font-size: 20px; margin: 4px 0 12px; }
   .summary .seg { margin-top: 0; border-radius: 18px; padding: 3px; }
   .summary .seg .thumb { border-radius: 15px; top: 3px; bottom: 3px; }
@@ -281,6 +333,8 @@
   .tilebtn .tile { width: 30px; height: 30px; border-radius: 9px; background: var(--accent); color: var(--accent-ink); display: flex; align-items: center; justify-content: center; margin-bottom: 8px; }
   .tilebtn .tile svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
   .tilebtn b { font-size: 14px; font-weight: 600; }
+  .tilebtn.due { background: var(--accent-soft); border-color: var(--accent-40); }   /* no backup for 30+ days with 10+ entries (I4) */
+  .tilebtn.due small { color: var(--ink); font-weight: 500; }
   .tilebtn small { font-size: 11px; line-height: 15px; color: var(--muted); max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .foot.lone { font-size: 12px; line-height: 16px; color: var(--muted); text-align: center; margin: 14px 8px 0; }
   .foot.lone:empty { display: none; }
@@ -294,7 +348,7 @@
   .stats b { display: block; font-size: 19px; line-height: 24px; font-weight: 600; }
   .stats span { display: block; font-size: 11px; line-height: 14px; color: var(--muted); }
   .group { margin-bottom: 22px; }
-  .group h2 { font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 0 0 6px 16px; }
+  .group h2 { font-size: 13px; font-weight: 500; color: var(--muted); margin: 0 0 6px 16px; }
   .group .foot { font-size: 12px; line-height: 16px; color: var(--muted); margin: 6px 16px 0; }
   .group .foot:empty { display: none; }
   .list { border-radius: 18px; overflow: hidden; }
@@ -342,17 +396,17 @@
 
   /* ---------- day sheet ---------- */
   .sheet { position: fixed; inset: 0; bottom: calc(0px - var(--vgap)); z-index: 10; }
-  .sheet .backdrop { position: absolute; inset: 0; background: rgba(20,26,29,0.35); opacity: 0; transition: opacity .4s ease-out; }
+  .sheet .backdrop { position: absolute; inset: 0; background: rgba(20,26,29,0.35); opacity: 0; transition: opacity .3s ease-out; }
   .sheet.in .backdrop { opacity: 1; }
-  .sheet .panel { position: absolute; left: 0; right: 0; bottom: 0; max-height: 92dvh; overflow: auto; -webkit-overflow-scrolling: touch; background: var(--card); border-radius: 28px 28px 0 0; padding: 8px 24px calc(24px + env(safe-area-inset-bottom)); transform: translateY(100%); transition: transform .5s ease-out; box-shadow: 0 -8px 30px rgba(0,0,0,.12); }
-  .sheet.in .panel { transform: translateY(0); }
+  .sheet .panel { position: absolute; left: 0; right: 0; bottom: 0; max-height: 92dvh; overflow: auto; -webkit-overflow-scrolling: touch; background: var(--card); border-radius: 28px 28px 0 0; padding: 8px 24px calc(24px + env(safe-area-inset-bottom)); transform: translateY(100%); transition: transform .28s cubic-bezier(.4,0,1,1); overscroll-behavior: contain; box-shadow: 0 -8px 30px rgba(0,0,0,.12); }
+  .sheet.in .panel { transform: translateY(0); transition: transform .42s cubic-bezier(.32,.72,0,1); }   /* opens on the iOS sheet curve, closes quicker (M5) */
   .grabber { width: 58px; height: 4px; border-radius: 2px; background: var(--line); margin: 8px auto 16px; }
   .sheet .done { position: absolute; top: 18px; right: 20px; border: 0; background: none; font: inherit; font-size: 16px; font-weight: 600; color: var(--accent); padding: 8px 4px; }
   .sheet h2 { font-family: var(--serif); font-size: 28px; font-weight: 600; margin: 0; }
   .sheet .date { font-size: 13px; color: var(--muted); margin: 4px 0 0; }
   .arc-big { background: var(--track); border-radius: 18px; padding: 12px; margin: 18px 0; }
 
-  .toast { position: fixed; left: 50%; bottom: 100px; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 999px; font-size: 14px; opacity: 0; transition: opacity .2s; pointer-events: none; z-index: 20; }
+  .toast { position: fixed; left: 50%; bottom: calc(92px + env(safe-area-inset-bottom) - var(--vgap)); transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 999px; font-size: 14px; opacity: 0; transition: opacity .2s; pointer-events: none; z-index: 20; }
   .toast.show { opacity: 1; }
 
   /* ---------- waves and scene (preserved) ---------- */
@@ -850,6 +904,8 @@
   body.dock .dock-ui { opacity: 1; visibility: visible; transition: opacity 1s, visibility 0s; }
   .dock-hint { position: absolute; left: 0; right: 0; bottom: calc(24px + env(safe-area-inset-bottom)); margin: 0; text-align: center; font-size: 13px; color: #fff; text-shadow: 0 1px 8px rgba(12,40,48,.6); opacity: 0; }
   body.dock .dock-hint { animation: hintFade 7s ease 1.5s 1; }
+  .today-hint { position: fixed; left: 0; right: 0; bottom: calc(92px + env(safe-area-inset-bottom) - var(--vgap)); margin: 0; text-align: center; font-size: 13px; color: #fff; text-shadow: 0 1px 8px rgba(12,40,48,.6); opacity: 0; pointer-events: none; z-index: 3; }   /* first few launches: how to find sit mode (I3) */
+  body.dock .today-hint { display: none; }
   @keyframes hintFade { 0% { opacity: 0; } 20% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; } }
   .dock-sound { position: absolute; top: calc(14px + env(safe-area-inset-top)); right: 20px; width: 40px; height: 40px; border-radius: 20px; border: 1px solid var(--line); background: var(--card-a); color: var(--muted); display: flex; align-items: center; justify-content: center; padding: 0; opacity: .7; }
   body.dock .dock-sound { pointer-events: auto; }
@@ -866,11 +922,12 @@
   @keyframes breathTrail { 0%, 4% { transform: scale(.94); opacity: .5; } 33.33% { transform: scale(1.12); opacity: .25; } 41.67% { transform: scale(1.14); opacity: .2; } 100% { transform: scale(.94); opacity: .5; } }
   @keyframes breathTrailSlow { 0%, 4% { transform: scale(.94); opacity: .5; } 40% { transform: scale(1.12); opacity: .25; } 46.67% { transform: scale(1.14); opacity: .2; } 100% { transform: scale(.94); opacity: .5; } }
   body.dock .breath { opacity: 1; animation: breathCycle 12s infinite; }
+  body.dock .breath, body.dock .breath::after { animation-delay: .8s; animation-fill-mode: backwards; }   /* breathTick starts 800 ms after enterDock: ring, word and sound now move together (M1) */
   body.dock.slow .breath { animation: breathCycleSlow 15s infinite; }
   /* 4 in, 1 hold, 7 out. The ring doubles in area on the in-breath (.6 → 1.25) and the glow fills with it; the out-breath is the long slow half */
   @keyframes breathCycleSlow { 0% { transform: scale(.6); opacity: .55; animation-timing-function: cubic-bezier(.4,0,.6,1); } 40% { transform: scale(1.25); opacity: 1; animation-timing-function: linear; } 46.67% { transform: scale(1.25); opacity: 1; animation-timing-function: cubic-bezier(.4,0,.6,1); } 100% { transform: scale(.6); opacity: .55; } }
   @keyframes breathCycle { 0% { transform: scale(.6); opacity: .55; animation-timing-function: cubic-bezier(.4,0,.6,1); } 33.33% { transform: scale(1.25); opacity: 1; animation-timing-function: linear; } 41.67% { transform: scale(1.25); opacity: 1; animation-timing-function: cubic-bezier(.4,0,.6,1); } 100% { transform: scale(.6); opacity: .55; } }
-  .breath-cue { position: absolute; left: 0; right: 0; top: calc(36% + 136px); margin: 0; text-align: center; font-size: 15px; font-weight: 500; color: var(--muted); opacity: 0; transition: opacity 1.5s 1s; }
+  .breath-cue { position: absolute; left: 0; right: 0; top: calc(36% + 136px); margin: 0; text-align: center; font-size: 17px; font-weight: 500; color: var(--ink); text-shadow: 0 1px 10px rgba(var(--orb-rgb),.6); opacity: 0; transition: opacity 1.5s 1s; }
   .breath-cue small { display: block; font-size: 13px; font-weight: 400; opacity: .8; margin-top: 4px; }
   body.dock .breath-cue { opacity: 1; }
   body.refocus .breath { opacity: .35; }
@@ -1165,7 +1222,17 @@
     body.dock .dock-hint { opacity: 1; }
     .sky-breathe { opacity: 0.2; }
     .orb { transform: none; }
-    .waves, section.pane, .sheet .panel, .sheet .backdrop, .seg .thumb { transition: none !important; }
+    .waves, .seg .thumb { transition: none !important; }
+    /* UI motion: slides become short crossfades (M7) */
+    .sheet .panel { transform: none !important; opacity: 0; transition: opacity .2s ease !important; }
+    .sheet.in .panel { opacity: 1; }
+    .sheet .backdrop { transition-duration: .2s; }
+    section.pane { transform: none !important; }
+    .moods button, .moods button.on, .moods button:active { transform: none; }
+    .sent-ghost { animation-name: fadeOut; }
+    #earlier.pop { animation: none; }
+    .save-ring { display: none; }
+    :root { transition: none; }
     body.listening .waves { transform: none; }
   }
   /* =============== Boca inlet: the dock place reimagined. Everything below is scoped to html[data-place="dock"] and overrides the rules above =============== */
@@ -1955,7 +2022,7 @@
     <div class="stats">
       <div class="frost"><b id="st-entries">0</b><span>entries</span></div>
       <div class="frost"><b id="st-days">0</b><span>days</span></div>
-      <div class="frost"><b id="st-streak">0</b><span>day streak</span></div>
+      <div class="frost"><b id="st-month">0</b><span>this month</span></div>
     </div>
 
     <div class="summary frost">
@@ -1991,7 +2058,7 @@
     <p class="foot lone" id="last-export"></p>
     <span id="range-value" hidden></span>
 
-    <p class="closing">Feeling 58 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
+    <p class="closing">Feeling 59 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
   </section>
 </main>
 
@@ -2022,7 +2089,7 @@
 </div>
 
 <nav>
-  <button data-tab="today" class="on" type="button">
+  <button data-tab="today" class="on" type="button" aria-current="page">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6"/><path d="M18.4 2.6a2 2 0 0 1 2.8 2.8L12.5 14l-3.7 1 1-3.7z"/></svg>
     Today
   </button>
@@ -2036,6 +2103,7 @@
   </button>
 </nav>
 <div class="toast" id="toast"></div>
+<p class="today-hint" id="today-hint" aria-hidden="true"></p>
 
 <script>
 (() => {
@@ -2142,6 +2210,7 @@
       b.setAttribute('aria-label', WORDS[m]);
       b.appendChild(faceSVG(m, size || 50));
       if (current === m) b.classList.add('on');
+      b.setAttribute('aria-pressed', current === m);
       row.appendChild(b);
     }
     row.addEventListener('click', (ev) => {
@@ -2149,7 +2218,7 @@
       ev.stopPropagation();
       const m = Number(b.dataset.m);
       current = current === m ? 0 : m;
-      [...row.children].forEach((c) => c.classList.toggle('on', Number(c.dataset.m) === current));
+      [...row.children].forEach((c) => { const on = Number(c.dataset.m) === current; c.classList.toggle('on', on); c.setAttribute('aria-pressed', on); });
       onPick(current);
     });
     return row;
@@ -2215,12 +2284,12 @@
     $('#today-date').textContent = fmtDay(targetDay(), false);
     backdateBtn.textContent = backdated ? 'Back to today' : 'Yesterday';
     backdateBtn.classList.toggle('on', backdated);
-    saveBtn.disabled = text.value.trim().length === 0;
+    saveBtn.disabled = !text.value.trim() && !mood;   // a face alone is enough on a bad day (I1)
   }
   text.addEventListener('input', () => { renderTodayHead(); storeDraft(); });
   text.addEventListener('focus', () => { document.body.classList.add('listening'); });
-  text.addEventListener('blur', () => { document.body.classList.remove('listening'); });
-  $('#mic').addEventListener('click', () => { text.focus(); });
+  text.addEventListener('blur', () => { document.body.classList.remove('listening', 'dictating'); });
+  $('#mic').addEventListener('click', () => { document.body.classList.add('dictating'); text.focus(); });
   backdateBtn.addEventListener('click', () => { backdated = !backdated; renderTodayHead(); renderTodayEntries(); storeDraft(); });
   // ---------- status: a few words for the circle ----------
   // Kept for the day it was written; travels with the faces on every sync.
@@ -2245,13 +2314,20 @@
   restoreStatus();
 
   saveBtn.addEventListener('click', () => {
-    const t = text.value.trim(); if (!t) return;
+    const t = text.value.trim(); if (!t && !mood) return;
     clearTimeout(statusT); setStatus();
+    if (t) {
+      const ghost = el('div', 'sent-ghost', text.value);
+      ghost.style.maxHeight = text.offsetHeight + 'px';
+      text.parentNode.appendChild(ghost); setTimeout(() => ghost.remove(), 500);
+    }
+    const ring = el('span', 'save-ring'); document.body.appendChild(ring); setTimeout(() => ring.remove(), 1300);
     const day = targetDay();
     const ts = backdated ? keyToDate(day).setHours(23, 0, 0, 0) : Date.now();
     db.entries.push({ id: uid(), ts, day, text: t, mood, edited: 0 });
     text.value = ''; mood = 0; backdated = false; db.draft = null; save();
-    syncMoodRow(); renderTodayHead(); renderTodayEntries(); text.blur(); toast('Saved');
+    syncMoodRow(); renderTodayHead(); renderTodayEntries(); text.blur();
+    const chip = $('#earlier'); chip.classList.remove('pop'); void chip.offsetWidth; chip.classList.add('pop');
     syncCircle(true);
   });
   function renderTodayEntries() {
@@ -2395,6 +2471,8 @@
   }
 
   function renderHistory() {
+    const none = !db.entries.length;
+    ['#moodlog', '#moodlog-cap', '.search', '#filter-seg'].forEach((q) => $(q).classList.toggle('hidden', none));
     const box = $('#history'); box.innerHTML = '';
     const q = $('#search').value.trim().toLowerCase();
     let list = db.entries;
@@ -2448,12 +2526,22 @@
     panel.appendChild(done);
 
     back.addEventListener('click', () => closeSheet());
-    let y0 = null;
-    panel.addEventListener('touchstart', (ev) => { y0 = panel.scrollTop <= 0 ? ev.touches[0].clientY : null; }, { passive: true });
+    let y0 = null, dy = 0;
+    panel.addEventListener('touchstart', (ev) => { y0 = panel.scrollTop <= 0 ? ev.touches[0].clientY : null; dy = 0; }, { passive: true });
     panel.addEventListener('touchmove', (ev) => {
       if (y0 == null) return;
-      if (ev.touches[0].clientY - y0 > 70) { y0 = null; closeSheet(); }
+      dy = Math.max(0, ev.touches[0].clientY - y0);
+      panel.style.transition = 'none';
+      panel.style.transform = `translateY(${dy}px)`;
     }, { passive: true });
+    const release = () => {
+      if (y0 == null) return;
+      y0 = null;
+      panel.style.transition = ''; panel.style.transform = '';   // same frame as closeSheet, so the close runs on from where the finger let go
+      if (dy > panel.offsetHeight * .25) closeSheet();
+    };
+    panel.addEventListener('touchend', release, { passive: true });
+    panel.addEventListener('touchcancel', release, { passive: true });
 
     wrap.append(back, panel);
     document.body.appendChild(wrap);
@@ -2465,7 +2553,7 @@
     if (!sheetEl) { if (!silent) sheetDay = null; return; }
     const w = sheetEl; sheetEl = null; if (!silent) sheetDay = null;
     w.classList.remove('in');
-    setTimeout(() => w.remove(), silent ? 0 : 500);
+    setTimeout(() => w.remove(), silent ? 0 : 320);
   }
   document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && sheetEl) closeSheet(); });
 
@@ -2819,12 +2907,6 @@
   document.addEventListener('visibilitychange', () => { if (!document.hidden) syncCircle(true); });
   renderCircleCard(); renderCircle(); syncCircle(true);
 
-  function streak() {
-    const days = new Set(db.entries.map((e) => e.day));
-    let d = todayKey(); if (!days.has(d)) d = shiftKey(d, -1);
-    let n = 0; while (days.has(d)) { n++; d = shiftKey(d, -1); }
-    return n;
-  }
   function renderHero() {
     const c = db.circle, inC = !!(c && c.code);
     $('#hero-name').textContent = inC ? c.name : 'You'; $('#hero-initial').textContent = (inC && c.name ? c.name : 'Y').trim().charAt(0).toUpperCase();
@@ -2840,11 +2922,13 @@
     $('#range-info').textContent = es.length ? `${es.length} ${es.length === 1 ? 'entry' : 'entries'} over ${days} ${days === 1 ? 'day' : 'days'}. Nothing is sent until you share it.` : 'No entries in this range.';
     $('#st-entries').textContent = db.entries.length;
     $('#st-days').textContent = new Set(db.entries.map((e) => e.day)).size;
-    $('#st-streak').textContent = streak();
+    const month = todayKey().slice(0, 7);
+    $('#st-month').textContent = db.entries.filter((e) => e.day.startsWith(month)).length;   // not a streak: a skipped day is not a failure (I6)
     let bytes = 0;
     try { bytes = new Blob([localStorage.getItem(KEY) || '']).size; } catch (e) { bytes = (JSON.stringify(db) || '').length; }
     const size = bytes < 1024 * 1024 ? Math.max(1, Math.round(bytes / 1024)) + ' KB' : (bytes / 1048576).toFixed(1) + ' MB';
     const age = db.lastExport ? Math.floor((Date.now() - db.lastExport) / 864e5) : null;
+    $('#export-json').classList.toggle('due', (age === null || age > 30) && db.entries.length >= 10);   // everything lives on this phone (I4)
     $('#backup-age').textContent = age === null ? 'never' : age === 0 ? 'today' : age === 1 ? 'yesterday' : `${age} days ago`;
     const stale = db.entries.length && (age === null || age > 14);
     $('#last-export').textContent = stale ? (age === null ? `Your entries live only on this phone (${size}). No backup yet.` : `Your entries live only on this phone (${size}). Last backup ${age} days ago.`) : `Your entries live only on this phone (${size}).`;
@@ -2853,24 +2937,26 @@
 
   // ---------- tabs ----------
   const TABS = ['today', 'history', 'export'];
-  let current = 'today';
+  let current = 'today', tabT;
   document.querySelectorAll('nav button').forEach((b) => b.addEventListener('click', () => showTab(b.dataset.tab)));
   function showTab(name) {
     if (name === current) return;
-    const from = $('#tab-' + current), to = $('#tab-' + name);
+    const to = $('#tab-' + name);
     current = name;
-    document.querySelectorAll('nav button').forEach((b) => b.classList.toggle('on', b.dataset.tab === name));
-    from.classList.remove('in');
-    setTimeout(() => {
-      from.classList.add('hidden');
+    document.querySelectorAll('nav button').forEach((b) => { b.classList.toggle('on', b.dataset.tab === name); b.toggleAttribute('aria-current', b.dataset.tab === name); if (b.dataset.tab === name) b.setAttribute('aria-current', 'page'); });
+    clearTimeout(tabT);
+    document.querySelectorAll('section.pane:not(.hidden)').forEach((p) => p.classList.replace('in', 'out'));
+    tabT = setTimeout(() => {
+      document.querySelectorAll('section.pane').forEach((p) => { p.classList.add('hidden'); p.classList.remove('in', 'out'); });
       if (name === 'history') { renderMonth(); renderHistory(); syncCircle(true); }
       if (name === 'export') renderExport();
       to.classList.remove('hidden');
       if (name === 'history') placeFilter();
       if (name === 'export') placeRange();
       window.scrollTo(0, 0);
-      requestAnimationFrame(() => to.classList.add('in'));
-    }, 200);
+      void to.offsetWidth;   // commit the hidden-to-shown change, then animate; no rAF, which a throttled page may never run (M2)
+      to.classList.add('in');
+    }, 140);
   }
   function renderAll() { renderTodayHead(); renderTodayEntries(); renderMonth(); renderHistory(); renderExport(); }
 
@@ -3123,6 +3209,7 @@
     textEl.blur();
     try { const sel = window.getSelection(); if (sel) sel.removeAllRanges(); } catch (e) {}   // a long press may have started a text selection; sit mode shows none
     document.body.classList.add('dock');
+    try { localStorage.setItem('feeling.sat', '1'); } catch (e) {}
     dockSince = Date.now();
     breaths = 0; breathWord.textContent = 'In';
     setSlow(false);
@@ -3188,6 +3275,15 @@
   }, true);
   document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') exitDock(); });
   dockHint.textContent = HINTS[place()];
+  try {
+    const opens = +(localStorage.getItem('feeling.opens') || 0);
+    if (!localStorage.getItem('feeling.sat') && opens < 3) {
+      localStorage.setItem('feeling.opens', opens + 1);
+      const todayHint = document.getElementById('today-hint');
+      todayHint.textContent = place() === 'campo' ? 'Hold the grass to sit a while' : 'Hold the water to sit a while';
+      todayHint.style.animation = 'hintFade 6s ease 2s 1';
+    }
+  } catch (e) {}
   document.addEventListener('placechange', () => { dockHint.textContent = HINTS[place()]; updateLayers(); });
   document.addEventListener('visibilitychange', () => { if (document.hidden) exitDock(); });
   document.addEventListener('contextmenu', (ev) => { if (pressTimer || document.body.classList.contains('dock')) ev.preventDefault(); });
