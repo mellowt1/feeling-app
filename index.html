@@ -53,6 +53,9 @@
   /* tabs: the old pane goes quickly (140 ms), the new one rises 6 px over 260 ms (M2) */
   section.pane { opacity: 0; transform: translateY(6px); transition: opacity .26s cubic-bezier(.2,.8,.2,1), transform .26s cubic-bezier(.2,.8,.2,1); }
   section.pane.in { opacity: 1; transform: none; }
+  #tab-today.away { position: fixed; inset: 0; opacity: 0; pointer-events: none; transition: none; }
+  #tab-today.away > :not(.sky-breathe):not(.clouds):not(.orb):not(.waves):not(.rain):not(.wind):not(#bottles) { display: none; }
+  #tab-today.away, #tab-today.away * { animation-play-state: paused !important; }
   section.pane.out { opacity: 0; transform: none; transition-duration: .14s; transition-timing-function: ease-in; }
 
   /* ---------- frosted surfaces ---------- */
@@ -963,7 +966,7 @@
   .dock-hint { position: absolute; left: 0; right: 0; bottom: calc(24px + env(safe-area-inset-bottom)); margin: 0; text-align: center; font-size: 13px; color: #fff; text-shadow: 0 1px 8px rgba(12,40,48,.6); opacity: 0; }
   body.dock .dock-hint { animation: hintFade 7s ease 1.5s 1; }
   .today-hint { position: fixed; left: 0; right: 0; bottom: calc(92px + env(safe-area-inset-bottom) - var(--vgap)); margin: 0; text-align: center; font-size: 13px; color: #fff; text-shadow: 0 1px 8px rgba(12,40,48,.6); opacity: 0; pointer-events: none; z-index: 3; }   /* first few launches: how to find sit mode (I3) */
-  body.dock .today-hint { display: none; }
+  body.dock .today-hint, body:has(#tab-today.away) .today-hint { display: none; }
   @keyframes hintFade { 0% { opacity: 0; } 20% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; } }
   .dock-sound { position: absolute; top: calc(14px + env(safe-area-inset-top)); right: 20px; width: 40px; height: 40px; border-radius: 20px; border: 1px solid var(--line); background: var(--card-a); color: var(--muted); display: flex; align-items: center; justify-content: center; padding: 0; opacity: .7; }
   body.dock .dock-sound { pointer-events: auto; }
@@ -1704,15 +1707,15 @@
 })();
 // Scene restart (Feeling 62): the installed app on iOS can start the scene before the window has its real size. Movers whose
 // paths are in vw (fish, boats, clouds, bottles, rhea, pelican, crab, gulls) then keep a near-zero path and sit idle at the left.
-// Restart every scene animation once the window has settled, when its width changes, and when the app comes back to the front.
+// Restart every scene animation once, just after launch, and again only when the window width really changes (each restart costs a frame).
 (() => {
   const root = document.documentElement; let w = innerWidth, t;
   const restart = () => { root.classList.add('rescene'); void root.offsetWidth; root.classList.remove('rescene'); w = innerWidth; };
   const soon = () => { clearTimeout(t); t = setTimeout(restart, 120); };
-  addEventListener('load', () => { setTimeout(restart, 400); setTimeout(restart, 1500); });
-  addEventListener('pageshow', (e) => { if (e.persisted) soon(); });
-  addEventListener('resize', () => { if (innerWidth !== w) soon(); });
-  document.addEventListener('visibilitychange', () => { if (!document.hidden) soon(); });
+  const changed = () => { if (innerWidth !== w) soon(); };
+  addEventListener('load', () => setTimeout(restart, 400));
+  addEventListener('pageshow', changed); addEventListener('resize', changed);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) changed(); });
 })();
 </script>
 <!-- fauna: PhyloPic silhouettes (CC0 / public domain / CC BY, see design/v4/README.md); the same paths are the "v4 / Fauna" components in Figma -->
@@ -2130,7 +2133,7 @@
     <p class="foot lone" id="last-export"></p>
     <span id="range-value" hidden></span>
 
-    <p class="closing">Feeling 62 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
+    <p class="closing">Feeling 63 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
   </section>
 </main>
 
@@ -3121,7 +3124,8 @@
     clearTimeout(tabT);
     document.querySelectorAll('section.pane:not(.hidden)').forEach((p) => p.classList.replace('in', 'out'));
     tabT = setTimeout(() => {
-      document.querySelectorAll('section.pane').forEach((p) => { p.classList.add('hidden'); p.classList.remove('in', 'out'); });
+      // Today is never display:none: its scene stays built, faded out and paused, so coming back does not redraw it from nothing (Feeling 63).
+      document.querySelectorAll('section.pane').forEach((p) => { p.classList.remove('in', 'out'); if (p.id === 'tab-today') p.classList.toggle('away', name !== 'today'); else p.classList.add('hidden'); });
       if (name === 'history') { renderMonth(); renderHistory(); syncCircle(true); }
       if (name === 'export') renderExport();
       to.classList.remove('hidden');
