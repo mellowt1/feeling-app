@@ -36,6 +36,7 @@
   /* keyboard focus is visible everywhere; text fields keep their own glass ring (their outline: none comes later) (I5) */
   :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   html, body { margin: 0; color: var(--ink); font: 17px/1.5 -apple-system, "SF Pro Text", system-ui, sans-serif; -webkit-text-size-adjust: 100%; }
+  html.rescene :is(.waves, .waves-faint, .clouds, .wind, .nightsky, #bottles, div.rain), html.rescene :is(.waves, .waves-faint, .clouds, .wind, .nightsky, #bottles, div.rain) * { animation: none !important; }   /* one-frame scene restart, see the Scene restart script */
   :root { --vgap: 0px; }   /* set by the launch-viewport script: screen height minus window height when iOS opens the app short */
   html { height: 100%; background: var(--sky-horizon); }   /* no overflow clip on html: it propagates to the viewport and on iOS clipped every fixed layer at the short launch viewport (Feeling 57) */
   /* installed on iOS with a translucent status bar, 100% and 100dvh are the screen minus the status bar; 100lvh is the whole screen */
@@ -1701,6 +1702,18 @@
   if (window.visualViewport) visualViewport.addEventListener('resize', fix);
   setTimeout(fix, 300); setTimeout(fix, 1500);
 })();
+// Scene restart (Feeling 62): the installed app on iOS can start the scene before the window has its real size. Movers whose
+// paths are in vw (fish, boats, clouds, bottles, rhea, pelican, crab, gulls) then keep a near-zero path and sit idle at the left.
+// Restart every scene animation once the window has settled, when its width changes, and when the app comes back to the front.
+(() => {
+  const root = document.documentElement; let w = innerWidth, t;
+  const restart = () => { root.classList.add('rescene'); void root.offsetWidth; root.classList.remove('rescene'); w = innerWidth; };
+  const soon = () => { clearTimeout(t); t = setTimeout(restart, 120); };
+  addEventListener('load', () => { setTimeout(restart, 400); setTimeout(restart, 1500); });
+  addEventListener('pageshow', (e) => { if (e.persisted) soon(); });
+  addEventListener('resize', () => { if (innerWidth !== w) soon(); });
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) soon(); });
+})();
 </script>
 <!-- fauna: PhyloPic silhouettes (CC0 / public domain / CC BY, see design/v4/README.md); the same paths are the "v4 / Fauna" components in Figma -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
@@ -2117,7 +2130,7 @@
     <p class="foot lone" id="last-export"></p>
     <span id="range-value" hidden></span>
 
-    <p class="closing">Feeling 61 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
+    <p class="closing">Feeling 62 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
   </section>
 </main>
 
