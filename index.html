@@ -1698,12 +1698,17 @@
     const portrait = matchMedia('(orientation: portrait)').matches;
     const sh = portrait ? Math.max(screen.height, screen.width) : Math.min(screen.height, screen.width);
     const gap = sh - innerHeight;
-    document.documentElement.style.setProperty('--vgap', (gap > 8 && gap < 160 ? gap : 0) + 'px');
+    const v = (gap > 8 && gap < 160 ? gap : 0) + 'px';
+    if (v !== last) { last = v; document.documentElement.style.setProperty('--vgap', v); }
   };
+  let last = '';
   fix();
   addEventListener('resize', fix); addEventListener('orientationchange', fix); addEventListener('pageshow', fix);
   if (window.visualViewport) visualViewport.addEventListener('resize', fix);
-  setTimeout(fix, 300); setTimeout(fix, 1500);
+  // iOS can report the short window late and without a resize event; check every frame for the first 2 s, so the scene
+  // corrects before or within one frame instead of jumping down at 300 ms (Feeling 64).
+  const t0 = performance.now(); const poll = () => { fix(); if (performance.now() - t0 < 2000) requestAnimationFrame(poll); };
+  requestAnimationFrame(poll); setTimeout(fix, 300); setTimeout(fix, 1500);
 })();
 // Scene restart (Feeling 62): the installed app on iOS can start the scene before the window has its real size. Movers whose
 // paths are in vw (fish, boats, clouds, bottles, rhea, pelican, crab, gulls) then keep a near-zero path and sit idle at the left.
@@ -2133,7 +2138,7 @@
     <p class="foot lone" id="last-export"></p>
     <span id="range-value" hidden></span>
 
-    <p class="closing">Feeling 63 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
+    <p class="closing">Feeling 64 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
   </section>
 </main>
 
