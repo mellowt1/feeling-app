@@ -277,6 +277,7 @@
   .mcell.today i { box-shadow: 0 0 0 2px var(--accent); }
   .mcell.sel { background: var(--accent-soft); }
   .mcell.blank { visibility: hidden; }
+  .mcell.future i { width: 4px; height: 4px; border: 0; background: var(--muted); opacity: .4; }   /* days still to come: a dot, not an empty ring */
 
   /* ---------- mood log: which faces this month, tap one to filter ---------- */
   .moodlog { display: flex; justify-content: space-between; margin: 14px 0 0; }
@@ -302,8 +303,23 @@
   .seg.compact { margin-top: 10px; }
 
   /* ---------- day groups ---------- */
-  .day { margin-bottom: 22px; }
-  .dayhead { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; background: none; border: 0; padding: 0 0 8px; text-align: left; color: inherit; }
+  /* one card per day, the entries inside it (Feeling 60) */
+  .day { margin-bottom: 10px; border-radius: 22px; padding: 4px 18px; }
+  .dayhead { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; background: none; border: 0; padding: 10px 0 2px; text-align: left; color: inherit; font: inherit; }
+  .daydots { display: flex; gap: 4px; flex: none; }
+  .daydots i { display: block; width: 10px; height: 10px; border-radius: 50%; }
+  .day .entry { background: none; border: 0; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; border-radius: 0; padding: 12px 0; margin: 0; }
+  .day .entry + .entry { border-top: 1px solid var(--line); }
+  .weeklabel { margin: 20px 0 8px 4px; font-size: 13px; font-weight: 500; color: var(--muted); }
+  .weeklabel:first-child { margin-top: 0; }
+  .filterrow { display: flex; gap: 8px; align-items: center; margin-top: 18px; }
+  .filterrow .seg { flex: 1; margin-top: 0; }
+  .filterrow .seg button { font-size: 13px; padding: 12px 2px; white-space: nowrap; }
+  .searchbtn { flex: none; width: 44px; height: 44px; border-radius: 22px; border: 0; background: var(--track); color: var(--muted); display: flex; align-items: center; justify-content: center; padding: 0; }
+  .searchbtn svg { width: 18px; height: 18px; }
+  .searchbtn[aria-expanded="true"] { background: var(--accent-soft); color: var(--accent); }
+  .search:not(.open) { display: none; }
+  .search.open { margin-top: 10px; }
   .dayhead b { font-family: var(--serif); font-size: 17px; font-weight: 600; color: var(--ink); }
   .dayhead .arc { flex: 0 0 auto; }
   .arc-line { fill: none; stroke: var(--accent); stroke-opacity: .4; stroke-width: 2; stroke-linecap: round; }
@@ -343,10 +359,39 @@
   #circle-sheet .list { background: var(--track); }
   .hero b { display: block; font-size: 20px; font-weight: 600; }
   .hero .sub { margin: 2px 0 0; }
-  .stats { display: flex; gap: 9px; margin: 0; }
-  .stats div { flex: 1; text-align: center; border-radius: 18px; padding: 7px 4px 8px; }
-  .stats b { display: block; font-size: 19px; line-height: 24px; font-weight: 600; }
-  .stats span { display: block; font-size: 11px; line-height: 14px; color: var(--muted); }
+  /* your month: one bar per day in its mood colour, instead of counters (Feeling 60) */
+  .monthcard { border-radius: 22px; padding: 14px 16px; }
+  .monthcard .mc-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 10px; }
+  .monthcard .mc-head b { font-family: var(--serif); font-size: 17px; font-weight: 600; }
+  .monthcard .mc-head span { font-size: 13px; color: var(--muted); }
+  .mc-strip { display: flex; gap: 2px; justify-content: space-between; }
+  .mc-strip i { flex: 1 1 0; max-width: 10px; height: 22px; border-radius: 5px; }
+  .mc-strip i.miss { box-shadow: inset 0 0 0 1px var(--line); }
+  .mc-strip i.future { background: var(--chip); }
+  .mc-strip i.today { box-shadow: 0 0 0 1.5px var(--bg), 0 0 0 3px var(--accent); }
+  .tilebtn.due { order: -1; }   /* an overdue backup moves to the front */
+  .summary .acts .btn.ghost { flex: none; width: auto; padding: 10px 18px; }
+  /* summary preview: the exact record your psychologist gets */
+  .preview-page { background: #FFF; color: #26313A; border-radius: 16px; padding: 22px 20px; box-shadow: 0 1px 2px rgba(20,30,35,.06), 0 10px 30px rgba(20,30,35,.06); margin-top: 6px; }
+  html.night .preview-page { background: #FBF9F4; }
+  .preview-page h3 { margin: 0; font-family: var(--serif); font-size: 24px; font-weight: 600; }
+  .preview-page .pv-sub { margin: 4px 0 14px; font-size: 13px; color: #6B7780; }
+  .pv-chart { background: #F6F4EF; border-radius: 12px; padding: 12px 12px 8px; margin-bottom: 16px; }
+  .pv-bars { display: flex; align-items: flex-end; gap: 2px; height: 56px; }
+  .pv-bars i { flex: 1 1 0; max-width: 20px; border-radius: 5px 5px 2px 2px; position: relative; }
+  .pv-bars i.none { height: 2px !important; background: rgba(38,49,58,.12); }
+  .pv-bars i.session::after { content: ""; position: absolute; left: 50%; bottom: -7px; width: 4px; height: 4px; margin-left: -2px; border-radius: 2px; background: #3B6B75; }
+  .pv-axis { display: flex; justify-content: space-between; margin-top: 9px; font-size: 11px; color: #6B7780; }
+  .pv-day { margin-top: 14px; }
+  .pv-day b { display: block; font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .pv-day p { margin: 0 0 4px; font-size: 14px; line-height: 1.45; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .pv-day p span { color: #6B7780; }
+  .pv-note { margin: 16px 0 0; font-size: 13px; font-style: italic; color: #6B7780; }
+  .preview-acts { display: flex; gap: 10px; margin-top: 14px; }
+  .preview-acts .btn { flex: 1; }
+  .preview-acts .round { flex: 0 0 48px; width: 48px; height: 48px; border-radius: 24px; border: 1px solid var(--line); background: var(--card); color: var(--accent); display: flex; align-items: center; justify-content: center; padding: 0; }
+  .preview-acts .round svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+  .sheet .lead-sub { font-size: 13px; color: var(--muted); margin: 0; padding-right: 60px; }
   .group { margin-bottom: 22px; }
   .group h2 { font-size: 13px; font-weight: 500; color: var(--muted); margin: 0 0 6px 16px; }
   .group .foot { font-size: 12px; line-height: 16px; color: var(--muted); margin: 6px 16px 0; }
@@ -1996,16 +2041,19 @@
     <p class="moodlog-cap" id="moodlog-cap"></p>
     <div class="circle" id="circle"></div>
     <p class="moodlog-cap" id="circle-cap"></p>
-    <div class="search">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5 21 21"/></svg>
-      <input type="search" id="search" placeholder="Search what you said">
+    <div class="filterrow">
+      <div class="seg" id="filter-seg">
+        <span class="thumb"></span>
+        <button data-f="all" class="on" type="button">All</button>
+        <button data-f="low" type="button">Bad days</button>
+        <button data-f="high" type="button">Good days</button>
+        <button data-f="session" type="button">Session</button>
+      </div>
+      <button class="searchbtn" id="search-toggle" type="button" aria-label="Search what you said" aria-expanded="false" aria-controls="search-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5 21 21"/></svg></button>
     </div>
-    <div class="seg" id="filter-seg">
-      <span class="thumb"></span>
-      <button data-f="all" class="on" type="button">All</button>
-      <button data-f="low" type="button">Bad days</button>
-      <button data-f="high" type="button">Good days</button>
-      <button data-f="session" type="button">Session</button>
+    <div class="search" id="search-box">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5 21 21"/></svg>
+      <input type="search" id="search" placeholder="Search what you said" aria-label="Search what you said">
     </div>
     <div class="daylist" id="history"></div>
   </section>
@@ -2019,10 +2067,9 @@
       <span class="avatar" id="hero-initial" aria-hidden="true">Y</span>
       <div><b id="hero-name">You</b><p class="sub" id="hero-sub"></p></div>
     </div>
-    <div class="stats">
-      <div class="frost"><b id="st-entries">0</b><span>entries</span></div>
-      <div class="frost"><b id="st-days">0</b><span>days</span></div>
-      <div class="frost"><b id="st-month">0</b><span>this month</span></div>
+    <div class="monthcard frost">
+      <div class="mc-head"><b id="mc-title">Your month</b><span id="mc-count"></span></div>
+      <div class="mc-strip" id="mc-strip"></div>
     </div>
 
     <div class="summary frost">
@@ -2031,7 +2078,7 @@
       <div id="range-picker">
         <div class="seg compact" id="range-seg">
             <span class="thumb"></span>
-            <button data-r="session" class="on" type="button">Session</button>
+            <button data-r="session" class="on" type="button">Since session</button>
             <button data-r="28" type="button">4 weeks</button>
             <button data-r="all" type="button">Everything</button>
             <button data-r="custom" type="button">Custom</button>
@@ -2043,8 +2090,8 @@
       </div>
       <p class="foot" id="range-info"></p>
       <div class="acts">
-        <button class="btn" id="export-md" type="button"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8M5 5l3-3 3 3M3 8v5a1.5 1.5 0 0 0 1.5 1.5h7A1.5 1.5 0 0 0 13 13V8"/></svg>Share summary</button>
-        <button class="round" id="copy-md" type="button" aria-label="Copy the summary"><svg viewBox="0 0 16 16"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2h-6A1.5 1.5 0 0 0 2 3.5v6A1.5 1.5 0 0 0 3.5 11H5"/></svg></button>
+        <button class="btn ghost" id="preview-md" type="button">Preview</button>
+        <button class="btn" id="export-md" type="button"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8M5 5l3-3 3 3M3 8v5a1.5 1.5 0 0 0 1.5 1.5h7A1.5 1.5 0 0 0 13 13V8"/></svg>Share</button>
       </div>
     </div>
 
@@ -2058,7 +2105,7 @@
     <p class="foot lone" id="last-export"></p>
     <span id="range-value" hidden></span>
 
-    <p class="closing">Feeling 59 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
+    <p class="closing">Feeling 60 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
   </section>
 </main>
 
@@ -2348,7 +2395,7 @@
     const card = el('div', 'entry frost' + (clamped ? ' clamped' : ''));
     const meta = el('div', 'meta');
     if (e.mood) { const f = faceSVG(e.mood, 18); f.setAttribute('role', 'img'); meta.appendChild(f); }
-    meta.appendChild(el('span', null, fmtTime(e.ts)));
+    meta.appendChild(el('span', null, e.text || !e.mood ? fmtTime(e.ts) : `${fmtTime(e.ts)} · ${WORDS[e.mood]}`));
     if (e.edited) meta.appendChild(el('span', null, 'edited'));
     card.appendChild(meta);
     const body = el('div', 'text', e.text); card.appendChild(body);
@@ -2434,6 +2481,13 @@
   }
   function lastSession() { return db.sessions.length ? db.sessions[db.sessions.length - 1] : null; }
 
+  // a day's colour: best mood on top, worst below (one colour when they match)
+  function dayFill(es) {
+    const ms = es.map((e) => e.mood).filter((m) => m > 0);
+    const sorted = ms.slice().sort((a, b) => level(a) - level(b));
+    const best = ms.length ? sorted[sorted.length - 1] : 3, worst = ms.length ? sorted[0] : 3;
+    return `linear-gradient(to bottom, var(--m${best}) 0 50%, var(--m${worst}) 50% 100%)`;
+  }
   function renderMonth() {
     const grid = $('#mgrid'); grid.innerHTML = '';
     $('#m-label').textContent = new Date(mY, mM, 1).toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
@@ -2454,11 +2508,8 @@
       const es = byDay.get(k);
       if (es) {
         cell.classList.add('has');
-        const ms = es.map((e) => e.mood).filter((m) => m > 0);
-        const sorted = ms.slice().sort((a, b) => level(a) - level(b));
-        const best = ms.length ? sorted[sorted.length - 1] : 3, worst = ms.length ? sorted[0] : 3;
-        inner.style.background = `linear-gradient(to bottom, var(--m${best}) 0 50%, var(--m${worst}) 50% 100%)`;
-      }
+        inner.style.background = dayFill(es);
+      } else if (k > tk) { cell.classList.add('future'); cell.disabled = true; }
       if (k === tk) cell.classList.add('today');
       if (k === selDay) cell.classList.add('sel');
       cell.appendChild(inner);
@@ -2470,9 +2521,27 @@
     }
   }
 
+  function weekStart(k) { return shiftKey(k, -((keyToDate(k).getDay() + 6) % 7)); }
+  function weekLabel(ws, thisWeek) {
+    if (ws === thisWeek) return 'This week';
+    if (ws === shiftKey(thisWeek, -7)) return 'Last week';
+    const d = keyToDate(ws), y = d.getFullYear() !== new Date().getFullYear() ? ` ${d.getFullYear()}` : '';
+    return `Week of ${d.getDate()} ${d.toLocaleDateString(undefined, { month: 'long' })}${y}`;
+  }
+  function shortDay(k) {
+    const d = keyToDate(k);
+    return `${d.toLocaleDateString(undefined, { weekday: 'short' })} ${d.getDate()} ${d.toLocaleDateString(undefined, { month: 'short' })}`;
+  }
+  const searchToggle = $('#search-toggle'), searchBox = $('#search-box');
+  searchToggle.addEventListener('click', () => {
+    const open = !searchBox.classList.contains('open');
+    searchBox.classList.toggle('open', open); searchToggle.setAttribute('aria-expanded', open);
+    if (open) $('#search').focus();
+    else if ($('#search').value) { $('#search').value = ''; renderHistory(); }
+  });
   function renderHistory() {
     const none = !db.entries.length;
-    ['#moodlog', '#moodlog-cap', '.search', '#filter-seg'].forEach((q) => $(q).classList.toggle('hidden', none));
+    ['#moodlog', '#moodlog-cap', '.filterrow', '#search-box'].forEach((q) => $(q).classList.toggle('hidden', none));
     const box = $('#history'); box.innerHTML = '';
     const q = $('#search').value.trim().toLowerCase();
     let list = db.entries;
@@ -2484,11 +2553,19 @@
     if (filter === 'low') days = days.filter(([, es]) => es.some((e) => e.mood && level(e.mood) <= 2));
     if (filter === 'high') days = days.filter(([, es]) => es.some((e) => level(e.mood) >= 4));
     if (!days.length) { box.appendChild(el('div', 'empty', db.entries.length ? 'Nothing matches.' : 'No entries yet. Your record starts on the Today tab.')); return; }
+    // grouped by week (Monday first); one card per day, a dot per entry in the order you saved them
+    const thisWeek = weekStart(todayKey());
+    let wk = null;
     for (const [k, es] of days) {
-      const d = el('div', 'day');
+      const ws = weekStart(k);
+      if (ws !== wk) { wk = ws; box.appendChild(el('p', 'weeklabel', weekLabel(ws, thisWeek))); }
+      const d = el('div', 'day frost');
       const head = el('button', 'dayhead'); head.type = 'button';
-      head.appendChild(el('b', null, fmtDay(k, false)));
-      head.appendChild(moodArc(es, 130, 40));
+      head.appendChild(el('b', null, shortDay(k)));
+      head.setAttribute('aria-label', `${fmtDay(k, false)}, ${es.length} ${es.length === 1 ? 'entry' : 'entries'}. Open the day`);
+      const dots = el('span', 'daydots');
+      for (const e of es) if (e.mood) { const i = el('i'); i.style.background = `var(--m${e.mood})`; dots.appendChild(i); }
+      head.appendChild(dots);
       head.addEventListener('click', () => openSheet(k));
       d.appendChild(head);
       for (const e of es) d.appendChild(entryCard(e, true));
@@ -2502,8 +2579,6 @@
     closeSheet(true);
     sheetDay = k;
     const es = db.entries.filter((e) => e.day === k).sort((a, b) => a.ts - b.ts);
-    const wrap = el('div', 'sheet');
-    const back = el('div', 'backdrop');
     const panel = el('div', 'panel');
     panel.appendChild(el('div', 'grabber'));
     const d = keyToDate(k);
@@ -2525,6 +2600,12 @@
     done.addEventListener('click', () => closeSheet());
     panel.appendChild(done);
 
+    mountSheet(panel, instant);
+  }
+  // backdrop, drag to dismiss, and the slide in: shared by the day sheet and the summary preview
+  function mountSheet(panel, instant) {
+    const wrap = el('div', 'sheet');
+    const back = el('div', 'backdrop');
     back.addEventListener('click', () => closeSheet());
     let y0 = null, dy = 0;
     panel.addEventListener('touchstart', (ev) => { y0 = panel.scrollTop <= 0 ? ev.touches[0].clientY : null; dy = 0; }, { passive: true });
@@ -2546,8 +2627,8 @@
     wrap.append(back, panel);
     document.body.appendChild(wrap);
     sheetEl = wrap;
-    if (instant) wrap.classList.add('in');
-    else requestAnimationFrame(() => requestAnimationFrame(() => wrap.classList.add('in')));
+    if (!instant) void wrap.offsetWidth;   // commit the closed state, then slide in (no rAF, which a throttled page may skip)
+    wrap.classList.add('in');
   }
   function closeSheet(silent) {
     if (!sheetEl) { if (!silent) sheetDay = null; return; }
@@ -2623,9 +2704,61 @@
     const ok = await shareOrDownload(new Blob([toMarkdown(es)], { type: 'text/markdown' }), `feeling-${todayKey()}.md`, 'Feeling record');
     if (ok) toast('Shared');
   });
-  $('#copy-md').addEventListener('click', async () => {
+  async function copySummary() {
     const es = rangeEntries(); if (!es.length) { toast('No entries in this range'); return; }
     try { await navigator.clipboard.writeText(toMarkdown(es)); toast('Copied'); } catch (e) { toast('Copy not allowed here'); }
+  }
+  // the preview shows what toMarkdown sends: same range, same days, same order, the session lines at the end
+  $('#preview-md').addEventListener('click', () => {
+    const es = rangeEntries(); if (!es.length) { toast('No entries in this range'); return; }
+    closeSheet(true); sheetDay = null;
+    const days = groupByDay(es).reverse();
+    const panel = el('div', 'panel');
+    panel.appendChild(el('div', 'grabber'));
+    panel.appendChild(el('p', 'lead-sub', 'This is what your psychologist gets'));
+    const page = el('div', 'preview-page');
+    page.appendChild(el('h3', null, 'Feeling record'));
+    const first = days[0][0], last = days[days.length - 1][0];
+    const span = first === last ? fmtDay(first, true) : `${fmtDay(first, false)} – ${fmtDay(last, true)}`;
+    page.appendChild(el('p', 'pv-sub', `${span} · ${es.length} ${es.length === 1 ? 'entry' : 'entries'} over ${days.length} ${days.length === 1 ? 'day' : 'days'}`));
+    // one bar per calendar day across the range, as tall as that day's best mood
+    const chart = el('div', 'pv-chart'), bars = el('div', 'pv-bars'), byDay = new Map(days);
+    for (let k = first, guard = 0; k <= last && guard < 400; k = shiftKey(k, 1), guard++) {
+      const b = el('i'), ds = byDay.get(k), ms = ds ? ds.map((e) => e.mood).filter((m) => m > 0) : [];
+      if (ms.length) { const best = ms.sort((a, c) => level(c) - level(a))[0]; b.style.height = (8 + level(best) * 9) + 'px'; b.style.background = `var(--m${best})`; }
+      else b.classList.add('none');
+      if (db.sessions.includes(k)) { b.classList.add('session'); b.title = 'Session'; }
+      bars.appendChild(b);
+    }
+    chart.appendChild(bars);
+    const axis = el('div', 'pv-axis');
+    axis.append(el('span', null, shortDay(first)), el('span', null, shortDay(last)));
+    chart.appendChild(axis);
+    page.appendChild(chart);
+    for (const [k, list] of days) {
+      const d = el('div', 'pv-day');
+      d.appendChild(el('b', null, fmtDay(k, true)));
+      for (const e of list) {
+        const p = el('p'); p.appendChild(el('span', null, `${fmtTime(e.ts)}${e.mood ? ' · ' + WORDS[e.mood] : ''}${e.edited ? ' · edited' : ''}${e.text ? ' · ' : ''}`));
+        if (e.text) p.appendChild(document.createTextNode(e.text));
+        d.appendChild(p);
+      }
+      page.appendChild(d);
+    }
+    for (const sk of db.sessions) if (days.some(([k]) => k >= sk)) page.appendChild(el('p', 'pv-note', `Psychologist session on ${fmtDay(sk, true)}`));
+    panel.appendChild(page);
+    const acts = el('div', 'preview-acts');
+    const copy = el('button', 'round'); copy.type = 'button'; copy.setAttribute('aria-label', 'Copy the summary');
+    copy.innerHTML = '<svg viewBox="0 0 16 16"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2h-6A1.5 1.5 0 0 0 2 3.5v6A1.5 1.5 0 0 0 3.5 11H5"/></svg>';
+    copy.addEventListener('click', copySummary);
+    const share = el('button', 'btn', 'Share summary'); share.type = 'button';
+    share.addEventListener('click', () => $('#export-md').click());
+    acts.append(copy, share);
+    panel.appendChild(acts);
+    const done = el('button', 'done', 'Done'); done.type = 'button'; done.setAttribute('aria-label', 'Close');
+    done.addEventListener('click', () => closeSheet());
+    panel.appendChild(done);
+    mountSheet(panel);
   });
   $('#export-json').addEventListener('click', async () => {
     const data = { app: 'feeling', version: 1, exportedAt: new Date().toISOString(), entries: db.entries, sessions: db.sessions };
@@ -2914,16 +3047,32 @@
     const n = inC ? (c.members || []).length : 0;
     $('#hero-sub').textContent = PLACE_NAMES[getPlace()] + (inC ? ` · circle ${c.code} · ${n ? n + (n === 1 ? ' other' : ' others') : 'nobody else yet'}` : ' · not in a circle');
   }
+  // your month as a strip, one bar per day: no counters that read like a score (Feeling 60)
+  function renderMonthStrip() {
+    const tk = todayKey(), [y, m] = tk.split('-').map(Number), prefix = tk.slice(0, 8);
+    const byDay = new Map();
+    for (const e of db.entries) if (e.day.startsWith(prefix)) { if (!byDay.has(e.day)) byDay.set(e.day, []); byDay.get(e.day).push(e); }
+    const strip = $('#mc-strip'); strip.innerHTML = '';
+    const n = new Date(y, m, 0).getDate();
+    for (let d = 1; d <= n; d++) {
+      const k = prefix + pad(d), es = byDay.get(k), i = el('i');
+      if (es) i.style.background = dayFill(es); else i.classList.add(k > tk ? 'future' : 'miss');
+      if (k === tk) i.classList.add('today');
+      strip.appendChild(i);
+    }
+    const entries = [...byDay.values()].reduce((a, es) => a + es.length, 0);
+    $('#mc-title').textContent = `Your ${keyToDate(tk).toLocaleDateString(undefined, { month: 'long' })}`;
+    $('#mc-count').textContent = entries ? `${byDay.size} ${byDay.size === 1 ? 'day' : 'days'} · ${entries} ${entries === 1 ? 'entry' : 'entries'}` : 'Nothing yet';
+    strip.setAttribute('role', 'img');
+    strip.setAttribute('aria-label', `This month: you checked in on ${byDay.size} ${byDay.size === 1 ? 'day' : 'days'}`);
+  }
   function renderExport() {
     const s = lastSession();
     $('#session-info').textContent = s ? `Last: ${fmtDay(s, false)}` : 'None marked yet';
     const es = rangeEntries(); const days = new Set(es.map((e) => e.day)).size;
     $('#range-value').textContent = RANGE_NAMES[range] || 'Custom';
     $('#range-info').textContent = es.length ? `${es.length} ${es.length === 1 ? 'entry' : 'entries'} over ${days} ${days === 1 ? 'day' : 'days'}. Nothing is sent until you share it.` : 'No entries in this range.';
-    $('#st-entries').textContent = db.entries.length;
-    $('#st-days').textContent = new Set(db.entries.map((e) => e.day)).size;
-    const month = todayKey().slice(0, 7);
-    $('#st-month').textContent = db.entries.filter((e) => e.day.startsWith(month)).length;   // not a streak: a skipped day is not a failure (I6)
+    renderMonthStrip();
     let bytes = 0;
     try { bytes = new Blob([localStorage.getItem(KEY) || '']).size; } catch (e) { bytes = (JSON.stringify(db) || '').length; }
     const size = bytes < 1024 * 1024 ? Math.max(1, Math.round(bytes / 1024)) + ' KB' : (bytes / 1048576).toFixed(1) + ' MB';
