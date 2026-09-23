@@ -161,7 +161,11 @@
   #status::placeholder { color: var(--muted); }
   #status:focus { border-color: var(--accent-40); box-shadow: 0 0 0 3px var(--accent-soft), 0 10px 30px rgba(20,30,35,.07); }
   /* circle strip: each friend's latest face, and today's word if there is one, beside the Yesterday pill. Scrolls sideways. */
-  .headrow > div:first-child { min-width: 0; flex: 1; }
+  .headrow > div:first-child { min-width: 0; flex: 1; position: relative; }
+  /* a soft veil of sky behind the greeting and date: by day the sun glow sat right behind them (Feeling 61) */
+  #tab-today .headrow > div:first-child::before { content: ""; position: absolute; left: -40px; top: -24px; width: 340px; height: 150px; z-index: -1; pointer-events: none; background: radial-gradient(ellipse at 36% 42%, color-mix(in srgb, var(--sky-mid) 80%, transparent) 0%, transparent 70%); }
+  #tab-today .headrow h1 { text-shadow: 0 0 18px color-mix(in srgb, var(--sky-mid) 90%, transparent); }
+  #tab-today .headrow .sub { color: color-mix(in srgb, var(--muted) 75%, var(--ink)); text-shadow: 0 0 10px var(--sky-mid); }
   .pillrow { display: flex; align-items: center; gap: 8px; margin: 8px -52px 0 0; }   /* runs on under the rain toggle, which sits higher */
   .pillrow .pill { margin-top: 0; flex: none; }
   /* earlier today: one chip that opens the day sheet, so saved entries never sit on the scene */
@@ -321,8 +325,6 @@
   .search:not(.open) { display: none; }
   .search.open { margin-top: 10px; }
   .dayhead b { font-family: var(--serif); font-size: 17px; font-weight: 600; color: var(--ink); }
-  .dayhead .arc { flex: 0 0 auto; }
-  .arc-line { fill: none; stroke: var(--accent); stroke-opacity: .4; stroke-width: 2; stroke-linecap: round; }
 
   .empty { color: var(--muted); text-align: center; padding: 36px 10px; font-size: 15px; }
 
@@ -449,7 +451,17 @@
   .sheet .done { position: absolute; top: 18px; right: 20px; border: 0; background: none; font: inherit; font-size: 16px; font-weight: 600; color: var(--accent); padding: 8px 4px; }
   .sheet h2 { font-family: var(--serif); font-size: 28px; font-weight: 600; margin: 0; }
   .sheet .date { font-size: 13px; color: var(--muted); margin: 4px 0 0; }
-  .arc-big { background: var(--track); border-radius: 18px; padding: 12px; margin: 18px 0; }
+  /* the day as a timeline: morning to night tint, a face where each entry sits in time (Feeling 61) */
+  .timeline { position: relative; height: 102px; margin: 20px 0 14px; }
+  .tl-band { position: absolute; left: 0; right: 0; top: 0; height: 80px; border-radius: 14px; background: linear-gradient(90deg, rgba(var(--orb-rgb),0) 0%, rgba(var(--orb-rgb),.28) 45%, rgba(185,169,180,.22) 75%, rgba(34,49,58,.12) 100%); }
+  html.night .tl-band { background: linear-gradient(90deg, rgba(255,255,255,.02) 0%, rgba(255,255,255,.06) 45%, rgba(255,255,255,.03) 100%); }
+  .tl-line { position: absolute; left: 0; top: 0; width: 100%; height: 80px; overflow: visible; }
+  .tl-line path { fill: none; stroke: var(--accent); stroke-opacity: .4; stroke-width: 2; stroke-linecap: round; }
+  .tl-face { position: absolute; width: 26px; height: 26px; margin: -13px 0 0 -13px; border-radius: 50%; background: var(--card); }
+  .tl-face svg { display: block; }
+  .tl-axis { position: absolute; left: 0; right: 0; top: 86px; height: 16px; font-size: 11px; color: var(--muted); }
+  .tl-axis span { position: absolute; transform: translateX(-50%); }
+  .sheet .sheetday { background: var(--glass-strong); border: 1px solid var(--glass-line); box-shadow: 0 10px 30px rgba(20,30,35,.06); margin-bottom: 8px; }
 
   .toast { position: fixed; left: 50%; bottom: calc(92px + env(safe-area-inset-bottom) - var(--vgap)); transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 999px; font-size: 14px; opacity: 0; transition: opacity .2s; pointer-events: none; z-index: 20; }
   .toast.show { opacity: 1; }
@@ -2105,7 +2117,7 @@
     <p class="foot lone" id="last-export"></p>
     <span id="range-value" hidden></span>
 
-    <p class="closing">Feeling 60 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
+    <p class="closing">Feeling 61 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
   </section>
 </main>
 
@@ -2271,36 +2283,37 @@
     return row;
   }
 
-  // ---------- mood arc ----------
-  function moodArc(entries, w, h) {
+  // ---------- the day as a timeline: each face at the time you saved it, 6:00 to 24:00 (Feeling 61) ----------
+  function dayTimeline(entries) {
     const pts = entries.filter((e) => e.mood > 0).sort((a, b) => a.ts - b.ts);
-    const s = document.createElementNS(SVGNS, 'svg');
-    s.setAttribute('class', 'arc'); s.setAttribute('width', w); s.setAttribute('height', h);
-    s.setAttribute('viewBox', `0 0 ${w} ${h}`); s.setAttribute('aria-hidden', 'true');
-    if (!pts.length) return s;
-    const padX = 10, padY = 9, r = h > 60 ? 6 : 4.5;
-    const n = pts.length;
-    const xy = pts.map((e, i) => [n === 1 ? w / 2 : padX + i * (w - 2 * padX) / (n - 1), h - padY - (level(e.mood) - 1) / 4 * (h - 2 * padY)]);
-    if (n > 1) {
-      let d = `M${xy[0][0].toFixed(1)},${xy[0][1].toFixed(1)}`;
-      for (let i = 0; i < n - 1; i++) {
-        const p0 = xy[i - 1] || xy[i], p1 = xy[i], p2 = xy[i + 1], p3 = xy[i + 2] || xy[i + 1];
-        const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
-        const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
-        d += ` C${c1[0].toFixed(1)},${c1[1].toFixed(1)} ${c2[0].toFixed(1)},${c2[1].toFixed(1)} ${p2[0].toFixed(1)},${p2[1].toFixed(1)}`;
-      }
-      const p = document.createElementNS(SVGNS, 'path');
-      p.setAttribute('class', 'arc-line'); p.setAttribute('d', d);
-      s.appendChild(p);
+    const hour = (e) => { const d = new Date(e.ts); const h = d.getHours() + d.getMinutes() / 60; return h < DAY_START_HOUR ? h + 24 : h; };   // after midnight belongs to the evening before
+    const hs = pts.map(hour);
+    const lo = Math.min(6, ...hs), hi = Math.max(24, ...hs);
+    const x = (h) => 4 + (h - lo) / (hi - lo) * 92;                       // % across, a little in from each edge
+    const y = (m) => 66 - (level(m) - 1) / 4 * 52;                         // px down a 80 px band: better is higher
+    const box = el('div', 'timeline');
+    box.setAttribute('role', 'img');
+    box.setAttribute('aria-label', pts.length ? 'Your day: ' + pts.map((e) => `${fmtTime(e.ts)} ${WORDS[e.mood]}`).join(', ') : 'No faces this day');
+    box.appendChild(el('div', 'tl-band'));
+    if (pts.length > 1) {
+      const svg = document.createElementNS(SVGNS, 'svg');
+      svg.setAttribute('class', 'tl-line'); svg.setAttribute('viewBox', '0 0 100 80'); svg.setAttribute('preserveAspectRatio', 'none'); svg.setAttribute('aria-hidden', 'true');
+      const p = pts.map((e, i) => [x(hs[i]), y(e.mood)]);
+      let d = `M${p[0][0].toFixed(2)},${p[0][1].toFixed(1)}`;
+      for (let i = 1; i < p.length; i++) { const mx = (p[i - 1][0] + p[i][0]) / 2; d += ` C${mx.toFixed(2)},${p[i - 1][1].toFixed(1)} ${mx.toFixed(2)},${p[i][1].toFixed(1)} ${p[i][0].toFixed(2)},${p[i][1].toFixed(1)}`; }
+      const path = document.createElementNS(SVGNS, 'path'); path.setAttribute('d', d); path.setAttribute('vector-effect', 'non-scaling-stroke');
+      svg.appendChild(path); box.appendChild(svg);
     }
-    xy.forEach(([x, y], i) => {
-      const c = document.createElementNS(SVGNS, 'circle');
-      c.setAttribute('cx', x.toFixed(1)); c.setAttribute('cy', y.toFixed(1)); c.setAttribute('r', r);
-      c.setAttribute('fill', `var(--m${pts[i].mood})`);
-      s.appendChild(c);
+    pts.forEach((e, i) => {
+      const f = el('span', 'tl-face'); f.style.left = x(hs[i]) + '%'; f.style.top = y(e.mood) + 'px';
+      f.appendChild(faceSVG(e.mood, 26)); box.appendChild(f);
     });
-    return s;
+    const axis = el('div', 'tl-axis');
+    for (const h of [6, 12, 18, 24]) if (h >= lo && h <= hi) { const t = el('span', null, `${h}:00`); t.style.left = x(h) + '%'; axis.appendChild(t); }
+    box.appendChild(axis);
+    return box;
   }
+
 
   // ---------- today tab ----------
   const text = $('#text'), saveBtn = $('#save'), moodsEl = $('#moods'), backdateBtn = $('#backdate');
@@ -2583,12 +2596,11 @@
     panel.appendChild(el('div', 'grabber'));
     const d = keyToDate(k);
     panel.appendChild(el('h2', null, d.toLocaleDateString(undefined, { weekday: 'long' })));
-    panel.appendChild(el('p', 'date', `${d.getDate()} ${d.toLocaleDateString(undefined, { month: 'long' })} ${d.getFullYear()}`));
-    const arcBox = el('div', 'arc-big');
-    const w = Math.min(window.innerWidth - 96, 544);
-    arcBox.appendChild(moodArc(es, w, 80));
-    panel.appendChild(arcBox);
-    for (const e of es) panel.appendChild(entryCard(e, false));
+    panel.appendChild(el('p', 'date', `${d.getDate()} ${d.toLocaleDateString(undefined, { month: 'long' })} ${d.getFullYear()} · ${es.length} ${es.length === 1 ? 'entry' : 'entries'}`));
+    panel.appendChild(dayTimeline(es));
+    const card = el('div', 'day sheetday');
+    for (const e of es) card.appendChild(entryCard(e, false));
+    panel.appendChild(card);
     const share = el('button', 'btn mid');
     share.type = 'button';
     share.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>Share this day';
