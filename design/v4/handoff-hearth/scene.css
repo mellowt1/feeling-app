@@ -41,7 +41,12 @@
   html[data-place="hearth"] .bottle { animation: none; bottom: calc(248vw / 3.9); left: calc(302vw / 3.9); }
   html[data-place="hearth"] .bottle.b1 { left: calc(320vw / 3.9); }
   html[data-place="hearth"] .bottle.b2 { left: calc(338vw / 3.9); }
-  html[data-place="hearth"] .bottle .bob { --tilt: 0deg; transform: scale(.8); transform-origin: 50% 100%; animation: none; }
-  html[data-place="hearth"] .bottle.fresh .bob { animation: bottleDrop 1.4s cubic-bezier(.3,.7,.3,1) 1; }
+  html[data-place="hearth"] .bottle .bob { --tilt: 0deg; transform: none; transform-origin: 50% 100%; animation: hhBottleGlow 3.2s ease-in-out infinite alternate; filter: drop-shadow(0 0 4px rgba(255,186,110,.8)) drop-shadow(0 0 10px rgba(255,160,80,.45)); }
+  /* easy to spot by the fire: warm glass, a bright note inside, catching the firelight (Feeling 69) */
+  html[data-place="hearth"] .bottle g { opacity: 1; }
+  html[data-place="hearth"] .bottle .glass { fill: #9FC7B4; }
+  html[data-place="hearth"] .bottle .note { fill: #FFF3DC; }
+  @keyframes hhBottleGlow { from { filter: drop-shadow(0 0 3px rgba(255,186,110,.6)) drop-shadow(0 0 8px rgba(255,160,80,.3)); } to { filter: drop-shadow(0 0 5px rgba(255,196,120,.95)) drop-shadow(0 0 14px rgba(255,160,80,.55)); } }
+  html[data-place="hearth"] .bottle.fresh .bob { animation: bottleDrop 1.4s cubic-bezier(.3,.7,.3,1) 1, hhBottleGlow 3.2s ease-in-out 1.4s infinite alternate; }
   html[data-place="hearth"] .bottle .ring { display: none; }
   html[data-place="hearth"] body.dock .bottle { margin-bottom: 0; }
