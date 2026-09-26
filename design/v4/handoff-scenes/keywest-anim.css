@@ -1,0 +1,29 @@
+body{margin:0}
+.k-star{animation:kTw 4s ease-in-out infinite alternate}.k-star.s2{animation-duration:5.5s;animation-delay:-2s}.k-star.s3{animation-duration:3.2s;animation-delay:-1s}
+@keyframes kTw{from{opacity:.35}to{opacity:1}}
+.k-sunglow{transform-box:fill-box;transform-origin:50% 50%;animation:kGlow 7s ease-in-out infinite alternate}@keyframes kGlow{to{transform:scale(1.08);opacity:.85}}
+.k-cloud{animation:kCloud 70s ease-in-out infinite alternate}.k-cloud.c2{animation-duration:90s;animation-delay:-30s}@keyframes kCloud{from{transform:translateX(-10px)}to{transform:translateX(14px)}}
+.k-frigate{animation:kSoar 30s ease-in-out infinite}@keyframes kSoar{0%,100%{transform:translate(0,0)}50%{transform:translate(90px,8px)}}
+.k-beam{transform-box:view-box;transform-origin:150px 170.5px;animation:kSweep 12s ease-in-out infinite alternate}@keyframes kSweep{from{transform:rotate(-14deg)}to{transform:rotate(12deg)}}
+.k-sail{animation:kSail 80s linear infinite alternate}@keyframes kSail{to{transform:translateX(-26px)}}
+.k-gl{animation:kGlint 2.6s ease-in-out infinite alternate}.k-gl.g2{animation-duration:3.4s;animation-delay:-1.2s}.k-gl.g3{animation-duration:2.1s;animation-delay:-.6s}
+@keyframes kGlint{0%{opacity:.25;transform:translateX(-3px)}100%{opacity:1;transform:translateX(3px)}}
+.k-turtle{animation:kTurtle 26s ease-in-out infinite alternate}@keyframes kTurtle{from{transform:translate(-10px,2px)}to{transform:translate(30px,-2px)}}
+.k-dolphin{transform-box:fill-box;transform-origin:50% 100%;animation:kArc 12s ease-in-out infinite;opacity:0}.k-dolphin.k2{animation-delay:.5s}
+@keyframes kArc{0%,70%{opacity:0;transform:translate(0,8px) rotate(-18deg)}74%{opacity:1;transform:translate(6px,0) rotate(-8deg)}80%{opacity:1;transform:translate(16px,-4px) rotate(6deg)}86%{opacity:0;transform:translate(26px,6px) rotate(20deg)}100%{opacity:0}}
+.k-wave{animation:kDrift 9s ease-in-out infinite alternate}.k-wave.w2{animation-duration:12s;animation-delay:-4s}@keyframes kDrift{from{transform:translateX(-4px)}to{transform:translateX(4px)}}
+.k-surf{animation:kSurf 6s ease-in-out infinite}.k-surf.s2{animation-delay:-3s}
+@keyframes kSurf{0%,100%{transform:translateY(0);opacity:.9}50%{transform:translateY(3px);opacity:.4}}
+.k-egret{transform-box:fill-box;transform-origin:50% 100%;animation:kStep 16s ease-in-out infinite}@keyframes kStep{0%,80%,100%{transform:none}86%{transform:rotate(-3deg) translateX(1px)}92%{transform:rotate(1deg)}}
+.k-rooster{animation:kWalk 40s ease-in-out infinite alternate}@keyframes kWalk{from{transform:translateX(-12px)}to{transform:translateX(18px)}}
+.k-hen{transform-box:fill-box;transform-origin:40% 100%;animation:kPeck 7s ease-in-out infinite}@keyframes kPeck{0%,70%,100%{transform:none}76%,84%{transform:rotate(14deg) translateY(1px)}80%{transform:rotate(8deg)}}
+.k-crab{animation:kScuttle 14s ease-in-out infinite}@keyframes kScuttle{0%,60%,100%{transform:none}70%{transform:translateX(18px)}80%{transform:translateX(30px)}}
+.k-crown{transform-box:view-box;transform-origin:254px 192px;animation:kFronds 5s ease-in-out infinite alternate}.k-crown.c2{transform-origin:364px 182px;animation-duration:5.8s;animation-delay:-2s}@keyframes kFronds{from{transform:rotate(-1.6deg)}to{transform:rotate(1.8deg)}}
+.k-pelican{animation:kFly 44s linear infinite}@keyframes kFly{0%{transform:translate(-40px,0)}50%{transform:translate(200px,8px)}100%{transform:translate(440px,-4px)}}
+.breathe-fig{transform-box:fill-box;transform-origin:50% 100%;animation:kBreath 4.6s ease-in-out infinite alternate}@keyframes kBreath{to{transform:scale(1.012,1.018)}}
+.k-car{animation:kCar 34s linear infinite}@keyframes kCar{from{transform:translateX(0)}to{transform:translateX(250px)}}
+.k-skiff{transform-box:fill-box;transform-origin:50% 100%;animation:kBob 4s ease-in-out infinite alternate}@keyframes kBob{from{transform:translateY(0) rotate(-1.5deg)}to{transform:translateY(1.2px) rotate(1.5deg)}}
+.k-hammock{transform-box:view-box;transform-origin:317px 268px;animation:kSwing 6s ease-in-out infinite alternate}@keyframes kSwing{from{transform:rotate(-1.4deg)}to{transform:rotate(1.4deg)}}
+.k-bulbs circle{animation:kBulb 2.4s ease-in-out infinite alternate}.k-bulbs circle:nth-child(2n){animation-delay:-1.2s}@keyframes kBulb{from{opacity:.7}to{opacity:1}}
+.k-grape{transform-box:fill-box;transform-origin:50% 100%;animation:kGrape 6s ease-in-out infinite alternate}@keyframes kGrape{from{transform:rotate(-.8deg)}to{transform:rotate(.8deg)}}
+@media (prefers-reduced-motion:reduce){svg *{animation:none!important}}

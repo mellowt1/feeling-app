@@ -1,0 +1,20 @@
+<path d="M58,334 L140,332 L142,342 L60,344 Z" fill="{{ c.towel }}"></path>
+<path d="M76,333.6 L78,343.6 M94,333.2 L96,343.2 M112,332.8 L114,342.8" stroke="{{ c.towelStripe }}" stroke-width="4"></path>
+<g transform="translate(59,266) scale(.5)"><g class="breathe-fig" fill="{{ c.fig }}" stroke="{{ c.fig }}" stroke-linecap="round" stroke-linejoin="round">
+<path stroke="none" d="M150 74 C162 78,168 90,166 106 C164 120,162 130,162 140 L44 140 C34 140,28 134,27 124 C26 116,24 106,29 102 C34 99,39 104,40 112 C42 118,50 114,60 110 C66 107,70 104,74 102 C92 98,108 108,120 114 C124 106,130 92,136 82 C140 76,144 74,150 74 Z"></path>
+<path stroke="none" d="M137 81 L153 75 L153 60 L140 66 Z"></path>
+<ellipse cx="146" cy="60" rx="15" ry="17" transform="rotate(6 146 60)" stroke="none"></ellipse>
+<path fill="none" stroke-width="11" d="M160 90 C170 106,182 122,190 136"></path>
+<circle cx="192" cy="137" r="6" stroke="none"></circle>
+</g></g>
+<g transform="translate(-15,171) scale(1.1)">
+<g class="h-cattail"><path d="M191,148.5 C199,148.5 203.5,144 200,139.5" stroke="{{ c.coon }}" stroke-width="4" fill="none" stroke-linecap="round"></path></g>
+<path d="M162,150 C161,144 165.5,139.6 172,139.6 L182,139.6 C189,139.6 191.5,144 190.5,150 Z" fill="{{ c.coon }}"></path>
+<path d="M166,141.8 C172,140.4 182,140.4 188,142.4" stroke="{{ c.coonStripe }}" stroke-width="1.1" fill="none" stroke-linecap="round"></path>
+<circle cx="163.8" cy="140.6" r="4.6" fill="{{ c.coon }}"></circle>
+<path d="M159.4,137.8 L159.2,131.8 L162.8,136.2 Z M164.2,136.4 L168.2,132 L167.4,138 Z" fill="{{ c.coon }}"></path>
+<g transform="translate(203.7,150) scale(.66) translate(-203.7,-150)"><path d="M196,149 C202.5,149 205.5,143.5 202,138.5" stroke="{{ c.somali }}" stroke-width="3.2" fill="none" stroke-linecap="round"></path>
+<path d="M197,150 C195,142 197.8,134 203,132 C207.4,130.8 210.4,136 210.4,142 L210.4,150 Z" fill="{{ c.somali }}"></path>
+<circle cx="203.8" cy="129.4" r="3.9" fill="{{ c.somali }}"></circle>
+<path d="M200.8,127 L199.6,121.4 L203.6,125.2 Z M205,125 L208.6,121 L208,126.8 Z" fill="{{ c.somali }}"></path>
+</g></g>

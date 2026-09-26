@@ -1,0 +1,29 @@
+body{margin:0}
+.h-star{animation:hTw 4s ease-in-out infinite alternate}.h-star.s2{animation-duration:5.5s;animation-delay:-2s}.h-star.s3{animation-duration:3.2s;animation-delay:-1s}
+@keyframes hTw{from{opacity:.35}to{opacity:1}}
+.h-sunglow{transform-box:fill-box;transform-origin:50% 50%;animation:hGlow 7s ease-in-out infinite alternate}@keyframes hGlow{to{transform:scale(1.08);opacity:.85}}
+.h-cloud{animation:hCloud 60s ease-in-out infinite alternate}.h-cloud.c2{animation-duration:80s;animation-delay:-30s}@keyframes hCloud{from{transform:translateX(-12px)}to{transform:translateX(16px)}}
+.h-whale{transform-box:fill-box;transform-origin:50% 100%;animation:hBreach 22s ease-in-out infinite;opacity:0}
+@keyframes hBreach{0%,82%{opacity:0;transform:translate(0,10px) rotate(-30deg)}85%{opacity:1;transform:translate(4px,-4px) rotate(-20deg)}90%{opacity:1;transform:translate(12px,-6px) rotate(10deg)}94%{opacity:0;transform:translate(18px,8px) rotate(30deg)}100%{opacity:0}}
+.h-spout{transform-box:fill-box;transform-origin:50% 100%;animation:hSpout 22s ease-out infinite}@keyframes hSpout{0%,40%{opacity:0;transform:scaleY(.2)}42%{opacity:.8;transform:scaleY(1)}48%{opacity:0;transform:scaleY(1.4)}100%{opacity:0}}
+.h-gl{animation:hGlint 2.6s ease-in-out infinite alternate}.h-gl.g2{animation-duration:3.4s;animation-delay:-1.2s}.h-gl.g3{animation-duration:2.1s;animation-delay:-.6s}
+@keyframes hGlint{0%{opacity:.25;transform:translateX(-3px)}100%{opacity:1;transform:translateX(3px)}}
+.h-wave{animation:hDrift 10s ease-in-out infinite alternate}@keyframes hDrift{from{transform:translateX(-4px)}to{transform:translateX(4px)}}
+.h-fall{animation:hFall 2.4s ease-in-out infinite alternate}@keyframes hFall{from{opacity:.55}to{opacity:1}}
+.h-mist{animation:hMist 30s ease-in-out infinite alternate}@keyframes hMist{from{transform:translateX(-16px)}to{transform:translateX(16px)}}
+.h-surf{animation:hSurf 6s ease-in-out infinite}.h-surf.s2{animation-delay:-2s}.h-surf.s3{animation-delay:-4s}
+@keyframes hSurf{0%,100%{transform:translateY(0);opacity:.9}50%{transform:translateY(3px);opacity:.4}}
+.h-koae{animation:hKoae 36s ease-in-out infinite}@keyframes hKoae{0%,100%{transform:translate(0,0)}25%{transform:translate(60px,-14px)}50%{transform:translate(130px,-4px)}75%{transform:translate(60px,10px)}}
+.h-akekeke{animation:hRun 9s ease-in-out infinite}.h-akekeke.k2{animation-delay:-3s}@keyframes hRun{0%,60%,100%{transform:none}70%{transform:translateX(10px)}80%{transform:translateX(14px)}}
+.h-crab{animation:hScuttle 14s ease-in-out infinite}@keyframes hScuttle{0%,60%,100%{transform:none}70%{transform:translateX(18px)}80%{transform:translateX(30px)}}
+.h-crown{transform-box:view-box;transform-origin:92px 192px;animation:hFronds 5s ease-in-out infinite alternate}
+@keyframes hFronds{from{transform:rotate(-1.8deg)}to{transform:rotate(2deg)}}
+.h-cattail{transform-box:fill-box;transform-origin:0 50%;animation:hTail 7s ease-in-out infinite alternate}@keyframes hTail{from{transform:rotate(-6deg)}to{transform:rotate(8deg)}}
+.h-lamp{animation:hLamp 3s ease-in-out infinite alternate}@keyframes hLamp{from{opacity:.8}to{opacity:1}}
+.breathe-fig{transform-box:fill-box;transform-origin:50% 100%;animation:hBreath 4.6s ease-in-out infinite alternate}@keyframes hBreath{to{transform:scale(1.012,1.018)}}
+.h-spray circle{transform-box:fill-box;transform-origin:50% 100%;animation:hSpray 7s ease-out infinite;opacity:0}.h-spray circle:nth-child(2){animation-delay:.15s}.h-spray circle:nth-child(3){animation-delay:.3s}.h-spray circle:nth-child(4){animation-delay:.2s}.h-spray circle:nth-child(5){animation-delay:.4s}
+@keyframes hSpray{0%,70%{opacity:0;transform:translateY(10px) scale(.3)}76%{opacity:.9;transform:translateY(-4px) scale(1)}90%{opacity:0;transform:translateY(-10px) scale(1.4)}100%{opacity:0}}
+.h-plum{transform-box:fill-box;transform-origin:10% 100%;animation:hPlum 6s ease-in-out infinite alternate}@keyframes hPlum{from{transform:rotate(-.8deg)}to{transform:rotate(.8deg)}}
+.h-flame{transform-box:fill-box;transform-origin:50% 100%;animation:hFlame .9s ease-in-out infinite alternate}@keyframes hFlame{0%{transform:scale(.9,.85) skewX(-4deg)}100%{transform:scale(1.05,1.12) skewX(3deg)}}
+.h-waa{animation:hWaa 90s linear infinite alternate}@keyframes hWaa{to{transform:translateX(40px)}}
+@media (prefers-reduced-motion:reduce){svg *{animation:none!important}}

@@ -1798,6 +1798,125 @@
   /* sit mode: the water stays as it is; the lamp and the sun breathe a little slower */
   body.dock .dk5 .d-sunglow { animation-duration: 9.2s; }
   /* /dock5:css */
+  /* cp5:css */
+  /* campo, new look (Feeling 68): built by design/v4/handoff-scenes/build.cjs from CampoScene.dc.html. Colours per sky; html.night is the night palette. */
+  .waves.cp5 { display: none; overflow: visible; }
+  html[data-place="campo"] .waves:not(.cp5) { display: none !important; }
+  html[data-place="campo"] .waves.cp5 { display: block !important; }
+  html[data-place="campo"] .waves.cp5::after { display: none; }
+  html[data-place="campo"] .orb { display: none; }   /* the scene has its own sun and moon */
+  .cp5 .cp5-scene { position: absolute; left: 0; bottom: 0; width: 390px; height: 420px; transform-origin: 0 100%; transform: scale(var(--cp5-k, 1)); }
+  .waves.cp5 svg.cp5-layer { position: absolute; left: 0; top: 0; bottom: auto; width: 390px; height: 420px; overflow: visible; animation: none; }
+  .waves.cp5 { --cp-skyTop:#BCD6EA; --cp-skyMid:#D6E6F0; --cp-horizon:#EEF3F1; --cp-sun:#FFFFFF; --cp-sunCore:#FFFFFF; --cp-cloud:#FFFFFF; --cp-cloudLit:#FFFFFF; --cp-range2:#98A6BA; --cp-rock:#7F8698; --cp-rockShade:#646C80; --cp-snow:#FFFFFF; --cp-rim:#FFFFFF; --cp-hills:#8E9CAE; --cp-lake:#6DB2C2; --cp-steppeFar:#D8C58E; --cp-steppeNear:#C9AC66; --cp-ground:#B3924E; --cp-grass:#C4A45A; --cp-grassDark:#8F733A; --cp-shrub:#5E5A3A; --cp-road:#CBBDA4; --cp-roadEdge:#AC9C80; --cp-dash:#F6F0E4; --cp-poplar:#4E7250; --cp-poplarLit:#9DBF7E; --cp-wall:#F6F2EA; --cp-roof:#B85446; --cp-window:#5A6068; --cp-wood:#6A5846; --cp-wire:#857462; --cp-animal:#433A32; --cp-animalFar:#7C6A54; --cp-sheep:#F4EEE4; --cp-fig:#322E2C; --cp-mate:#8A673A; --cp-bombilla:#D0CAC0; --cp-steam:#FFFFFF; --cp-thermos:#93A5AB; --cpv-sunX:344px; --cpv-sunY:116px; --cpv-sunR:9; --cpv-glowR:56; --cpv-stars:0; --cpv-rim:0.4; --cpv-condor:1; --cpv-caracara:1; --cpv-owl:0; --cpv-fox:0; --cpv-hare:1; --cpv-lapwing:1; --cpv-windowGlow:0; }
+  html[data-sky="morning"]:not(.night) .waves.cp5 { --cp-skyTop:#E4DDEA; --cp-skyMid:#F1D8D8; --cp-horizon:#F8E2C4; --cp-sun:#FFD9A0; --cp-sunCore:#FFEBC6; --cp-cloud:#F6D2D2; --cp-cloudLit:#FFE6C4; --cp-range2:#A8A6C0; --cp-rock:#9A8FA6; --cp-rockShade:#7C7390; --cp-snow:#FBE3E6; --cp-rim:#FFB2A8; --cp-hills:#9DA3B6; --cp-lake:#9CC6CC; --cp-steppeFar:#D9C39C; --cp-steppeNear:#CDB07E; --cp-ground:#B89A66; --cp-grass:#C7A868; --cp-grassDark:#977A48; --cp-shrub:#6F6448; --cp-road:#C4B6A2; --cp-roadEdge:#A89880; --cp-dash:#EFE6D6; --cp-poplar:#5D7456; --cp-poplarLit:#A9BC84; --cp-wall:#F2E9DE; --cp-roof:#B0584A; --cp-window:#6E6A70; --cp-wood:#6B5A4A; --cp-wire:#8A7A68; --cp-animal:#4A4038; --cp-animalFar:#7A6A58; --cp-sheep:#F1EAE0; --cp-fig:#35302E; --cp-mate:#8C6A3E; --cp-bombilla:#C9C2B6; --cp-steam:#FFF6EA; --cp-thermos:#8FA0A6; --cpv-sunX:36px; --cpv-sunY:186px; --cpv-sunR:10; --cpv-glowR:70; --cpv-stars:0; --cpv-rim:1; --cpv-condor:1; --cpv-caracara:1; --cpv-owl:0; --cpv-fox:0; --cpv-hare:1; --cpv-lapwing:1; --cpv-windowGlow:0; }
+  html[data-sky="evening"]:not(.night) .waves.cp5 { --cp-skyTop:#C99BAC; --cp-skyMid:#E7AC98; --cp-horizon:#F4C586; --cp-sun:#FF9A50; --cp-sunCore:#FFC27A; --cp-cloud:#D48A86; --cp-cloudLit:#FFC08A; --cp-range2:#86697E; --cp-rock:#6A5468; --cp-rockShade:#554258; --cp-snow:#F2BFAE; --cp-rim:#FF9E70; --cp-hills:#7A6072; --cp-lake:#E0A08A; --cp-steppeFar:#D2A273; --cp-steppeNear:#BC8C5E; --cp-ground:#9A6E48; --cp-grass:#C48E58; --cp-grassDark:#7E5634; --cp-shrub:#503A2C; --cp-road:#B8927C; --cp-roadEdge:#946E5C; --cp-dash:#F4D6C0; --cp-poplar:#4E4A40; --cp-poplarLit:#E0A070; --cp-wall:#F0CDB8; --cp-roof:#8E4038; --cp-window:#FFD08A; --cp-wood:#50382E; --cp-wire:#6E5040; --cp-animal:#33262A; --cp-animalFar:#5E4440; --cp-sheep:#F2D2C0; --cp-fig:#2A2024; --cp-mate:#6E4A30; --cp-bombilla:#D8B8A4; --cp-steam:#FFE6D2; --cp-thermos:#7E8288; --cpv-sunX:262px; --cpv-sunY:180px; --cpv-sunR:14; --cpv-glowR:110; --cpv-stars:0; --cpv-rim:1; --cpv-condor:1; --cpv-caracara:0; --cpv-owl:0; --cpv-fox:1; --cpv-hare:1; --cpv-lapwing:0; --cpv-windowGlow:0.9; }
+  html.night .waves.cp5 { --cp-skyTop:#0A101C; --cp-skyMid:#111A2A; --cp-horizon:#1E2838; --cp-sun:#DCE6EA; --cp-sunCore:#E8EEF0; --cp-cloud:#1C2636; --cp-cloudLit:#36465C; --cp-range2:#161E2C; --cp-rock:#1C2434; --cp-rockShade:#151C2A; --cp-snow:#7E8AA0; --cp-rim:#46546C; --cp-hills:#141B28; --cp-lake:#2A3A50; --cp-steppeFar:#232824; --cp-steppeNear:#1E211C; --cp-ground:#161814; --cp-grass:#3A3A2C; --cp-grassDark:#24241A; --cp-shrub:#141410; --cp-road:#2E3036; --cp-roadEdge:#222428; --cp-dash:#4A4C52; --cp-poplar:#10161A; --cp-poplarLit:#24303A; --cp-wall:#3A3E48; --cp-roof:#2A2226; --cp-window:#FFD08A; --cp-wood:#1E1C1C; --cp-wire:#34322E; --cp-animal:#0C0E10; --cp-animalFar:#1A1C1E; --cp-sheep:#5A5E64; --cp-fig:#0A0C10; --cp-mate:#2A2218; --cp-bombilla:#4A4C50; --cp-steam:#6A7480; --cp-thermos:#3A4248; --cpv-sunX:86px; --cpv-sunY:74px; --cpv-sunR:8; --cpv-glowR:44; --cpv-stars:1; --cpv-rim:0.6; --cpv-condor:0; --cpv-caracara:0; --cpv-owl:1; --cpv-fox:1; --cpv-hare:0; --cpv-lapwing:0; --cpv-windowGlow:1; }
+  .cp5 .c-star{animation:cTw 4s ease-in-out infinite alternate}.cp5 .c-star.s2{animation-duration:5.5s;animation-delay:-2s}.cp5 .c-star.s3{animation-duration:3.2s;animation-delay:-1s}
+  @keyframes cTw{from{opacity:.35}to{opacity:1}}
+  .cp5 .c-sunglow{transform-box:fill-box;transform-origin:50% 50%;animation:cGlow 7s ease-in-out infinite alternate}@keyframes cGlow{to{transform:scale(1.08);opacity:.85}}
+  .cp5 .c-streak{animation:cStreak 50s ease-in-out infinite alternate}@keyframes cStreak{from{transform:translateX(-14px)}to{transform:translateX(18px)}}
+  .cp5 .c-lenti{transform-box:fill-box;transform-origin:50% 50%;animation:cLenti 16s ease-in-out infinite alternate}@keyframes cLenti{from{transform:scaleX(.98) translateY(0)}to{transform:scaleX(1.03) translateY(-1px)}}
+  .cp5 .c-condor{animation:cSoar 34s ease-in-out infinite}@keyframes cSoar{0%{transform:translate(0,0) rotate(0)}25%{transform:translate(60px,-12px) rotate(-4deg)}50%{transform:translate(110px,4px) rotate(2deg)}75%{transform:translate(50px,14px) rotate(4deg)}100%{transform:translate(0,0) rotate(0)}}
+  .cp5 .c-lakeglint{animation:cGlint 3.4s ease-in-out infinite alternate}@keyframes cGlint{from{opacity:.3;transform:translateX(-2px)}to{opacity:.9;transform:translateX(2px)}}
+  .cp5 .c-poplars{transform-box:fill-box;transform-origin:50% 100%;animation:cPoplar 5s ease-in-out infinite alternate}@keyframes cPoplar{from{transform:skewX(-1.5deg)}to{transform:skewX(1.5deg)}}
+  .cp5 .c-blades{animation:cSpin 4s linear infinite}@keyframes cSpin{to{transform:rotate(360deg)}}
+  .cp5 .c-graze{transform-box:fill-box;transform-origin:30% 100%;animation:cGraze 11s ease-in-out infinite}.cp5 .c-graze.g2{animation-delay:-4s;animation-duration:13s}.cp5 .c-graze.g3{animation-delay:-7s;animation-duration:9s}
+  @keyframes cGraze{0%,60%,100%{transform:none}70%,90%{transform:rotate(-5deg) translateY(1px)}}
+  .cp5 .c-rhea{animation:cWalk 70s linear infinite alternate}@keyframes cWalk{from{transform:translateX(0)}to{transform:translateX(-34px)}}
+  .cp5 .c-hare{animation:cHare 24s ease-in-out infinite}@keyframes cHare{0%,80%,100%{transform:none}84%{transform:translate(6px,-3px)}88%{transform:translate(12px,0)}}
+  .cp5 .c-fox{animation:cFox 40s ease-in-out infinite alternate}@keyframes cFox{from{transform:translateX(-20px)}to{transform:translateX(26px)}}
+  .cp5 .c-sway{animation:cSway 3.6s ease-in-out infinite alternate}.cp5 .c-sway.s2{animation-duration:4.4s;animation-delay:-1.4s}.cp5 .c-sway.s3{animation-duration:3s;animation-delay:-.7s}
+  @keyframes cSway{from{transform:skewX(-3deg)}to{transform:skewX(4deg)}}
+  .cp5 .c-sway use{transform-box:fill-box;transform-origin:50% 100%}
+  .cp5 .c-steam path{animation:cSteam 3.6s ease-in-out infinite;opacity:0}.cp5 .c-s2{animation-delay:-1.8s}
+  @keyframes cSteam{0%{transform:translate(0,4px);opacity:0}30%{opacity:.9}100%{transform:translate(1.5px,-8px);opacity:0}}
+  .cp5 .breathe-fig{transform-box:fill-box;transform-origin:50% 100%;animation:cBreath 4.6s ease-in-out infinite alternate}@keyframes cBreath{to{transform:scale(1.012,1.018)}}
+  @media (prefers-reduced-motion: reduce) { .cp5 .cp5-scene * { animation: none !important; } }
+  /* /cp5:css */
+  /* kw5:css */
+  /* keywest, new look (Feeling 68): built by design/v4/handoff-scenes/build.cjs from KeyWestScene.dc.html. Colours per sky; html.night is the night palette. */
+  .waves.kw5 { display: none; overflow: visible; }
+  html[data-place="keywest"] .waves:not(.kw5) { display: none !important; }
+  html[data-place="keywest"] .waves.kw5 { display: block !important; }
+  html[data-place="keywest"] .waves.kw5::after { display: none; }
+  html[data-place="keywest"] .orb { display: none; }   /* the scene has its own sun and moon */
+  .kw5 .kw5-scene { position: absolute; left: 0; bottom: 0; width: 390px; height: 420px; transform-origin: 0 100%; transform: scale(var(--kw5-k, 1)); }
+  .waves.kw5 svg.kw5-layer { position: absolute; left: 0; top: 0; bottom: auto; width: 390px; height: 420px; overflow: visible; animation: none; }
+  .waves.kw5 { --kw-skyTop:#9FD2EC; --kw-skyMid:#C6E6F2; --kw-horizon:#EAF6F4; --kw-sun:#FFFFFF; --kw-sunCore:#FFFFFF; --kw-cloud:#FFFFFF; --kw-cloudShade:#DCE8F0; --kw-cloudLit:#FFFFFF; --kw-far:#7E949A; --kw-car:#D8584A; --kw-seaFar:#2F8FB0; --kw-seaMid:#3EC0C4; --kw-shallow:#9FE6D6; --kw-shallowSand:#F6ECD4; --kw-seagrass:#2A7A70; --kw-key:#5C8070; --kw-tower:#FFFFFF; --kw-towerTop:#2E3236; --kw-glint:#FFFFFF; --kw-foam:#FFFFFF; --kw-under:#1E7070; --kw-hull:#FFFFFF; --kw-hullTrim:#2E7EA8; --kw-line:#7A6A58; --kw-piling:#6A5644; --kw-gull:#FFFFFF; --kw-egret:#FFFFFF; --kw-sandWet:#DCC9A4; --kw-sand:#F6E8CC; --kw-sandDeep:#EAD5AE; --kw-stilt:#7A6250; --kw-shackWall:#9EE0CC; --kw-siding:#80C8B2; --kw-roof:#C4CACE; --kw-roofLine:#969EA4; --kw-window:#4E6E78; --kw-shutter:#F07E5E; --kw-door:#F6C85A; --kw-trim:#FFFFFF; --kw-rooster:#9A4A30; --kw-hen:#B07A50; --kw-iguana:#6A8E48; --kw-shadow:#8C7658; --kw-cooler:#2E7EA8; --kw-flops:#F0604E; --kw-rope:#7A6A58; --kw-hammock:#F6EEDC; --kw-hammockBack:#D4C8B0; --kw-hammockStripe:#E0604E; --kw-fig:#2C383C; --kw-hat:#E0CCA2; --kw-bird:#3C4E57; --kw-crab:#EDE2CE; --kw-grape:#62A04A; --kw-grapeDark:#3E7A3A; --kw-grapeRed:#C0563A; --kw-seaOats:#B09A64; --kw-trunk:#8E7058; --kw-trunkRing:#705846; --kw-frond:#3E7E4E; --kw-frondBack:#2A5E40; --kw-rib:#A6D08A; --kw-dry:#A6844E; --kw-coconut:#6A4E34; --kwv-sunX:250px; --kwv-sunY:100px; --kwv-sunR:9; --kwv-glowR:56; --kwv-stars:0; --kwv-glints:0.6; --kwv-beam:0; --kwv-schooner:0; --kwv-birds:1; --kwv-turtle:1; --kwv-dolphins:0; --kwv-egret:1; --kwv-crab:0; --kwv-lights:0; --kwv-windows:0; --kwv-strings:0; --kwv-iguana:1; }
+  html[data-sky="morning"]:not(.night) .waves.kw5 { --kw-skyTop:#EDE4E8; --kw-skyMid:#F7DCCB; --kw-horizon:#FBE2BE; --kw-sun:#FFD28A; --kw-sunCore:#FFE9BC; --kw-cloud:#F9E2D6; --kw-cloudShade:#E8C4BC; --kw-cloudLit:#FFE8C6; --kw-far:#8E9CA0; --kw-car:#C0584A; --kw-seaFar:#7FA8B4; --kw-seaMid:#86C2C0; --kw-shallow:#B6E0D4; --kw-shallowSand:#F1E2C4; --kw-seagrass:#4E8078; --kw-key:#6E8078; --kw-tower:#F4EEE6; --kw-towerTop:#3A3A3E; --kw-glint:#FFF1D2; --kw-foam:#FFFBF4; --kw-under:#3E7A76; --kw-hull:#F2EEE6; --kw-hullTrim:#3E88A8; --kw-line:#8A7A68; --kw-piling:#6E5A48; --kw-gull:#F4F0EA; --kw-egret:#FFFFFF; --kw-sandWet:#D8C4A2; --kw-sand:#F2E2C4; --kw-sandDeep:#E6CFA8; --kw-stilt:#7A6452; --kw-shackWall:#A8DCCC; --kw-siding:#8CC4B2; --kw-roof:#B8BEC2; --kw-roofLine:#8E969C; --kw-window:#5E7A80; --kw-shutter:#E88A6A; --kw-door:#F0C66A; --kw-trim:#FFFFFF; --kw-rooster:#8A4A34; --kw-hen:#A8744E; --kw-iguana:#6E8A4E; --kw-shadow:#7A6A58; --kw-cooler:#3E88A8; --kw-flops:#E86A5A; --kw-rope:#8A7A68; --kw-hammock:#F0E6D2; --kw-hammockBack:#D0C4AE; --kw-hammockStripe:#D86A5A; --kw-fig:#2F3A3E; --kw-hat:#D8C29A; --kw-bird:#40505A; --kw-crab:#E8DCC8; --kw-grape:#6E9A52; --kw-grapeDark:#4E7A42; --kw-grapeRed:#B8583E; --kw-seaOats:#B8A070; --kw-trunk:#8A6E58; --kw-trunkRing:#6E5646; --kw-frond:#4E7A52; --kw-frondBack:#34604A; --kw-rib:#9CC07E; --kw-dry:#9A7A4E; --kw-coconut:#6E5238; --kwv-sunX:92px; --kwv-sunY:150px; --kwv-sunR:10; --kwv-glowR:70; --kwv-stars:0; --kwv-glints:0.8; --kwv-beam:0; --kwv-schooner:0; --kwv-birds:1; --kwv-turtle:1; --kwv-dolphins:0; --kwv-egret:1; --kwv-crab:0; --kwv-lights:0; --kwv-windows:0; --kwv-strings:0; --kwv-iguana:1; }
+  html[data-sky="evening"]:not(.night) .waves.kw5 { --kw-skyTop:#C890A8; --kw-skyMid:#EEA286; --kw-horizon:#FBC478; --kw-sun:#FF8A48; --kw-sunCore:#FFBC6E; --kw-cloud:#E28E86; --kw-cloudShade:#B26A76; --kw-cloudLit:#FFC28A; --kw-far:#5A4A5A; --kw-car:#3A2E36; --kw-seaFar:#7A6A88; --kw-seaMid:#C58A88; --kw-shallow:#EDB49A; --kw-shallowSand:#F6CCAA; --kw-seagrass:#6A4E5E; --kw-key:#4A3C4A; --kw-tower:#F4D6C4; --kw-towerTop:#2A2228; --kw-glint:#FFD29A; --kw-foam:#FFE6D2; --kw-under:#5A4A5A; --kw-hull:#F2D8C8; --kw-hullTrim:#4E5A7A; --kw-line:#6E5040; --kw-piling:#3E2E2E; --kw-gull:#F4DCD0; --kw-egret:#F8E2D6; --kw-sandWet:#C99C84; --kw-sand:#EEC6A6; --kw-sandDeep:#DDAE8E; --kw-stilt:#4E3A34; --kw-shackWall:#B8B0A0; --kw-siding:#9A9084; --kw-roof:#8E7E80; --kw-roofLine:#6E6064; --kw-window:#FFC878; --kw-shutter:#B05A48; --kw-door:#D8A060; --kw-trim:#F4DCD0; --kw-rooster:#6E3426; --kw-hen:#8A5A40; --kw-iguana:#4E4A36; --kw-shadow:#6E4A40; --kw-cooler:#4E5A7A; --kw-flops:#B8503E; --kw-rope:#6E5040; --kw-hammock:#F0D8C8; --kw-hammockBack:#C8A898; --kw-hammockStripe:#B8503E; --kw-fig:#271E24; --kw-hat:#C8A088; --kw-bird:#2F2630; --kw-crab:#F2D6C4; --kw-grape:#4E4E36; --kw-grapeDark:#36382A; --kw-grapeRed:#8A3E2E; --kw-seaOats:#8E6A50; --kw-trunk:#5E4038; --kw-trunkRing:#4A302A; --kw-frond:#3A3A36; --kw-frondBack:#2A2A2A; --kw-rib:#6E5A48; --kw-dry:#5E4432; --kw-coconut:#3E2A24; --kwv-sunX:150px; --kwv-sunY:188px; --kwv-sunR:15; --kwv-glowR:120; --kwv-stars:0; --kwv-glints:1; --kwv-beam:0.5; --kwv-schooner:1; --kwv-birds:0; --kwv-turtle:0.6; --kwv-dolphins:1; --kwv-egret:1; --kwv-crab:0; --kwv-lights:1; --kwv-windows:0.7; --kwv-strings:1; --kwv-iguana:0; }
+  html.night .waves.kw5 { --kw-skyTop:#0A131C; --kw-skyMid:#12202E; --kw-horizon:#1E3040; --kw-sun:#DCE6EA; --kw-sunCore:#E8EEF0; --kw-cloud:#1A2833; --kw-cloudShade:#131E28; --kw-cloudLit:#2E4250; --kw-far:#16222C; --kw-car:#10161C; --kw-seaFar:#14283A; --kw-seaMid:#183448; --kw-shallow:#1E4450; --kw-shallowSand:#2A3A40; --kw-seagrass:#0E1C22; --kw-key:#0E181E; --kw-tower:#9AA4AA; --kw-towerTop:#0E1418; --kw-glint:#C9D8DE; --kw-foam:#6A8A96; --kw-under:#0E1E26; --kw-hull:#5A646A; --kw-hullTrim:#2A3E4E; --kw-line:#34322E; --kw-piling:#12161A; --kw-gull:#6A747A; --kw-egret:#8A949A; --kw-sandWet:#2A3034; --kw-sand:#363C40; --kw-sandDeep:#2C3236; --kw-stilt:#1E1C1C; --kw-shackWall:#3A4A4A; --kw-siding:#2E3C3C; --kw-roof:#2A3034; --kw-roofLine:#20262A; --kw-window:#FFC878; --kw-shutter:#3A2A28; --kw-door:#4A3E30; --kw-trim:#5A6468; --kw-rooster:#1E1A1A; --kw-hen:#262220; --kw-iguana:#1A1E18; --kw-shadow:#0A0E12; --kw-cooler:#2A3E4E; --kw-flops:#3A2A28; --kw-rope:#34322E; --kw-hammock:#4A5056; --kw-hammockBack:#363A40; --kw-hammockStripe:#5A3A36; --kw-fig:#0B1014; --kw-hat:#3A3A38; --kw-bird:#0B1318; --kw-crab:#C8C4BA; --kw-grape:#16221A; --kw-grapeDark:#0E1812; --kw-grapeRed:#2A1A16; --kw-seaOats:#262C2A; --kw-trunk:#1E1C1C; --kw-trunkRing:#141212; --kw-frond:#10181A; --kw-frondBack:#0A1012; --kw-rib:#1E2A2A; --kw-dry:#16120E; --kw-coconut:#141010; --kwv-sunX:250px; --kwv-sunY:64px; --kwv-sunR:9; --kwv-glowR:46; --kwv-stars:1; --kwv-glints:0.55; --kwv-beam:1; --kwv-schooner:0; --kwv-birds:0; --kwv-turtle:0; --kwv-dolphins:0; --kwv-egret:0; --kwv-crab:1; --kwv-lights:1; --kwv-windows:1; --kwv-strings:1; --kwv-iguana:0; }
+  .kw5 .k-star{animation:kTw 4s ease-in-out infinite alternate}.kw5 .k-star.s2{animation-duration:5.5s;animation-delay:-2s}.kw5 .k-star.s3{animation-duration:3.2s;animation-delay:-1s}
+  @keyframes kTw{from{opacity:.35}to{opacity:1}}
+  .kw5 .k-sunglow{transform-box:fill-box;transform-origin:50% 50%;animation:kGlow 7s ease-in-out infinite alternate}@keyframes kGlow{to{transform:scale(1.08);opacity:.85}}
+  .kw5 .k-cloud{animation:kCloud 70s ease-in-out infinite alternate}.kw5 .k-cloud.c2{animation-duration:90s;animation-delay:-30s}@keyframes kCloud{from{transform:translateX(-10px)}to{transform:translateX(14px)}}
+  .kw5 .k-frigate{animation:kSoar 30s ease-in-out infinite}@keyframes kSoar{0%,100%{transform:translate(0,0)}50%{transform:translate(90px,8px)}}
+  .kw5 .k-beam{transform-box:view-box;transform-origin:150px 170.5px;animation:kSweep 12s ease-in-out infinite alternate}@keyframes kSweep{from{transform:rotate(-14deg)}to{transform:rotate(12deg)}}
+  .kw5 .k-sail{animation:kSail 80s linear infinite alternate}@keyframes kSail{to{transform:translateX(-26px)}}
+  .kw5 .k-gl{animation:kGlint 2.6s ease-in-out infinite alternate}.kw5 .k-gl.g2{animation-duration:3.4s;animation-delay:-1.2s}.kw5 .k-gl.g3{animation-duration:2.1s;animation-delay:-.6s}
+  @keyframes kGlint{0%{opacity:.25;transform:translateX(-3px)}100%{opacity:1;transform:translateX(3px)}}
+  .kw5 .k-turtle{animation:kTurtle 26s ease-in-out infinite alternate}@keyframes kTurtle{from{transform:translate(-10px,2px)}to{transform:translate(30px,-2px)}}
+  .kw5 .k-dolphin{transform-box:fill-box;transform-origin:50% 100%;animation:kArc 12s ease-in-out infinite;opacity:0}.kw5 .k-dolphin.k2{animation-delay:.5s}
+  @keyframes kArc{0%,70%{opacity:0;transform:translate(0,8px) rotate(-18deg)}74%{opacity:1;transform:translate(6px,0) rotate(-8deg)}80%{opacity:1;transform:translate(16px,-4px) rotate(6deg)}86%{opacity:0;transform:translate(26px,6px) rotate(20deg)}100%{opacity:0}}
+  .kw5 .k-wave{animation:kDrift 9s ease-in-out infinite alternate}.kw5 .k-wave.w2{animation-duration:12s;animation-delay:-4s}@keyframes kDrift{from{transform:translateX(-4px)}to{transform:translateX(4px)}}
+  .kw5 .k-surf{animation:kSurf 6s ease-in-out infinite}.kw5 .k-surf.s2{animation-delay:-3s}
+  @keyframes kSurf{0%,100%{transform:translateY(0);opacity:.9}50%{transform:translateY(3px);opacity:.4}}
+  .kw5 .k-egret{transform-box:fill-box;transform-origin:50% 100%;animation:kStep 16s ease-in-out infinite}@keyframes kStep{0%,80%,100%{transform:none}86%{transform:rotate(-3deg) translateX(1px)}92%{transform:rotate(1deg)}}
+  .kw5 .k-rooster{animation:kWalk 40s ease-in-out infinite alternate}@keyframes kWalk{from{transform:translateX(-12px)}to{transform:translateX(18px)}}
+  .kw5 .k-hen{transform-box:fill-box;transform-origin:40% 100%;animation:kPeck 7s ease-in-out infinite}@keyframes kPeck{0%,70%,100%{transform:none}76%,84%{transform:rotate(14deg) translateY(1px)}80%{transform:rotate(8deg)}}
+  .kw5 .k-crab{animation:kScuttle 14s ease-in-out infinite}@keyframes kScuttle{0%,60%,100%{transform:none}70%{transform:translateX(18px)}80%{transform:translateX(30px)}}
+  .kw5 .k-crown{transform-box:view-box;transform-origin:254px 192px;animation:kFronds 5s ease-in-out infinite alternate}.kw5 .k-crown.c2{transform-origin:364px 182px;animation-duration:5.8s;animation-delay:-2s}@keyframes kFronds{from{transform:rotate(-1.6deg)}to{transform:rotate(1.8deg)}}
+  .kw5 .k-pelican{animation:kFly 44s linear infinite}@keyframes kFly{0%{transform:translate(-40px,0)}50%{transform:translate(200px,8px)}100%{transform:translate(440px,-4px)}}
+  .kw5 .breathe-fig{transform-box:fill-box;transform-origin:50% 100%;animation:kBreath 4.6s ease-in-out infinite alternate}@keyframes kBreath{to{transform:scale(1.012,1.018)}}
+  .kw5 .k-car{animation:kCar 34s linear infinite}@keyframes kCar{from{transform:translateX(0)}to{transform:translateX(250px)}}
+  .kw5 .k-skiff{transform-box:fill-box;transform-origin:50% 100%;animation:kBob 4s ease-in-out infinite alternate}@keyframes kBob{from{transform:translateY(0) rotate(-1.5deg)}to{transform:translateY(1.2px) rotate(1.5deg)}}
+  .kw5 .k-hammock{transform-box:view-box;transform-origin:317px 268px;animation:kSwing 6s ease-in-out infinite alternate}@keyframes kSwing{from{transform:rotate(-1.4deg)}to{transform:rotate(1.4deg)}}
+  .kw5 .k-bulbs circle{animation:kBulb 2.4s ease-in-out infinite alternate}.kw5 .k-bulbs circle:nth-child(2n){animation-delay:-1.2s}@keyframes kBulb{from{opacity:.7}to{opacity:1}}
+  .kw5 .k-grape{transform-box:fill-box;transform-origin:50% 100%;animation:kGrape 6s ease-in-out infinite alternate}@keyframes kGrape{from{transform:rotate(-.8deg)}to{transform:rotate(.8deg)}}
+  @media (prefers-reduced-motion: reduce) { .kw5 .kw5-scene * { animation: none !important; } }
+  /* /kw5:css */
+  /* hi5:css */
+  /* hawaii, new look (Feeling 68): built by design/v4/handoff-scenes/build.cjs from HawaiiScene.dc.html. Colours per sky; html.night is the night palette. */
+  .waves.hi5 { display: none; overflow: visible; }
+  html[data-place="hawaii"] .waves:not(.hi5) { display: none !important; }
+  html[data-place="hawaii"] .waves.hi5 { display: block !important; }
+  html[data-place="hawaii"] .waves.hi5::after { display: none; }
+  html[data-place="hawaii"] .orb { display: none; }   /* the scene has its own sun and moon */
+  .hi5 .hi5-scene { position: absolute; left: 0; bottom: 0; width: 390px; height: 420px; transform-origin: 0 100%; transform: scale(var(--hi5-k, 1)); }
+  .waves.hi5 svg.hi5-layer { position: absolute; left: 0; top: 0; bottom: auto; width: 390px; height: 420px; overflow: visible; animation: none; }
+  .waves.hi5 { --hi-skyTop:#9CCFEA; --hi-skyMid:#C4E4F2; --hi-horizon:#EAF6F4; --hi-sun:#FFFFFF; --hi-sunCore:#FFFFFF; --hi-cloud:#FFFFFF; --hi-cloudShade:#DCE8F0; --hi-seaFar:#1E7EA8; --hi-seaMid:#30B4C0; --hi-shallow:#98E2D2; --hi-hull:#4A3A2E; --hi-sail:#C07A52; --hi-whale:#2A4656; --hi-foam:#FFFFFF; --hi-glint:#FFFFFF; --hi-cliffFar:#9EC0B0; --hi-cliffTop:#5CA466; --hi-cliffBase:#2E6E48; --hi-flute:#2A5E40; --hi-rim:#B6E08E; --hi-fall:#FFFFFF; --hi-mist:#FFFFFF; --hi-rock:#3E4A44; --hi-koae:#FFFFFF; --hi-sandWet:#DCC9A4; --hi-sand:#F6E8CC; --hi-sandDeep:#EAD5AE; --hi-lava:#2E2A28; --hi-lavaLit:#5E5652; --hi-honu:#546048; --hi-bird:#5A4636; --hi-crab:#EDE2CE; --hi-hullDark:#4A3A2E; --hi-iako:#8A6A46; --hi-canoe:#C4543A; --hi-canoeTrim:#F6D8A4; --hi-board:#FAF0DC; --hi-boardStripe:#2E7EA8; --hi-plumBark:#8E8278; --hi-plumLeaf:#3E8048; --hi-plumFlower:#FFFFFF; --hi-plumCenter:#F8CC40; --hi-bamboo:#B08E5C; --hi-shadow:#8C7658; --hi-trunk:#8E7058; --hi-trunkRing:#705846; --hi-frond:#3E7E4E; --hi-frondBack:#2A5E40; --hi-rib:#A6D08A; --hi-dry:#A6844E; --hi-coconut:#6A4E34; --hi-towel:#F4E4D8; --hi-towelStripe:#D8664A; --hi-fig:#2C383C; --hi-coon:#201F24; --hi-coonStripe:#4A4952; --hi-somali:#B8743E; --hiv-sunX:70px; --hiv-sunY:96px; --hiv-sunR:9; --hiv-glowR:56; --hiv-stars:0; --hiv-glints:0.6; --hiv-rainbow:0; --hiv-whale:1; --hiv-fall:1; --hiv-mist:0.5; --hiv-birds:1; --hiv-honu:1; --hiv-crab:0; --hiv-torches:0; --hiv-waa:1; }
+  html[data-sky="morning"]:not(.night) .waves.hi5 { --hi-skyTop:#E6E2EC; --hi-skyMid:#F4DCD0; --hi-horizon:#FAE4C4; --hi-sun:#FFD28A; --hi-sunCore:#FFE9BC; --hi-cloud:#FAE6DC; --hi-cloudShade:#E8C8C0; --hi-seaFar:#6E9EB4; --hi-seaMid:#7EC0C4; --hi-shallow:#AEE0D4; --hi-hull:#5A4A3E; --hi-sail:#C88A62; --hi-whale:#3E5666; --hi-foam:#FFFBF4; --hi-glint:#FFF1D2; --hi-cliffFar:#A8BCB4; --hi-cliffTop:#7EA878; --hi-cliffBase:#4E7A5E; --hi-flute:#3E6A52; --hi-rim:#F2D6A0; --hi-fall:#FFFFFF; --hi-mist:#FFF6EE; --hi-rock:#4E5A50; --hi-koae:#FFFFFF; --hi-sandWet:#D8C4A2; --hi-sand:#F2E2C4; --hi-sandDeep:#E6CFA8; --hi-lava:#3A3634; --hi-lavaLit:#6E6460; --hi-honu:#5E6A4E; --hi-bird:#5A4A3E; --hi-crab:#E8DCC8; --hi-hullDark:#5A4A3E; --hi-iako:#8A6A48; --hi-canoe:#B8583E; --hi-canoeTrim:#F2D2A0; --hi-board:#F4E8D0; --hi-boardStripe:#3E88A8; --hi-plumBark:#8A7E74; --hi-plumLeaf:#4E8050; --hi-plumFlower:#FFF8EE; --hi-plumCenter:#F6C84E; --hi-bamboo:#A8885A; --hi-shadow:#7A6A58; --hi-trunk:#8A6E58; --hi-trunkRing:#6E5646; --hi-frond:#4E7A52; --hi-frondBack:#34604A; --hi-rib:#9CC07E; --hi-dry:#9A7A4E; --hi-coconut:#6E5238; --hi-towel:#F0D8C8; --hi-towelStripe:#D07050; --hi-fig:#2F3A3E; --hi-coon:#252428; --hi-coonStripe:#4E4C56; --hi-somali:#B0703E; --hiv-sunX:190px; --hiv-sunY:170px; --hiv-sunR:10; --hiv-glowR:70; --hiv-stars:0; --hiv-glints:0.7; --hiv-rainbow:0.35; --hiv-whale:1; --hiv-fall:1; --hiv-mist:0.8; --hiv-birds:1; --hiv-honu:1; --hiv-crab:0; --hiv-torches:0; --hiv-waa:1; }
+  html[data-sky="evening"]:not(.night) .waves.hi5 { --hi-skyTop:#C890A8; --hi-skyMid:#EEA286; --hi-horizon:#FBC478; --hi-sun:#FF8A48; --hi-sunCore:#FFBC6E; --hi-cloud:#E28E86; --hi-cloudShade:#B26A76; --hi-seaFar:#6E6A8A; --hi-seaMid:#B8848A; --hi-shallow:#E8B09A; --hi-hull:#2E2228; --hi-sail:#5A3A3A; --hi-whale:#3A2E3E; --hi-foam:#FFE6D2; --hi-glint:#FFD29A; --hi-cliffFar:#9A7E88; --hi-cliffTop:#8A7A56; --hi-cliffBase:#4A4048; --hi-flute:#3E3440; --hi-rim:#FFB078; --hi-fall:#FFE0CC; --hi-mist:#FFD8C4; --hi-rock:#3A3036; --hi-koae:#FFE6D6; --hi-sandWet:#C99C84; --hi-sand:#EEC6A6; --hi-sandDeep:#DDAE8E; --hi-lava:#2A2226; --hi-lavaLit:#7A5A52; --hi-honu:#4A3E38; --hi-bird:#3E2E2A; --hi-crab:#F2D6C4; --hi-hullDark:#3A2A26; --hi-iako:#5E4232; --hi-canoe:#8E3E2E; --hi-canoeTrim:#E0B08A; --hi-board:#F0D6C4; --hi-boardStripe:#4E5A7A; --hi-plumBark:#5E524C; --hi-plumLeaf:#3A3A30; --hi-plumFlower:#F8DCD0; --hi-plumCenter:#F0A860; --hi-bamboo:#6E5440; --hi-shadow:#6E4A40; --hi-trunk:#5E4038; --hi-trunkRing:#4A302A; --hi-frond:#3A3A36; --hi-frondBack:#2A2A2A; --hi-rib:#6E5A48; --hi-dry:#5E4432; --hi-coconut:#3E2A24; --hi-towel:#EFD0C0; --hi-towelStripe:#B85A48; --hi-fig:#271E24; --hi-coon:#1F1719; --hi-coonStripe:#4E3C40; --hi-somali:#8E5634; --hiv-sunX:204px; --hiv-sunY:192px; --hiv-sunR:15; --hiv-glowR:120; --hiv-stars:0; --hiv-glints:1; --hiv-rainbow:0; --hiv-whale:0.8; --hiv-fall:0.8; --hiv-mist:0.6; --hiv-birds:0; --hiv-honu:1; --hiv-crab:0; --hiv-torches:1; --hiv-waa:1; }
+  html.night .waves.hi5 { --hi-skyTop:#0A131C; --hi-skyMid:#12202E; --hi-horizon:#1E3040; --hi-sun:#DCE6EA; --hi-sunCore:#E8EEF0; --hi-cloud:#1A2833; --hi-cloudShade:#131E28; --hi-seaFar:#14283A; --hi-seaMid:#183448; --hi-shallow:#1E4450; --hi-hull:#0A1014; --hi-sail:#141A1E; --hi-whale:#0A1218; --hi-foam:#6A8A96; --hi-glint:#C9D8DE; --hi-cliffFar:#1A2A2A; --hi-cliffTop:#16241E; --hi-cliffBase:#0E1814; --hi-flute:#0A1410; --hi-rim:#2E4640; --hi-fall:#8A9CA4; --hi-mist:#3A4C58; --hi-rock:#0C1210; --hi-koae:#8A949A; --hi-sandWet:#2A3034; --hi-sand:#363C40; --hi-sandDeep:#2C3236; --hi-lava:#0A0C0E; --hi-lavaLit:#22262A; --hi-honu:#1A1E1C; --hi-bird:#141816; --hi-crab:#C8C4BA; --hi-hullDark:#141414; --hi-iako:#2A241E; --hi-canoe:#3A1E1A; --hi-canoeTrim:#5A4A40; --hi-board:#4A4C50; --hi-boardStripe:#2A3E4E; --hi-plumBark:#26241E; --hi-plumLeaf:#10181A; --hi-plumFlower:#8A8C90; --hi-plumCenter:#6E6040; --hi-bamboo:#3A3026; --hi-shadow:#0A0E12; --hi-trunk:#1E1C1C; --hi-trunkRing:#141212; --hi-frond:#10181A; --hi-frondBack:#0A1012; --hi-rib:#1E2A2A; --hi-dry:#16120E; --hi-coconut:#141010; --hi-towel:#4A4C50; --hi-towelStripe:#5A3A36; --hi-fig:#0B1014; --hi-coon:#0E0E12; --hi-coonStripe:#26282E; --hi-somali:#3A2A20; --hiv-sunX:150px; --hiv-sunY:60px; --hiv-sunR:9; --hiv-glowR:46; --hiv-stars:1; --hiv-glints:0.55; --hiv-rainbow:0; --hiv-whale:0; --hiv-fall:0.5; --hiv-mist:0.5; --hiv-birds:0; --hiv-honu:0; --hiv-crab:1; --hiv-torches:1; --hiv-waa:0; }
+  .hi5 .h-star{animation:hTw 4s ease-in-out infinite alternate}.hi5 .h-star.s2{animation-duration:5.5s;animation-delay:-2s}.hi5 .h-star.s3{animation-duration:3.2s;animation-delay:-1s}
+  @keyframes hTw{from{opacity:.35}to{opacity:1}}
+  .hi5 .h-sunglow{transform-box:fill-box;transform-origin:50% 50%;animation:hGlow 7s ease-in-out infinite alternate}@keyframes hGlow{to{transform:scale(1.08);opacity:.85}}
+  .hi5 .h-cloud{animation:hCloud 60s ease-in-out infinite alternate}.hi5 .h-cloud.c2{animation-duration:80s;animation-delay:-30s}@keyframes hCloud{from{transform:translateX(-12px)}to{transform:translateX(16px)}}
+  .hi5 .h-whale{transform-box:fill-box;transform-origin:50% 100%;animation:hBreach 22s ease-in-out infinite;opacity:0}
+  @keyframes hBreach{0%,82%{opacity:0;transform:translate(0,10px) rotate(-30deg)}85%{opacity:1;transform:translate(4px,-4px) rotate(-20deg)}90%{opacity:1;transform:translate(12px,-6px) rotate(10deg)}94%{opacity:0;transform:translate(18px,8px) rotate(30deg)}100%{opacity:0}}
+  .hi5 .h-spout{transform-box:fill-box;transform-origin:50% 100%;animation:hSpout 22s ease-out infinite}@keyframes hSpout{0%,40%{opacity:0;transform:scaleY(.2)}42%{opacity:.8;transform:scaleY(1)}48%{opacity:0;transform:scaleY(1.4)}100%{opacity:0}}
+  .hi5 .h-gl{animation:hGlint 2.6s ease-in-out infinite alternate}.hi5 .h-gl.g2{animation-duration:3.4s;animation-delay:-1.2s}.hi5 .h-gl.g3{animation-duration:2.1s;animation-delay:-.6s}
+  @keyframes hGlint{0%{opacity:.25;transform:translateX(-3px)}100%{opacity:1;transform:translateX(3px)}}
+  .hi5 .h-wave{animation:hDrift 10s ease-in-out infinite alternate}@keyframes hDrift{from{transform:translateX(-4px)}to{transform:translateX(4px)}}
+  .hi5 .h-fall{animation:hFall 2.4s ease-in-out infinite alternate}@keyframes hFall{from{opacity:.55}to{opacity:1}}
+  .hi5 .h-mist{animation:hMist 30s ease-in-out infinite alternate}@keyframes hMist{from{transform:translateX(-16px)}to{transform:translateX(16px)}}
+  .hi5 .h-surf{animation:hSurf 6s ease-in-out infinite}.hi5 .h-surf.s2{animation-delay:-2s}.hi5 .h-surf.s3{animation-delay:-4s}
+  @keyframes hSurf{0%,100%{transform:translateY(0);opacity:.9}50%{transform:translateY(3px);opacity:.4}}
+  .hi5 .h-koae{animation:hKoae 36s ease-in-out infinite}@keyframes hKoae{0%,100%{transform:translate(0,0)}25%{transform:translate(60px,-14px)}50%{transform:translate(130px,-4px)}75%{transform:translate(60px,10px)}}
+  .hi5 .h-akekeke{animation:hRun 9s ease-in-out infinite}.hi5 .h-akekeke.k2{animation-delay:-3s}@keyframes hRun{0%,60%,100%{transform:none}70%{transform:translateX(10px)}80%{transform:translateX(14px)}}
+  .hi5 .h-crab{animation:hScuttle 14s ease-in-out infinite}@keyframes hScuttle{0%,60%,100%{transform:none}70%{transform:translateX(18px)}80%{transform:translateX(30px)}}
+  .hi5 .h-crown{transform-box:view-box;transform-origin:92px 192px;animation:hFronds 5s ease-in-out infinite alternate}
+  @keyframes hFronds{from{transform:rotate(-1.8deg)}to{transform:rotate(2deg)}}
+  .hi5 .h-cattail{transform-box:fill-box;transform-origin:0 50%;animation:hTail 7s ease-in-out infinite alternate}@keyframes hTail{from{transform:rotate(-6deg)}to{transform:rotate(8deg)}}
+  .hi5 .h-lamp{animation:hLamp 3s ease-in-out infinite alternate}@keyframes hLamp{from{opacity:.8}to{opacity:1}}
+  .hi5 .breathe-fig{transform-box:fill-box;transform-origin:50% 100%;animation:hBreath 4.6s ease-in-out infinite alternate}@keyframes hBreath{to{transform:scale(1.012,1.018)}}
+  .hi5 .h-spray circle{transform-box:fill-box;transform-origin:50% 100%;animation:hSpray 7s ease-out infinite;opacity:0}.hi5 .h-spray circle:nth-child(2){animation-delay:.15s}.hi5 .h-spray circle:nth-child(3){animation-delay:.3s}.hi5 .h-spray circle:nth-child(4){animation-delay:.2s}.hi5 .h-spray circle:nth-child(5){animation-delay:.4s}
+  @keyframes hSpray{0%,70%{opacity:0;transform:translateY(10px) scale(.3)}76%{opacity:.9;transform:translateY(-4px) scale(1)}90%{opacity:0;transform:translateY(-10px) scale(1.4)}100%{opacity:0}}
+  .hi5 .h-plum{transform-box:fill-box;transform-origin:10% 100%;animation:hPlum 6s ease-in-out infinite alternate}@keyframes hPlum{from{transform:rotate(-.8deg)}to{transform:rotate(.8deg)}}
+  .hi5 .h-flame{transform-box:fill-box;transform-origin:50% 100%;animation:hFlame .9s ease-in-out infinite alternate}@keyframes hFlame{0%{transform:scale(.9,.85) skewX(-4deg)}100%{transform:scale(1.05,1.12) skewX(3deg)}}
+  .hi5 .h-waa{animation:hWaa 90s linear infinite alternate}@keyframes hWaa{to{transform:translateX(40px)}}
+  @media (prefers-reduced-motion: reduce) { .hi5 .hi5-scene * { animation: none !important; } }
+  /* /hi5:css */
 </style>
 </head>
 <body>
@@ -2389,6 +2508,413 @@
 </svg>
     </div></div>
     <!-- /dock5:scene -->
+    <!-- cp5:scene -->
+    <div class="waves cp5" aria-hidden="true"><div class="cp5-scene" id="cp5-scene">
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="420" viewBox="0 0 390 420" class="cp5-layer">
+<defs>
+<symbol id="c-tuft" viewBox="0 0 30 20"><path d="M15,20 C13,12 8,6 2,2 M15,20 C14,12 12,6 10,0 M15,20 C16,12 18,5 20,0 M15,20 C17,12 22,6 28,3 M15,20 C12,14 6,11 0,10 M15,20 C18,14 24,12 30,11" fill="none" stroke-width="1.3" stroke-linecap="round"/></symbol>
+<linearGradient id="c-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color: var(--cp-skyTop); stop-opacity: 0"/><stop offset=".5" style="stop-color: var(--cp-skyMid); stop-opacity: .7"/><stop offset="1" style="stop-color: var(--cp-horizon)"/></linearGradient>
+<linearGradient id="c-ground" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color: var(--cp-steppeFar)"/><stop offset=".35" style="stop-color: var(--cp-steppeNear)"/><stop offset="1" style="stop-color: var(--cp-ground)"/></linearGradient>
+<radialGradient id="c-sunglow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-opacity=".75" style="stop-color: var(--cp-sun)"/><stop offset=".35" stop-opacity=".25" style="stop-color: var(--cp-sun)"/><stop offset="1" stop-opacity="0" style="stop-color: var(--cp-sun)"/></radialGradient>
+<radialGradient id="c-lampglow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFC870" stop-opacity=".8"/><stop offset="1" stop-color="#FFB050" stop-opacity="0"/></radialGradient>
+<linearGradient id="c-milky" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#C8D4F0" stop-opacity="0"/><stop offset=".5" stop-color="#C8D4F0" stop-opacity=".22"/><stop offset="1" stop-color="#C8D4F0" stop-opacity="0"/></linearGradient>
+<filter id="c-soft" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="3"></feGaussianBlur></filter>
+</defs>
+
+<!-- sky: stars and the Milky Way at night, sun or moon, a lenticular over Fitz Roy -->
+<rect x="0" y="0" width="390" height="220" fill="url(#c-sky)"/>
+<g style="opacity: var(--cpv-stars)">
+<rect x="-40" y="60" width="480" height="34" fill="url(#c-milky)" transform="rotate(-18 195 80)" filter="url(#c-soft)"/>
+<g fill="#E8EEF6"><circle class="c-star" cx="24" cy="30" r=".9"/><circle class="c-star s2" cx="60" cy="112" r=".7"/><circle class="c-star" cx="104" cy="52" r="1"/><circle class="c-star s3" cx="142" cy="96" r=".6"/><circle class="c-star s2" cx="176" cy="28" r=".8"/><circle class="c-star" cx="232" cy="84" r=".7"/><circle class="c-star s3" cx="268" cy="40" r="1"/><circle class="c-star" cx="300" cy="118" r=".6"/><circle class="c-star s2" cx="336" cy="64" r=".9"/><circle class="c-star s3" cx="372" cy="22" r=".7"/><circle class="c-star" cx="360" cy="140" r=".6"/><circle class="c-star s2" cx="12" cy="150" r=".7"/><circle class="c-star" cx="88" cy="160" r=".5"/><circle class="c-star s3" cx="216" cy="140" r=".5"/></g>
+</g>
+<g style="transform: translate(var(--cpv-sunX), var(--cpv-sunY))">
+<g style="transform: scale(var(--cpv-glowR))"><circle class="c-sunglow" r="1" fill="url(#c-sunglow)"/></g>
+<g style="transform: scale(var(--cpv-sunR))"><circle r="1" style="fill: var(--cp-sunCore)"/></g>
+<g style="opacity: var(--cpv-stars)"><circle cx="-3" cy="-2" r="3" fill="#C9D3D8" opacity=".6"/><circle cx="3" cy="3" r="1.8" fill="#C9D3D8" opacity=".5"/></g>
+</g>
+<g class="c-streak"><path d="M20,70 C80,64 140,66 190,62" stroke-width="5" stroke-linecap="round" opacity=".7" style="stroke: var(--cp-cloud)"/><path d="M240,48 C290,44 330,46 380,42" stroke-width="4" stroke-linecap="round" opacity=".6" style="stroke: var(--cp-cloud)"/></g>
+<g class="c-lenti">
+<ellipse cx="206" cy="104" rx="50" ry="6" style="fill: var(--cp-cloud)"/>
+<ellipse cx="206" cy="98" rx="38" ry="5" style="fill: var(--cp-cloud)"/>
+<ellipse cx="206" cy="93" rx="24" ry="3.6" style="fill: var(--cp-cloud)"/>
+<path d="M156,104 C180,110 232,110 256,104" stroke-width="2" fill="none" opacity=".9" style="stroke: var(--cp-cloudLit)"/>
+</g>
+<g class="c-condor" style="opacity: var(--cpv-condor)"><use href="#f-condor" x="150" y="140" width="34" height="9" style="fill: var(--cp-animal)"/></g>
+
+<!-- the far range, Fitz Roy and Cerro Torre, the glacier -->
+<path d="M60,214 L84,196 L100,200 L118,184 L134,190 L150,176 L166,186 L186,170 L200,178 L228,164 L246,176 L268,168 L292,182 L316,176 L340,192 L372,188 L390,196 L390,216 L60,216 Z" style="fill: var(--cp-range2)"/>
+<path d="M118,214 L125,178 L128,154 L131,140 L134,154 L137,180 L142,214 Z" style="fill: var(--cp-range2)"/>
+<path d="M131,140 L134,154 L137,180 L142,214 L132,214 Z" opacity=".35" style="fill: var(--cp-rockShade)"/>
+<path d="M96,214 C126,202 150,196 174,190 L226,190 C252,196 284,202 332,214 Z" style="fill: var(--cp-rock)"/>
+<path d="M150,214 L153,190 L156,174 L158,168 L161,180 L164,214 Z M160,214 L164,178 L168,152 L171,138 L174,150 L177,176 L181,214 Z" style="fill: var(--cp-rock)"/>
+<path d="M176,214 L181,172 L187,146 L193,126 L199,116 L205,121 L212,142 L218,170 L224,214 Z" style="fill: var(--cp-rock)"/>
+<path d="M221,214 L225,178 L229,158 L233,150 L236,160 L240,186 L244,214 Z M240,214 L245,192 L250,180 L254,190 L259,214 Z" style="fill: var(--cp-rock)"/>
+<path d="M199,116 L205,121 L212,142 L218,170 L224,214 L203,214 L204,168 L201,136 Z M171,138 L174,150 L177,176 L181,214 L173,214 L172,170 Z M233,150 L236,160 L240,186 L244,214 L235,214 L235,178 Z M158,168 L161,180 L164,214 L159,214 Z M250,180 L254,190 L259,214 L252,214 Z M226,190 C252,196 284,202 332,214 L240,214 Z" style="fill: var(--cp-rockShade)"/>
+<path d="M195,124 L199,116 L203,119 L200,128 Z M186,150 L190,146 L192,156 L187,160 Z M207,130 L211,138 L207,144 Z M168,152 L171,146 L172,156 Z M229,160 L233,154 L234,164 Z M146,200 L160,194 L172,196 L156,204 Z M252,198 L270,200 L286,206 L262,206 Z" style="fill: var(--cp-snow)"/>
+<path d="M184,200 C194,196 210,196 222,200 L230,214 L178,214 Z" opacity=".8" style="fill: var(--cp-snow)"/>
+<path d="M176,214 L181,172 L187,146 L193,126 L199,116 M160,214 L164,178 L168,152 L171,138 M221,214 L225,178 L229,158 L233,150 M150,214 L153,190 L156,174 L158,168 M240,214 L245,192 L250,180 M118,214 L125,178 L128,154 L131,140" stroke-width="1.2" fill="none" stroke-linejoin="round" style="stroke: var(--cp-rim); opacity: var(--cpv-rim)"/>
+<path d="M60,214 L84,200 L100,204 L112,196" stroke="none" fill="none"/>
+
+<!-- foothills, the lake, the steppe -->
+<path d="M0,212 C30,203 60,205 90,209 C120,205 150,199 180,205 C210,211 240,205 270,207 C300,209 340,201 390,205 L390,222 L0,222 Z" style="fill: var(--cp-hills)"/>
+<path d="M96,216 C150,213 250,213 320,216 L316,220 L100,220 Z" style="fill: var(--cp-lake)"/>
+<path class="c-lakeglint" d="M130,217.5 H160 M200,217 H236 M262,217.5 H290" stroke-width=".8" opacity=".7" style="stroke: var(--cp-cloudLit)"/>
+<rect x="0" y="219" width="390" height="201" fill="url(#c-ground)"/>
+<path d="M0,252 C60,244 120,250 180,246 C240,242 300,250 390,244 L390,420 L0,420 Z" opacity=".55" style="fill: var(--cp-steppeNear)"/>
+<path d="M0,300 C80,290 150,298 220,292 C290,286 340,294 390,290 L390,420 L0,420 Z" opacity=".5" style="fill: var(--cp-ground)"/>
+
+<!-- the estancia: poplars, the house, the windpump -->
+<g class="c-poplars" style="fill: var(--cp-poplar)">
+<path d="M18,216 C14,202 15,186 18,174 C21,186 22,202 18,216 Z"/><path d="M28,216 C23,200 24,180 28,166 C32,180 33,200 28,216 Z"/><path d="M38,216 C34,202 35,184 38,172 C41,184 42,202 38,216 Z"/><path d="M48,216 C43,200 44,178 48,164 C52,178 53,200 48,216 Z"/><path d="M58,216 C54,203 55,188 58,176 C61,188 62,203 58,216 Z"/><path d="M68,216 C64,202 65,186 68,174 C71,186 72,202 68,216 Z"/>
+</g>
+<path d="M28,168 C30,182 31,200 29,214 M48,166 C50,180 51,200 49,214" stroke-width="1.4" fill="none" opacity=".6" style="stroke: var(--cp-poplarLit)"/>
+<rect x="76" y="205" width="24" height="11" style="fill: var(--cp-wall)"/>
+<path d="M74,206 L88,197 L102,206 Z" style="fill: var(--cp-roof)"/>
+<rect x="82" y="208.5" width="3.4" height="3.4" style="fill: var(--cp-window)"/><rect x="91" y="208.5" width="3.4" height="3.4" style="fill: var(--cp-window)"/>
+<circle cx="88" cy="210" r="14" fill="url(#c-lampglow)" style="opacity: var(--cpv-windowGlow)"/>
+<path d="M109,216 L113,186 L117,216 M110.4,206 H115.6 M111.2,198 H114.8" stroke-width="1.1" fill="none" style="stroke: var(--cp-wood)"/>
+<g transform="translate(113,185)"><g class="c-blades" stroke-width=".9" style="stroke: var(--cp-wood)"><path d="M0,-6 V6 M-6,0 H6 M-4.2,-4.2 L4.2,4.2 M-4.2,4.2 L4.2,-4.2"/><circle r="6" fill="none"/></g></g>
+<path d="M113,185 L122,184 L121,188 Z" style="fill: var(--cp-wood)"/>
+
+<!-- guanacos on the slope, sheep, a ñandú with two chicks -->
+<use href="#f-guanaco" x="24" y="226" width="19" height="20" style="fill: var(--cp-animalFar)"/>
+<g transform="matrix(-1 0 0 1 112 0)"><use href="#f-guanaco" x="48" y="230" width="16" height="17" style="fill: var(--cp-animalFar)"/></g>
+<g class="c-graze"><use href="#f-sheep" x="112" y="240" width="13" height="10.3" style="fill: var(--cp-sheep)"/></g>
+<g class="c-graze g2"><use href="#f-sheep" x="126" y="243" width="12" height="9.5" style="fill: var(--cp-sheep)"/></g>
+<g class="c-graze g3"><use href="#f-sheep" x="139" y="239" width="13" height="10.3" style="fill: var(--cp-sheep)"/></g>
+<g class="c-rhea"><use href="#f-rhea" x="236" y="228" width="16" height="20" style="fill: var(--cp-animal)"/><use href="#f-rhea" x="254" y="241" width="6" height="7.5" style="fill: var(--cp-animal)"/><use href="#f-rhea" x="262" y="242.5" width="5.5" height="6.8" style="fill: var(--cp-animal)"/></g>
+
+<!-- Ruta 40, running to the mountains -->
+<path d="M201,217 L207,217 C214,260 240,340 280,420 L140,420 C170,340 194,262 201,217 Z" style="fill: var(--cp-road)"/>
+<path d="M201,217 C194,262 170,340 140,420 M207,217 C214,260 240,340 280,420" stroke-width="1.2" fill="none" style="stroke: var(--cp-roadEdge)"/>
+<path d="M204,222 C206,262 212,330 210,420" stroke-width="1.6" stroke-dasharray="7 11" fill="none" style="stroke: var(--cp-dash)"/>
+
+<!-- the fence, running away from us; the caracara or the owl on a far post -->
+<g stroke-width=".7" fill="none" style="stroke: var(--cp-wire)"><path d="M390,290 L246,256 M390,302 L246,260 M390,312 L246,264"/></g>
+<g style="fill: var(--cp-wood)"><rect x="386" y="276" width="6" height="40"/><rect x="353" y="266" width="5.4" height="34"/><rect x="324" y="263" width="4.8" height="28"/><rect x="298" y="259" width="4.2" height="23"/><rect x="277" y="257" width="3.6" height="18"/><rect x="259" y="256" width="3.2" height="13"/><rect x="245" y="255" width="2.8" height="10"/></g>
+<g style="opacity: var(--cpv-caracara)"><use href="#f-caracara" x="272" y="243" width="11" height="14" style="fill: var(--cp-animal)"/></g>
+<g style="opacity: var(--cpv-owl)"><use href="#f-owl" x="275" y="243" width="7" height="14" style="fill: var(--cp-animal)"/></g>
+
+<!-- Elias against a post, mate in hand, a thermos beside him -->
+<g transform="translate(286.5,241.2) scale(.42)"><g class="breathe-fig" stroke-linecap="round" stroke-linejoin="round" style="fill: var(--cp-fig); stroke: var(--cp-fig)">
+<path stroke="none" fill-rule="evenodd" d="M128 64 C141 68,150 80,152 96 C154 112,156 128,156 140 L56 140 C50 140,50 133,56 132 L64 130 C66 118,68 104,72 96 C75 88,84 84,94 88 C100 91,106 98,112 105 C112 96,114 82,118 73 C120 68,124 65,128 64 Z M94 108 C92 118,90 130,88 140 L140 140 C136 128,120 113,94 108 Z"/>
+<path stroke="none" d="M117 74 L131 67 L129 54 L115 60 Z"/>
+<ellipse cx="119" cy="52" rx="15" ry="17" transform="rotate(-8 119 52)" stroke="none"/>
+<path d="M100 42 C104 30,132 28,140 40 C146 42,150 44,150 46 L96 46 C96 44,98 43,100 42 Z" stroke="none"/>
+<path fill="none" stroke-width="11" d="M140 88 C134 98,128 104,120 103 C110 101,98 94,90 87"/>
+<circle cx="88" cy="86" r="6.5" stroke="none"/>
+<path d="M77 74 C77 70,94 70,94 74 L92 90 C90 93,81 93,79 90 Z" stroke="none" style="fill: var(--cp-mate)"/>
+<path d="M86 72 L90 60" stroke-width="2.4" fill="none" style="stroke: var(--cp-bombilla)"/>
+</g></g>
+<g class="c-steam" stroke-width="1.1" fill="none" stroke-linecap="round" opacity=".55" style="stroke: var(--cp-steam)"><path class="c-s1" d="M321,268 C319,264 323,261 321,256"/><path class="c-s2" d="M325,268 C323,264 327,261 325,256"/></g>
+<rect x="364" y="287" width="6" height="14" rx="1.5" style="fill: var(--cp-thermos)"/><rect x="364.6" y="284.5" width="4.8" height="3" rx="1" style="fill: var(--cp-fig)"/>
+
+<!-- small lives in the grass: a hare, a fox at dusk, the tero by day -->
+<g style="opacity: var(--cpv-hare)"><g class="c-hare"><use href="#f-hare" x="62" y="296" width="11" height="12.6" style="fill: var(--cp-animal)"/></g></g>
+<g style="opacity: var(--cpv-fox)"><g class="c-fox"><use href="#f-fox" x="120" y="292" width="24" height="12" style="fill: var(--cp-animal)"/></g></g>
+<g style="opacity: var(--cpv-lapwing)"><use href="#f-lapwing" x="96" y="320" width="9" height="12.7" style="fill: var(--cp-animal)"/></g>
+
+<!-- coirón tufts in the wind -->
+<g class="c-sway" style="stroke: var(--cp-grass)"><use href="#c-tuft" x="8" y="262" width="22" height="15"/><use href="#c-tuft" x="88" y="268" width="18" height="12"/><use href="#c-tuft" x="232" y="270" width="18" height="12"/><use href="#c-tuft" x="352" y="316" width="26" height="17"/></g>
+<g class="c-sway s2" style="stroke: var(--cp-grassDark)"><use href="#c-tuft" x="30" y="318" width="30" height="20"/><use href="#c-tuft" x="112" y="334" width="34" height="23"/><use href="#c-tuft" x="290" y="330" width="32" height="21"/><use href="#c-tuft" x="-6" y="350" width="40" height="26"/></g>
+<g class="c-sway s3" style="stroke: var(--cp-grass)"><use href="#c-tuft" x="64" y="360" width="44" height="29"/><use href="#c-tuft" x="318" y="352" width="46" height="30"/><use href="#c-tuft" x="180" y="378" width="40" height="26"/></g>
+<path d="M150,300 C152,294 160,292 164,296 C168,292 176,294 176,300 Z M330,312 C332,306 340,304 344,308 C348,304 356,306 356,312 Z" style="fill: var(--cp-shrub)"/>
+</svg>
+    </div></div>
+    <!-- /cp5:scene -->
+    <!-- kw5:scene -->
+    <div class="waves kw5" aria-hidden="true"><div class="kw5-scene" id="kw5-scene">
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="420" viewBox="0 0 390 420" class="kw5-layer">
+<defs>
+<symbol id="k-frond" viewBox="-4 -26 96 60" overflow="visible"><path d="M-0.2,-0.3 L0.4,0.5 L3.4,-1.9 L4.2,-0.9 L5.8,-5.3 L8.0,-2.0 L9.3,-7.1 L11.8,-2.8 L13.0,-8.7 L15.6,-3.5 L16.8,-10.0 L19.4,-3.9 L20.8,-10.9 L23.3,-4.1 L24.9,-11.5 L27.1,-4.1 L29.0,-11.8 L31.0,-3.9 L33.3,-11.6 L34.8,-3.5 L37.6,-11.0 L38.7,-2.8 L41.9,-10.0 L42.5,-1.9 L46.3,-8.6 L46.4,-0.8 L50.5,-6.7 L50.3,0.5 L54.7,-4.5 L54.2,2.1 L58.8,-2.0 L58.1,3.9 L62.9,0.9 L62.0,5.9 L66.8,4.1 L66.0,8.1 L70.7,7.6 L69.9,10.5 L74.4,11.3 L73.9,13.2 L78.4,14.3 L77.8,16.1 L82.4,17.5 L81.8,19.2 L85.6,20.8 L86.2,22.6 L86.0,22.0 L85.4,23.0 L83.9,25.6 L80.9,19.1 L78.2,20.0 L76.9,16.0 L74.3,17.1 L72.9,13.1 L70.0,14.5 L69.0,10.5 L63.1,13.4 L65.0,8.1 L56.5,12.8 L61.1,5.9 L50.2,12.6 L57.2,3.9 L44.3,12.6 L53.3,2.2 L38.8,13.0 L49.4,0.7 L33.9,13.4 L45.5,-0.6 L29.4,14.0 L41.6,-1.7 L25.6,14.5 L37.8,-2.5 L22.2,15.0 L33.9,-3.1 L19.3,15.2 L30.1,-3.5 L16.8,15.1 L26.3,-3.7 L14.7,14.8 L22.5,-3.7 L12.7,14.1 L18.7,-3.4 L10.8,13.0 L14.9,-2.9 L8.9,11.6 L11.1,-2.2 L6.8,9.9 L7.3,-1.3 L4.6,8.0 L3.5,-0.2 L3.3,0.9 L-0.2,1.2 L-0.2,1.2 Z" stroke="none"/><path d="M0,0 Q42,-16 86,22" fill="none" stroke-width="1.1" opacity=".55" class="rib"/></symbol>
+<symbol id="k-frond2" viewBox="-4 -26 96 60" overflow="visible"><path d="M-0.3,-0.2 L0.5,0.4 L3.3,-2.6 L4.3,-1.7 L5.4,-6.5 L8.0,-3.5 L8.9,-8.8 L11.8,-4.9 L12.6,-10.9 L15.7,-5.9 L16.5,-12.5 L19.5,-6.6 L20.7,-13.7 L23.3,-7.0 L25.0,-14.4 L27.1,-7.0 L29.4,-14.5 L30.9,-6.6 L34.0,-14.1 L34.8,-5.9 L38.5,-13.1 L38.6,-4.8 L43.0,-11.5 L42.5,-3.4 L47.4,-9.3 L46.3,-1.6 L51.7,-6.6 L50.2,0.5 L55.9,-3.4 L54.1,3.0 L59.9,0.2 L58.0,5.8 L63.8,4.4 L61.9,9.0 L67.6,8.9 L65.9,12.6 L71.2,13.8 L69.8,16.5 L74.7,19.0 L73.7,20.7 L78.7,23.8 L77.7,25.4 L82.7,28.8 L81.7,30.4 L85.6,34.0 L86.2,35.8 L86.0,35.2 L85.4,36.2 L83.9,38.8 L80.8,30.0 L78.0,30.3 L76.8,25.0 L74.1,25.4 L72.9,20.4 L69.7,21.0 L68.9,16.2 L62.6,17.7 L64.9,12.3 L55.6,14.9 L61.0,8.8 L49.0,12.8 L57.1,5.7 L42.7,11.4 L53.2,2.9 L37.0,10.5 L49.3,0.5 L31.8,10.1 L45.4,-1.6 L27.3,10.1 L41.5,-3.3 L23.5,10.4 L37.7,-4.6 L20.3,10.8 L33.9,-5.6 L17.8,11.3 L30.0,-6.3 L15.9,11.6 L26.2,-6.6 L14.3,11.7 L22.5,-6.5 L12.9,11.4 L18.7,-6.1 L11.6,10.7 L14.9,-5.3 L10.1,9.7 L11.2,-4.2 L8.2,8.3 L7.5,-2.8 L6.0,6.9 L3.7,-1.0 L3.6,0.1 L-0.0,1.2 L-0.0,1.3 Z" stroke="none"/><path d="M0,0 Q42,-25.6 86,35.2" fill="none" stroke-width="1.1" opacity=".55" class="rib"/></symbol>
+<linearGradient id="k-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color: var(--kw-skyTop); stop-opacity: 0"/><stop offset=".5" style="stop-color: var(--kw-skyMid); stop-opacity: .7"/><stop offset="1" style="stop-color: var(--kw-horizon)"/></linearGradient>
+<linearGradient id="k-sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color: var(--kw-seaFar)"/><stop offset=".45" style="stop-color: var(--kw-seaMid)"/><stop offset="1" style="stop-color: var(--kw-shallow)"/></linearGradient>
+<linearGradient id="k-sand" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color: var(--kw-sandWet)"/><stop offset=".2" style="stop-color: var(--kw-sand)"/><stop offset="1" style="stop-color: var(--kw-sandDeep)"/></linearGradient>
+<radialGradient id="k-sunglow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-opacity=".75" style="stop-color: var(--kw-sun)"/><stop offset=".35" stop-opacity=".25" style="stop-color: var(--kw-sun)"/><stop offset="1" stop-opacity="0" style="stop-color: var(--kw-sun)"/></radialGradient>
+<radialGradient id="k-lamp" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFC870" stop-opacity=".45"/><stop offset="1" stop-color="#FFB050" stop-opacity="0"/></radialGradient>
+<linearGradient id="k-beam" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FFF2C8" stop-opacity=".55"/><stop offset="1" stop-color="#FFF2C8" stop-opacity="0"/></linearGradient>
+<filter id="k-soft" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="2.5"></feGaussianBlur></filter>
+</defs>
+
+<!-- sky, towering clouds, sun or moon -->
+<rect x="0" y="0" width="390" height="206" fill="url(#k-sky)"/>
+<g fill="#E8EEF6" style="opacity: var(--kwv-stars)"><circle class="k-star" cx="30" cy="40" r=".9"/><circle class="k-star s2" cx="80" cy="96" r=".7"/><circle class="k-star" cx="134" cy="30" r="1"/><circle class="k-star s3" cx="176" cy="84" r=".6"/><circle class="k-star s2" cx="222" cy="44" r=".8"/><circle class="k-star" cx="260" cy="120" r=".6"/><circle class="k-star s3" cx="312" cy="26" r=".9"/><circle class="k-star" cx="356" cy="92" r=".7"/><circle class="k-star s2" cx="16" cy="134" r=".6"/><circle class="k-star s3" cx="200" cy="140" r=".5"/></g>
+<g style="transform: translate(var(--kwv-sunX), var(--kwv-sunY))">
+<g style="transform: scale(var(--kwv-glowR))"><circle class="k-sunglow" r="1" fill="url(#k-sunglow)"/></g>
+<g style="transform: scale(var(--kwv-sunR))"><circle r="1" style="fill: var(--kw-sunCore)"/></g>
+<g style="opacity: var(--kwv-stars)"><circle cx="-3" cy="-2" r="3" fill="#C9D3D8" opacity=".6"/><circle cx="3" cy="3" r="1.8" fill="#C9D3D8" opacity=".5"/></g>
+</g>
+<g class="k-cloud">
+<path d="M150,172 C144,158 154,146 168,150 C170,132 190,124 204,134 C212,118 236,118 244,134 C258,128 274,138 270,154 C284,156 290,168 282,176 Z" style="fill: var(--kw-cloud)"/>
+<path d="M150,172 C180,178 250,180 282,176 C270,170 240,168 220,170 C190,168 166,166 150,172 Z" style="fill: var(--kw-cloudShade)"/>
+<path d="M168,150 C170,132 190,124 204,134 C212,118 236,118 244,134" stroke-width="2" fill="none" opacity=".8" style="stroke: var(--kw-cloudLit)"/>
+</g>
+<g class="k-cloud c2"><path d="M290,128 C298,118 314,120 320,114 C330,106 348,110 352,120 C364,118 372,124 370,132 L288,134 Z" opacity=".85" style="fill: var(--kw-cloud)"/></g>
+<g class="k-frigate" style="opacity: var(--kwv-birds)"><use href="#f-frigate" x="96" y="96" width="10" height="17.6" style="fill: var(--kw-bird)"/></g>
+
+<!-- the sea; the Overseas Highway along the horizon with a car crossing; the lighthouse key -->
+<rect x="0" y="200" width="390" height="120" fill="url(#k-sea)"/>
+<g opacity=".85" transform="translate(126,0)" style="fill: var(--kw-far)">
+<rect x="-10" y="189" width="250" height="2.4"/>
+<path d="M0,191.4 V199 M16,191.4 V199 M32,191.4 V199 M48,191.4 V199 M64,191.4 V199 M80,191.4 V199 M96,191.4 V199 M112,191.4 V199 M128,191.4 V199 M144,191.4 V199 M160,191.4 V199 M176,191.4 V199 M192,191.4 V199 M208,191.4 V199 M224,191.4 V199 M240,191.4 V199" stroke-width="1.6" style="stroke: var(--kw-far)"/>
+<path d="M232,189 C236,186 240,186 244,189" stroke-width="1" fill="none" style="stroke: var(--kw-far)"/>
+</g>
+<g transform="translate(126,0)"><g class="k-car"><rect x="-8" y="186.4" width="5" height="2.6" rx=".8" style="fill: var(--kw-car)"/><circle cx="-2.6" cy="187.6" r="1.1" fill="#FFF2C0" style="opacity: var(--kwv-lights)"/></g></g>
+<path d="M116,203 C126,198 144,196 160,197 C172,197 184,199 196,203 Z" style="fill: var(--kw-key)"/>
+<path d="M122,199 q3,-5 6,0 M178,199 q3,-5 6,0" stroke-width="2.4" fill="none" style="stroke: var(--kw-key)"/>
+<rect x="147" y="172" width="6" height="26" style="fill: var(--kw-tower)"/><rect x="146" y="168" width="8" height="5" style="fill: var(--kw-towerTop)"/><path d="M145.5,168 L150,163 L154.5,168 Z" style="fill: var(--kw-towerTop)"/>
+<circle cx="150" cy="170.5" r="1.6" fill="#FFE9A8" style="opacity: var(--kwv-beam)"/>
+<g style="opacity: var(--kwv-beam)"><g class="k-beam"><path d="M150,170.5 L269,152 L269,188 Z" fill="url(#k-beam)" filter="url(#k-soft)"/></g></g>
+<g transform="translate(-76,0)" style="opacity: var(--kwv-schooner)"><g class="k-sail"><path d="M204,200 L204,178 L216,198 Z M206,178 L206,200 M196,200 L220,200 L216,204 L200,204 Z M200,182 L204,200 L194,198 Z" stroke-width=".6" style="fill: var(--kw-key); stroke: var(--kw-key)"/></g></g>
+<g style="transform: translateX(var(--kwv-sunX)); opacity: var(--kwv-glints); stroke: var(--kw-glint)" stroke-linecap="round">
+<path class="k-gl" d="M-14,208 H14" stroke-width="2"/><path class="k-gl g2" d="M-20,217 H8" stroke-width="1.8"/><path class="k-gl g3" d="M-6,227 H22" stroke-width="1.6"/><path class="k-gl" d="M-24,239 H2" stroke-width="1.5"/>
+</g>
+
+<!-- the flats: seagrass, a sandbar, a turtle, dolphins at dusk, an anchored skiff, old pilings with gulls -->
+<g opacity=".45" style="fill: var(--kw-seagrass)"><ellipse cx="60" cy="236" rx="40" ry="5"/><ellipse cx="150" cy="252" rx="52" ry="6"/><ellipse cx="300" cy="244" rx="46" ry="5"/><ellipse cx="230" cy="266" rx="36" ry="4.6"/></g>
+<path d="M130,280 C180,272 250,274 330,278 C300,284 200,286 130,280 Z" opacity=".55" style="fill: var(--kw-shallowSand)"/>
+<g style="opacity: var(--kwv-turtle)"><g class="k-turtle"><use href="#f-turtle" x="96" y="256" width="15" height="13.8" style="fill: var(--kw-under)"/></g></g>
+<g style="opacity: var(--kwv-dolphins)"><g class="k-dolphin"><use href="#f-dolphin" x="120" y="212" width="26" height="8.4" style="fill: var(--kw-bird)"/></g><g class="k-dolphin k2"><use href="#f-dolphin" x="138" y="216" width="22" height="7" style="fill: var(--kw-bird)"/></g></g>
+<g class="k-wave" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".55" style="stroke: var(--kw-foam)"><path d="M20,222 q10,-3 20,0 M90,230 q12,-3 24,0 M170,220 q9,-2 18,0 M250,232 q12,-3 24,0 M330,222 q10,-3 20,0 M40,258 q14,-4 28,0 M180,262 q14,-4 28,0 M320,262 q14,-4 28,0"/></g>
+<g class="k-skiff">
+<path d="M176,240 L206,240 L202,246 L180,246 Z" style="fill: var(--kw-hull)"/><path d="M178,240 H205" stroke-width="1.2" style="stroke: var(--kw-hullTrim)"/>
+<rect x="189" y="234" width="6" height="6" style="fill: var(--kw-hullTrim)"/><path d="M188,234 H196" stroke-width="1" style="stroke: var(--kw-far)"/>
+<path d="M176,241 C170,246 166,252 164,258" stroke-width=".6" fill="none" style="stroke: var(--kw-line)"/>
+</g>
+<path d="M172,247 C182,249 200,249 210,247" stroke-width=".9" fill="none" opacity=".5" style="stroke: var(--kw-foam)"/>
+<g style="fill: var(--kw-piling)"><rect x="238" y="226" width="4" height="28"/><rect x="254" y="228" width="4" height="27"/><rect x="270" y="230" width="4" height="26"/><rect x="286" y="232" width="4" height="25"/></g>
+<path d="M236,254 q4,2 8,0 M252,255 q4,2 8,0 M268,256 q4,2 8,0 M284,257 q4,2 8,0" stroke-width=".9" fill="none" opacity=".6" style="stroke: var(--kw-foam)"/>
+<g style="opacity: var(--kwv-birds)"><use href="#f-gull" x="235" y="215" width="11" height="9.6" style="fill: var(--kw-gull)"/><g transform="matrix(-1 0 0 1 572 0)"><use href="#f-gull" x="281" y="221" width="10" height="8.8" style="fill: var(--kw-gull)"/></g></g>
+<g style="opacity: var(--kwv-egret)"><g class="k-egret"><use href="#f-egret" x="146" y="258" width="11" height="25.7" style="fill: var(--kw-egret)"/></g></g>
+
+<!-- the beach -->
+<path d="M0,292 C70,286 150,290 230,286 C300,283 350,288 390,284 L390,420 L0,420 Z" fill="url(#k-sand)"/>
+<path class="k-surf" d="M0,290 C70,284 150,288 230,284 C300,281 350,286 390,282" stroke-width="3" fill="none" stroke-linecap="round" opacity=".9" style="stroke: var(--kw-foam)"/>
+<path class="k-surf s2" d="M0,284 C60,279 140,283 220,279 C290,276 350,280 390,277" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".6" style="stroke: var(--kw-foam)"/>
+<path d="M150,330 q2,-1 4,0 M220,360 q2,-1 4,0 M110,380 q2,-1 4,0 M260,390 q2,-1 4,0" stroke-width="1.2" fill="none" style="stroke: var(--kw-sandDeep)"/>
+
+<!-- the conch shack on stilts: tin roof, porch, shutters, string lights after dusk -->
+<g style="fill: var(--kw-stilt)"><rect x="10" y="258" width="4" height="36"/><rect x="40" y="258" width="4" height="38"/><rect x="70" y="258" width="4" height="38"/><rect x="100" y="258" width="4" height="36"/></g>
+<rect x="8" y="210" width="98" height="48" style="fill: var(--kw-shackWall)"/>
+<path d="M8,218 H106 M8,226 H106 M8,234 H106 M8,242 H106 M8,250 H106" stroke-width=".8" style="stroke: var(--kw-siding)"/>
+<path d="M-2,213 L57,186 L116,213 Z" style="fill: var(--kw-roof)"/>
+<path d="M10,212 L57,190 M22,212 L57,194 M34,212 L57,198 M80,212 L57,198 M92,212 L57,194 M104,212 L57,190" stroke-width=".7" opacity=".7" style="stroke: var(--kw-roofLine)"/>
+<rect x="18" y="220" width="18" height="15" style="fill: var(--kw-window)"/><rect x="78" y="220" width="18" height="15" style="fill: var(--kw-window)"/>
+<rect x="13" y="220" width="5" height="15" style="fill: var(--kw-shutter)"/><rect x="36" y="220" width="5" height="15" style="fill: var(--kw-shutter)"/><rect x="73" y="220" width="5" height="15" style="fill: var(--kw-shutter)"/><rect x="96" y="220" width="5" height="15" style="fill: var(--kw-shutter)"/>
+<rect x="49" y="222" width="15" height="36" style="fill: var(--kw-door)"/><circle cx="61" cy="241" r=".9" style="fill: var(--kw-siding)"/>
+<rect x="2" y="256" width="112" height="4" style="fill: var(--kw-trim)"/>
+<path d="M2,244 H114 M2,244 V256 M114,244 V256 M12,244 V256 M22,244 V256 M32,244 V256 M76,244 V256 M86,244 V256 M96,244 V256 M106,244 V256" stroke-width="1.4" style="stroke: var(--kw-trim)"/>
+<path d="M114,260 L128,292 M120,260 L134,292 M116,266 H122 M119,273 H125 M121,280 H128 M124,287 H131" stroke-width="1.4" style="stroke: var(--kw-stilt)"/>
+<circle cx="57" cy="230" r="46" fill="url(#k-lamp)" style="opacity: var(--kwv-windows)"/>
+<g style="opacity: var(--kwv-strings)"><path d="M0,214 C20,220 40,220 57,216 C74,220 94,220 116,214" stroke-width=".5" fill="none" style="stroke: var(--kw-stilt)"/>
+<g class="k-bulbs" fill="#FFD890"><circle cx="8" cy="216.6" r="1.4"/><circle cx="20" cy="218.6" r="1.4"/><circle cx="32" cy="219.2" r="1.4"/><circle cx="44" cy="218.4" r="1.4"/><circle cx="57" cy="216.2" r="1.4"/><circle cx="70" cy="218.4" r="1.4"/><circle cx="82" cy="219.2" r="1.4"/><circle cx="94" cy="218.6" r="1.4"/><circle cx="106" cy="216.6" r="1.4"/></g></g>
+<g class="k-rooster"><use href="#f-rooster" x="20" y="229" width="14" height="15.5" style="fill: var(--kw-rooster)"/></g>
+<g class="k-hen"><use href="#f-hen" x="138" y="296" width="11" height="15.6" style="fill: var(--kw-hen)"/></g>
+<g style="opacity: var(--kwv-iguana)"><use href="#f-iguana" x="118" y="276" width="20" height="10" style="fill: var(--kw-iguana)"/></g>
+
+<!-- two palms and the hammock between them, Paul in it; a cooler and flip-flops underneath -->
+<path d="M260.0,344.0 L260.2,338.4 L260.3,332.8 L260.4,327.1 L260.4,321.2 L260.3,315.3 L260.2,309.3 L260.0,303.2 L259.8,297.0 L259.5,290.8 L259.2,284.5 L258.8,278.2 L258.4,271.8 L258.0,265.3 L257.5,258.8 L257.0,252.2 L256.4,245.6 L255.8,239.0 L255.2,232.3 L254.5,225.7 L253.9,219.0 L253.2,212.2 L252.5,205.5 L251.7,198.7 L251.0,192.0 L257.0,192.0 L257.8,198.7 L258.5,205.5 L259.3,212.2 L260.1,219.0 L260.8,225.7 L261.6,232.3 L262.4,239.0 L263.2,245.6 L263.9,252.2 L264.6,258.8 L265.4,265.3 L266.1,271.8 L266.8,278.2 L267.4,284.5 L268.0,290.8 L268.6,297.0 L269.2,303.2 L269.7,309.3 L270.2,315.3 L270.7,321.2 L271.1,327.1 L271.4,332.8 L271.7,338.4 L272.0,344.0 Z" style="fill: var(--kw-trunk)"/>
+<path d="M267.4,344.0 L267.4,338.4 L267.2,332.8 L267.0,327.1 L266.8,321.2 L266.5,315.3 L266.1,309.3 L265.7,303.2 L265.3,297.0 L264.8,290.8 L264.3,284.5 L263.7,278.2 L263.2,271.8 L262.6,265.3 L261.9,258.8 L261.3,252.2 L260.6,245.6 L259.9,239.0 L259.2,232.3 L258.5,225.7 L257.7,219.0 L257.0,212.2 L256.2,205.5 L255.5,198.7 L254.7,192.0 L257.0,192.0 L257.8,198.7 L258.5,205.5 L259.3,212.2 L260.1,219.0 L260.8,225.7 L261.6,232.3 L262.4,239.0 L263.2,245.6 L263.9,252.2 L264.6,258.8 L265.4,265.3 L266.1,271.8 L266.8,278.2 L267.4,284.5 L268.0,290.8 L268.6,297.0 L269.2,303.2 L269.7,309.3 L270.2,315.3 L270.7,321.2 L271.1,327.1 L271.4,332.8 L271.7,338.4 L272.0,344.0 Z" opacity=".55" style="fill: var(--kw-trunkRing)"/>
+<path d="M260.0,344.0 C255.2,349.0 276.8,349.0 272.0,344.0 Z" style="fill: var(--kw-trunk)"/>
+<path d="M260.3,335.6 Q265.9,337.2 271.6,335.6 M260.4,327.1 Q265.7,328.7 271.1,327.1 M260.4,318.3 Q265.4,319.9 270.5,318.3 M260.2,309.3 Q265.0,310.9 269.7,309.3 M259.9,300.1 Q264.4,301.7 268.9,300.1 M259.5,290.8 Q263.8,292.4 268.0,290.8 M259.0,281.3 Q263.1,282.9 267.1,281.3 M258.4,271.8 Q262.3,273.4 266.1,271.8 M257.7,262.0 Q261.4,263.6 265.0,262.0 M257.0,252.2 Q260.4,253.8 263.9,252.2 M256.1,242.3 Q259.4,243.9 262.8,242.3 M255.2,232.3 Q258.4,233.9 261.6,232.3 M254.2,222.3 Q257.3,223.9 260.5,222.3 M253.2,212.2 Q256.2,213.8 259.3,212.2 M252.1,202.1 Q255.1,203.7 258.1,202.1 " stroke-width=".9" fill="none" opacity=".8" style="stroke: var(--kw-trunkRing)"/>
+<g class="k-crown">
+<use href="#k-frond" x="-4" y="-26" width="96" height="60" transform="translate(254,192) scale(0.62,0.62) rotate(-58)" style="fill: var(--kw-frondBack); stroke: var(--kw-frondBack)"/>
+<use href="#k-frond" x="-4" y="-26" width="96" height="60" transform="translate(254,192) scale(-0.6,0.6) rotate(-58)" style="fill: var(--kw-frondBack); stroke: var(--kw-frondBack)"/>
+<use href="#k-frond" x="-4" y="-26" width="96" height="60" transform="translate(254,192) scale(0.95,0.95) rotate(-18)" style="fill: var(--kw-frondBack); stroke: var(--kw-frondBack)"/>
+<use href="#k-frond" x="-4" y="-26" width="96" height="60" transform="translate(254,192) scale(-0.9,0.9) rotate(-22)" style="fill: var(--kw-frondBack); stroke: var(--kw-frondBack)"/>
+<use href="#k-frond2" x="-4" y="-26" width="96" height="60" opacity=".75" transform="translate(254,192) scale(0.55,0.55) rotate(66)" style="fill: var(--kw-dry); stroke: var(--kw-dry)"/>
+<use href="#k-frond2" x="-4" y="-26" width="96" height="60" transform="translate(254,192) scale(1,1) rotate(8)" style="fill: var(--kw-frond); stroke: var(--kw-rib)"/>
+<use href="#k-frond2" x="-4" y="-26" width="96" height="60" transform="translate(254,192) scale(-0.98,0.98) rotate(10)" style="fill: var(--kw-frond); stroke: var(--kw-rib)"/>
+<use href="#k-frond" x="-4" y="-26" width="96" height="60" transform="translate(254,192) scale(0.78,0.78) rotate(-34)" style="fill: var(--kw-frond); stroke: var(--kw-rib)"/>
+<use href="#k-frond" x="-4" y="-26" width="96" height="60" transform="translate(254,192) scale(-0.74,0.74) rotate(-38)" style="fill: var(--kw-frond); stroke: var(--kw-rib)"/>
+<use href="#k-frond2" x="-4" y="-26" width="96" height="60" transform="translate(254,192) scale(0.7,0.7) rotate(40)" style="fill: var(--kw-frond); stroke: var(--kw-rib)"/>
+<use href="#k-frond2" x="-4" y="-26" width="96" height="60" transform="translate(254,192) scale(-0.66,0.66) rotate(44)" style="fill: var(--kw-frond); stroke: var(--kw-rib)"/>
+<circle cx="251" cy="196" r="2.4" style="fill: var(--kw-coconut)"/><circle cx="257" cy="197" r="2.2" style="fill: var(--kw-coconut)"/><circle cx="254" cy="200" r="2.1" style="fill: var(--kw-coconut)"/>
+</g>
+<path d="M367.5,346.0 L368.0,340.2 L368.3,334.2 L368.6,328.1 L368.8,321.9 L368.9,315.6 L369.0,309.1 L369.0,302.6 L368.9,295.9 L368.8,289.2 L368.6,282.4 L368.3,275.5 L368.0,268.5 L367.6,261.5 L367.2,254.4 L366.7,247.3 L366.2,240.1 L365.7,232.9 L365.1,225.6 L364.5,218.4 L363.8,211.1 L363.2,203.8 L362.5,196.5 L361.7,189.3 L361.0,182.0 L367.0,182.0 L367.8,189.3 L368.5,196.5 L369.3,203.8 L370.1,211.1 L370.9,218.4 L371.6,225.6 L372.4,232.9 L373.2,240.1 L373.9,247.3 L374.6,254.4 L375.3,261.5 L376.0,268.5 L376.7,275.5 L377.3,282.4 L377.8,289.2 L378.4,295.9 L378.8,302.6 L379.3,309.1 L379.6,315.6 L379.9,321.9 L380.2,328.1 L380.4,334.2 L380.5,340.2 L380.5,346.0 Z" style="fill: var(--kw-trunk)"/>
+<path d="M375.6,346.0 L375.7,340.2 L375.8,334.2 L375.8,328.1 L375.7,321.9 L375.6,315.6 L375.4,309.1 L375.1,302.6 L374.8,295.9 L374.4,289.2 L374.0,282.4 L373.5,275.5 L373.0,268.5 L372.4,261.5 L371.8,254.4 L371.2,247.3 L370.5,240.1 L369.9,232.9 L369.2,225.6 L368.4,218.4 L367.7,211.1 L367.0,203.8 L366.2,196.5 L365.5,189.3 L364.7,182.0 L367.0,182.0 L367.8,189.3 L368.5,196.5 L369.3,203.8 L370.1,211.1 L370.9,218.4 L371.6,225.6 L372.4,232.9 L373.2,240.1 L373.9,247.3 L374.6,254.4 L375.3,261.5 L376.0,268.5 L376.7,275.5 L377.3,282.4 L377.8,289.2 L378.4,295.9 L378.8,302.6 L379.3,309.1 L379.6,315.6 L379.9,321.9 L380.2,328.1 L380.4,334.2 L380.5,340.2 L380.5,346.0 Z" opacity=".55" style="fill: var(--kw-trunkRing)"/>
+<path d="M367.5,346.0 C362.3,351.0 385.7,351.0 380.5,346.0 Z" style="fill: var(--kw-trunk)"/>
+<path d="M368.1,337.2 Q374.3,338.8 380.4,337.2 M368.6,328.1 Q374.4,329.7 380.2,328.1 M368.9,318.8 Q374.3,320.4 379.8,318.8 M369.0,309.1 Q374.1,310.7 379.3,309.1 M369.0,299.3 Q373.8,300.9 378.6,299.3 M368.8,289.2 Q373.3,290.8 377.8,289.2 M368.4,278.9 Q372.7,280.5 377.0,278.9 M368.0,268.5 Q372.0,270.1 376.0,268.5 M367.4,257.9 Q371.2,259.5 375.0,257.9 M366.7,247.3 Q370.3,248.8 373.9,247.3 M366.0,236.5 Q369.4,238.1 372.8,236.5 M365.1,225.6 Q368.4,227.2 371.6,225.6 M364.2,214.7 Q367.3,216.3 370.5,214.7 M363.2,203.8 Q366.2,205.4 369.3,203.8 M362.1,192.9 Q365.1,194.5 368.1,192.9 " stroke-width=".9" fill="none" opacity=".8" style="stroke: var(--kw-trunkRing)"/>
+<g class="k-crown c2">
+<use href="#k-frond" x="-4" y="-26" width="96" height="60" transform="translate(364,182) scale(0.67,0.67) rotate(-58)" style="fill: var(--kw-frondBack); stroke: var(--kw-frondBack)"/>
+<use href="#k-frond" x="-4" y="-26" width="96" height="60" transform="translate(364,182) scale(-0.648,0.648) rotate(-58)" style="fill: var(--kw-frondBack); stroke: var(--kw-frondBack)"/>
+<use href="#k-frond" x="-4" y="-26" width="96" height="60" transform="translate(364,182) scale(1.026,1.026) rotate(-18)" style="fill: var(--kw-frondBack); stroke: var(--kw-frondBack)"/>
+<use href="#k-frond" x="-4" y="-26" width="96" height="60" transform="translate(364,182) scale(-0.972,0.972) rotate(-22)" style="fill: var(--kw-frondBack); stroke: var(--kw-frondBack)"/>
+<use href="#k-frond2" x="-4" y="-26" width="96" height="60" opacity=".75" transform="translate(364,182) scale(0.594,0.594) rotate(66)" style="fill: var(--kw-dry); stroke: var(--kw-dry)"/>
+<use href="#k-frond2" x="-4" y="-26" width="96" height="60" transform="translate(364,182) scale(1.08,1.08) rotate(8)" style="fill: var(--kw-frond); stroke: var(--kw-rib)"/>
+<use href="#k-frond2" x="-4" y="-26" width="96" height="60" transform="translate(364,182) scale(-1.058,1.058) rotate(10)" style="fill: var(--kw-frond); stroke: var(--kw-rib)"/>
+<use href="#k-frond" x="-4" y="-26" width="96" height="60" transform="translate(364,182) scale(0.842,0.842) rotate(-34)" style="fill: var(--kw-frond); stroke: var(--kw-rib)"/>
+<use href="#k-frond" x="-4" y="-26" width="96" height="60" transform="translate(364,182) scale(-0.799,0.799) rotate(-38)" style="fill: var(--kw-frond); stroke: var(--kw-rib)"/>
+<use href="#k-frond2" x="-4" y="-26" width="96" height="60" transform="translate(364,182) scale(0.756,0.756) rotate(40)" style="fill: var(--kw-frond); stroke: var(--kw-rib)"/>
+<use href="#k-frond2" x="-4" y="-26" width="96" height="60" transform="translate(364,182) scale(-0.713,0.713) rotate(44)" style="fill: var(--kw-frond); stroke: var(--kw-rib)"/>
+<circle cx="361" cy="186" r="2.6" style="fill: var(--kw-coconut)"/><circle cx="367" cy="187" r="2.4" style="fill: var(--kw-coconut)"/><circle cx="364" cy="190" r="2.2" style="fill: var(--kw-coconut)"/>
+</g>
+<ellipse cx="316" cy="346" rx="74" ry="7" opacity=".3" style="fill: var(--kw-shadow)"/>
+<rect x="300" y="330" width="18" height="11" rx="2" style="fill: var(--kw-cooler)"/><rect x="300" y="330" width="18" height="3.4" rx="1.5" style="fill: var(--kw-trim)"/>
+<path d="M326,340 l5,-1.4 l1,2 l-5,1.4 Z M332,342 l5,-1.4 l1,2 l-5,1.4 Z" style="fill: var(--kw-flops)"/>
+<g class="k-hammock">
+<path d="M270,272 L286,292 M364,266 L350,288" stroke-width="1" style="stroke: var(--kw-rope)"/>
+<path d="M284,290 C300,312 334,312 352,286 L354,292 C336,322 298,320 282,296 Z" style="fill: var(--kw-hammockBack)"/>
+<g transform="translate(270,247) scale(.42)"><g class="breathe-fig" stroke-linecap="round" stroke-linejoin="round" style="fill: var(--kw-fig); stroke: var(--kw-fig)">
+<path stroke="none" d="M150 74 C162 78,168 90,166 106 C164 120,162 130,162 140 L44 140 C34 140,28 134,27 124 C26 116,24 106,29 102 C34 99,39 104,40 112 C42 118,50 114,60 110 C66 107,70 104,74 102 C92 98,108 108,120 114 C124 106,130 92,136 82 C140 76,144 74,150 74 Z"/>
+<path stroke="none" d="M137 81 L153 75 L153 60 L140 66 Z"/>
+<ellipse cx="146" cy="60" rx="15" ry="17" transform="rotate(6 146 60)" stroke="none"/>
+<path d="M120 50 C124 36,168 34,174 50 C182 52,186 54,184 56 L114 56 C114 53,116 51,120 50 Z" stroke="none" style="fill: var(--kw-hat)"/>
+</g></g>
+<path d="M282,296 C298,318 336,320 354,292 L352,300 C334,326 296,324 280,302 Z" style="fill: var(--kw-hammock)"/>
+<path d="M284,299 C300,317 334,318 351,297 M283,303 C299,321 333,322 350,301" stroke-width="1.6" fill="none" style="stroke: var(--kw-hammockStripe)"/>
+</g>
+
+<!-- a pelican gliding low, a ghost crab after dark -->
+<g class="k-pelican" style="opacity: var(--kwv-birds)"><use href="#f-pelican" x="0" y="168" width="28" height="14.3" style="fill: var(--kw-bird)"/></g>
+<g style="opacity: var(--kwv-crab)"><g class="k-crab"><use href="#f-crab" x="210" y="352" width="11" height="7.8" style="fill: var(--kw-crab)"/></g></g>
+
+<!-- sea grape in the foreground -->
+<g class="k-grape">
+<g style="fill: var(--kw-grapeDark)"><circle cx="8" cy="378" r="14"/><circle cx="30" cy="368" r="12"/><circle cx="50" cy="384" r="13"/><circle cx="20" cy="398" r="14"/><circle cx="-4" cy="358" r="11"/></g>
+<g style="fill: var(--kw-grape)"><circle cx="16" cy="372" r="9"/><circle cx="36" cy="362" r="7.5"/><circle cx="54" cy="378" r="8"/><circle cx="4" cy="390" r="8.6"/><circle cx="30" cy="388" r="7"/></g>
+<g style="fill: var(--kw-grapeRed)"><circle cx="44" cy="372" r="4.4"/><circle cx="12" cy="360" r="4"/></g>
+<path d="M16,372 L20,366 M36,362 L39,357 M54,378 L58,373 M4,390 L7,385" stroke-width="1" fill="none" style="stroke: var(--kw-grapeDark)"/>
+</g>
+<path d="M358,330 C360,316 364,308 370,302 M364,330 C364,318 368,310 376,306 M370,330 C372,320 378,314 384,312" stroke-width="1.4" fill="none" stroke-linecap="round" style="stroke: var(--kw-seaOats)"/>
+
+</svg>
+    </div></div>
+    <!-- /kw5:scene -->
+    <!-- hi5:scene -->
+    <div class="waves hi5" aria-hidden="true"><div class="hi5-scene" id="hi5-scene">
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="420" viewBox="0 0 390 420" class="hi5-layer">
+<defs>
+<symbol id="h-frond" viewBox="-4 -26 96 60" overflow="visible"><path d="M-0.2,-0.3 L0.4,0.5 L3.4,-1.9 L4.2,-0.9 L5.8,-5.3 L8.0,-2.0 L9.3,-7.1 L11.8,-2.8 L13.0,-8.7 L15.6,-3.5 L16.8,-10.0 L19.4,-3.9 L20.8,-10.9 L23.3,-4.1 L24.9,-11.5 L27.1,-4.1 L29.0,-11.8 L31.0,-3.9 L33.3,-11.6 L34.8,-3.5 L37.6,-11.0 L38.7,-2.8 L41.9,-10.0 L42.5,-1.9 L46.3,-8.6 L46.4,-0.8 L50.5,-6.7 L50.3,0.5 L54.7,-4.5 L54.2,2.1 L58.8,-2.0 L58.1,3.9 L62.9,0.9 L62.0,5.9 L66.8,4.1 L66.0,8.1 L70.7,7.6 L69.9,10.5 L74.4,11.3 L73.9,13.2 L78.4,14.3 L77.8,16.1 L82.4,17.5 L81.8,19.2 L85.6,20.8 L86.2,22.6 L86.0,22.0 L85.4,23.0 L83.9,25.6 L80.9,19.1 L78.2,20.0 L76.9,16.0 L74.3,17.1 L72.9,13.1 L70.0,14.5 L69.0,10.5 L63.1,13.4 L65.0,8.1 L56.5,12.8 L61.1,5.9 L50.2,12.6 L57.2,3.9 L44.3,12.6 L53.3,2.2 L38.8,13.0 L49.4,0.7 L33.9,13.4 L45.5,-0.6 L29.4,14.0 L41.6,-1.7 L25.6,14.5 L37.8,-2.5 L22.2,15.0 L33.9,-3.1 L19.3,15.2 L30.1,-3.5 L16.8,15.1 L26.3,-3.7 L14.7,14.8 L22.5,-3.7 L12.7,14.1 L18.7,-3.4 L10.8,13.0 L14.9,-2.9 L8.9,11.6 L11.1,-2.2 L6.8,9.9 L7.3,-1.3 L4.6,8.0 L3.5,-0.2 L3.3,0.9 L-0.2,1.2 L-0.2,1.2 Z" stroke="none"/><path d="M0,0 Q42,-16 86,22" fill="none" stroke-width="1.1" opacity=".55" class="rib"/></symbol>
+<symbol id="h-frond2" viewBox="-4 -26 96 60" overflow="visible"><path d="M-0.3,-0.2 L0.5,0.4 L3.3,-2.6 L4.3,-1.7 L5.4,-6.5 L8.0,-3.5 L8.9,-8.8 L11.8,-4.9 L12.6,-10.9 L15.7,-5.9 L16.5,-12.5 L19.5,-6.6 L20.7,-13.7 L23.3,-7.0 L25.0,-14.4 L27.1,-7.0 L29.4,-14.5 L30.9,-6.6 L34.0,-14.1 L34.8,-5.9 L38.5,-13.1 L38.6,-4.8 L43.0,-11.5 L42.5,-3.4 L47.4,-9.3 L46.3,-1.6 L51.7,-6.6 L50.2,0.5 L55.9,-3.4 L54.1,3.0 L59.9,0.2 L58.0,5.8 L63.8,4.4 L61.9,9.0 L67.6,8.9 L65.9,12.6 L71.2,13.8 L69.8,16.5 L74.7,19.0 L73.7,20.7 L78.7,23.8 L77.7,25.4 L82.7,28.8 L81.7,30.4 L85.6,34.0 L86.2,35.8 L86.0,35.2 L85.4,36.2 L83.9,38.8 L80.8,30.0 L78.0,30.3 L76.8,25.0 L74.1,25.4 L72.9,20.4 L69.7,21.0 L68.9,16.2 L62.6,17.7 L64.9,12.3 L55.6,14.9 L61.0,8.8 L49.0,12.8 L57.1,5.7 L42.7,11.4 L53.2,2.9 L37.0,10.5 L49.3,0.5 L31.8,10.1 L45.4,-1.6 L27.3,10.1 L41.5,-3.3 L23.5,10.4 L37.7,-4.6 L20.3,10.8 L33.9,-5.6 L17.8,11.3 L30.0,-6.3 L15.9,11.6 L26.2,-6.6 L14.3,11.7 L22.5,-6.5 L12.9,11.4 L18.7,-6.1 L11.6,10.7 L14.9,-5.3 L10.1,9.7 L11.2,-4.2 L8.2,8.3 L7.5,-2.8 L6.0,6.9 L3.7,-1.0 L3.6,0.1 L-0.0,1.2 L-0.0,1.3 Z" stroke="none"/><path d="M0,0 Q42,-25.6 86,35.2" fill="none" stroke-width="1.1" opacity=".55" class="rib"/></symbol>
+<linearGradient id="h-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color: var(--hi-skyTop); stop-opacity: 0"/><stop offset=".5" style="stop-color: var(--hi-skyMid); stop-opacity: .7"/><stop offset="1" style="stop-color: var(--hi-horizon)"/></linearGradient>
+<linearGradient id="h-sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color: var(--hi-seaFar)"/><stop offset=".55" style="stop-color: var(--hi-seaMid)"/><stop offset="1" style="stop-color: var(--hi-shallow)"/></linearGradient>
+<linearGradient id="h-sand" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color: var(--hi-sandWet)"/><stop offset=".2" style="stop-color: var(--hi-sand)"/><stop offset="1" style="stop-color: var(--hi-sandDeep)"/></linearGradient>
+<linearGradient id="h-cliff" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color: var(--hi-cliffTop)"/><stop offset="1" style="stop-color: var(--hi-cliffBase)"/></linearGradient>
+<radialGradient id="h-sunglow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-opacity=".75" style="stop-color: var(--hi-sun)"/><stop offset=".35" stop-opacity=".25" style="stop-color: var(--hi-sun)"/><stop offset="1" stop-opacity="0" style="stop-color: var(--hi-sun)"/></radialGradient>
+<radialGradient id="h-lampglow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFC870" stop-opacity=".7"/><stop offset="1" stop-color="#FFB050" stop-opacity="0"/></radialGradient>
+<filter id="h-soft" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="3"></feGaussianBlur></filter>
+</defs>
+
+<!-- sky, trade-wind clouds, sun or moon -->
+<rect x="0" y="0" width="390" height="206" fill="url(#h-sky)"/>
+<g fill="#E8EEF6" style="opacity: var(--hiv-stars)"><circle class="h-star" cx="24" cy="36" r=".9"/><circle class="h-star s2" cx="70" cy="100" r=".7"/><circle class="h-star" cx="118" cy="28" r="1"/><circle class="h-star s3" cx="160" cy="80" r=".6"/><circle class="h-star s2" cx="210" cy="40" r=".8"/><circle class="h-star" cx="252" cy="70" r=".6"/><circle class="h-star s3" cx="300" cy="30" r=".9"/><circle class="h-star" cx="350" cy="60" r=".7"/><circle class="h-star s2" cx="14" cy="140" r=".6"/><circle class="h-star s3" cx="120" cy="150" r=".5"/></g>
+<g style="transform: translate(var(--hiv-sunX), var(--hiv-sunY))">
+<g style="transform: scale(var(--hiv-glowR))"><circle class="h-sunglow" r="1" fill="url(#h-sunglow)"/></g>
+<g style="transform: scale(var(--hiv-sunR))"><circle r="1" style="fill: var(--hi-sunCore)"/></g>
+<g style="opacity: var(--hiv-stars)"><circle cx="-3" cy="-2" r="3" fill="#C9D3D8" opacity=".6"/><circle cx="3" cy="3" r="1.8" fill="#C9D3D8" opacity=".5"/></g>
+</g>
+<g class="h-cloud"><path d="M40,128 C46,118 60,118 66,112 C76,104 94,108 98,118 C110,116 118,122 116,130 L38,132 Z" style="fill: var(--hi-cloud)"/><path d="M38,132 L116,130 C100,135 60,136 38,134 Z" style="fill: var(--hi-cloudShade)"/></g>
+<g class="h-cloud c2"><path d="M250,82 C258,70 276,72 282,64 C294,54 316,60 320,72 C334,70 344,78 340,88 L248,90 Z" style="fill: var(--hi-cloud)"/><path d="M248,90 L340,88 C320,93 272,94 248,92 Z" style="fill: var(--hi-cloudShade)"/></g>
+<g class="h-koae" style="opacity: var(--hiv-birds)"><use href="#f-tropicbird" x="160" y="140" width="24" height="10.6" style="fill: var(--hi-koae)"/></g>
+
+<!-- the sea; a voyaging canoe under crab-claw sails; a humpback -->
+<rect x="0" y="202" width="390" height="120" fill="url(#h-sea)"/>
+<g transform="translate(140,0)" style="opacity: var(--hiv-waa)"><g class="h-waa">
+<path d="M34,200 C44,203 70,203 82,199 L80,202 C68,205 46,205 36,203 Z M38,196 C48,199 70,199 80,195 L78,198 C66,201 48,201 40,199 Z" style="fill: var(--hi-hull)"/>
+<path d="M44,197 L44,200 M58,197 L58,201 M72,196 L72,200" stroke-width="1" style="stroke: var(--hi-hull)"/>
+<path d="M50,197 C44,186 44,176 48,168 C52,176 56,186 54,197 Z M66,197 C60,184 60,172 64,164 C68,172 72,184 70,197 Z" style="fill: var(--hi-sail)"/>
+</g></g>
+<g style="opacity: var(--hiv-whale)"><g class="h-whale"><use href="#f-humpback" x="104" y="196" width="32" height="8.5" style="fill: var(--hi-whale)"/></g><ellipse class="h-spout" cx="112" cy="200" rx="3" ry="6" opacity="0" style="fill: var(--hi-foam)"/></g>
+<g style="transform: translateX(var(--hiv-sunX)); opacity: var(--hiv-glints); stroke: var(--hi-glint)" stroke-linecap="round">
+<path class="h-gl" d="M-14,210 H14" stroke-width="2"/><path class="h-gl g2" d="M-20,220 H8" stroke-width="1.8"/><path class="h-gl g3" d="M-6,231 H22" stroke-width="1.6"/><path class="h-gl" d="M-24,244 H2" stroke-width="1.4"/>
+</g>
+<g class="h-wave" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".5" style="stroke: var(--hi-foam)"><path d="M10,226 q10,-3 20,0 M70,240 q12,-3 24,0 M140,228 q9,-2 18,0 M40,262 q14,-4 28,0 M130,270 q16,-4 32,0 M220,262 q12,-3 24,0"/></g>
+
+<!-- Nā Pali: a far ridge in haze, then the fluted cliffs, mist, a waterfall, a rainbow in the morning -->
+<path d="M206,210 L214,190 L222,194 L232,170 L244,176 L252,150 L208,154 L222,130 L236,138 L250,120 L264,128 L280,114 L296,120 L312,108 L330,116 L348,104 L366,112 L390,104 L390,210 Z" style="fill: var(--hi-cliffFar)"/>
+<g transform="translate(48,6)">
+<path d="M166,208 C176,196 184,180 190,170 L196,156 L202,160 L210,140 L216,146 L224,124 L232,132 L240,112 L248,122 L258,104 L266,116 L276,100 L286,112 L296,96 L306,108 L318,94 L328,108 L340,98 L352,110 L364,96 L376,106 L390,100 L390,208 Z" fill="url(#h-cliff)"/>
+<g opacity=".85" style="fill: var(--hi-flute)"><path d="M202,160 C200,186 197,220 194,208 L210,208 C206,220 204,186 202,160 Z"/><path d="M216,146 C214,172 211,206 207,208 L225,208 C220,206 218,172 216,146 Z"/><path d="M232,132 C230,158 227,192 222,208 L242,208 C236,192 234,158 232,132 Z"/><path d="M248,122 C246,148 243,182 238,208 L258,208 C252,182 250,148 248,122 Z"/><path d="M266,116 C264,142 261,176 255,208 L277,208 C270,176 268,142 266,116 Z"/><path d="M286,112 C284,138 281,172 275,208 L297,208 C290,172 288,138 286,112 Z"/><path d="M306,108 C304,134 301,168 295,208 L317,208 C310,168 308,134 306,108 Z"/><path d="M328,108 C326,134 323,168 317,208 L339,208 C332,168 330,134 328,108 Z"/><path d="M352,110 C350,136 347,170 341,208 L363,208 C356,170 354,136 352,110 Z"/><path d="M376,106 C374,132 371,166 366,208 L386,208 C380,166 378,132 376,106 Z"/></g>
+<path d="M196,156 C194,186 195,226 197,208 M210,140 C208,170 209,210 211,208 M224,124 C222,154 223,194 225,208 M240,112 C238,142 239,182 241,208 M258,104 C256,134 257,174 259,208 M276,100 C274,130 275,170 277,208 M296,96 C294,126 295,166 297,208 M318,94 C316,124 317,164 319,208 M340,98 C338,128 339,168 341,208 M364,96 C362,126 363,166 365,208" stroke-width="1.1" fill="none" opacity=".45" style="stroke: var(--hi-rim)"/>
+<path d="M166,208 C176,196 184,180 190,170 L196,156 L202,160 L210,140 L216,146 L224,124 L232,132 L240,112 L248,122 L258,104 L266,116 L276,100 L286,112 L296,96 L306,108 L318,94 L328,108 L340,98 L352,110 L364,96 L376,106 L390,100" stroke-width="1.6" fill="none" stroke-linejoin="round" opacity=".7" style="stroke: var(--hi-rim)"/>
+<path class="h-fall" d="M268,118 C269,140 267,164 268,200" stroke-width="1.7" fill="none" stroke-linecap="round" style="stroke: var(--hi-fall); opacity: var(--hiv-fall)"/>
+<ellipse cx="268" cy="202" rx="7" ry="2.5" opacity=".6" filter="url(#h-soft)" style="fill: var(--hi-mist)"/>
+</g>
+<g class="h-mist" style="opacity: var(--hiv-mist)"><ellipse cx="260" cy="168" rx="70" ry="7" filter="url(#h-soft)" style="fill: var(--hi-mist)"/><ellipse cx="350" cy="150" rx="50" ry="6" filter="url(#h-soft)" style="fill: var(--hi-mist)"/></g>
+<g fill="none" stroke-width="3" style="opacity: var(--hiv-rainbow)"><path d="M200,212 A74,74 0 0 1 348,212" stroke="#E88A7A"/><path d="M203,212 A71,71 0 0 1 345,212" stroke="#F2D07A"/><path d="M206,212 A68,68 0 0 1 342,212" stroke="#8ACB8A"/><path d="M209,212 A65,65 0 0 1 339,212" stroke="#7AA8DA"/></g>
+<path d="M204,214 C240,208 290,210 390,208 L390,216 L204,218 Z" style="fill: var(--hi-rock)"/>
+<path class="h-surf" d="M204,216 C240,212 290,214 390,211" stroke-width="2" fill="none" opacity=".8" style="stroke: var(--hi-foam)"/>
+
+<!-- the beach -->
+<path d="M0,300 C80,292 160,298 240,294 C310,291 350,296 390,292 L390,420 L0,420 Z" fill="url(#h-sand)"/>
+<path class="h-surf s2" d="M0,298 C80,290 160,296 240,292 C310,289 350,294 390,290" stroke-width="3" fill="none" stroke-linecap="round" opacity=".9" style="stroke: var(--hi-foam)"/>
+<path class="h-surf s3" d="M0,291 C70,285 150,290 230,286 C300,283 350,288 390,284" stroke-width="1.5" fill="none" stroke-linecap="round" opacity=".55" style="stroke: var(--hi-foam)"/>
+
+<!-- the lava point on the right, surf bursting on it -->
+<path d="M316,314 L320,300 L328,293 L336,297 L343,287 L353,282 L361,289 L370,280 L381,285 L390,281 L390,316 Z" style="fill: var(--hi-lava)"/>
+<path d="M296,316 L300,306 L307,302 L313,306 L317,316 Z M352,316 L356,304 L364,300 L372,306 L376,316 Z" opacity=".55" style="fill: var(--hi-lavaLit)"/>
+<path d="M320,300 L328,293 L336,297 L343,287 L353,282 L361,289 L370,280 L381,285 L390,281" stroke-width="1.4" fill="none" stroke-linejoin="round" style="stroke: var(--hi-lavaLit)"/>
+<path d="M296,316 C320,312 360,313 390,314" stroke-width="2" fill="none" opacity=".8" class="h-surf s2" style="stroke: var(--hi-foam)"/>
+<g class="h-spray" style="fill: var(--hi-foam)"><circle cx="336" cy="284" r="6"/><circle cx="348" cy="276" r="8"/><circle cx="362" cy="274" r="7"/><circle cx="374" cy="278" r="6"/><circle cx="356" cy="264" r="5"/></g>
+
+<!-- on the sand: the outrigger, a paddle, a surfboard, the honu, ʻakekeke, ʻōhiki after dark -->
+<g style="opacity: var(--hiv-honu)"><use href="#f-turtle" x="232" y="342" width="20" height="18.4" style="fill: var(--hi-honu)"/></g>
+<g style="opacity: var(--hiv-birds)"><g class="h-akekeke"><use href="#f-turnstone" x="196" y="300" width="10" height="6.9" style="fill: var(--hi-bird)"/></g><g class="h-akekeke k2"><use href="#f-turnstone" x="212" y="303" width="9" height="6.2" style="fill: var(--hi-bird)"/></g></g>
+<path d="M196,318 C210,316 250,316 262,314" stroke-width="3.4" stroke-linecap="round" style="stroke: var(--hi-hullDark)"/>
+<path d="M204,318 L208,328 M246,316 L248,328" stroke-width="1.8" style="stroke: var(--hi-iako)"/>
+<path d="M176,331 C196,338 260,338 292,327 L290,321 C260,330 200,330 178,325 Z" style="fill: var(--hi-canoe)"/>
+<path d="M178,326 C200,330 260,330 290,322" stroke-width="1.4" fill="none" style="stroke: var(--hi-canoeTrim)"/>
+<path d="M262,334 L286,300 M284,302 C288,296 292,296 290,302 Z" stroke-width="1.6" style="stroke: var(--hi-iako); fill: var(--hi-iako)"/>
+<path d="M296,334 C294,312 296,292 302,278 C308,292 310,312 308,334 Z" style="fill: var(--hi-board)"/>
+<path d="M302,280 C300,298 301,316 302,334" stroke-width="1.6" fill="none" style="stroke: var(--hi-boardStripe)"/>
+<g style="opacity: var(--hiv-crab)"><g class="h-crab"><use href="#f-crab" x="270" y="358" width="11" height="7.8" style="fill: var(--hi-crab)"/></g></g>
+<path d="M200,360 q2,-1 4,0 M320,370 q2,-1 4,0 M260,390 q2,-1 4,0" stroke-width="1.2" fill="none" style="stroke: var(--hi-sandDeep)"/>
+
+<!-- the plumeria framing the left, tiki torches -->
+<path d="M18,350 C20,320 24,296 30,276 M30,276 C28,262 30,248 30,236 M30,276 C40,262 48,240 52,222 M26,290 C18,270 12,246 8,226 M30,276 C48,268 62,258 70,246 M28,284 C36,276 40,270 40,262" stroke-width="4" fill="none" stroke-linecap="round" style="stroke: var(--hi-plumBark)"/>
+<g class="h-plum"><g style="fill: var(--hi-plumLeaf)"><ellipse cx="30" cy="236" rx="12" ry="3.4" transform="rotate(-148 30 236) translate(10,0)"/><ellipse cx="30" cy="236" rx="12" ry="3.4" transform="rotate(-118 30 236) translate(10,0)"/><ellipse cx="30" cy="236" rx="12" ry="3.4" transform="rotate(-88 30 236) translate(10,0)"/><ellipse cx="30" cy="236" rx="12" ry="3.4" transform="rotate(-58 30 236) translate(10,0)"/><ellipse cx="30" cy="236" rx="12" ry="3.4" transform="rotate(-28 30 236) translate(10,0)"/><ellipse cx="30" cy="236" rx="12" ry="3.4" transform="rotate(2 30 236) translate(10,0)"/><ellipse cx="30" cy="236" rx="12" ry="3.4" transform="rotate(32 30 236) translate(10,0)"/><ellipse cx="52" cy="222" rx="12" ry="3.4" transform="rotate(-147 52 222) translate(10,0)"/><ellipse cx="52" cy="222" rx="12" ry="3.4" transform="rotate(-117 52 222) translate(10,0)"/><ellipse cx="52" cy="222" rx="12" ry="3.4" transform="rotate(-87 52 222) translate(10,0)"/><ellipse cx="52" cy="222" rx="12" ry="3.4" transform="rotate(-57 52 222) translate(10,0)"/><ellipse cx="52" cy="222" rx="12" ry="3.4" transform="rotate(-27 52 222) translate(10,0)"/><ellipse cx="52" cy="222" rx="12" ry="3.4" transform="rotate(3 52 222) translate(10,0)"/><ellipse cx="52" cy="222" rx="12" ry="3.4" transform="rotate(33 52 222) translate(10,0)"/><ellipse cx="8" cy="226" rx="12" ry="3.4" transform="rotate(-149 8 226) translate(10,0)"/><ellipse cx="8" cy="226" rx="12" ry="3.4" transform="rotate(-119 8 226) translate(10,0)"/><ellipse cx="8" cy="226" rx="12" ry="3.4" transform="rotate(-89 8 226) translate(10,0)"/><ellipse cx="8" cy="226" rx="12" ry="3.4" transform="rotate(-59 8 226) translate(10,0)"/><ellipse cx="8" cy="226" rx="12" ry="3.4" transform="rotate(-29 8 226) translate(10,0)"/><ellipse cx="8" cy="226" rx="12" ry="3.4" transform="rotate(1 8 226) translate(10,0)"/><ellipse cx="8" cy="226" rx="12" ry="3.4" transform="rotate(31 8 226) translate(10,0)"/><ellipse cx="70" cy="246" rx="12" ry="3.4" transform="rotate(-150 70 246) translate(10,0)"/><ellipse cx="70" cy="246" rx="12" ry="3.4" transform="rotate(-120 70 246) translate(10,0)"/><ellipse cx="70" cy="246" rx="12" ry="3.4" transform="rotate(-90 70 246) translate(10,0)"/><ellipse cx="70" cy="246" rx="12" ry="3.4" transform="rotate(-60 70 246) translate(10,0)"/><ellipse cx="70" cy="246" rx="12" ry="3.4" transform="rotate(-30 70 246) translate(10,0)"/><ellipse cx="70" cy="246" rx="12" ry="3.4" transform="rotate(0 70 246) translate(10,0)"/><ellipse cx="70" cy="246" rx="12" ry="3.4" transform="rotate(30 70 246) translate(10,0)"/><ellipse cx="40" cy="262" rx="12" ry="3.4" transform="rotate(-145 40 262) translate(10,0)"/><ellipse cx="40" cy="262" rx="12" ry="3.4" transform="rotate(-115 40 262) translate(10,0)"/><ellipse cx="40" cy="262" rx="12" ry="3.4" transform="rotate(-85 40 262) translate(10,0)"/><ellipse cx="40" cy="262" rx="12" ry="3.4" transform="rotate(-55 40 262) translate(10,0)"/><ellipse cx="40" cy="262" rx="12" ry="3.4" transform="rotate(-25 40 262) translate(10,0)"/><ellipse cx="40" cy="262" rx="12" ry="3.4" transform="rotate(5 40 262) translate(10,0)"/><ellipse cx="40" cy="262" rx="12" ry="3.4" transform="rotate(35 40 262) translate(10,0)"/></g><g style="fill: var(--hi-plumFlower)"><g transform="translate(27,233)"><circle r="2.4" cx="0" cy="-1.6"/><circle r="2.4" cx="1.6" cy="0"/><circle r="2.4" cx="0" cy="1.6"/><circle r="2.4" cx="-1.6" cy="0"/><circle r="1" style="fill: var(--hi-plumCenter)"/></g><g transform="translate(33,234)"><circle r="2.4" cx="0" cy="-1.6"/><circle r="2.4" cx="1.6" cy="0"/><circle r="2.4" cx="0" cy="1.6"/><circle r="2.4" cx="-1.6" cy="0"/><circle r="1" style="fill: var(--hi-plumCenter)"/></g><g transform="translate(30,239)"><circle r="2.4" cx="0" cy="-1.6"/><circle r="2.4" cx="1.6" cy="0"/><circle r="2.4" cx="0" cy="1.6"/><circle r="2.4" cx="-1.6" cy="0"/><circle r="1" style="fill: var(--hi-plumCenter)"/></g><g transform="translate(49,219)"><circle r="2.4" cx="0" cy="-1.6"/><circle r="2.4" cx="1.6" cy="0"/><circle r="2.4" cx="0" cy="1.6"/><circle r="2.4" cx="-1.6" cy="0"/><circle r="1" style="fill: var(--hi-plumCenter)"/></g><g transform="translate(55,220)"><circle r="2.4" cx="0" cy="-1.6"/><circle r="2.4" cx="1.6" cy="0"/><circle r="2.4" cx="0" cy="1.6"/><circle r="2.4" cx="-1.6" cy="0"/><circle r="1" style="fill: var(--hi-plumCenter)"/></g><g transform="translate(52,225)"><circle r="2.4" cx="0" cy="-1.6"/><circle r="2.4" cx="1.6" cy="0"/><circle r="2.4" cx="0" cy="1.6"/><circle r="2.4" cx="-1.6" cy="0"/><circle r="1" style="fill: var(--hi-plumCenter)"/></g><g transform="translate(5,223)"><circle r="2.4" cx="0" cy="-1.6"/><circle r="2.4" cx="1.6" cy="0"/><circle r="2.4" cx="0" cy="1.6"/><circle r="2.4" cx="-1.6" cy="0"/><circle r="1" style="fill: var(--hi-plumCenter)"/></g><g transform="translate(11,224)"><circle r="2.4" cx="0" cy="-1.6"/><circle r="2.4" cx="1.6" cy="0"/><circle r="2.4" cx="0" cy="1.6"/><circle r="2.4" cx="-1.6" cy="0"/><circle r="1" style="fill: var(--hi-plumCenter)"/></g><g transform="translate(8,229)"><circle r="2.4" cx="0" cy="-1.6"/><circle r="2.4" cx="1.6" cy="0"/><circle r="2.4" cx="0" cy="1.6"/><circle r="2.4" cx="-1.6" cy="0"/><circle r="1" style="fill: var(--hi-plumCenter)"/></g><g transform="translate(67,243)"><circle r="2.4" cx="0" cy="-1.6"/><circle r="2.4" cx="1.6" cy="0"/><circle r="2.4" cx="0" cy="1.6"/><circle r="2.4" cx="-1.6" cy="0"/><circle r="1" style="fill: var(--hi-plumCenter)"/></g><g transform="translate(73,244)"><circle r="2.4" cx="0" cy="-1.6"/><circle r="2.4" cx="1.6" cy="0"/><circle r="2.4" cx="0" cy="1.6"/><circle r="2.4" cx="-1.6" cy="0"/><circle r="1" style="fill: var(--hi-plumCenter)"/></g><g transform="translate(70,249)"><circle r="2.4" cx="0" cy="-1.6"/><circle r="2.4" cx="1.6" cy="0"/><circle r="2.4" cx="0" cy="1.6"/><circle r="2.4" cx="-1.6" cy="0"/><circle r="1" style="fill: var(--hi-plumCenter)"/></g><g transform="translate(37,259)"><circle r="2.4" cx="0" cy="-1.6"/><circle r="2.4" cx="1.6" cy="0"/><circle r="2.4" cx="0" cy="1.6"/><circle r="2.4" cx="-1.6" cy="0"/><circle r="1" style="fill: var(--hi-plumCenter)"/></g><g transform="translate(43,260)"><circle r="2.4" cx="0" cy="-1.6"/><circle r="2.4" cx="1.6" cy="0"/><circle r="2.4" cx="0" cy="1.6"/><circle r="2.4" cx="-1.6" cy="0"/><circle r="1" style="fill: var(--hi-plumCenter)"/></g><g transform="translate(40,265)"><circle r="2.4" cx="0" cy="-1.6"/><circle r="2.4" cx="1.6" cy="0"/><circle r="2.4" cx="0" cy="1.6"/><circle r="2.4" cx="-1.6" cy="0"/><circle r="1" style="fill: var(--hi-plumCenter)"/></g></g></g>
+<path d="M60,300 L60,344" stroke-width="2.4" style="stroke: var(--hi-bamboo)"/><path d="M57,300 L63,300 L62,306 L58,306 Z" style="fill: var(--hi-bamboo)"/>
+<g style="opacity: var(--hiv-torches)"><circle cx="60" cy="296" r="18" fill="url(#h-lampglow)"/><g class="h-flame"><path d="M60,288 C56,294 57,299 60,300 C63,299 64,294 60,288 Z" fill="#F08A3A"/><path d="M60,292 C58,296 58.6,299 60,300 C61.4,299 62,296 60,292 Z" fill="#FFD27A"/></g></g>
+<path d="M172,296 L172,340" stroke-width="2.4" style="stroke: var(--hi-bamboo)"/><path d="M169,296 L175,296 L174,302 L170,302 Z" style="fill: var(--hi-bamboo)"/>
+<g style="opacity: var(--hiv-torches)"><circle cx="172" cy="292" r="18" fill="url(#h-lampglow)"/><g class="h-flame"><path d="M172,284 C168,290 169,295 172,296 C175,295 176,290 172,284 Z" fill="#F08A3A"/><path d="M172,288 C170,292 170.6,295 172,296 C173.4,295 174,292 172,288 Z" fill="#FFD27A"/></g></g>
+
+<!-- the palm, Nick against it with his black Maine Coon and the little Somali -->
+<ellipse cx="110" cy="344" rx="72" ry="7" opacity=".3" style="fill: var(--hi-shadow)"/>
+<path d="M141.0,342.0 L141.0,336.7 L140.8,331.1 L140.3,325.5 L139.6,319.6 L138.8,313.7 L137.7,307.6 L136.4,301.4 L135.0,295.1 L133.3,288.7 L131.5,282.3 L129.5,275.8 L127.3,269.3 L124.9,262.7 L122.4,256.1 L119.7,249.5 L116.9,242.9 L113.9,236.3 L110.7,229.8 L107.4,223.3 L104.0,216.9 L100.5,210.5 L96.8,204.2 L92.9,198.1 L89.0,192.0 L95.0,192.0 L99.0,198.1 L102.8,204.2 L106.6,210.5 L110.2,216.9 L113.7,223.3 L117.2,229.8 L120.5,236.3 L123.6,242.9 L126.7,249.5 L129.6,256.1 L132.3,262.7 L134.9,269.3 L137.4,275.8 L139.7,282.3 L141.9,288.7 L143.8,295.1 L145.6,301.4 L147.3,307.6 L148.7,313.7 L150.0,319.6 L151.0,325.5 L151.9,331.1 L152.5,336.7 L153.0,342.0 Z" style="fill: var(--hi-trunk)"/>
+<path d="M148.4,342.0 L148.2,336.7 L147.7,331.1 L146.9,325.5 L146.0,319.6 L144.9,313.7 L143.6,307.6 L142.1,301.4 L140.5,295.1 L138.6,288.7 L136.6,282.3 L134.4,275.8 L132.0,269.3 L129.5,262.7 L126.9,256.1 L124.0,249.5 L121.1,242.9 L118.0,236.3 L114.7,229.8 L111.4,223.3 L107.9,216.9 L104.2,210.5 L100.5,204.2 L96.7,198.1 L92.7,192.0 L95.0,192.0 L99.0,198.1 L102.8,204.2 L106.6,210.5 L110.2,216.9 L113.7,223.3 L117.2,229.8 L120.5,236.3 L123.6,242.9 L126.7,249.5 L129.6,256.1 L132.3,262.7 L134.9,269.3 L137.4,275.8 L139.7,282.3 L141.9,288.7 L143.8,295.1 L145.6,301.4 L147.3,307.6 L148.7,313.7 L150.0,319.6 L151.0,325.5 L151.9,331.1 L152.5,336.7 L153.0,342.0 Z" opacity=".55" style="fill: var(--hi-trunkRing)"/>
+<path d="M141.0,342.0 C136.2,347.0 157.8,347.0 153.0,342.0 Z" style="fill: var(--hi-trunk)"/>
+<path d="M140.9,333.9 Q146.6,335.5 152.2,333.9 M140.3,325.5 Q145.7,327.1 151.0,325.5 M139.2,316.7 Q144.3,318.3 149.3,316.7 M137.7,307.6 Q142.5,309.2 147.3,307.6 M135.7,298.3 Q140.2,299.9 144.8,298.3 M133.3,288.7 Q137.6,290.3 141.9,288.7 M130.5,279.1 Q134.6,280.7 138.6,279.1 M127.3,269.3 Q131.1,270.9 134.9,269.3 M123.7,259.4 Q127.3,261.0 131.0,259.4 M119.7,249.5 Q123.2,251.1 126.7,249.5 M115.4,239.6 Q118.7,241.2 122.1,239.6 M110.7,229.8 Q114.0,231.4 117.2,229.8 M105.8,220.1 Q108.9,221.7 112.0,220.1 M100.5,210.5 Q103.5,212.1 106.6,210.5 M94.9,201.1 Q97.9,202.7 100.9,201.1 " stroke-width=".9" fill="none" opacity=".8" style="stroke: var(--hi-trunkRing)"/>
+<g class="h-crown">
+<use href="#h-frond" x="-4" y="-26" width="96" height="60" transform="translate(92,192) scale(0.62,0.62) rotate(-58)" style="fill: var(--hi-frondBack); stroke: var(--hi-frondBack)"/>
+<use href="#h-frond" x="-4" y="-26" width="96" height="60" transform="translate(92,192) scale(-0.6,0.6) rotate(-58)" style="fill: var(--hi-frondBack); stroke: var(--hi-frondBack)"/>
+<use href="#h-frond" x="-4" y="-26" width="96" height="60" transform="translate(92,192) scale(0.95,0.95) rotate(-18)" style="fill: var(--hi-frondBack); stroke: var(--hi-frondBack)"/>
+<use href="#h-frond" x="-4" y="-26" width="96" height="60" transform="translate(92,192) scale(-0.9,0.9) rotate(-22)" style="fill: var(--hi-frondBack); stroke: var(--hi-frondBack)"/>
+<use href="#h-frond2" x="-4" y="-26" width="96" height="60" opacity=".75" transform="translate(92,192) scale(0.55,0.55) rotate(66)" style="fill: var(--hi-dry); stroke: var(--hi-dry)"/>
+<use href="#h-frond2" x="-4" y="-26" width="96" height="60" transform="translate(92,192) scale(1,1) rotate(8)" style="fill: var(--hi-frond); stroke: var(--hi-rib)"/>
+<use href="#h-frond2" x="-4" y="-26" width="96" height="60" transform="translate(92,192) scale(-0.98,0.98) rotate(10)" style="fill: var(--hi-frond); stroke: var(--hi-rib)"/>
+<use href="#h-frond" x="-4" y="-26" width="96" height="60" transform="translate(92,192) scale(0.78,0.78) rotate(-34)" style="fill: var(--hi-frond); stroke: var(--hi-rib)"/>
+<use href="#h-frond" x="-4" y="-26" width="96" height="60" transform="translate(92,192) scale(-0.74,0.74) rotate(-38)" style="fill: var(--hi-frond); stroke: var(--hi-rib)"/>
+<use href="#h-frond2" x="-4" y="-26" width="96" height="60" transform="translate(92,192) scale(0.7,0.7) rotate(40)" style="fill: var(--hi-frond); stroke: var(--hi-rib)"/>
+<use href="#h-frond2" x="-4" y="-26" width="96" height="60" transform="translate(92,192) scale(-0.66,0.66) rotate(44)" style="fill: var(--hi-frond); stroke: var(--hi-rib)"/>
+<circle cx="89" cy="196" r="2.4" style="fill: var(--hi-coconut)"/><circle cx="95" cy="197" r="2.2" style="fill: var(--hi-coconut)"/><circle cx="92" cy="200" r="2.1" style="fill: var(--hi-coconut)"/>
+</g>
+<path d="M58,334 L140,332 L142,342 L60,344 Z" style="fill: var(--hi-towel)"/>
+<path d="M76,333.6 L78,343.6 M94,333.2 L96,343.2 M112,332.8 L114,342.8" stroke-width="4" style="stroke: var(--hi-towelStripe)"/>
+<g transform="translate(59,266) scale(.5)"><g class="breathe-fig" stroke-linecap="round" stroke-linejoin="round" style="fill: var(--hi-fig); stroke: var(--hi-fig)">
+<path stroke="none" d="M150 74 C162 78,168 90,166 106 C164 120,162 130,162 140 L44 140 C34 140,28 134,27 124 C26 116,24 106,29 102 C34 99,39 104,40 112 C42 118,50 114,60 110 C66 107,70 104,74 102 C92 98,108 108,120 114 C124 106,130 92,136 82 C140 76,144 74,150 74 Z"/>
+<path stroke="none" d="M137 81 L153 75 L153 60 L140 66 Z"/>
+<ellipse cx="146" cy="60" rx="15" ry="17" transform="rotate(6 146 60)" stroke="none"/>
+<path fill="none" stroke-width="11" d="M160 90 C170 106,182 122,190 136"/>
+<circle cx="192" cy="137" r="6" stroke="none"/>
+</g></g>
+<g transform="translate(-15,171) scale(1.1)">
+<g class="h-cattail"><path d="M191,148.5 C199,148.5 203.5,144 200,139.5" stroke-width="4" fill="none" stroke-linecap="round" style="stroke: var(--hi-coon)"/></g>
+<path d="M162,150 C161,144 165.5,139.6 172,139.6 L182,139.6 C189,139.6 191.5,144 190.5,150 Z" style="fill: var(--hi-coon)"/>
+<path d="M166,141.8 C172,140.4 182,140.4 188,142.4" stroke-width="1.1" fill="none" stroke-linecap="round" style="stroke: var(--hi-coonStripe)"/>
+<circle cx="163.8" cy="140.6" r="4.6" style="fill: var(--hi-coon)"/>
+<path d="M159.4,137.8 L159.2,131.8 L162.8,136.2 Z M164.2,136.4 L168.2,132 L167.4,138 Z" style="fill: var(--hi-coon)"/>
+<g transform="translate(203.7,150) scale(.66) translate(-203.7,-150)"><path d="M196,149 C202.5,149 205.5,143.5 202,138.5" stroke-width="3.2" fill="none" stroke-linecap="round" style="stroke: var(--hi-somali)"/>
+<path d="M197,150 C195,142 197.8,134 203,132 C207.4,130.8 210.4,136 210.4,142 L210.4,150 Z" style="fill: var(--hi-somali)"/>
+<circle cx="203.8" cy="129.4" r="3.9" style="fill: var(--hi-somali)"/>
+<path d="M200.8,127 L199.6,121.4 L203.6,125.2 Z M205,125 L208.6,121 L208,126.8 Z" style="fill: var(--hi-somali)"/>
+</g></g>
+
+
+</svg>
+    </div></div>
+    <!-- /hi5:scene -->
 
     <div class="headrow">
       <div>
@@ -2533,7 +3059,7 @@
     <p class="foot lone" id="last-export"></p>
     <span id="range-value" hidden></span>
 
-    <p class="closing">Feeling 67 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
+    <p class="closing">Feeling 68 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
   </section>
 </main>
 
@@ -4194,5 +4720,38 @@
 })();
 </script>
 <!-- /dock5:js -->
+<!-- cp5:js -->
+<script>
+(() => {
+  // campo, new look (Feeling 68): fit the 390-wide scene to the screen
+  const sc = document.getElementById('cp5-scene');
+  if (!sc) return;
+  const fit = () => sc.style.setProperty('--cp5-k', ((sc.parentElement.clientWidth || window.innerWidth) / 390).toFixed(4));
+  window.addEventListener('resize', fit); document.addEventListener('placechange', fit); fit();
+})();
+</script>
+<!-- /cp5:js -->
+<!-- kw5:js -->
+<script>
+(() => {
+  // keywest, new look (Feeling 68): fit the 390-wide scene to the screen
+  const sc = document.getElementById('kw5-scene');
+  if (!sc) return;
+  const fit = () => sc.style.setProperty('--kw5-k', ((sc.parentElement.clientWidth || window.innerWidth) / 390).toFixed(4));
+  window.addEventListener('resize', fit); document.addEventListener('placechange', fit); fit();
+})();
+</script>
+<!-- /kw5:js -->
+<!-- hi5:js -->
+<script>
+(() => {
+  // hawaii, new look (Feeling 68): fit the 390-wide scene to the screen
+  const sc = document.getElementById('hi5-scene');
+  if (!sc) return;
+  const fit = () => sc.style.setProperty('--hi5-k', ((sc.parentElement.clientWidth || window.innerWidth) / 390).toFixed(4));
+  window.addEventListener('resize', fit); document.addEventListener('placechange', fit); fit();
+})();
+</script>
+<!-- /hi5:js -->
 </body>
 </html>
