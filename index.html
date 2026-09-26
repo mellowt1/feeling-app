@@ -3732,7 +3732,11 @@
     mountSheet(panel);
   });
   $('#export-json').addEventListener('click', async () => {
-    const data = { app: 'feeling', version: 1, exportedAt: new Date().toISOString(), entries: db.entries, sessions: db.sessions };
+    // circles and settings ride along, so a phone that re-adds Feeling to the Home Screen gets everything back (Feeling 70)
+    const ls = (k) => { try { return localStorage.getItem(k); } catch (e) { return null; } };
+    const data = { app: 'feeling', version: 1, exportedAt: new Date().toISOString(), entries: db.entries, sessions: db.sessions,
+      circles: circles().map((c) => ({ name: c.name, code: c.code, id: c.id })), statusTo: db.statusTo || [],
+      settings: { place: getPlace(), rain: ls('feeling.rain'), sound: ls('feeling.docksound') } };   // keys from the rain and sound script
     const ok = await shareOrDownload(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }), `feeling-backup-${todayKey()}.json`, 'Feeling backup');
     if (ok) { db.lastExport = Date.now(); save(); renderExport(); toast('Backup saved'); }
   });
@@ -3745,7 +3749,20 @@
       const have = new Set(db.entries.map((e) => e.id)); let added = 0;
       for (const e of data.entries) if (e && e.id && !have.has(e.id)) { db.entries.push(e); added++; }
       for (const s of data.sessions || []) if (!db.sessions.includes(s)) db.sessions.push(s);
-      db.sessions.sort(); save(); renderAll(); toast(`Restored ${added} new entries`);
+      // circles come back as the same member (same id), so nobody sees you twice
+      let joined = 0;
+      for (const c of Array.isArray(data.circles) ? data.circles : []) {
+        const code = cleanCode(c && c.code);
+        if (code.length < 6 || !c.name || !c.id || db.circles.some((x) => x.code === code)) continue;
+        db.circles.push({ name: String(c.name), code, id: String(c.id), members: [], seen: 0 }); joined++;
+      }
+      if (joined && Array.isArray(data.statusTo) && !(db.statusTo || []).length) db.statusTo = data.statusTo.map(cleanCode);
+      const st = data.settings || {};
+      try { if (st.rain === '1' || st.rain === '0') localStorage.setItem('feeling.rain', st.rain); if (st.sound === '1' || st.sound === '0') localStorage.setItem('feeling.docksound', st.sound); } catch (e) {}
+      db.sessions.sort(); save(); renderAll();
+      if (joined) { renderCircleCard(); syncCircle(true); }
+      const msg = `Restored ${added} new entr${added === 1 ? "y" : "ies"}` + (joined ? ` and ${joined} circle${joined > 1 ? 's' : ''}` : '');
+      if (PLACE_NAMES[st.place] && st.place !== getPlace()) { setPlace(st.place); setTimeout(() => toast(msg, 2600), 2000); } else toast(msg);   // after the place's own toast
     } catch (e) { toast('That file is not a Feeling backup'); }
     ev.target.value = '';
   });
