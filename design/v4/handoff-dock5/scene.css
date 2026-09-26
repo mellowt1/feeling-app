@@ -1,0 +1,46 @@
+  /* Florida dock, new look (Feeling 67). Approved on the Claude Design canvas "Feeling scenes · new look"; built by
+     design/v4/handoff-dock5/convert.cjs from DockScene.dc.html. Colours per sky; html.night (after 22:00 or a dark phone) is the night palette. */
+  .waves.dk5 { display: none; overflow: visible; }
+  html[data-place="dock"] .waves:not(.dk5) { display: none; }
+  html[data-place="dock"] .waves.dk5 { display: block; }
+  html[data-place="dock"] .waves.dk5::after { display: none; }
+  html[data-place="dock"] .orb { display: none; }   /* the scene has its own sun and moon */
+  .dk5 .dk-scene { position: absolute; left: 0; bottom: 0; width: 390px; height: 420px; transform-origin: 0 100%; transform: scale(var(--dk-k, 1)); }
+  .waves.dk5 svg.dk-layer { position: absolute; left: 0; top: 0; bottom: auto; width: 390px; height: 420px; overflow: visible; animation: none; }
+  .waves.dk5 { --dk-catCoat:#F2ECE3; --dk-catPoint:#788494; --dk-catWhite:#FFFFFF; --dk-skyTop:#C9E3EE; --dk-skyMid:#DDEFF3; --dk-horizon:#F1F8F6; --dk-sun:#FFFFFF; --dk-sunCore:#FFFFFF; --dk-cloud:#FFFFFF; --dk-cloudLit:#E4EFF3; --dk-far:#86A9A2; --dk-mist:#FFFFFF; --dk-waterTop:#BFE3DE; --dk-waterMid:#7FC3BE; --dk-deep:#2B7B84; --dk-glint:#FFFFFF; --dk-waveLine:#F4FFFD; --dk-island:#3F6E52; --dk-island2:#5E8F68; --dk-rim:#B9D99A; --dk-bird:#3C4E57; --dk-fish:#1B5A62; --dk-woodLit:#C19B77; --dk-wood:#9C7A5C; --dk-woodDark:#664E3C; --dk-barnacle:#B8B19C; --dk-rope:#E2D2AE; --dk-bucket:#D98F4E; --dk-tackle:#3F7D6C; --dk-lampBox:#664E3C; --dk-fig:#2C393D; --dk-line:#F4F1EA; --dkv-sunX:330px; --dkv-sunY:118px; --dkv-sunR:9; --dkv-glowR:58; --dkv-stars:0; --dkv-glints:0.6; --dkv-mist:0.25; --dkv-pelican:1; --dkv-dolphins:0; --dkv-lamp:0; --dkv-fishOp:0.45; --dkv-marker:1; }
+  html[data-sky="morning"]:not(.night) .waves.dk5 { --dk-catCoat:#EEE6DB; --dk-catPoint:#7A8593; --dk-catWhite:#FBF8F3; --dk-skyTop:#F4E6DC; --dk-skyMid:#F7D9C0; --dk-horizon:#FBD8A8; --dk-sun:#FFD28A; --dk-sunCore:#FFE9BC; --dk-cloud:#F3D3C4; --dk-cloudLit:#FFE2B8; --dk-far:#9DA9A2; --dk-mist:#FFF4E6; --dk-waterTop:#E6D3BC; --dk-waterMid:#8FB7B2; --dk-deep:#3C7780; --dk-glint:#FFF1D2; --dk-waveLine:#FFF4E4; --dk-island:#4D6556; --dk-island2:#6B8672; --dk-rim:#F2CE96; --dk-bird:#40505A; --dk-fish:#1F4A52; --dk-woodLit:#B99372; --dk-wood:#93735A; --dk-woodDark:#5E4838; --dk-barnacle:#A9A28E; --dk-rope:#D8C6A0; --dk-bucket:#C98F5A; --dk-tackle:#4E7A6A; --dk-lampBox:#5E4838; --dk-fig:#2E3A3E; --dk-line:#EDE4D4; --dkv-sunX:118px; --dkv-sunY:150px; --dkv-sunR:11; --dkv-glowR:70; --dkv-stars:0; --dkv-glints:0.8; --dkv-mist:0.55; --dkv-pelican:1; --dkv-dolphins:0; --dkv-lamp:0; --dkv-fishOp:0.4; --dkv-marker:1; }
+  html[data-sky="evening"]:not(.night) .waves.dk5 { --dk-catCoat:#E6C8B3; --dk-catPoint:#6C6676; --dk-catWhite:#F7E2D2; --dk-skyTop:#D9A3A0; --dk-skyMid:#EDAF8C; --dk-horizon:#F8C27A; --dk-sun:#FF9A50; --dk-sunCore:#FFC27A; --dk-cloud:#C9787A; --dk-cloudLit:#FFB27A; --dk-far:#7C5F6C; --dk-mist:#FFD2A8; --dk-waterTop:#F2B585; --dk-waterMid:#B98583; --dk-deep:#3A4C60; --dk-glint:#FFD29A; --dk-waveLine:#FFD8B4; --dk-island:#3F3440; --dk-island2:#5A4452; --dk-rim:#F59A62; --dk-bird:#2F2630; --dk-fish:#26303F; --dk-woodLit:#8E6452; --dk-wood:#6D4B3E; --dk-woodDark:#45302A; --dk-barnacle:#8C6E62; --dk-rope:#C69A7A; --dk-bucket:#B86A48; --dk-tackle:#4A5A5A; --dk-lampBox:#FFD08A; --dk-fig:#271E24; --dk-line:#FFE0C0; --dkv-sunX:214px; --dkv-sunY:186px; --dkv-sunR:15; --dkv-glowR:110; --dkv-stars:0; --dkv-glints:1; --dkv-mist:0.3; --dkv-pelican:0; --dkv-dolphins:1; --dkv-lamp:0.55; --dkv-fishOp:0.35; --dkv-marker:0.8; }
+  html.night .waves.dk5 { --dk-catCoat:#5C6268; --dk-catPoint:#2C333B; --dk-catWhite:#747B82; --dk-skyTop:#0B141C; --dk-skyMid:#132230; --dk-horizon:#223544; --dk-sun:#DCE6EA; --dk-sunCore:#E8EEF0; --dk-cloud:#1A2833; --dk-cloudLit:#2C3E4A; --dk-far:#132029; --dk-mist:#2A3C48; --dk-waterTop:#22394A; --dk-waterMid:#16293A; --dk-deep:#0A141B; --dk-glint:#C9D8DE; --dk-waveLine:#5C7888; --dk-island:#0D161C; --dk-island2:#15222A; --dk-rim:#3E5664; --dk-bird:#0B1318; --dk-fish:#050B10; --dk-woodLit:#4A403A; --dk-wood:#36302C; --dk-woodDark:#221D1A; --dk-barnacle:#3A3A36; --dk-rope:#5C5446; --dk-bucket:#4E3C34; --dk-tackle:#26383A; --dk-lampBox:#FFD08A; --dk-fig:#0B1014; --dk-line:#9FB3BE; --dkv-sunX:300px; --dkv-sunY:70px; --dkv-sunR:9; --dkv-glowR:46; --dkv-stars:1; --dkv-glints:0.55; --dkv-mist:0.2; --dkv-pelican:0; --dkv-dolphins:0; --dkv-lamp:1; --dkv-fishOp:0.3; --dkv-marker:0.4; }
+  .dk5 .d-star{animation:dTw 4s ease-in-out infinite alternate}.dk5 .d-star.s2{animation-duration:5.5s;animation-delay:-2s}.dk5 .d-star.s3{animation-duration:3.2s;animation-delay:-1s}
+  @keyframes dTw{from{opacity:.35}to{opacity:1}}
+  .dk5 .d-sunglow{transform-box:fill-box;transform-origin:50% 50%;animation:dGlow 7s ease-in-out infinite alternate}@keyframes dGlow{to{transform:scale(1.08);opacity:.85}}
+  .dk5 .d-clouds{animation:dCloud 60s ease-in-out infinite alternate}.dk5 .d-clouds.c2{animation-duration:80s;animation-delay:-20s}.dk5 .d-clouds.c3{animation-duration:70s;animation-delay:-35s}
+  @keyframes dCloud{from{transform:translateX(-12px)}to{transform:translateX(14px)}}
+  .dk5 .d-sail{animation:dSail 90s linear infinite alternate}@keyframes dSail{to{transform:translateX(-30px)}}
+  .dk5 .d-gl{animation:dGlint 2.6s ease-in-out infinite alternate}.dk5 .d-gl.g2{animation-duration:3.4s;animation-delay:-1.2s}.dk5 .d-gl.g3{animation-duration:2.1s;animation-delay:-.6s}
+  @keyframes dGlint{0%{opacity:.25;transform:translateX(-3px)}100%{opacity:1;transform:translateX(3px)}}
+  .dk5 .d-wave.w1{animation:dDrift 9s ease-in-out infinite alternate}.dk5 .d-wave.w2{animation:dDrift 12s ease-in-out -4s infinite alternate}
+  @keyframes dDrift{from{transform:translateX(-4px)}to{transform:translateX(4px)}}
+  .dk5 .d-pelican{animation:dFly 46s linear infinite}@keyframes dFly{0%{transform:translate(-40px,0)}50%{transform:translate(200px,6px)}100%{transform:translate(440px,-4px)}}
+  .dk5 .d-dolphin{transform-box:fill-box;transform-origin:50% 100%;animation:dArc 11s ease-in-out infinite;opacity:0}.dk5 .d-dolphin.dd2{animation-delay:.5s}
+  @keyframes dArc{0%,70%{opacity:0;transform:translate(0,8px) rotate(-18deg)}74%{opacity:1;transform:translate(6px,0) rotate(-8deg)}80%{opacity:1;transform:translate(16px,-4px) rotate(6deg)}86%{opacity:0;transform:translate(26px,6px) rotate(20deg)}100%{opacity:0}}
+  .dk5 .d-heron{transform-box:fill-box;transform-origin:50% 100%;animation:dHeron 14s ease-in-out infinite}@keyframes dHeron{0%,80%,100%{transform:none}86%{transform:rotate(-2deg) translateX(1px)}92%{transform:rotate(1deg)}}
+  .dk5 .d-ring{transform-box:fill-box;transform-origin:50% 50%;animation:dRing 3.6s ease-out infinite}.dk5 .d-ring.r2{animation-delay:-1.2s}.dk5 .d-ring.r3{animation-delay:-2.4s}
+  @keyframes dRing{from{transform:scale(.6);opacity:.8}to{transform:scale(1.5);opacity:0}}
+  .dk5 .d-mullet{transform-box:fill-box;transform-origin:50% 50%;animation:dJump 13s ease-in-out infinite;opacity:0}
+  @keyframes dJump{0%,80%{opacity:0;transform:translate(0,6px) rotate(-40deg)}81%{opacity:1;transform:translate(2px,0) rotate(-35deg)}85%{opacity:1;transform:translate(12px,-20px) rotate(0)}89%{opacity:1;transform:translate(24px,0) rotate(38deg)}90%{opacity:0;transform:translate(26px,6px) rotate(40deg)}100%{opacity:0}}
+  .dk5 .d-splash{transform-box:fill-box;transform-origin:50% 50%;opacity:0;animation:dSplash 13s ease-out infinite}.dk5 .d-splash.sp2{animation-name:dSplash2}
+  @keyframes dSplash{0%,80%{opacity:0;transform:scale(.4)}81%{opacity:.9;transform:scale(.5)}86%{opacity:0;transform:scale(1.6)}100%{opacity:0}}
+  @keyframes dSplash2{0%,89%{opacity:0;transform:scale(.4)}90%{opacity:.9;transform:scale(.5)}95%{opacity:0;transform:scale(1.6)}100%{opacity:0}}
+  .dk5 .d-fish{animation:dSwim 9s ease-in-out infinite alternate}.dk5 .d-fish.f2{animation-duration:11s;animation-delay:-3s}.dk5 .d-fish.f3{animation-duration:7s;animation-delay:-5s}
+  @keyframes dSwim{from{transform:translateX(-6px)}to{transform:translateX(6px)}}
+  .dk5 .d-tarpon{animation:dCruise 30s ease-in-out infinite alternate}@keyframes dCruise{from{transform:translateX(-20px)}to{transform:translateX(60px)}}
+  .dk5 .d-lamp{animation:dLamp 3s ease-in-out infinite alternate}@keyframes dLamp{from{filter:brightness(.9)}to{filter:brightness(1.15)}}
+  .dk5 .d-refl{animation:dDrift 3s ease-in-out infinite alternate}
+  .dk5 .d-bob{animation:dBob 3.2s ease-in-out infinite}@keyframes dBob{0%,100%{transform:translateY(0)}50%{transform:translateY(1.4px)}}
+  .dk5 .d-line{animation:dBob 3.2s ease-in-out infinite}
+  .dk5 .breathe-fig{transform-box:fill-box;transform-origin:50% 100%;animation:dBreath 4.6s ease-in-out infinite alternate}@keyframes dBreath{to{transform:scale(1.012,1.018)}}
+  .dk5 .d-tail{transform-box:fill-box;transform-origin:0 0;animation:dTail 7s ease-in-out infinite alternate}@keyframes dTail{from{transform:rotate(-4deg)}to{transform:rotate(6deg)}}
+  @media (prefers-reduced-motion: reduce) { .dk5 .dk-scene * { animation: none !important; } }
+  /* sit mode: the water stays as it is; the lamp and the sun breathe a little slower */
+  body.dock .dk5 .d-sunglow { animation-duration: 9.2s; }

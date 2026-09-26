@@ -1,0 +1,140 @@
+    <div class="waves dk5" aria-hidden="true"><div class="dk-scene" id="dk-scene">
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="420" viewBox="0 0 390 420" class="dk-layer">
+<defs>
+
+<linearGradient id="d-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color: var(--dk-skyTop); stop-opacity: 0"/><stop offset=".5" style="stop-color: var(--dk-skyMid); stop-opacity: .7"/><stop offset="1" style="stop-color: var(--dk-horizon)"/></linearGradient>
+<linearGradient id="d-water" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color: var(--dk-waterTop)"/><stop offset=".38" style="stop-color: var(--dk-waterMid)"/><stop offset="1" style="stop-color: var(--dk-deep)"/></linearGradient>
+<radialGradient id="d-sunglow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-opacity=".75" style="stop-color: var(--dk-sun)"/><stop offset=".35" stop-opacity=".25" style="stop-color: var(--dk-sun)"/><stop offset="1" stop-opacity="0" style="stop-color: var(--dk-sun)"/></radialGradient>
+<radialGradient id="d-lampglow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFC870" stop-opacity=".7"/><stop offset=".4" stop-color="#FFB050" stop-opacity=".2"/><stop offset="1" stop-color="#FFB050" stop-opacity="0"/></radialGradient>
+<linearGradient id="d-deck" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color: var(--dk-woodLit)"/><stop offset="1" style="stop-color: var(--dk-wood)"/></linearGradient>
+<filter id="d-soft" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="3"></feGaussianBlur></filter>
+<clipPath id="d-under"><rect x="0" y="292" width="390" height="128"/></clipPath>
+</defs>
+
+<!-- sky, sun or moon, clouds -->
+<rect x="0" y="0" width="390" height="206" fill="url(#d-sky)"/>
+<g fill="#E8EEF0" style="opacity: var(--dkv-stars)">
+<circle class="d-star" cx="30" cy="40" r=".9"/><circle class="d-star s2" cx="74" cy="92" r=".7"/><circle class="d-star" cx="118" cy="24" r="1"/><circle class="d-star s3" cx="160" cy="70" r=".6"/><circle class="d-star s2" cx="206" cy="36" r=".8"/><circle class="d-star" cx="236" cy="110" r=".6"/><circle class="d-star s3" cx="262" cy="22" r=".9"/><circle class="d-star" cx="352" cy="36" r=".7"/><circle class="d-star s2" cx="376" cy="104" r=".8"/><circle class="d-star s3" cx="96" cy="140" r=".6"/><circle class="d-star" cx="186" cy="130" r=".7"/><circle class="d-star s2" cx="16" cy="120" r=".6"/>
+</g>
+<g style="transform: translate(var(--dkv-sunX), var(--dkv-sunY))">
+<g style="transform: scale(var(--dkv-glowR))"><circle class="d-sunglow" r="1" fill="url(#d-sunglow)"/></g>
+<g style="transform: scale(var(--dkv-sunR))"><circle r="1" style="fill: var(--dk-sunCore)"/></g>
+<g style="opacity: var(--dkv-stars)"><circle cx="-3" cy="-2" r="3" fill="#C9D3D8" opacity=".6"/><circle cx="3" cy="3" r="1.8" fill="#C9D3D8" opacity=".5"/></g>
+</g>
+<g class="d-clouds">
+<path d="M-20,120 C-4,108 18,112 30,104 C44,94 68,98 78,108 C92,104 108,108 112,118 Z" style="fill: var(--dk-cloud)"/>
+<path d="M-20,120 L112,118 C96,123 40,124 -20,122 Z" opacity=".8" style="fill: var(--dk-cloudLit)"/>
+</g>
+<g class="d-clouds c2">
+<path d="M214,82 C224,72 244,74 252,68 C264,58 288,62 296,72 C312,66 332,72 336,84 C348,84 358,90 356,96 L212,96 C204,92 206,86 214,82 Z" style="fill: var(--dk-cloud)"/>
+<path d="M212,96 L356,96 C340,100 250,102 212,98 Z" opacity=".8" style="fill: var(--dk-cloudLit)"/>
+</g>
+<g class="d-clouds c3">
+<path d="M150,160 C160,154 176,156 184,150 C196,144 214,148 220,156 C232,154 244,158 246,166 L148,166 C144,164 146,162 150,160 Z" opacity=".85" style="fill: var(--dk-cloud)"/>
+</g>
+
+<!-- far shore, a sail, the channel markers -->
+<path d="M180,203 C214,199 246,200 280,197 C312,195 344,198 390,195 L390,206 L180,206 Z" style="fill: var(--dk-far)"/>
+<g class="d-sail"><path d="M338,195 L338,180 L346,194 Z M336,195 L348,195 L346,198 L338,198 Z" style="fill: var(--dk-far)"/></g>
+<rect x="228" y="194" width="2" height="12" style="fill: var(--dk-far)"/><rect x="227" y="192" width="4" height="4" fill="#C0584A" style="opacity: var(--dkv-marker)"/>
+<rect x="264" y="195" width="2" height="11" style="fill: var(--dk-far)"/><rect x="263" y="193" width="4" height="4" fill="#4E8A5E" style="opacity: var(--dkv-marker)"/>
+
+<!-- the water -->
+<rect x="0" y="204" width="390" height="216" fill="url(#d-water)"/>
+<rect x="0" y="198" width="390" height="18" filter="url(#d-soft)" style="fill: var(--dk-mist); opacity: var(--dkv-mist)"/>
+<g style="transform: translateX(var(--dkv-sunX)); opacity: var(--dkv-glints); stroke: var(--dk-glint)" stroke-linecap="round">
+<path class="d-gl" d="M-14,212 H14" stroke-width="2"/><path class="d-gl g2" d="M-20,222 H8" stroke-width="2"/><path class="d-gl g3" d="M-6,232 H22" stroke-width="1.8"/>
+<path class="d-gl" d="M-24,244 H2" stroke-width="1.6"/><path class="d-gl g2" d="M-2,256 H26" stroke-width="1.6"/><path class="d-gl g3" d="M-28,270 H-4" stroke-width="1.4"/>
+<path class="d-gl" d="M4,284 H30" stroke-width="1.3"/><path class="d-gl g2" d="M-30,300 H-6" stroke-width="1.2"/><path class="d-gl g3" d="M-8,316 H18" stroke-width="1.1"/>
+</g>
+<g class="d-wave w1" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".5" style="stroke: var(--dk-waveLine)">
+<path d="M10,226 q10,-3 20,0 M70,238 q12,-3 24,0 M150,222 q9,-2 18,0 M210,236 q12,-3 24,0 M300,226 q10,-3 20,0 M350,240 q10,-3 20,0"/>
+</g>
+<g class="d-wave w2" stroke-width="1.4" fill="none" stroke-linecap="round" opacity=".45" style="stroke: var(--dk-waveLine)">
+<path d="M30,262 q14,-4 28,0 M120,276 q16,-4 32,0 M200,262 q12,-3 24,0 M320,272 q16,-4 32,0 M-10,290 q14,-4 28,0 M160,300 q16,-4 32,0"/>
+</g>
+
+<!-- the mangrove island, its roots in the water, its reflection -->
+<g opacity=".28" transform="matrix(1 0 0 -.45 0 305)"><path d="M0,206 L0,168 C14,160 26,164 34,156 C44,146 60,150 68,158 C78,150 92,148 102,156 C112,150 126,152 134,162 C146,158 160,164 166,176 C176,180 184,190 190,206 Z" style="fill: var(--dk-island)"/></g>
+<path d="M0,206 L0,168 C14,160 26,164 34,156 C44,146 60,150 68,158 C78,150 92,148 102,156 C112,150 126,152 134,162 C146,158 160,164 166,176 C176,180 184,190 190,206 Z" style="fill: var(--dk-island2)"/>
+<path d="M0,168 C14,160 26,164 34,156 C44,146 60,150 68,158 C78,150 92,148 102,156 C112,150 126,152 134,162 C146,158 160,164 166,176 C176,180 184,190 190,206" stroke-width="2" fill="none" opacity=".55" style="stroke: var(--dk-rim)"/>
+<path d="M0,212 L0,182 C10,176 22,180 30,174 C40,166 54,170 60,178 C70,172 84,172 92,180 C104,176 116,180 122,188 C134,186 146,192 150,202 L154,212 Z" style="fill: var(--dk-island)"/>
+<path d="M14,188 C20,184 26,186 30,182 M52,184 C58,180 66,182 70,186 M96,190 C104,186 112,188 116,194" stroke-width="1.6" fill="none" opacity=".7" style="stroke: var(--dk-island2)"/>
+<path d="M10,208 q4,8 9,10 M22,208 q-3,7 -7,10 M40,209 q5,7 10,9 M56,209 q-2,6 -7,9 M78,209 q4,6 9,9 M96,210 q-3,6 -8,8 M116,209 q4,5 8,8 M134,209 q-2,5 -6,8 M146,208 q3,5 6,8" stroke-width="2" fill="none" stroke-linecap="round" style="stroke: var(--dk-island)"/>
+<ellipse cx="80" cy="219" rx="86" ry="2.6" opacity=".35" style="fill: var(--dk-deep)"/>
+
+<!-- a pelican gliding low -->
+<g class="d-pelican" style="opacity: var(--dkv-pelican)"><use href="#f-pelican" x="0" y="150" width="30" height="15" style="fill: var(--dk-bird)"/></g>
+<!-- dolphins at dusk -->
+<g style="opacity: var(--dkv-dolphins)"><g class="d-dolphin"><use href="#f-dolphin" x="96" y="232" width="30" height="10" style="fill: var(--dk-bird)"/></g><g class="d-dolphin dd2"><use href="#f-dolphin" x="116" y="236" width="26" height="9" style="fill: var(--dk-bird)"/></g></g>
+
+<!-- great blue heron in the shallows, and its reflection -->
+<g class="d-heron"><use href="#f-egret" x="36" y="222" width="19" height="44" style="fill: var(--dk-bird)"/></g>
+<g opacity=".25" transform="matrix(1 0 0 -.6 0 425)"><use href="#f-egret" x="36" y="222" width="19" height="44" style="fill: var(--dk-bird)"/></g>
+<ellipse class="d-ring" cx="46" cy="266" rx="10" ry="1.6" fill="none" stroke-width=".9" style="stroke: var(--dk-waveLine)"/>
+
+<!-- a mullet jumps -->
+<g class="d-mullet"><use href="#f-mullet" x="120" y="258" width="22" height="8.5" style="fill: var(--dk-bird)"/></g>
+<ellipse class="d-splash" cx="126" cy="268" rx="8" ry="1.6" fill="none" stroke-width="1" style="stroke: var(--dk-glint)"/>
+<ellipse class="d-splash sp2" cx="150" cy="268" rx="8" ry="1.6" fill="none" stroke-width="1" style="stroke: var(--dk-glint)"/>
+
+<!-- under the surface: snappers under the dock, a tarpon cruising, pinfish at the lamp at night -->
+<g clip-path="url(#d-under)">
+<g style="opacity: var(--dkv-fishOp)">
+<g class="d-fish f1"><use href="#f-snapper" x="262" y="306" width="34" height="10.5" style="fill: var(--dk-fish)"/></g>
+<g class="d-fish f2"><use href="#f-snapper" x="300" y="318" width="30" height="9.3" style="fill: var(--dk-fish)"/></g>
+<g class="d-fish f3"><use href="#f-snapper" x="336" y="308" width="32" height="10" style="fill: var(--dk-fish)"/></g>
+<g class="d-tarpon"><use href="#f-tarpon" x="40" y="318" width="62" height="25" style="fill: var(--dk-fish)"/></g>
+</g>
+<g style="opacity: var(--dkv-lamp)"><g class="d-fish f2"><use href="#f-pinfish" x="340" y="298" width="16" height="5.5" fill="#E8D8A8"/><use href="#f-pinfish" x="356" y="304" width="14" height="4.8" fill="#E8D8A8"/><use href="#f-pinfish" x="330" y="310" width="15" height="5.2" fill="#E8D8A8"/></g></g>
+</g>
+
+<!-- the lamp's light on the water at night -->
+<ellipse class="d-lamp" cx="370" cy="300" rx="44" ry="10" fill="url(#d-lampglow)" style="opacity: var(--dkv-lamp)"/>
+
+<!-- the dock: deck, fascia, pilings with their reflections -->
+<g opacity=".3" stroke-width="7" style="stroke: var(--dk-woodDark)"><path class="d-refl" d="M256,296 V318 M306,296 V322 M356,296 V318"/></g>
+<rect x="253" y="256" width="7" height="42" style="fill: var(--dk-woodDark)"/><rect x="303" y="256" width="7" height="42" style="fill: var(--dk-woodDark)"/><rect x="353" y="256" width="7" height="42" style="fill: var(--dk-woodDark)"/><rect x="382" y="256" width="7" height="40" style="fill: var(--dk-woodDark)"/>
+<path d="M253,284 H260 M303,284 H310 M353,284 H360 M382,284 H389" stroke-width="5" opacity=".6" style="stroke: var(--dk-barnacle)"/>
+<path d="M253,266 H260 M303,266 H310" stroke-width="2.4" style="stroke: var(--dk-rope)"/>
+<ellipse class="d-ring r2" cx="256.5" cy="297" rx="8" ry="1.5" fill="none" stroke-width=".9" style="stroke: var(--dk-waveLine)"/><ellipse class="d-ring r3" cx="306.5" cy="297" rx="8" ry="1.5" fill="none" stroke-width=".9" style="stroke: var(--dk-waveLine)"/><ellipse class="d-ring" cx="356.5" cy="297" rx="8" ry="1.5" fill="none" stroke-width=".9" style="stroke: var(--dk-waveLine)"/>
+<path d="M244,246 L390,246 L390,252 L244,252 Z" fill="url(#d-deck)"/>
+<path d="M244,252 H390 V259 H244 Z" style="fill: var(--dk-wood)"/>
+<path d="M244,259 H390" stroke-width="1.5" style="stroke: var(--dk-woodDark)"/>
+<path d="M258,246 V252 M272,246 V252 M286,246 V252 M300,246 V252 M314,246 V252 M328,246 V252 M342,246 V252 M356,246 V252 M370,246 V252 M384,246 V252" stroke-width=".8" opacity=".7" style="stroke: var(--dk-woodDark)"/>
+<path d="M250,255 H282 M296,256 H330 M344,255 H376" stroke-width=".7" opacity=".45" style="stroke: var(--dk-woodLit)"/>
+
+<!-- things on the dock: bucket, tackle box, the lamp post -->
+<path d="M334,246 L333,236 H343 L342,246 Z" style="fill: var(--dk-bucket)"/><path d="M333,236 H343" stroke-width="1" style="stroke: var(--dk-woodDark)"/>
+<rect x="348" y="239" width="14" height="7" rx="1" style="fill: var(--dk-tackle)"/><path d="M353,239 v-2 h4 v2" stroke-width="1" fill="none" style="stroke: var(--dk-woodDark)"/>
+<rect x="376" y="196" width="3" height="50" style="fill: var(--dk-woodDark)"/>
+<path d="M372,194 H383 L381,188 H374 Z" style="fill: var(--dk-woodDark)"/>
+<rect x="374" y="194" width="7" height="7" style="fill: var(--dk-lampBox)"/>
+<circle class="d-lamp" cx="377.5" cy="197.5" r="18" fill="url(#d-lampglow)" style="opacity: var(--dkv-lamp)"/>
+
+<!-- Paul, fishing off the end, and the cat beside him -->
+<g transform="translate(242,197.6) scale(.36)"><g class="breathe-fig" stroke-linecap="round" stroke-linejoin="round" style="fill: var(--dk-fig); stroke: var(--dk-fig)">
+<path stroke="none" d="M128 66 C140 70,148 80,148 96 C148 112,150 128,150 140 L90 140 C88 156,84 174,84 188 C84 195,80 199,73 199 L58 202 C52 202,50 196,55 193 L68 190 C66 172,64 156,66 143 C67 128,72 118,84 116 L100 116 C105 112,104 100,108 88 C112 76,116 70,120 67 Z"/>
+<path stroke="none" d="M118 69 L136 66 L131 54 L115 60 Z"/>
+<ellipse cx="121" cy="50" rx="15" ry="17" transform="rotate(-8 121 50)" stroke="none"/>
+<path d="M104 38 C110 28,134 28,138 40 L144 42 L104 44 Z" stroke="none"/>
+<path fill="none" stroke-width="11" d="M138 86 C132 98,124 108,116 113 C108 118,98 121,90 121"/>
+<circle cx="88" cy="122" r="6.5" stroke="none"/>
+</g></g>
+<path d="M273.7,241.5 L206,208" stroke-width="1.3" stroke-linecap="round" style="stroke: var(--dk-fig)"/>
+<path class="d-line" d="M206,208 C204,238 208,262 212,286" stroke-width=".6" fill="none" style="stroke: var(--dk-line)"/>
+<g class="d-bob"><circle cx="212" cy="286" r="2.2" fill="#E8E2D6"/><path d="M209.8,286 a2.2,2.2 0 0 0 4.4,0 Z" fill="#C0584A"/></g>
+<ellipse class="d-ring" cx="212" cy="288.5" rx="7" ry="1.4" fill="none" stroke-width=".9" style="stroke: var(--dk-waveLine)"/>
+<g transform="translate(179,178) scale(1.12)">
+<path class="d-tail" d="M139 60.5 C143.5 60 146.5 63.5 145 68.5" stroke-width="3.6" fill="none" stroke-linecap="round" style="stroke: var(--dk-catPoint)"/>
+<path d="M124 52.5 C123 56 122.8 59 123.6 62 L139.6 62 C140.6 58 139.6 53 135 51 C133 50.2 131 51 130.4 52.4 Z" style="fill: var(--dk-catCoat)"/>
+<path d="M133.5 53.5 C136.5 55 138.5 58 138.8 61.8" stroke-width="1.4" fill="none" opacity=".35" style="stroke: var(--dk-catPoint)"/>
+<path d="M124.6 53 C124.2 56 126.4 58.6 129.4 58.4 C131.4 58.2 131.8 55.6 131 53.6 C129 52.4 126.6 52.2 124.6 53 Z" style="fill: var(--dk-catWhite)"/>
+<ellipse cx="125.6" cy="61.3" rx="2" ry="1.1" style="fill: var(--dk-catWhite)"/><ellipse cx="129.4" cy="61.4" rx="2" ry="1.1" style="fill: var(--dk-catWhite)"/>
+<circle cx="127.5" cy="49" r="4.3" style="fill: var(--dk-catCoat)"/>
+<path d="M124 46.6 L123.6 41.8 L127 45.7 Z M128.2 45.6 L131.4 42 L131.2 46.7 Z" style="fill: var(--dk-catPoint)"/>
+<ellipse cx="127.3" cy="49.6" rx="3" ry="2.7" opacity=".9" style="fill: var(--dk-catPoint)"/>
+<ellipse cx="127.4" cy="52.2" rx="1.6" ry=".9" style="fill: var(--dk-catWhite)"/>
+</g>
+</svg>
+    </div></div>
