@@ -1,0 +1,47 @@
+  /* By the fire — Olivia's place (Feeling 66), open to everyone. Always a stormy evening: Olivia on the couch under a knit
+     blanket with tea, Saoirse curled up by her feet, the fire going, the storm at the window. Built in code (design/v4/handoff-hearth). */
+  html[data-place="hearth"][data-place][data-place][data-place] { color-scheme: dark; --sky-top:#1C1417; --sky-mid:#2E1F1E; --sky-horizon:#3B2622; --bg:#211817; --card:#2A1F1D; --glass:rgba(42,31,29,.55); --glass-strong:rgba(42,31,29,.82); --card-a:var(--glass); --glass-line:rgba(255,236,220,.13); --line:rgba(255,236,220,.09); --ink:#F3E7DA; --muted:#BBA79A; --accent:#E9A568; --accent-rgb:233,165,104; --accent-ink:#1C1417; --accent-soft:rgba(233,165,104,.16); --accent-40:rgba(233,165,104,.40); --orb:#E9A568; --orb-rgb:233,165,104; --scene-back:#3B2622; --scene-mid:#2C1D1A; --scene-front:#1E130F; --scene-land:#170E0A; --water:#2C1D1A; --range:#3B2622; --ground:#1E130F; --sand:#170E0A; --silhouette:#C9B4A8; --chip:rgba(255,255,255,.07); --track:rgba(255,255,255,.08); }
+  .waves.hearth { display: none; overflow: visible; }
+  html[data-place="hearth"] .waves:not(.hearth) { display: none; }
+  html[data-place="hearth"] .waves.hearth { display: block; }
+  html[data-place="hearth"] .waves.hearth::after { display: none; }
+  html[data-place="hearth"] :is(.clouds, .nightsky, .orb, .bird, .wind, div.rain, #rain-toggle) { display: none; }   /* it only rains outside the window */
+  .hearth .hh-scene { position: absolute; left: 0; bottom: 0; width: 390px; height: 420px; transform-origin: 0 100%; transform: scale(var(--hh-k, 1)); }
+  .waves.hearth svg.hh-layer { position: absolute; left: 0; top: 0; bottom: auto; width: 390px; height: 420px; overflow: visible; animation: none; }
+  /* the fire */
+  .hearth .hh-f { transform-box: fill-box; transform-origin: 50% 100%; animation: hhFlicker 1.3s ease-in-out infinite alternate; }
+  .hearth .hh-f2 { animation-duration: .95s; animation-delay: -.4s; }
+  .hearth .hh-f3 { animation-duration: .7s; animation-delay: -.2s; }
+  @keyframes hhFlicker { 0% { transform: scale(.94,.9) skewX(-2deg); } 45% { transform: scale(1.04,1.08) skewX(1.5deg); } 100% { transform: scale(.98,1) skewX(-1deg); } }
+  .hearth .hh-embers { animation: hhEmber 2.6s ease-in-out infinite alternate; } @keyframes hhEmber { from { opacity: .45; } to { opacity: .8; } }
+  .hearth .hh-sparks circle { animation: hhSpark 3.4s ease-out infinite; opacity: 0; }
+  .hearth .hh-sparks circle:nth-child(2) { animation-delay: -1.2s; animation-duration: 4.1s; } .hearth .hh-sparks circle:nth-child(3) { animation-delay: -2.3s; animation-duration: 2.9s; }
+  @keyframes hhSpark { 0% { transform: translate(0,0); opacity: 0; } 15% { opacity: .9; } 100% { transform: translate(3px,-34px); opacity: 0; } }
+  .hearth .hh-glow { animation: hhGlow 3.1s ease-in-out infinite alternate; } .hearth .hh-pool { animation: hhGlow 2.3s ease-in-out -1s infinite alternate; }
+  @keyframes hhGlow { 0% { opacity: .78; } 30% { opacity: .95; } 55% { opacity: .84; } 100% { opacity: 1; } }
+  .hearth .hh-candle { transform-box: fill-box; transform-origin: 50% 100%; animation: hhFlicker 1.9s ease-in-out infinite alternate; } .hearth .hh-c2 { animation-delay: -.8s; }
+  /* the storm */
+  .hearth .hh-rain { animation: hhRain .55s linear infinite; } @keyframes hhRain { from { transform: translate(0,-38px); } to { transform: translate(-16px,0); } }
+  .hearth .hh-tree { transform-box: fill-box; transform-origin: 70% 100%; animation: hhGust 4.2s ease-in-out infinite alternate; }
+  @keyframes hhGust { 0% { transform: rotate(-2deg); } 60% { transform: rotate(-7deg); } 75% { transform: rotate(-4deg); } 100% { transform: rotate(-8deg); } }
+  .hearth .hh-cloud { animation: hhCloud 22s linear infinite alternate; } @keyframes hhCloud { to { transform: translateX(-24px); } }
+  .hearth .hh-flash, .hearth .hh-roomflash { transition: opacity .12s ease-out; }
+  /* the tea, the cat, Olivia. Full ink always: body.dock would otherwise match the shared .dock .person-wrap dim (see Feeling 44) */
+  .waves.hearth .hh-olivia { opacity: 1; }
+  .hearth .hh-steam path { animation: hhSteam 3.6s ease-in-out infinite; opacity: 0; } .hearth .hh-steam .hh-s2 { animation-delay: -1.8s; }
+  @keyframes hhSteam { 0% { transform: translate(0,4px); opacity: 0; } 30% { opacity: .9; } 100% { transform: translate(1.5px,-8px); opacity: 0; } }
+  .hearth .hh-cat-body { transform-box: fill-box; transform-origin: 50% 100%; animation: hhPurr 3.8s ease-in-out infinite alternate; } @keyframes hhPurr { to { transform: scale(1.035,1.06); } }
+  .hearth .hh-cat-tail { transform-box: fill-box; transform-origin: 100% 0%; animation: hhTail 9s ease-in-out infinite; } @keyframes hhTail { 0%, 70%, 100% { transform: rotate(0); } 80% { transform: rotate(-6deg); } 88% { transform: rotate(2deg); } }
+  /* sit mode: the fire breathes with you, the storm softens */
+  body.dock .hearth .hh-glow { animation: hhBreathe 9.2s ease-in-out infinite; } body.dock .hearth .hh-pool { animation: hhBreathe 9.2s ease-in-out infinite; }
+  @keyframes hhBreathe { 0%, 100% { opacity: .7; } 50% { opacity: 1.15; } }
+  body.dock .hearth .hh-rain { animation-duration: .8s; opacity: .35; }
+  @media (prefers-reduced-motion: reduce) { .hearth .hh-scene * { animation: none !important; transition: none !important; } .hearth .hh-steam path { opacity: .5; } }
+  /* circle words: here the bottles stand on the mantel instead of drifting (the mantel top is y 172 of the 420-high room) */
+  html[data-place="hearth"] .bottle { animation: none; bottom: calc(248vw / 3.9); left: calc(302vw / 3.9); }
+  html[data-place="hearth"] .bottle.b1 { left: calc(320vw / 3.9); }
+  html[data-place="hearth"] .bottle.b2 { left: calc(338vw / 3.9); }
+  html[data-place="hearth"] .bottle .bob { --tilt: 0deg; transform: scale(.8); transform-origin: 50% 100%; animation: none; }
+  html[data-place="hearth"] .bottle.fresh .bob { animation: bottleDrop 1.4s cubic-bezier(.3,.7,.3,1) 1; }
+  html[data-place="hearth"] .bottle .ring { display: none; }
+  html[data-place="hearth"] body.dock .bottle { margin-bottom: 0; }

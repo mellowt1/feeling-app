@@ -1,0 +1,131 @@
+    <div class="waves hearth" aria-hidden="true"><div class="hh-scene" id="hh-scene"><svg class="hh-layer" xmlns="http://www.w3.org/2000/svg" width="390" height="420" viewBox="0 0 390 420">
+      <defs>
+        <linearGradient id="hh-wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3B2622" stop-opacity="0"/><stop offset=".26" stop-color="#3B2622"/><stop offset="1" stop-color="#2C1D1A"/></linearGradient>
+        <linearGradient id="hh-storm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1A222D"/><stop offset="1" stop-color="#34414F"/></linearGradient>
+        <linearGradient id="hh-floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2A1A13"/><stop offset="1" stop-color="#170E0A"/></linearGradient>
+        <radialGradient id="hh-glow" cx="326" cy="292" r="250" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FFB060" stop-opacity=".42"/><stop offset=".35" stop-color="#F08A40" stop-opacity=".16"/><stop offset="1" stop-color="#F08A40" stop-opacity="0"/></radialGradient>
+        <radialGradient id="hh-pool" cx="326" cy="345" r="120" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FFB060" stop-opacity=".35"/><stop offset="1" stop-color="#FFB060" stop-opacity="0"/></radialGradient>
+        <clipPath id="hh-pane"><rect x="34" y="126" width="94" height="128"/></clipPath>
+        <clipPath id="hh-box"><path d="M292,326 V262 Q292,238 326,238 Q360,238 360,262 V326 Z"/></clipPath>
+      </defs>
+
+      <!-- the room -->
+      <rect x="0" y="0" width="390" height="340" fill="url(#hh-wall)"/>
+      <rect x="0" y="322" width="390" height="98" fill="url(#hh-floor)"/>
+      <path d="M0,340 H390 M0,362 H390 M0,388 H390" stroke="#110A07" stroke-width="1" opacity=".6"/>
+      <rect x="0" y="318" width="390" height="5" fill="#1E130F"/>
+      <ellipse cx="206" cy="372" rx="158" ry="24" fill="#5A2E2A"/>
+      <ellipse cx="206" cy="372" rx="146" ry="19" fill="none" stroke="#A7684B" stroke-width="1.4" opacity=".55"/>
+
+      <!-- the window and the storm -->
+      <g class="hh-window">
+        <g clip-path="url(#hh-pane)">
+          <rect x="34" y="126" width="94" height="128" fill="url(#hh-storm)"/>
+          <path class="hh-cloud" d="M20,150 C40,138 62,146 72,140 C90,132 108,142 124,136 C140,132 150,140 150,150 L150,126 L20,126 Z" fill="#131A22" opacity=".8"/>
+          <path d="M34,232 C52,222 70,226 86,218 C100,212 116,220 128,214 L128,254 L34,254 Z" fill="#121820"/>
+          <g class="hh-tree"><path d="M104,254 C104,236 102,222 98,208 M99,216 C92,208 86,206 80,206 M100,224 C108,216 114,214 120,216" stroke="#0D1218" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M84,204 C80,190 92,180 102,184 C108,172 124,176 124,190 C134,194 130,210 118,210 C112,218 96,216 92,210 C82,212 78,206 84,204 Z" fill="#0D1218"/></g>
+          <g class="hh-rain" stroke="#9FB3C8" stroke-width="1" stroke-linecap="round" opacity=".55">
+            <path d="M40,100 l-5,12 M52,86 l-5,12 M63,108 l-5,12 M75,92 l-5,12 M88,104 l-5,12 M100,88 l-5,12 M112,110 l-5,12 M124,94 l-5,12 M136,106 l-5,12
+                     M46,130 l-5,12 M58,146 l-5,12 M70,124 l-5,12 M82,140 l-5,12 M94,128 l-5,12 M106,150 l-5,12 M118,132 l-5,12 M130,144 l-5,12
+                     M40,170 l-5,12 M52,186 l-5,12 M63,164 l-5,12 M75,180 l-5,12 M88,168 l-5,12 M100,190 l-5,12 M112,172 l-5,12 M124,184 l-5,12 M136,166 l-5,12
+                     M46,208 l-5,12 M58,224 l-5,12 M70,202 l-5,12 M82,218 l-5,12 M94,206 l-5,12 M106,228 l-5,12 M118,210 l-5,12 M130,222 l-5,12
+                     M40,244 l-5,12 M52,258 l-5,12 M75,250 l-5,12 M100,256 l-5,12 M124,246 l-5,12"/>
+          </g>
+          <rect class="hh-flash" x="34" y="126" width="94" height="128" fill="#DCE8FF" opacity="0"/>
+        </g>
+        <path d="M81,126 V254 M34,190 H128" stroke="#1C1411" stroke-width="4"/>
+        <rect x="30" y="122" width="102" height="136" fill="none" stroke="#1C1411" stroke-width="8"/>
+        <path d="M36,128 L66,128 L36,170 Z" fill="#FFFFFF" opacity=".04"/>
+        <rect x="20" y="258" width="122" height="8" rx="2" fill="#241814"/>
+        <!-- curtains -->
+        <path d="M6,106 H154" stroke="#16100D" stroke-width="3" stroke-linecap="round"/>
+        <path class="hh-curtain-l" d="M10,108 H36 C34,150 38,210 30,256 C28,272 32,290 26,306 H8 C12,280 6,240 10,200 C12,160 8,130 10,108 Z" fill="#4C2B37"/>
+        <path d="M18,110 C18,160 20,220 16,300" stroke="#3A1F2A" stroke-width="2" fill="none" opacity=".8"/>
+        <path class="hh-curtain-r" d="M126,108 H152 C150,130 148,160 152,200 C156,240 148,280 154,306 H136 C130,290 134,272 132,256 C124,210 128,150 126,108 Z" fill="#4C2B37"/>
+        <path d="M142,110 C140,160 144,220 144,300" stroke="#3A1F2A" stroke-width="2" fill="none" opacity=".8"/>
+      </g>
+
+      <!-- a small picture above the couch -->
+      <rect x="182" y="176" width="40" height="30" rx="1.5" fill="#1C1411"/>
+      <rect x="186" y="180" width="32" height="22" fill="#6E7F7A"/>
+      <path d="M186,196 L194,188 L200,194 L208,184 L218,196 V202 H186 Z" fill="#3E4C49"/>
+
+      <!-- the fireplace -->
+      <g class="hh-fireplace">
+        <path d="M270,326 V184 H382 V326 Z" fill="#5A4640"/>
+        <path d="M270,196 H382 M270,214 H382 M270,232 H382 M270,250 H292 M360,250 H382 M270,268 H292 M360,268 H382 M270,286 H292 M360,286 H382 M270,304 H292 M360,304 H382" stroke="#43332E" stroke-width="1.2"/>
+        <path d="M300,184 V196 M340,184 V196 M320,196 V214 M288,214 V232 M356,214 V232 M310,232 V238 M280,232 V250 M372,232 V250 M282,268 V286 M370,268 V286 M280,304 V326 M372,304 V326" stroke="#43332E" stroke-width="1.2"/>
+        <rect x="262" y="172" width="128" height="12" rx="2" fill="#2E1E18"/>
+        <path d="M292,326 V262 Q292,238 326,238 Q360,238 360,262 V326 Z" fill="#120B09"/>
+        <g clip-path="url(#hh-box)">
+          <ellipse class="hh-embers" cx="326" cy="322" rx="30" ry="8" fill="#E2552A" opacity=".7"/>
+          <g class="hh-fire">
+            <path class="hh-f hh-f1" d="M304,318 C298,300 308,290 312,278 C314,290 320,292 320,300 C324,286 326,272 334,262 C334,280 344,290 344,302 C348,296 350,290 350,284 C356,296 354,310 348,318 Z" fill="#D9482A"/>
+            <path class="hh-f hh-f2" d="M310,318 C306,306 314,298 316,290 C318,298 322,300 324,304 C326,292 330,284 334,276 C336,290 342,298 342,306 C344,302 346,300 346,296 C350,306 346,314 342,318 Z" fill="#F08A3A"/>
+            <path class="hh-f hh-f3" d="M316,318 C314,310 320,304 322,298 C324,304 326,306 328,308 C330,300 332,296 334,292 C336,302 340,308 338,318 Z" fill="#FFD27A"/>
+          </g>
+          <g class="hh-sparks" fill="#FFC870"><circle cx="322" cy="286" r="1.1"/><circle cx="332" cy="280" r=".9"/><circle cx="328" cy="290" r="1"/></g>
+        </g>
+        <path d="M304,322 L346,312 M306,312 L348,322" stroke="#2A1710" stroke-width="6" stroke-linecap="round"/>
+        <rect x="258" y="324" width="132" height="10" rx="2" fill="#4A3934"/>
+        <!-- on the mantel: two candles and a little plant -->
+        <rect x="276" y="158" width="5" height="14" rx="1" fill="#E8D8C0"/><path class="hh-candle" d="M278.5,151 C276.6,154 277,157 278.5,157.5 C280,157 280.4,154 278.5,151 Z" fill="#FFC870"/>
+        <rect x="286" y="162" width="5" height="10" rx="1" fill="#E8D8C0"/><path class="hh-candle hh-c2" d="M288.5,155 C286.6,158 287,161 288.5,161.5 C290,161 290.4,158 288.5,155 Z" fill="#FFC870"/>
+        <path d="M368,172 L366,160 H378 L376,172 Z" fill="#8A5A44"/>
+        <path d="M372,160 C368,152 362,150 360,146 M372,160 C374,150 380,148 382,144 M372,160 C372,152 372,148 371,142" stroke="#5E7A5A" stroke-width="2" fill="none" stroke-linecap="round"/>
+      </g>
+
+      <!-- the couch -->
+      <g class="hh-couch">
+        <rect x="128" y="232" width="152" height="56" rx="16" fill="#46554F"/>
+        <path d="M142,238 C170,232 238,232 266,238" stroke="#56675F" stroke-width="3" fill="none" stroke-linecap="round" opacity=".7"/>
+        <path d="M204,236 V282" stroke="#3A4843" stroke-width="1.5"/>
+        <rect x="138" y="280" width="134" height="24" rx="8" fill="#50605A"/>
+        <rect x="124" y="298" width="162" height="22" rx="6" fill="#3E4C47"/>
+        <rect x="114" y="258" width="30" height="62" rx="12" fill="#4B5A54"/>
+        <rect x="266" y="258" width="30" height="62" rx="12" fill="#4B5A54"/>
+        <rect x="132" y="320" width="6" height="7" rx="1" fill="#1E130F"/><rect x="272" y="320" width="6" height="7" rx="1" fill="#1E130F"/>
+        <!-- a cushion by the left arm -->
+        <path d="M140,262 C138,250 146,244 160,246 C168,248 170,256 168,268 C166,278 150,282 142,276 Z" fill="#B0674E"/>
+      </g>
+
+      <!-- Olivia, facing the fire, tea in both hands (Calm Presence fig-mug, mirrored) -->
+      <g class="person-wrap hh-olivia"><g class="person" transform="translate(253,197.6) scale(-.66,.66)"><g class="breathe-fig" fill="#241816" stroke="#241816" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" fill-rule="evenodd" d="M128 64 C141 68,150 80,152 96 C154 112,156 128,156 140 L56 140 C50 140,50 133,56 132 L64 130 C66 118,68 104,72 96 C75 88,84 84,94 88 C100 91,106 98,112 105 C112 96,114 82,118 73 C120 68,124 65,128 64 Z M94 108 C92 118,90 130,88 140 L140 140 C136 128,120 113,94 108 Z"/>
+        <path stroke="none" d="M117 74 L131 67 L129 54 L115 60 Z"/>
+        <ellipse cx="119" cy="52" rx="15" ry="17" transform="rotate(-8 119 52)" stroke="none"/>
+        <path d="M130 44 C138 50,140 62,136 72 C134 64,132 56,126 50 Z" stroke="none"/>
+        <path fill="none" stroke-width="11" d="M140 88 C134 98,128 104,120 103 C110 101,98 94,90 87"/>
+        <g transform="rotate(-24 84 80)"><rect x="68" y="70" width="32" height="21" rx="1.5" fill="#8C3F35" stroke="none"/><rect x="70" y="71.5" width="28" height="17.5" fill="#EFE4CF" stroke="none"/><path d="M84 71.5 V89" stroke="#B9A98C" stroke-width="1.2" fill="none"/><path d="M73 76 H81 M73 79 H81 M73 82 H80 M87 76 H95 M87 79 H95 M87 82 H93" stroke="#CDBFA6" stroke-width=".9" fill="none"/></g>
+        <circle cx="88" cy="86" r="6.5" stroke="none"/>
+      </g></g></g>
+      <g class="hh-mug"><path d="M285,250 c4,0 4,6 0,6" stroke="#C9B69C" stroke-width="1.6" fill="none"/><rect x="276" y="248" width="10" height="11" rx="2" fill="#C9B69C"/></g>
+      <g class="hh-steam" stroke="#E8D8C0" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".5">
+        <path class="hh-s1" d="M279,246 C277,242 281,239 279,233"/><path class="hh-s2" d="M283.5,246 C281.5,242 285.5,239 283.5,233"/>
+      </g>
+
+      <!-- the knit blanket over her lap, spilling over the seat -->
+      <g class="hh-blanket">
+        <path d="M170,292 C178,278 192,262 204,256 C214,260 224,270 230,282 C234,290 236,297 236,304 C231,308 227,317 224,327 C215,322 207,313 199,307 C188,305 178,305 167,303 C165,299 166,295 170,292 Z" fill="#D8C2A0"/>
+        <path d="M168,297 C180,298 192,299 200,301 C208,306 216,314 225,320 M169,293 C181,294 193,295 202,297 C210,301 219,309 227,313" stroke="#B0674E" stroke-width="2.4" fill="none"/>
+        <path d="M204,256 C201,270 199,286 200,300" stroke="#BCA482" stroke-width="1.4" fill="none"/>
+        <path d="M188,268 C186,280 185,292 186,302 M218,264 C219,276 220,288 220,300" stroke="#C6AE8A" stroke-width="1.1" fill="none"/>
+        <path d="M224,327 l-1,6 M219,324 l-1.5,6 M214,321 l-1.5,6 M209,317 l-2,5.5 M229,322 l0,6" stroke="#D8C2A0" stroke-width="1.5" stroke-linecap="round"/>
+      </g>
+
+      <!-- Saoirse, curled up by Olivia's feet -->
+      <g class="hh-cat">
+        <g class="hh-cat-body"><ellipse cx="252" cy="290" rx="17" ry="11.5" fill="#E9DFD0"/>
+          <path d="M240,283 C246,278 259,277 267,284" stroke="#D6C6AF" stroke-width="3" fill="none" opacity=".8"/>
+          <circle cx="238.5" cy="291.5" r="8" fill="#E9DFD0"/>
+          <path d="M232.5,286 L232.5,278.5 L238,284 Z M239.5,283.5 L244.5,278 L245.5,286 Z" fill="#6B5548"/>
+          <ellipse cx="237.5" cy="293.5" rx="5.2" ry="4.4" fill="#6B5548"/>
+          <path d="M234.8,292.8 h2.4 M239,293.1 h2.3" stroke="#E9DFD0" stroke-width=".8" stroke-linecap="round"/>
+          <path d="M232,297.5 C236,301.5 242,301.5 246.5,297.5" stroke="#F4EDE2" stroke-width="2.6" fill="none" stroke-linecap="round"/></g>
+        <path class="hh-cat-tail" d="M268,293 C265,303 249,306 238,301" stroke="#6B5548" stroke-width="6.5" fill="none" stroke-linecap="round"/>
+      </g>
+      <rect class="hh-glow" x="0" y="100" width="390" height="320" fill="url(#hh-glow)"/>
+      <ellipse class="hh-pool" cx="326" cy="345" rx="120" ry="30" fill="url(#hh-pool)"/>
+      <rect class="hh-roomflash" x="0" y="100" width="390" height="320" fill="#C8D8FF" opacity="0"/>
+    </svg></div></div>

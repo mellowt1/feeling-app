@@ -20,7 +20,7 @@ const REPO_ROOT = path.resolve(__dirname, '..', '..', '..'); // .../Feeling App
 const INDEX_HTML = path.join(REPO_ROOT, 'index.html');
 const SHOTS_DIR = path.resolve(__dirname, '..', 'shots');
 
-const PLACES = ['dock', 'campo', 'keywest', 'hawaii', 'tokyo'];
+const PLACES = ['dock', 'campo', 'keywest', 'hawaii', 'tokyo', 'hearth'];
 const SKIES = ['morning', 'day', 'evening', 'night'];
 
 const VIEWPORT = { width: 390, height: 844 };
