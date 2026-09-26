@@ -983,6 +983,7 @@
   #tab-today textarea, #tab-today .entry .text { -webkit-user-select: text; user-select: text; }
   #tab-today > .headrow, #tab-today > .entry-glass, #tab-today > .voice, #tab-today > .moods, #tab-today > .saverow, #tab-today > .daylist, nav { transition: opacity 1.2s ease; }
   #tab-today > .headrow, #tab-today > .entry-glass, #tab-today > .voice, #tab-today > .moods, #tab-today > .saverow, #tab-today > .wordto, #tab-today > .daylist { position: relative; z-index: 2; }   /* above the fixed scene (Feeling 69: on a small iPhone the fireplace wall hid the faces until tapped) */
+  #tab-today > .headrow { z-index: 3; }   /* the open place list must sit over the entry field below it (Feeling 71) */
   body.dock #tab-today > :not(.sky-breathe):not(.clouds):not(.orb):not(.waves):not(.rain):not(.wind):not(.dock-ui):not(#bottles), body.dock nav { opacity: 0 !important; pointer-events: none; }
   .waves { transition: transform 2.5s ease-out, height 2.5s ease-in-out, opacity .45s ease; }
   .waves-faint { transition: opacity .45s ease; }
@@ -3075,7 +3076,7 @@
     <p class="foot lone" id="last-export"></p>
     <span id="range-value" hidden></span>
 
-    <p class="closing">Feeling 70 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
+    <p class="closing">Feeling 71 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
   </section>
 </main>
 
