@@ -421,6 +421,14 @@
   .preview-acts .round { flex: 0 0 48px; width: 48px; height: 48px; border-radius: 24px; border: 1px solid var(--line); background: var(--card); color: var(--accent); display: flex; align-items: center; justify-content: center; padding: 0; }
   .preview-acts .round svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
   .sheet .lead-sub { font-size: 13px; color: var(--muted); margin: 0; padding-right: 60px; }
+  /* talk points: the range as bullets to read in the session, built on the phone (Feeling 72) */
+  .summary .talkbtn { margin-bottom: 10px; }
+  .tp-sec { margin-top: 18px; }
+  .tp-sec h4 { margin: 0 0 6px; font-size: 13px; font-weight: 600; color: #3B6B75; }
+  .tp-sec ul { margin: 0; padding-left: 18px; }
+  .tp-sec li { margin: 0 0 7px; font-size: 16px; line-height: 1.45; overflow-wrap: anywhere; }
+  .tp-sec li span { color: #6B7780; }
+  .tp-sec li q { display: block; font-size: 15px; color: #4A5560; quotes: "\201C" "\201D"; }
   .group { margin-bottom: 22px; }
   .group h2 { font-size: 13px; font-weight: 500; color: var(--muted); margin: 0 0 6px 16px; }
   .group .foot { font-size: 12px; line-height: 16px; color: var(--muted); margin: 6px 16px 0; }
@@ -3060,6 +3068,7 @@
           </div>
       </div>
       <p class="foot" id="range-info"></p>
+      <button class="btn ghost talkbtn" id="talk-points" type="button"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="3" cy="4" r=".6" fill="currentColor"/><circle cx="3" cy="8" r=".6" fill="currentColor"/><circle cx="3" cy="12" r=".6" fill="currentColor"/><path d="M6 4h8M6 8h8M6 12h5"/></svg>Talk points</button>
       <div class="acts">
         <button class="btn ghost" id="preview-md" type="button">Preview</button>
         <button class="btn" id="export-md" type="button"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8M5 5l3-3 3 3M3 8v5a1.5 1.5 0 0 0 1.5 1.5h7A1.5 1.5 0 0 0 13 13V8"/></svg>Share</button>
@@ -3076,7 +3085,7 @@
     <p class="foot lone" id="last-export"></p>
     <span id="range-value" hidden></span>
 
-    <p class="closing">Feeling 71 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
+    <p class="closing">Feeling 72 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
   </section>
 </main>
 
@@ -3732,6 +3741,140 @@
     panel.appendChild(done);
     mountSheet(panel);
   });
+  // ---------- talk points: what to bring up, as bullets. Worked out here on the phone, nothing is sent ----------
+  const STOP = new Set(('about above after again against also always amazing another anything around away back because been before being below between both came cannot could didn does doing done down during each enough even ever every feel feeling feels felt from going gonna good have having here into just know like little made make many maybe more most much myself need never next nothing okay only other over people pretty quite really right same should since some something still such sure take than that thats their them then there these they thing things think this those though thought through time today told tomorrow tonight very want wanted well went were what when where which while will with without would yeah year yesterday your youre ' +
+    'aber alles auch dann dass eine einen etwas haben heute immer jetzt kein mehr nicht noch oder schon sehr sein sind und viel wieder wird ' +
+    'alleen altijd anders beetje daar dacht door echt eigenlijk even gaan gaat gedaan geen goed heel hebben heeft hier iets jullie kunnen maar meer misschien moet niet niets naar nog omdat ondanks onze over vandaag veel voor vond waar want weer wel werd zijn ' +
+    'algo bien cada como cosa cuando desde donde ella esta este esto estoy hace hacer hasta hoy mucho nada para pero poco porque puedo quiero siempre sobre solo tambien tengo todo todos').split(' '));
+  function clip(t, n) {
+    t = String(t || '').replace(/\s+/g, ' ').trim();
+    if (t.length <= n) return t;
+    const cut = t.slice(0, n), end = Math.max(cut.lastIndexOf('. '), cut.lastIndexOf('! '), cut.lastIndexOf('? '));
+    if (end > n * .5) return cut.slice(0, end + 1);   // stop at a sentence end when one is near
+    const sp = cut.lastIndexOf(' ');
+    return (sp > n * .6 ? cut.slice(0, sp) : cut).replace(/[,;:\s]+$/, '') + '…';
+  }
+  const dayAvg = (list) => { const ms = list.map((e) => e.mood).filter((m) => m > 0).map(level); return ms.length ? ms.reduce((a, b) => a + b, 0) / ms.length : null; };
+  const isHard = (e) => e.mood === 6 || (e.mood > 0 && e.mood <= 2);
+  function talkPoints(es) {
+    const [a0, b0] = rangeBounds();
+    const days = groupByDay(es);                       // newest first
+    const first = days[days.length - 1][0], last = days[0][0];
+    const secs = [];
+    const add = (title, items) => { if (items.length) secs.push({ title, items }); };
+
+    // how it went
+    const how = [];
+    const avgs = days.map(([k, l]) => [k, dayAvg(l)]).filter(([, v]) => v != null);
+    const hardDays = new Set(days.filter(([, l]) => l.some(isHard)).map(([k]) => k));
+    const goodDays = avgs.filter(([k, v]) => v >= 4 && !hardDays.has(k)).length;
+    if (avgs.length) {
+      const avg = avgs.reduce((s, [, v]) => s + v, 0) / avgs.length;
+      const word = avg < 1.75 ? 'very bad' : avg < 2.6 ? 'bad' : avg < 3.4 ? 'okay' : avg < 4.25 ? 'good' : 'very good';
+      how.push({ text: `Mostly ${word}: ${hardDays.size} hard ${hardDays.size === 1 ? 'day' : 'days'}, ${goodDays} good ${goodDays === 1 ? 'day' : 'days'}, out of ${days.length}` });
+      // the same number of days just before, so the change shows
+      const span = Math.round((keyToDate(last) - keyToDate(first)) / 864e5) + 1;
+      const pFrom = shiftKey(first, -span), pTo = shiftKey(first, -1);
+      const prev = groupByDay(db.entries.filter((e) => e.day >= pFrom && e.day <= pTo)).map(([, l]) => dayAvg(l)).filter((v) => v != null);
+      if (prev.length >= 3) {
+        const p = prev.reduce((s, v) => s + v, 0) / prev.length, d = avg - p;
+        how.push({ text: d <= -0.4 ? `Harder than the ${span} days before` : d >= 0.4 ? `Better than the ${span} days before` : `About the same as the ${span} days before` });
+      }
+    }
+    const angry = es.filter((e) => e.mood === 6).length;
+    if (angry) how.push({ text: `Angry ${angry} ${angry === 1 ? 'time' : 'times'}` });
+    const hardEs = es.filter(isHard);
+    if (hardEs.length >= 3) {
+      const part = (ts) => { const h = new Date(ts).getHours(); return h >= 4 && h < 12 ? 'the morning' : h < 17 ? 'the afternoon' : h < 22 ? 'the evening' : 'the night'; };
+      const n = {}; for (const e of hardEs) n[part(e.ts)] = (n[part(e.ts)] || 0) + 1;
+      const [top, c] = Object.entries(n).sort((x, y) => y[1] - x[1])[0];
+      if (c / hardEs.length >= .6) how.push({ text: `Hard moments mostly in ${top}` });
+    }
+    let gap = null;
+    for (let i = 0; i < days.length - 1; i++) {
+      const later = days[i][0], earlier = days[i + 1][0];
+      const g = Math.round((keyToDate(later) - keyToDate(earlier)) / 864e5) - 1;
+      if (g >= 3 && (!gap || g > gap.g)) gap = { g, from: shiftKey(earlier, 1), to: shiftKey(later, -1) };
+    }
+    if (gap) how.push({ text: `Nothing written for ${gap.g} days (${shortDay(gap.from)} – ${shortDay(gap.to)})` });
+    add('How it went', how);
+
+    // the hardest moments, words first
+    const said = (e) => e.text && e.text.trim();
+    const hardest = es.filter((e) => isHard(e) && said(e)).sort((x, y) => level(x.mood) - level(y.mood) || y.ts - x.ts).slice(0, 3);
+    add('Hardest moments', hardest.map((e) => ({ meta: `${shortDay(e.day)} · ${WORDS[e.mood]}`, quote: clip(e.text, 140) })));
+
+    // words that came back on more than one day
+    const seen = new Map();
+    for (const [k, l] of days) {
+      const ws = new Set();
+      for (const e of l) for (let w of String(e.text || '').toLowerCase().split(/[^\p{L}']+/u)) {
+        w = w.replace(/'/g, ''); if (w.length >= 4 && !STOP.has(w)) ws.add(w);
+      }
+      for (const w of ws) { const s = seen.get(w) || { days: 0, hard: 0 }; s.days++; if (hardDays.has(k)) s.hard++; seen.set(w, s); }
+    }
+    for (const [w, s] of [...seen]) {   // fold "meetings" into "meeting"
+      if (w.endsWith('s') && seen.has(w.slice(0, -1))) { const t = seen.get(w.slice(0, -1)); t.days = Math.max(t.days, s.days); t.hard = Math.max(t.hard, s.hard); seen.delete(w); }
+    }
+    const themes = [...seen].filter(([, s]) => s.days >= 2).sort((x, y) => y[1].days - x[1].days || y[1].hard - x[1].hard).slice(0, 5);
+    add('Kept coming up', themes.map(([w, s]) => ({ text: `${w} · ${s.days} days`, note: s.hard >= 2 && s.hard / s.days >= .6 ? 'mostly on hard days' : '' })));
+
+    // what went well, so it is not only the hard bits
+    const best = es.filter((e) => e.mood >= 4 && e.mood <= 5 && said(e)).sort((x, y) => y.mood - x.mood || y.ts - x.ts).slice(0, 2);
+    add('What went well', best.map((e) => ({ meta: `${shortDay(e.day)} · ${WORDS[e.mood]}`, quote: clip(e.text, 120) })));
+
+    const s = lastSession();
+    const head = `${first === last ? shortDay(first) : `${shortDay(first)} – ${shortDay(last)}`} · ${es.length} ${es.length === 1 ? 'entry' : 'entries'}${s && a0 === s ? ` · since the session on ${shortDay(s)}` : ''}`;
+    return { head, secs };
+  }
+  function talkText(tp) {
+    let out = `Talk points\n${tp.head}\n`;
+    for (const s of tp.secs) {
+      out += `\n${s.title}\n`;
+      for (const i of s.items) out += i.quote ? `• ${i.meta}: "${i.quote}"\n` : `• ${i.text}${i.note ? ` (${i.note})` : ''}\n`;
+    }
+    return out;
+  }
+  $('#talk-points').addEventListener('click', () => {
+    const es = rangeEntries(); if (!es.length) { toast('No entries in this range'); return; }
+    closeSheet(true); sheetDay = null;
+    const tp = talkPoints(es);
+    const panel = el('div', 'panel');
+    panel.appendChild(el('div', 'grabber'));
+    panel.appendChild(el('p', 'lead-sub', 'What to bring up. Worked out on this phone, nothing is sent'));
+    const page = el('div', 'preview-page');
+    page.appendChild(el('h3', null, 'Talk points'));
+    page.appendChild(el('p', 'pv-sub', tp.head));
+    for (const s of tp.secs) {
+      const sec = el('div', 'tp-sec'); sec.appendChild(el('h4', null, s.title));
+      const ul = el('ul');
+      for (const i of s.items) {
+        const li = el('li');
+        if (i.quote) { li.appendChild(el('span', null, i.meta)); li.appendChild(el('q', null, i.quote)); }
+        else { li.appendChild(document.createTextNode(i.text)); if (i.note) li.appendChild(el('span', null, ` · ${i.note}`)); }
+        ul.appendChild(li);
+      }
+      sec.appendChild(ul); page.appendChild(sec);
+    }
+    if (!tp.secs.length) page.appendChild(el('p', 'pv-note', 'Not enough in this range yet. Pick a longer range above.'));
+    panel.appendChild(page);
+    const acts = el('div', 'preview-acts');
+    const copy = el('button', 'round'); copy.type = 'button'; copy.setAttribute('aria-label', 'Copy the talk points');
+    copy.innerHTML = '<svg viewBox="0 0 16 16"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2h-6A1.5 1.5 0 0 0 2 3.5v6A1.5 1.5 0 0 0 3.5 11H5"/></svg>';
+    copy.addEventListener('click', async () => { try { await navigator.clipboard.writeText(talkText(tp)); toast('Copied'); } catch (e) { toast('Copy not allowed here'); } });
+    const share = el('button', 'btn', 'Share talk points'); share.type = 'button';
+    share.addEventListener('click', async () => {
+      if (navigator.share) { try { await navigator.share({ title: 'Talk points', text: talkText(tp) }); return; } catch (e) { if (e.name === 'AbortError') return; } }
+      try { await navigator.clipboard.writeText(talkText(tp)); toast('Copied'); } catch (e) { toast('Copy not allowed here'); }
+    });
+    acts.append(copy, share);
+    panel.appendChild(acts);
+    const done = el('button', 'done', 'Done'); done.type = 'button'; done.setAttribute('aria-label', 'Close');
+    done.addEventListener('click', () => closeSheet());
+    panel.appendChild(done);
+    mountSheet(panel);
+  });
+
   $('#export-json').addEventListener('click', async () => {
     // circles and settings ride along, so a phone that re-adds Feeling to the Home Screen gets everything back (Feeling 70)
     const ls = (k) => { try { return localStorage.getItem(k); } catch (e) { return null; } };
