@@ -102,6 +102,16 @@
   .entry-glass.typed .reassure { display: none; }
   .entry-glass.typed .bring { display: inline-flex; }
   .flagmark { display: inline-flex; align-items: center; gap: 4px; color: var(--accent); }
+  /* the next session from the to-do list, from the day before: who and when, what you flagged; tap = talk points (Feeling 73) */
+  .session-card { position: relative; z-index: 2; display: flex; align-items: center; gap: 8px; width: 100%; margin-top: 16px; padding: 11px 16px; border-radius: 18px; font: inherit; font-size: 14px; line-height: 20px; color: var(--ink); text-align: left; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: transform .14s; }
+  .session-card:active { transform: scale(.98); }
+  .session-card.hidden { display: none; }
+  .session-card svg { width: 15px; height: 15px; flex: none; fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .session-card.flagged .cloth { fill: var(--accent); }
+  .session-card .sc-when { flex: 1; min-width: 0; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .session-card .sc-what { flex: none; color: var(--accent); font-weight: 500; }
+  .session-card .sc-what::after { content: "›"; margin-left: 6px; }
+  .session-card + .entry-glass { margin-top: 10px; }
   /* saving: the words you wrote rise 8 px and fade, a ring spreads on the water, the Earlier chip slides in (M6) */
   .sent-ghost { position: absolute; left: 0; right: 0; top: 0; padding: 18px 20px 6px; font-size: 17px; line-height: 1.5; color: var(--ink); white-space: pre-wrap; overflow: hidden; overflow-wrap: anywhere; pointer-events: none; animation: sentUp .45s ease-in 1 both; }
   @keyframes sentUp { to { opacity: 0; transform: translateY(-8px); } }
@@ -281,6 +291,9 @@
   /* short screens (iPhone SE and mini, Safari with toolbars): compress Today so the faces clear the horizon and Save clears the nav (L1) */
   @media (max-height: 760px) {
     .entry-glass { margin-top: 14px; }
+    .session-card { margin-top: 10px; padding: 7px 14px; }   /* the session card costs ~40 px here, the field gives most of it back */
+    .session-card:not(.hidden) + .entry-glass { margin-top: 8px; }
+    .session-card:not(.hidden) + .entry-glass .textview { min-height: 52px; }
     .textview { min-height: 76px; padding-top: 14px; }
     .sent-ghost { padding-top: 14px; }
     .voice { margin-top: 10px; }
@@ -2986,6 +2999,8 @@
       </div>
     </div>
 
+    <button class="session-card frost hidden" id="session-card" type="button"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 14.5V2.5"/><path class="cloth" d="M3.5 2.5h8.5l-2 3 2 3H3.5"/></svg><span class="sc-when"></span><span class="sc-what"></span></button>
+
     <div class="entry-glass frost">
       <textarea id="text" class="textview" placeholder="How are you doing?&#10;Tap the mic and just talk." autocapitalize="sentences"></textarea>
       <p class="reassure">Nothing you write here is judged. It only has to be true.</p>
@@ -3102,7 +3117,7 @@
     <p class="foot lone" id="last-export"></p>
     <span id="range-value" hidden></span>
 
-    <p class="closing">Feeling 72 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
+    <p class="closing">Feeling 73 · Nothing leaves this phone except the faces, and the few words, you choose to share.</p>
   </section>
 </main>
 
@@ -3944,7 +3959,7 @@
       if (db.talk && db.talk.key === key) { showClaude(db.talk.secs); return; }
       ask();
     });
-    const useCode = () => { const c = codeIn.value.trim().toLowerCase(); if (!/^[a-z0-9]{16}$/.test(c)) { toast('A hub code is 16 letters and numbers'); return; } lsSet('feeling.hubcode', c); codeRow.classList.add('hidden'); ask(); };
+    const useCode = () => { const c = codeIn.value.trim().toLowerCase(); if (!/^[a-z0-9]{16}$/.test(c)) { toast('A hub code is 16 letters and numbers'); return; } lsSet('feeling.hubcode', c); codeRow.classList.add('hidden'); ask(); refreshSession(true); };
     codeOk.addEventListener('click', useCode);
     codeIn.addEventListener('keydown', (ev) => { if (ev.key === 'Enter') { ev.preventDefault(); useCode(); } });
     // the same entries as last time: Claude's version opens at once, no second call
@@ -3966,6 +3981,57 @@
     panel.appendChild(done);
     mountSheet(panel);
   });
+
+  // ---------- next session, from the to-do list through paul-hub (Feeling 73) ----------
+  // With the hub code on this phone, Feeling asks the hub for the next psychologist or psychiatrist visit in To-do.
+  // From the day before, Today shows a card with who and when and how many entries are flagged; a tap opens the talk
+  // points since the last session. Visits that are over become sessions by themselves. Only the code is sent.
+  const SESSION_OPEN_MIN = 90, SESSION_EVERY = 15 * 60e3;
+  const calKey = (d = new Date()) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  function sessionOver(n, now = new Date()) {
+    const t = calKey(now);
+    if (n.date !== t) return n.date < t;
+    if (!n.time) return false;
+    const [h, m] = n.time.split(':').map(Number);
+    return now.getHours() * 60 + now.getMinutes() >= h * 60 + m + SESSION_OPEN_MIN;
+  }
+  function renderSessionCard() {
+    const card = $('#session-card'); if (!card) return;
+    const n = db.nextSession && db.nextSession.next;
+    const now = new Date(), t = calKey(now), tm = calKey(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 12));
+    if (!n || (n.date !== t && n.date !== tm) || sessionOver(n, now)) { card.classList.add('hidden'); return; }
+    const s = lastSession();
+    const flagged = db.entries.filter((e) => e.bring && (!s || e.day >= s)).length;
+    card.querySelector('.sc-when').textContent = `${n.title} ${n.date === t ? 'today' : 'tomorrow'}${n.time ? ' ' + n.time : ''}`;
+    card.querySelector('.sc-what').textContent = flagged ? `${flagged} flagged` : 'Talk points';
+    card.classList.toggle('flagged', flagged > 0);
+    card.setAttribute('aria-label', `${n.title} ${n.date === t ? 'today' : 'tomorrow'}${n.time ? ' at ' + n.time : ''}. ${flagged ? flagged + ' flagged' : 'Nothing flagged'}. Open talk points`);
+    card.classList.remove('hidden');
+  }
+  $('#session-card').addEventListener('click', () => {
+    const seg = $('#range-seg [data-r="session"]'); if (seg && !seg.classList.contains('on')) seg.click();
+    range = 'session'; $('#talk-points').click();
+  });
+  let sessionAsking = false;
+  async function refreshSession(force) {
+    const code = lsGet('feeling.hubcode');
+    if (!/^[a-z0-9]{16}$/.test(code) || sessionAsking || !navigator.onLine) return;
+    if (!force && db.nextSession && Date.now() - db.nextSession.at < SESSION_EVERY) return;
+    sessionAsking = true;
+    try {
+      const res = await fetch(`${HUB}/api/talk/${code}/next`);
+      if (!res.ok) return;
+      const d = await res.json();
+      const ok = (n) => n && typeof n.title === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(n.date) && (!n.time || /^\d{2}:\d{2}$/.test(n.time));
+      db.nextSession = { next: ok(d.next) ? { title: d.next.title.slice(0, 60), kind: d.next.kind || '', date: d.next.date, time: d.next.time || null } : null, at: Date.now() };
+      const had = db.sessions.length;
+      for (const k of Array.isArray(d.past) ? d.past : []) if (/^\d{4}-\d{2}-\d{2}$/.test(k) && k <= todayKey() && !db.sessions.includes(k)) db.sessions.push(k);
+      if (db.sessions.length !== had) db.sessions.sort();
+      save(); renderSessionCard(); if (db.sessions.length !== had) renderExport();
+    } catch (e) {} finally { sessionAsking = false; }
+  }
+  refreshSession();
+  setInterval(renderSessionCard, 60e3);   // the card leaves on its own once the visit is over
 
   $('#export-json').addEventListener('click', async () => {
     // circles and settings ride along, so a phone that re-adds Feeling to the Home Screen gets everything back (Feeling 70)
@@ -4463,13 +4529,13 @@
       to.classList.add('in');
     }, 140);
   }
-  function renderAll() { renderTodayHead(); renderTodayEntries(); renderMonth(); renderHistory(); renderExport(); }
+  function renderAll() { renderTodayHead(); renderTodayEntries(); renderMonth(); renderHistory(); renderExport(); renderSessionCard(); }
 
   // ---------- boot ----------
   restoreDraft(); syncMoodRow(); renderAll();
   requestAnimationFrame(() => { placeFilter(); placeRange(); });
   document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) { db = load(); restoreDraft(); syncMoodRow(); renderAll(); }
+    if (!document.hidden) { db = load(); restoreDraft(); syncMoodRow(); renderAll(); refreshSession(); }
   });
   if ('serviceWorker' in navigator) {
     // A new version installs in the background; once it takes over, reload so it shows straight away.
